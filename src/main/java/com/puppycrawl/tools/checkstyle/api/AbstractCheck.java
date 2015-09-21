@@ -127,6 +127,14 @@ public abstract class AbstractCheck extends AbstractViolationReporter {
     }
 
     /**
+     * Called when all the files have been processed. This is the time to perform any checks that
+     * need to be done across a set of files.
+     */
+    public void finishProcessing() {
+        // No code by default, should be overridden only by demand at subclasses
+    }
+
+    /**
      * Destroy the check. It is being retired from service.
      */
     public void destroy() {
@@ -234,9 +242,35 @@ public abstract class AbstractCheck extends AbstractViolationReporter {
 
     @Override
     public final void log(int line, String key, Object... args) {
+        logExternal(null, line, key, args);
+    }
+
+    @Override
+    public final void log(int lineNo, int colNo, String key,
+            Object... args) {
+        final int col = 1 + CommonUtils.lengthExpandedTabs(
+                getLines()[lineNo - 1], colNo, tabWidth);
+        messages.add(
+                new LocalizedMessage(
+                    null,
+                    lineNo,
+                    col,
+                    getMessageBundle(),
+                    key,
+                    args,
+                    getSeverityLevel(),
+                    getId(),
+                    getClass(),
+                    getCustomMessages().get(key)));
+    }
+
+    @Override
+    public final void logExternal(String fileName, int line, String key, Object... args) {
         messages.add(
             new LocalizedMessage(
+                fileName,
                 line,
+                0,
                 getMessageBundle(),
                 key,
                 args,
@@ -247,20 +281,19 @@ public abstract class AbstractCheck extends AbstractViolationReporter {
     }
 
     @Override
-    public final void log(int lineNo, int colNo, String key,
+    public void logExternal(String fileName, int lineNo, int colNo, String key,
             Object... args) {
-        final int col = 1 + CommonUtils.lengthExpandedTabs(
-            getLines()[lineNo - 1], colNo, tabWidth);
         messages.add(
-            new LocalizedMessage(
-                lineNo,
-                col,
-                getMessageBundle(),
-                key,
-                args,
-                getSeverityLevel(),
-                getId(),
-                getClass(),
-                getCustomMessages().get(key)));
+                new LocalizedMessage(
+                    fileName,
+                    lineNo,
+                    colNo,
+                    getMessageBundle(),
+                    key,
+                    args,
+                    getSeverityLevel(),
+                    getId(),
+                    getClass(),
+                    getCustomMessages().get(key)));
     }
 }

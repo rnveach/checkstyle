@@ -75,6 +75,11 @@ public class FileLengthCheck extends AbstractFileSetCheck {
         }
     }
 
+    @Override
+    protected void finishProcessFiltered() {
+        // No code by default
+    }
+
     /**
      * Sets the maximum length of a Java source file.
      * @param length the maximum length of a Java source file

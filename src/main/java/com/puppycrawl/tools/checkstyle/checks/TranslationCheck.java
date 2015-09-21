@@ -247,9 +247,7 @@ public class TranslationCheck extends AbstractFileSetCheck {
     }
 
     @Override
-    public void finishProcessing() {
-        super.finishProcessing();
-
+    public void finishProcessFiltered() {
         final Set<ResourceBundle> bundles = groupFilesIntoBundles(filesToProcess, baseName);
         for (ResourceBundle currentBundle : bundles) {
             checkExistenceOfDefaultTranslation(currentBundle);
@@ -330,8 +328,9 @@ public class TranslationCheck extends AbstractFileSetCheck {
     private void logMissingTranslation(String filePath, String fileName) {
         final MessageDispatcher dispatcher = getMessageDispatcher();
         dispatcher.fireFileStarted(filePath);
-        log(0, MSG_KEY_MISSING_TRANSLATION_FILE, fileName);
-        fireErrors(filePath);
+
+        logExternal(filePath, 0, MSG_KEY_MISSING_TRANSLATION_FILE, fileName);
+
         dispatcher.fireFileFinished(filePath);
     }
 
@@ -467,10 +466,9 @@ public class TranslationCheck extends AbstractFileSetCheck {
                 .filter(e -> !currentFileKeys.contains(e)).collect(Collectors.toSet());
             if (!missingKeys.isEmpty()) {
                 for (Object key : missingKeys) {
-                    log(0, MSG_KEY, key);
+                    logExternal(path, 0, MSG_KEY, key);
                 }
             }
-            fireErrors(path);
             dispatcher.fireFileFinished(path);
         }
     }

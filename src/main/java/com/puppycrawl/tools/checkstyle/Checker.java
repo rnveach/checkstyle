@@ -211,8 +211,13 @@ public class Checker extends AutomaticBean implements MessageDispatcher, RootMod
         processFiles(files);
 
         // Finish up
-        // It may also log!!!
-        fileSetChecks.forEach(FileSetCheck::finishProcessing);
+        final SortedSet<LocalizedMessage> finishMessages = new TreeSet<>();
+
+        for (final FileSetCheck fsc : fileSetChecks) {
+            finishMessages.addAll(fsc.finishProcessing());
+        }
+
+        fireErrors(finishMessages);
 
         // It may also log!!!
         fileSetChecks.forEach(FileSetCheck::destroy);
@@ -383,6 +388,23 @@ public class Checker extends AutomaticBean implements MessageDispatcher, RootMod
         }
         if (hasNonFilteredViolations && cache != null) {
             cache.remove(fileName);
+        }
+    }
+
+    /**
+     * Notify all listeners about the errors in files.
+     *
+     * @param errors the audit errors from the files
+     */
+    @Override
+    public void fireErrors(SortedSet<LocalizedMessage> errors) {
+        for (final LocalizedMessage element : errors) {
+            final AuditEvent evt = new AuditEvent(this, element.getFileName(), element);
+            if (filters.accept(evt)) {
+                for (final AuditListener listener : listeners) {
+                    listener.addError(evt);
+                }
+            }
         }
     }
 

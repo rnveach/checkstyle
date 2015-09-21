@@ -114,6 +114,11 @@ public class RegexpHeaderCheck extends AbstractHeaderCheck {
         }
     }
 
+    @Override
+    protected void finishProcessFiltered() {
+        // No code by default
+    }
+
     /**
      * Logs warning if any non-multiline lines left in header regexp.
      * @param startHeaderLine header line number to start from

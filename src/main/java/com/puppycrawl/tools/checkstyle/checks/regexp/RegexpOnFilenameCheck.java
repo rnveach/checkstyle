@@ -248,6 +248,11 @@ public class RegexpOnFilenameCheck extends AbstractFileSetCheck {
     }
 
     @Override
+    protected void finishProcessFiltered() {
+        // No code by default
+    }
+
+    @Override
     protected void processFiltered(File file, List<String> lines) throws CheckstyleException {
         final String fileName = getFileName(file);
         final String folderPath = getFolderPath(file);

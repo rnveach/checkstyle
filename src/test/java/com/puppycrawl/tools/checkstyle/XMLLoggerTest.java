@@ -152,7 +152,7 @@ public class XMLLoggerTest {
         final XMLLogger logger = new XMLLogger(outStream, true);
         logger.auditStarted(null);
         final LocalizedMessage message =
-            new LocalizedMessage(1, 1,
+            new LocalizedMessage(null, 1, 1,
                 "messages.properties", "key", null, SeverityLevel.ERROR, null,
                     getClass(), null);
         final AuditEvent ev = new AuditEvent(this, "Test.java", message);
@@ -170,7 +170,7 @@ public class XMLLoggerTest {
         final XMLLogger logger = new XMLLogger(outStream, true);
         logger.auditStarted(null);
         final LocalizedMessage message =
-                new LocalizedMessage(1, 0,
+                new LocalizedMessage(null, 1, 0,
                         "messages.properties", "key", null, SeverityLevel.ERROR, null,
                         getClass(), null);
         final AuditEvent ev = new AuditEvent(this, "Test.java", message);
@@ -188,7 +188,7 @@ public class XMLLoggerTest {
         final XMLLogger logger = new XMLLogger(outStream, true);
         logger.auditStarted(null);
         final LocalizedMessage message =
-                new LocalizedMessage(1, 1,
+                new LocalizedMessage(null, 1, 1,
                         "messages.properties", "key", null, SeverityLevel.IGNORE, null,
                         getClass(), null);
         final AuditEvent ev = new AuditEvent(this, "Test.java", message);

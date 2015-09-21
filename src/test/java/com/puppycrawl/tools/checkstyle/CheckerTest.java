@@ -814,6 +814,10 @@ public class CheckerTest extends BaseCheckTestSupport {
             externalResourceLocation.add("non_existing_external_resource.xml");
             return externalResourceLocation;
         }
+
+        @Override
+        protected void finishProcessFiltered() {
+        }
     }
 
     private static class DummyFileSetViolationCheck extends AbstractFileSetCheck
@@ -830,6 +834,10 @@ public class CheckerTest extends BaseCheckTestSupport {
             externalResourceLocation.add("non_existing_external_resource.xml");
             return externalResourceLocation;
         }
+
+        @Override
+        protected void finishProcessFiltered() {
+        }
     }
 
     private static class MockMissingExternalResourcesFileSetCheck extends AbstractFileSetCheck
@@ -843,6 +851,10 @@ public class CheckerTest extends BaseCheckTestSupport {
             final Set<String> externalResourceLocation = new HashSet<>(1);
             externalResourceLocation.add("missing_external_resource.xml");
             return externalResourceLocation;
+        }
+
+        @Override
+        protected void finishProcessFiltered() {
         }
     }
 
@@ -874,6 +886,10 @@ public class CheckerTest extends BaseCheckTestSupport {
                 locations.add(secondExternalResourceLocation);
             }
             return locations;
+        }
+
+        @Override
+        protected void finishProcessFiltered() {
         }
     }
 

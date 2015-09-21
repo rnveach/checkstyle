@@ -167,4 +167,30 @@ public abstract class AbstractViolationReporter
     // overloaded methods. See https://github.com/sevntu-checkstyle/sevntu.checkstyle/issues/414
     public abstract void log(int line, int col, String key,
             Object... args);
+
+    /**
+     * Log a message that has no column information.
+     *
+     * @param fileName the file where the error was found
+     * @param line the line number where the error was found
+     * @param key the message that describes the error
+     * @param args the details of the message
+     *
+     * @see java.text.MessageFormat
+     */
+    public abstract void logExternal(String fileName, int line, String key, Object... args);
+
+    /**
+     * Log a message that has column and file information.
+     *
+     * @param fileName the file where the error was found
+     * @param line the line number where the error was found
+     * @param col the column number where the error was found
+     * @param key the message that describes the error
+     * @param args the details of the message
+     *
+     * @see java.text.MessageFormat
+     */
+    public abstract void logExternal(String fileName, int line, int col, String key,
+            Object... args);
 }

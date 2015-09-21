@@ -64,6 +64,11 @@ public class RegexpSinglelineCheck extends AbstractFileSetCheck {
         detector.processLines(lines);
     }
 
+    @Override
+    protected void finishProcessFiltered() {
+        // No code by default
+    }
+
     /**
      * Set the format of the regular expression to match.
      * @param format the format of the regular expression to match.

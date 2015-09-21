@@ -63,6 +63,11 @@ public class FileTabCharacterCheck extends AbstractFileSetCheck {
         }
     }
 
+    @Override
+    protected void finishProcessFiltered() {
+        // No code by default
+    }
+
     /**
      * Whether report on each line containing a tab.
      * @param eachLine Whether report on each line containing a tab.

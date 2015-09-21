@@ -194,6 +194,11 @@ public final class TreeWalker extends AbstractFileSetCheck implements ExternalRe
         }
     }
 
+    @Override
+    protected void finishProcessFiltered() {
+        notifyFinish();
+    }
+
     /**
      * Register a check for a given configuration.
      * @param check the check to register
@@ -345,6 +350,17 @@ public final class TreeWalker extends AbstractFileSetCheck implements ExternalRe
 
         for (AbstractCheck check : checks) {
             check.finishTree(rootAST);
+        }
+    }
+
+    /** Notify checks that we have finished walking all the trees. */
+    private void notifyFinish() {
+        for (AbstractCheck check : commentChecks) {
+            check.finishProcessing();
+        }
+
+        for (AbstractCheck check : ordinaryChecks) {
+            check.finishProcessing();
         }
     }
 
