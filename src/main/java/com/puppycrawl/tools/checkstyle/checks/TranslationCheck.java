@@ -110,7 +110,7 @@ public class TranslationCheck
     }
 
     @Override
-    public void finishProcessing() {
+    public void finishProcessFiltered() {
         super.finishProcessing();
         final Map<String, Set<File>> propFilesMap =
             arrangePropertyFiles(propertyFiles, basenameSeparator);
@@ -261,10 +261,9 @@ public class TranslationCheck
             // Remaining elements in the key set are missing in the current file
             if (!keysClone.isEmpty()) {
                 for (Object key : keysClone) {
-                    log(0, MSG_KEY, key);
+                    logExternal(path, 0, MSG_KEY, key);
                 }
             }
-            fireErrors(path);
             dispatcher.fireFileFinished(path);
         }
     }

@@ -49,6 +49,11 @@ public class RegexpMultilineCheck extends AbstractFileSetCheck {
         detector.processLines(FileText.fromLines(file, lines));
     }
 
+    @Override
+    protected void finishProcessFiltered() {
+        // No code by default
+    }
+
     /**
      * Set the format of the regular expression to match.
      * @param format the format of the regular expression to match.

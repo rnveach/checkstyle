@@ -276,7 +276,7 @@ public class SuppressionCommentFilterTest
     @Test
     public void testAcceptNullFileContents() {
         final LocalizedMessage message =
-            new LocalizedMessage(1, 1,
+            new LocalizedMessage(null, 1, 1,
                 "messages.properties", "key", null, SeverityLevel.ERROR, null,
                     getClass(), null);
         final AuditEvent auditEvent = new AuditEvent(this, "Test.java", message);

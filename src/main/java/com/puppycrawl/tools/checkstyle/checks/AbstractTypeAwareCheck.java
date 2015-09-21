@@ -261,7 +261,8 @@ public abstract class AbstractTypeAwareCheck extends Check {
     protected final void logLoadErrorImpl(int lineNo, int columnNo,
                                           String msgKey, Object... values) {
         if (!logLoadErrors) {
-            final LocalizedMessage msg = new LocalizedMessage(lineNo,
+            final LocalizedMessage msg = new LocalizedMessage(null,
+                                                    lineNo,
                                                     columnNo,
                                                     getMessageBundle(),
                                                     msgKey,

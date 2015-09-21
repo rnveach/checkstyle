@@ -113,7 +113,7 @@ public class FileSetCheckLifecycleTest
         }
 
         @Override
-        public void finishProcessing() {
+        protected void finishProcessFiltered() {
             fileContentAvailable = FileContentsHolder.getContents() != null;
         }
     }

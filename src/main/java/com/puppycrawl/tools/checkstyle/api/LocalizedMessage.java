@@ -63,6 +63,9 @@ public final class LocalizedMessage
 
     /** The default severity level if one is not specified. */
     private static final SeverityLevel DEFAULT_SEVERITY = SeverityLevel.ERROR;
+    
+    /** The file name. **/
+    private final String fileName;
 
     /** The line number. **/
     private final int lineNo;
@@ -93,6 +96,7 @@ public final class LocalizedMessage
     /**
      * Creates a new {@code LocalizedMessage} instance.
      *
+     * @param fileName location of the file associated with the message
      * @param lineNo line number associated with the message
      * @param columnNo column number associated with the message
      * @param bundle resource bundle name
@@ -103,7 +107,8 @@ public final class LocalizedMessage
      * @param sourceClass the Class that is the source of the message
      * @param customMessage optional custom message overriding the default
      */
-    public LocalizedMessage(int lineNo,
+    public LocalizedMessage(String fileName,
+                            int lineNo,
                             int columnNo,
                             String bundle,
                             String key,
@@ -112,6 +117,7 @@ public final class LocalizedMessage
                             String moduleId,
                             Class<?> sourceClass,
                             String customMessage) {
+        this.fileName = fileName;
         this.lineNo = lineNo;
         this.columnNo = columnNo;
         this.key = key;
@@ -149,7 +155,8 @@ public final class LocalizedMessage
                             String moduleId,
                             Class<?> sourceClass,
                             String customMessage) {
-        this(lineNo,
+        this(null,
+             lineNo,
                 columnNo,
              bundle,
              key,
@@ -180,7 +187,7 @@ public final class LocalizedMessage
                             String moduleId,
                             Class<?> sourceClass,
                             String customMessage) {
-        this(lineNo, 0, bundle, key, args, severityLevel, moduleId,
+        this(null, lineNo, 0, bundle, key, args, severityLevel, moduleId,
                 sourceClass, customMessage);
     }
 
@@ -204,7 +211,7 @@ public final class LocalizedMessage
         String moduleId,
         Class<?> sourceClass,
         String customMessage) {
-        this(lineNo, 0, bundle, key, args, DEFAULT_SEVERITY, moduleId,
+        this(null, lineNo, 0, bundle, key, args, DEFAULT_SEVERITY, moduleId,
                 sourceClass, customMessage);
     }
 
@@ -217,7 +224,8 @@ public final class LocalizedMessage
             return false;
         }
         final LocalizedMessage localizedMessage = (LocalizedMessage) object;
-        return Objects.equals(lineNo, localizedMessage.lineNo)
+        return Objects.equals(fileName, localizedMessage.fileName)
+                && Objects.equals(lineNo, localizedMessage.lineNo)
                 && Objects.equals(columnNo, localizedMessage.columnNo)
                 && Objects.equals(severityLevel, localizedMessage.severityLevel)
                 && Objects.equals(moduleId, localizedMessage.moduleId)
@@ -230,8 +238,8 @@ public final class LocalizedMessage
 
     @Override
     public int hashCode() {
-        return Objects.hash(lineNo, columnNo, severityLevel, moduleId, key, bundle, sourceClass,
-                customMessage, Arrays.hashCode(args));
+        return Objects.hash(fileName, lineNo, columnNo, severityLevel, moduleId, key, bundle,
+                sourceClass, customMessage, Arrays.hashCode(args));
     }
 
     /** Clears the cache. */
@@ -300,6 +308,14 @@ public final class LocalizedMessage
             }
             return resourceBundle;
         }
+    }
+    
+    /**
+     * Gets the file name.
+     * @return the file name
+     */
+    public String getFileName() {
+        return fileName;
     }
 
     /**
@@ -370,16 +386,23 @@ public final class LocalizedMessage
 
     @Override
     public int compareTo(LocalizedMessage other) {
-        int result = Integer.compare(lineNo, other.lineNo);
+        int result;
 
-        if (lineNo == other.lineNo) {
-            if (columnNo == other.columnNo) {
-                result = getMessage().compareTo(other.getMessage());
+        if (Objects.equals(fileName, other.fileName)) {
+            if (lineNo == other.lineNo) {
+                if (columnNo == other.columnNo) {
+                    result = getMessage().compareTo(other.getMessage());
+                }
+                else {
+                    result = Integer.compare(columnNo, other.columnNo);
+                }
+            } else {
+                result = Integer.compare(lineNo, other.lineNo);
             }
-            else {
-                result = Integer.compare(columnNo, other.columnNo);
-            }
+        } else {
+            result = (fileName == null ? -1 : fileName.compareTo(other.fileName));
         }
+
         return result;
     }
 

@@ -100,4 +100,9 @@ public class HeaderCheck extends AbstractHeaderCheck {
             }
         }
     }
+
+    @Override
+    protected void finishProcessFiltered() {
+        // No code by default
+    }
 }

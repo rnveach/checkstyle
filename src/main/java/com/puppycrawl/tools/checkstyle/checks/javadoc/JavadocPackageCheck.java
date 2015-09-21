@@ -88,6 +88,11 @@ public class JavadocPackageCheck extends AbstractFileSetCheck {
         }
     }
 
+    @Override
+    protected void finishProcessFiltered() {
+        // No code by default
+    }
+
     /**
      * Indicates whether to allow support for the legacy <i>package.html</i>
      * file.

@@ -55,6 +55,9 @@ public abstract class AbstractFileSetCheck
     protected abstract void processFiltered(File file, List<String> lines)
             throws CheckstyleException;
 
+    /** Called when all the files have been processed. */
+    protected abstract void finishProcessFiltered();
+
     @Override
     public void init() {
         // No code by default, should be overridden only by demand at subclasses
@@ -82,8 +85,10 @@ public abstract class AbstractFileSetCheck
     }
 
     @Override
-    public void finishProcessing() {
-        // No code by default, should be overridden only by demand at subclasses
+    public final SortedSet<LocalizedMessage> finishProcessing() {
+        messageCollector.reset();
+        finishProcessFiltered();
+        return messageCollector.getMessages();
     }
 
     @Override
@@ -152,28 +157,28 @@ public abstract class AbstractFileSetCheck
     @Override
     public final void log(int lineNo, int colNo, String key,
             Object... args) {
-        messageCollector.add(
-                new LocalizedMessage(lineNo,
-                        colNo,
-                        getMessageBundle(),
-                        key,
-                        args,
-                        getSeverityLevel(),
-                        getId(),
-                        getClass(),
-                        getCustomMessages().get(key)));
+        logExternal(null, lineNo, colNo, key, args);
     }
 
-    /**
-     * Notify all listeners about the errors in a file.
-     * Calls {@code MessageDispatcher.fireErrors()} with
-     * all logged errors and than clears errors' list.
-     * @param fileName the audited file
-     */
-    protected final void fireErrors(String fileName) {
-        final SortedSet<LocalizedMessage> errors = messageCollector
-                .getMessages();
-        messageCollector.reset();
-        getMessageDispatcher().fireErrors(fileName, errors);
+    @Override
+    public final void logExternal(String fileName, int line, String key, Object... args) {
+        logExternal(fileName, line, 0, key, args);
+    }
+    
+    @Override
+    public void logExternal(String fileName, int lineNo, int colNo, String key,
+            Object... args) {
+        messageCollector.add(
+                new LocalizedMessage(
+                    fileName,
+                    lineNo,
+                    colNo,
+                    getMessageBundle(),
+                    key,
+                    args,
+                    getSeverityLevel(),
+                    getId(),
+                    getClass(),
+                    getCustomMessages().get(key)));
     }
 }

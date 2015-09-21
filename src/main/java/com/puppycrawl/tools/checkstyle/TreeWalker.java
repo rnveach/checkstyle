@@ -227,6 +227,11 @@ public final class TreeWalker
         }
     }
 
+    @Override
+    protected void finishProcessFiltered() {
+        notifyFinish();
+    }
+
     /**
      * Register a check for a given configuration.
      * @param check the check to register
@@ -376,6 +381,17 @@ public final class TreeWalker
 
         for (Check check : checks) {
             check.finishTree(rootAST);
+        }
+    }
+
+    /** Notify checks that we have finished walking all the trees. */
+    private void notifyFinish() {
+        for (Check check : commentChecks) {
+            check.finishProcessing();
+        }
+
+        for (Check check : ordinaryChecks) {
+            check.finishProcessing();
         }
     }
 

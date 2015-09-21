@@ -277,11 +277,15 @@ public class Checker extends AutomaticBean implements MessageDispatcher {
         }
 
         // Finish up
+        final SortedSet<LocalizedMessage> finishMessages = Sets.newTreeSet();
+
         for (final FileSetCheck fsc : fileSetChecks) {
-            // It may also log!!!
-            fsc.finishProcessing();
+            finishMessages.addAll(fsc.finishProcessing());
         }
 
+        fireErrors(finishMessages);
+
+        // Destroy
         for (final FileSetCheck fsc : fileSetChecks) {
             // It may also log!!!
             fsc.destroy();
@@ -357,6 +361,23 @@ public class Checker extends AutomaticBean implements MessageDispatcher {
         final String stripped = CommonUtils.relativizeAndNormalizePath(basedir, fileName);
         for (final LocalizedMessage element : errors) {
             final AuditEvent evt = new AuditEvent(this, stripped, element);
+            if (filters.accept(evt)) {
+                for (final AuditListener listener : listeners) {
+                    listener.addError(evt);
+                }
+            }
+        }
+    }
+    
+    /**
+     * Notify all listeners about the errors in files.
+     *
+     * @param errors the audit errors from the files
+     */
+    @Override
+    public void fireErrors(SortedSet<LocalizedMessage> errors) {
+        for (final LocalizedMessage element : errors) {
+            final AuditEvent evt = new AuditEvent(this, element.getFileName(), element);
             if (filters.accept(evt)) {
                 for (final AuditListener listener : listeners) {
                     listener.addError(evt);
