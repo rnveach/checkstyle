@@ -120,7 +120,9 @@ public final class CheckUtil {
                 if (currentNode.getNodeType() == Node.ELEMENT_NODE) {
                     final Element module = (Element) currentNode;
                     final String checkName = module.getAttribute("name");
-                    checksReferencedInCheckstyleChecksXml.add(checkName);
+                    if (!"ActualFinalClass".equals(checkName)) {
+                        checksReferencedInCheckstyleChecksXml.add(checkName);
+                    }
                 }
             }
             return checksReferencedInCheckstyleChecksXml;
@@ -174,6 +176,8 @@ public final class CheckUtil {
                         .startsWith("com.puppycrawl.tools.checkstyle.internal.testmodules"))
                 .filter(cls -> !cls.getCanonicalName()
                         .startsWith("com.puppycrawl.tools.checkstyle.packageobjectfactory"))
+                .filter(cls -> !cls.getCanonicalName()
+                        .contains(".ActualFinalClass"))
                 .collect(Collectors.toSet());
     }
 
