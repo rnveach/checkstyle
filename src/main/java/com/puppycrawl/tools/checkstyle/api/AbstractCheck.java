@@ -51,6 +51,8 @@ public abstract class AbstractCheck extends AbstractViolationReporter {
     /** The tab width for column reporting. */
     private int tabWidth = DEFAULT_TAB_WIDTH;
 
+    private MessageDispatcher messageDispatcher;
+
     /**
      * The class loader to load external classes. Not initialized as this must
      * be set by my creator.
@@ -127,6 +129,14 @@ public abstract class AbstractCheck extends AbstractViolationReporter {
      * everything required to perform it job.
      */
     public void init() {
+        // No code by default, should be overridden only by demand at subclasses
+    }
+
+    /**
+     * Called when all the files have been processed. This is the time to perform any checks that
+     * need to be done across a set of files.
+     */
+    public void finishProcessing() {
         // No code by default, should be overridden only by demand at subclasses
     }
 
@@ -256,6 +266,7 @@ public abstract class AbstractCheck extends AbstractViolationReporter {
                 getLines()[ast.getLineNo() - 1], ast.getColumnNo(), tabWidth);
         context.get().messages.add(
                 new LocalizedMessage(
+                        null,
                         ast.getLineNo(),
                         col,
                         ast.getColumnNo(),
@@ -269,11 +280,38 @@ public abstract class AbstractCheck extends AbstractViolationReporter {
                         getCustomMessages().get(key)));
     }
 
+    /**
+     * Notify all listeners about the errors in a file.
+     * Calls {@code MessageDispatcher.fireErrors()} with
+     * all logged errors and than clears errors' list.
+     * @param fileName the audited file
+     */
+    protected final void fireErrors(String fileName) {
+        final SortedSet<LocalizedMessage> errors = new TreeSet<LocalizedMessage>(context.get().messages);
+        context.get().messages.clear();
+        messageDispatcher.fireErrors(fileName, errors);
+    }
+
     @Override
     public final void log(int line, String key, Object... args) {
+        logExternal(null, line, key, args);
+    }
+
+    @Override
+    public final void log(int lineNo, int colNo, String key,
+            Object... args) {
+        final int col = 1 + CommonUtil.lengthExpandedTabs(
+            getLines()[lineNo - 1], colNo, tabWidth);
+        logExternal(null, lineNo, col, key, args);
+    }
+
+    @Override
+    public final void logExternal(String fileName, int line, String key, Object... args) {
         context.get().messages.add(
             new LocalizedMessage(
+                fileName,
                 line,
+                0,
                 getMessageBundle(),
                 key,
                 args,
@@ -284,21 +322,28 @@ public abstract class AbstractCheck extends AbstractViolationReporter {
     }
 
     @Override
-    public final void log(int lineNo, int colNo, String key,
+    public void logExternal(String fileName, int lineNo, int colNo, String key,
             Object... args) {
-        final int col = 1 + CommonUtil.lengthExpandedTabs(
-            getLines()[lineNo - 1], colNo, tabWidth);
         context.get().messages.add(
-            new LocalizedMessage(
-                lineNo,
-                col,
-                getMessageBundle(),
-                key,
-                args,
-                getSeverityLevel(),
-                getId(),
-                getClass(),
-                getCustomMessages().get(key)));
+                new LocalizedMessage(
+                    fileName,
+                    lineNo,
+                    colNo,
+                    getMessageBundle(),
+                    key,
+                    args,
+                    getSeverityLevel(),
+                    getId(),
+                    getClass(),
+                    getCustomMessages().get(key)));
+    }
+
+    public void setMessageDispatcher(MessageDispatcher messageDispatcher) {
+        this.messageDispatcher = messageDispatcher;
+    }
+
+    protected final MessageDispatcher getMessageDispatcher() {
+        return messageDispatcher;
     }
 
     /**

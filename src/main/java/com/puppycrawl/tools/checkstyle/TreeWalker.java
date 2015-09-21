@@ -197,6 +197,11 @@ public final class TreeWalker extends AbstractFileSetCheck implements ExternalRe
         }
     }
 
+    @Override
+    protected void finishProcessFiltered() {
+        notifyFinish();
+    }
+
     /**
      * Returns filtered set of {@link LocalizedMessage}.
      * @param fileName path to the file
@@ -351,6 +356,7 @@ public final class TreeWalker extends AbstractFileSetCheck implements ExternalRe
         for (AbstractCheck check : checks) {
             check.setFileContents(contents);
             check.clearMessages();
+            check.setMessageDispatcher(getMessageDispatcher());
             check.beginTree(rootAST);
         }
     }
@@ -373,6 +379,17 @@ public final class TreeWalker extends AbstractFileSetCheck implements ExternalRe
         for (AbstractCheck check : checks) {
             check.finishTree(rootAST);
             messages.addAll(check.getMessages());
+        }
+    }
+
+    /** Notify checks that we have finished walking all the trees. */
+    private void notifyFinish() {
+        for (AbstractCheck check : commentChecks) {
+            check.finishProcessing();
+        }
+
+        for (AbstractCheck check : ordinaryChecks) {
+            check.finishProcessing();
         }
     }
 

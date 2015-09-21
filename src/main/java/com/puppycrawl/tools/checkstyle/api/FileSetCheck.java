@@ -74,9 +74,10 @@ public interface FileSetCheck
 
     /**
      * Called when all the files have been processed. This is the time to
-     * perform any checks that need to be done across a set of files. In this
-     * method, the implementation is responsible for the logging of messages.
+     * perform any checks that need to be done across a set of files.
+     * 
+     * @return the sorted set of messages to be logged.
      */
-    void finishProcessing();
+    SortedSet<LocalizedMessage> finishProcessing();
 
 }

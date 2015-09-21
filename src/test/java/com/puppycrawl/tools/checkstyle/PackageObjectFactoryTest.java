@@ -388,6 +388,11 @@ public class PackageObjectFactoryTest {
             // not used
         }
 
+        @Override
+        protected void finishProcessFiltered() {
+            // no code by default
+        }
+
     }
 
 }

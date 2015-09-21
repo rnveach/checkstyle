@@ -84,6 +84,11 @@ public class UniquePropertiesCheck extends AbstractFileSetCheck {
         }
     }
 
+    @Override
+    protected void finishProcessFiltered() {
+        // No code by default
+    }
+
     /**
      * Method returns line number the key is detected in the checked properties
      * files first.

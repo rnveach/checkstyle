@@ -83,7 +83,7 @@ public class FileSetCheckTest
         }
 
         @Override
-        public void finishProcessing() {
+        protected void finishProcessFiltered() {
             fileContentAvailable = contents != null;
         }
 

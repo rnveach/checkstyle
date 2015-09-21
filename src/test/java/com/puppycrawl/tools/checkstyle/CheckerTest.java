@@ -1107,6 +1107,11 @@ public class CheckerTest extends AbstractModuleTestSupport {
             return externalResourceLocation;
         }
 
+        @Override
+        protected void finishProcessFiltered() {
+            // no code by default
+        }
+
     }
 
     private static class DummyFilterSet extends FilterSet implements ExternalResourceHolder {
@@ -1148,6 +1153,11 @@ public class CheckerTest extends AbstractModuleTestSupport {
                 locations.add(secondExternalResourceLocation);
             }
             return locations;
+        }
+
+        @Override
+        protected void finishProcessFiltered() {
+            // no code by default
         }
 
     }
@@ -1306,9 +1316,8 @@ public class CheckerTest extends AbstractModuleTestSupport {
         }
 
         @Override
-        public void finishProcessing() {
+        public void finishProcessFiltered() {
             methodCalls.add("finishProcessing");
-            super.finishProcessing();
         }
 
         @Override

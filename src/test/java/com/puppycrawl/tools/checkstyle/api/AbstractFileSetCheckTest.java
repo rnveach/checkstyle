@@ -151,6 +151,11 @@ public class AbstractFileSetCheckTest {
             }
         }
 
+        @Override
+        protected void finishProcessFiltered() {
+            // no code by default
+        }
+
     }
 
     private static class ExceptionFileSetCheck extends AbstractFileSetCheck {
@@ -163,6 +168,11 @@ public class AbstractFileSetCheckTest {
             log(count, MSG_KEY);
             count++;
             throw new IllegalArgumentException("Test");
+        }
+
+        @Override
+        protected void finishProcessFiltered() {
+            // no code by default
         }
 
     }

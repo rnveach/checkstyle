@@ -41,7 +41,7 @@ public class AuditEventDefaultFormatterTest {
 
     @Test
     public void testFormatFullyQualifiedModuleNameContainsCheckSuffix() {
-        final LocalizedMessage message = new LocalizedMessage(1, 1, null, null, null,
+        final LocalizedMessage message = new LocalizedMessage("InputMockFile.java", 1, 1, null, null, null,
                 SeverityLevel.WARNING, null, TestModuleCheck.class, "Mocked message.");
         final AuditEvent event = new AuditEvent("", "InputMockFile.java", message);
         final AuditEventFormatter formatter = new AuditEventDefaultFormatter();
@@ -54,7 +54,7 @@ public class AuditEventDefaultFormatterTest {
 
     @Test
     public void testFormatFullyQualifiedModuleNameDoesNotContainCheckSuffix() {
-        final LocalizedMessage message = new LocalizedMessage(1, 1, null, null, null,
+        final LocalizedMessage message = new LocalizedMessage("InputMockFile.java", 1, 1, null, null, null,
                 SeverityLevel.WARNING, null, TestModule.class, "Mocked message.");
         final AuditEvent event = new AuditEvent("", "InputMockFile.java", message);
         final AuditEventFormatter formatter = new AuditEventDefaultFormatter();
@@ -99,7 +99,7 @@ public class AuditEventDefaultFormatterTest {
 
     @Test
     public void testFormatModuleWithModuleId() {
-        final LocalizedMessage message = new LocalizedMessage(1, 1, null, null, null,
+        final LocalizedMessage message = new LocalizedMessage("InputMockFile.java", 1, 1, null, null, null,
                 SeverityLevel.WARNING, "ModuleId", TestModule.class, "Mocked message.");
         final AuditEvent event = new AuditEvent("", "InputMockFile.java", message);
         final AuditEventFormatter formatter = new AuditEventDefaultFormatter();
@@ -114,7 +114,7 @@ public class AuditEventDefaultFormatterTest {
         final Method calculateBufferLengthMethod =
                 Whitebox.getMethod(AuditEventDefaultFormatter.class,
                         "calculateBufferLength", AuditEvent.class, int.class);
-        final LocalizedMessage localizedMessage = new LocalizedMessage(1, 1,
+        final LocalizedMessage localizedMessage = new LocalizedMessage("fileName", 1, 1,
                 "messages.properties", "key", null, SeverityLevel.ERROR, null,
                 getClass(), null);
         final AuditEvent auditEvent = new AuditEvent(new Object(), "fileName", localizedMessage);

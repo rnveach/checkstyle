@@ -394,9 +394,9 @@ public class SuppressWithPlainTextCommentFilterTest extends AbstractModuleTestSu
 
     @Test
     public void testAcceptThrowsIllegalStateExceptionAsFileNotFound() {
-        final LocalizedMessage message = new LocalizedMessage(1, 1, 1, TokenTypes.CLASS_DEF,
-            "messages.properties", "key", null, SeverityLevel.ERROR, null, getClass(), null);
         final String fileName = "nonexisting_file";
+        final LocalizedMessage message = new LocalizedMessage(fileName, 1, 1, 1, TokenTypes.CLASS_DEF,
+            "messages.properties", "key", null, SeverityLevel.ERROR, null, getClass(), null);
         final AuditEvent auditEvent = new AuditEvent(this, fileName, message);
 
         final SuppressWithPlainTextCommentFilter filter = new SuppressWithPlainTextCommentFilter();
@@ -460,7 +460,7 @@ public class SuppressWithPlainTextCommentFilterTest extends AbstractModuleTestSu
     @Test
     public void testFilterWithDirectory() throws IOException {
         final SuppressWithPlainTextCommentFilter filter = new SuppressWithPlainTextCommentFilter();
-        final AuditEvent event = new AuditEvent(this, getPath(""), new LocalizedMessage(1, 1,
+        final AuditEvent event = new AuditEvent(this, getPath(""), new LocalizedMessage(null, 1, 1,
                 "bundle", "key", null, SeverityLevel.ERROR, "moduleId", getClass(),
                 "customMessage"));
 

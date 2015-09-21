@@ -173,7 +173,7 @@ public class XMLLoggerTest extends AbstractXmlTestSupport {
         final XMLLogger logger = new XMLLogger(outStream, true);
         logger.auditStarted(null);
         final LocalizedMessage message =
-            new LocalizedMessage(1, 1,
+            new LocalizedMessage(null, 1, 1,
                 "messages.properties", "key", null, SeverityLevel.ERROR, null,
                     getClass(), null);
         final AuditEvent ev = new AuditEvent(this, "Test.java", message);
@@ -189,7 +189,7 @@ public class XMLLoggerTest extends AbstractXmlTestSupport {
         final XMLLogger logger = new XMLLogger(outStream, true);
         logger.auditStarted(null);
         final LocalizedMessage message =
-                new LocalizedMessage(1, 1,
+                new LocalizedMessage(null, 1, 1,
                         "messages.properties", "key", null, SeverityLevel.ERROR, null,
                         getClass(), null);
         final AuditEvent ev = new AuditEvent(this, null, message);
@@ -204,7 +204,7 @@ public class XMLLoggerTest extends AbstractXmlTestSupport {
         final XMLLogger logger = new XMLLogger(outStream, true);
         logger.auditStarted(null);
         final LocalizedMessage message =
-            new LocalizedMessage(1, 1,
+            new LocalizedMessage("Test.java", 1, 1,
                 "messages.properties", "key", null, SeverityLevel.ERROR, "module",
                     getClass(), null);
         final AuditEvent ev = new AuditEvent(this, "Test.java", message);
@@ -218,7 +218,7 @@ public class XMLLoggerTest extends AbstractXmlTestSupport {
         final XMLLogger logger = new XMLLogger(outStream, true);
         logger.auditStarted(null);
         final LocalizedMessage message =
-                new LocalizedMessage(1, 0,
+                new LocalizedMessage(null, 1, 0,
                         "messages.properties", "key", null, SeverityLevel.ERROR, null,
                         getClass(), null);
         final AuditEvent ev = new AuditEvent(this, "Test.java", message);
@@ -235,7 +235,7 @@ public class XMLLoggerTest extends AbstractXmlTestSupport {
         final XMLLogger logger = new XMLLogger(outStream, true);
         logger.auditStarted(null);
         final LocalizedMessage message =
-                new LocalizedMessage(1, 1,
+                new LocalizedMessage(null, 1, 1,
                         "messages.properties", "key", null, SeverityLevel.IGNORE, null,
                         getClass(), null);
         final AuditEvent ev = new AuditEvent(this, "Test.java", message);
@@ -339,7 +339,7 @@ public class XMLLoggerTest extends AbstractXmlTestSupport {
         logger.fileStarted(fileStartedEvent);
 
         final LocalizedMessage message =
-                new LocalizedMessage(1, 1,
+                new LocalizedMessage("Test.java", 1, 1,
                         "messages.properties", "key", null, SeverityLevel.ERROR, null,
                         getClass(), null);
         final AuditEvent errorEvent = new AuditEvent(this, "Test.java", message);

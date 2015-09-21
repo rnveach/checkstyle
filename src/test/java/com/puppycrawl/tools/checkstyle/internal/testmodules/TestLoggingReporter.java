@@ -43,4 +43,14 @@ public final class TestLoggingReporter extends AbstractViolationReporter {
         return logCount;
     }
 
+    @Override
+    public void logExternal(String fileName, int line, String key, Object... args) {
+        // no code by default
+    }
+
+    @Override
+    public void logExternal(String fileName, int line, int col, String key, Object... args) {
+        // no code by default
+    }
+
 }

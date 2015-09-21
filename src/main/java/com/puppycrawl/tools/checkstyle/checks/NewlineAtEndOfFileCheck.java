@@ -83,6 +83,11 @@ public class NewlineAtEndOfFileCheck
         }
     }
 
+    @Override
+    protected void finishProcessFiltered() {
+        // No code by default
+    }
+
     /**
      * Sets the line separator to one of 'crlf', 'lf','cr', 'lf_cr_crlf' or 'system'.
      *

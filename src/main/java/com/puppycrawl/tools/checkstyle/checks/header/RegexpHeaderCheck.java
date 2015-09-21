@@ -118,6 +118,11 @@ public class RegexpHeaderCheck extends AbstractHeaderCheck {
         }
     }
 
+    @Override
+    protected void finishProcessFiltered() {
+        // No code by default
+    }
+
     /**
      * Returns the line from the header. Where the line is blank return the regexp pattern
      * for a blank line.

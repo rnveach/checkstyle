@@ -201,7 +201,7 @@ public class LocalizedMessageTest {
 
     @Test
     public void testGetColumnCharIndex() {
-        final LocalizedMessage localizedMessage1 = new LocalizedMessage(1, 1, 123,
+        final LocalizedMessage localizedMessage1 = new LocalizedMessage("name", 1, 1, 123,
                 TokenTypes.CLASS_DEF, "messages.properties", "key", null, SeverityLevel.ERROR,
                 null, getClass(), null);
 

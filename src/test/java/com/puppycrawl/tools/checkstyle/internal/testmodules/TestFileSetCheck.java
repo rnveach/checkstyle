@@ -52,4 +52,9 @@ public class TestFileSetCheck extends AbstractFileSetCheck {
         called = false;
     }
 
+    @Override
+    protected void finishProcessFiltered() {
+        // no code by default
+    }
+
 }

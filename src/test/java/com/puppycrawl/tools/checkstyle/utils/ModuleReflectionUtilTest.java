@@ -199,6 +199,11 @@ public class ModuleReflectionUtilTest {
             //dummy method
         }
 
+        @Override
+        protected void finishProcessFiltered() {
+            // no code by default
+        }
+
     }
 
     private static class FilterClass extends AutomaticBean implements Filter {

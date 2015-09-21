@@ -59,6 +59,9 @@ public final class LocalizedMessage
 
     /** The default severity level if one is not specified. */
     private static final SeverityLevel DEFAULT_SEVERITY = SeverityLevel.ERROR;
+    
+    /** The file name. **/
+    private final String fileName;
 
     /** The locale to localise messages to. **/
     private static Locale sLocale = Locale.getDefault();
@@ -98,6 +101,7 @@ public final class LocalizedMessage
     /**
      * Creates a new {@code LocalizedMessage} instance.
      *
+     * @param fileName location of the file associated with the message
      * @param lineNo line number associated with the message
      * @param columnNo column number associated with the message
      * @param columnCharIndex column char index associated with the message
@@ -112,7 +116,8 @@ public final class LocalizedMessage
      * @noinspection ConstructorWithTooManyParameters
      */
     // -@cs[ParameterNumber] Class is immutable, we need that amount of arguments.
-    public LocalizedMessage(int lineNo,
+    public LocalizedMessage(String fileName,
+                            int lineNo,
                             int columnNo,
                             int columnCharIndex,
                             int tokenType,
@@ -123,6 +128,7 @@ public final class LocalizedMessage
                             String moduleId,
                             Class<?> sourceClass,
                             String customMessage) {
+        this.fileName = fileName;
         this.lineNo = lineNo;
         this.columnNo = columnNo;
         this.columnCharIndex = columnCharIndex;
@@ -168,7 +174,7 @@ public final class LocalizedMessage
                             String moduleId,
                             Class<?> sourceClass,
                             String customMessage) {
-        this(lineNo, columnNo, columnNo, tokenType, bundle, key, args, severityLevel, moduleId,
+        this(null, lineNo, columnNo, columnNo, tokenType, bundle, key, args, severityLevel, moduleId,
                 sourceClass, customMessage);
     }
 
@@ -187,7 +193,8 @@ public final class LocalizedMessage
      * @noinspection ConstructorWithTooManyParameters
      */
     // -@cs[ParameterNumber] Class is immutable, we need that amount of arguments.
-    public LocalizedMessage(int lineNo,
+    public LocalizedMessage(String fileName,
+                            int lineNo,
                             int columnNo,
                             String bundle,
                             String key,
@@ -196,7 +203,7 @@ public final class LocalizedMessage
                             String moduleId,
                             Class<?> sourceClass,
                             String customMessage) {
-        this(lineNo, columnNo, 0, bundle, key, args, severityLevel, moduleId, sourceClass,
+        this(fileName, lineNo, columnNo, columnNo, 0, bundle, key, args, severityLevel, moduleId, sourceClass,
                 customMessage);
     }
 
@@ -222,7 +229,8 @@ public final class LocalizedMessage
                             String moduleId,
                             Class<?> sourceClass,
                             String customMessage) {
-        this(lineNo,
+        this(null,
+             lineNo,
                 columnNo,
              bundle,
              key,
@@ -255,7 +263,7 @@ public final class LocalizedMessage
                             String moduleId,
                             Class<?> sourceClass,
                             String customMessage) {
-        this(lineNo, 0, bundle, key, args, severityLevel, moduleId,
+        this(null, lineNo, 0, bundle, key, args, severityLevel, moduleId,
                 sourceClass, customMessage);
     }
 
@@ -280,7 +288,7 @@ public final class LocalizedMessage
         String moduleId,
         Class<?> sourceClass,
         String customMessage) {
-        this(lineNo, 0, bundle, key, args, DEFAULT_SEVERITY, moduleId,
+        this(null, lineNo, 0, bundle, key, args, DEFAULT_SEVERITY, moduleId,
                 sourceClass, customMessage);
     }
 
@@ -294,7 +302,8 @@ public final class LocalizedMessage
             return false;
         }
         final LocalizedMessage localizedMessage = (LocalizedMessage) object;
-        return Objects.equals(lineNo, localizedMessage.lineNo)
+        return Objects.equals(fileName, localizedMessage.fileName)
+                && Objects.equals(lineNo, localizedMessage.lineNo)
                 && Objects.equals(columnNo, localizedMessage.columnNo)
                 && Objects.equals(columnCharIndex, localizedMessage.columnCharIndex)
                 && Objects.equals(tokenType, localizedMessage.tokenType)
@@ -309,7 +318,7 @@ public final class LocalizedMessage
 
     @Override
     public int hashCode() {
-        return Objects.hash(lineNo, columnNo, columnCharIndex, tokenType, severityLevel, moduleId,
+        return Objects.hash(fileName, lineNo, columnNo, columnCharIndex, tokenType, severityLevel, moduleId,
                 key, bundle, sourceClass, customMessage, Arrays.hashCode(args));
     }
 
@@ -371,6 +380,14 @@ public final class LocalizedMessage
     private ResourceBundle getBundle(String bundleName) {
         return BUNDLE_CACHE.computeIfAbsent(bundleName, name -> ResourceBundle.getBundle(
                 name, sLocale, sourceClass.getClassLoader(), new Utf8Control()));
+    }
+    
+    /**
+     * Gets the file name.
+     * @return the file name
+     */
+    public String getFileName() {
+        return fileName;
     }
 
     /**
@@ -461,27 +478,32 @@ public final class LocalizedMessage
     public int compareTo(LocalizedMessage other) {
         final int result;
 
-        if (lineNo == other.lineNo) {
-            if (columnNo == other.columnNo) {
-                if (Objects.equals(moduleId, other.moduleId)) {
-                    result = getMessage().compareTo(other.getMessage());
-                }
-                else if (moduleId == null) {
-                    result = -1;
-                }
-                else if (other.moduleId == null) {
-                    result = 1;
+        if (Objects.equals(fileName, other.fileName)) {
+            if (lineNo == other.lineNo) {
+                if (columnNo == other.columnNo) {
+                    if (Objects.equals(moduleId, other.moduleId)) {
+                        result = getMessage().compareTo(other.getMessage());
+                    }
+                    else if (moduleId == null) {
+                        result = -1;
+                    }
+                    else if (other.moduleId == null) {
+                        result = 1;
+                    }
+                    else {
+                        result = moduleId.compareTo(other.moduleId);
+                    }
                 }
                 else {
-                    result = moduleId.compareTo(other.moduleId);
+                    result = Integer.compare(columnNo, other.columnNo);
                 }
             }
             else {
-                result = Integer.compare(columnNo, other.columnNo);
+                result = Integer.compare(lineNo, other.lineNo);
             }
         }
         else {
-            result = Integer.compare(lineNo, other.lineNo);
+            result = (fileName == null ? -1 : fileName.compareTo(other.fileName));
         }
         return result;
     }
