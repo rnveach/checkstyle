@@ -29,6 +29,7 @@ import com.puppycrawl.tools.checkstyle.TreeWalkerAuditEvent;
 import com.puppycrawl.tools.checkstyle.TreeWalkerFilter;
 import com.puppycrawl.tools.checkstyle.api.CheckstyleException;
 import com.puppycrawl.tools.checkstyle.api.ExternalResourceHolder;
+import com.puppycrawl.tools.checkstyle.api.MessageDispatcher;
 import com.puppycrawl.tools.checkstyle.utils.FilterUtil;
 
 /**
@@ -210,6 +211,9 @@ public class SuppressionXpathFilter extends AbstractAutomaticBean implements
      */
     private boolean optional;
 
+    /** The dispatcher errors are fired to. */
+    private MessageDispatcher messageDispatcher;
+
     /**
      * Setter to specify the location of the <em>suppressions XML document</em> file.
      *
@@ -254,7 +258,10 @@ public class SuppressionXpathFilter extends AbstractAutomaticBean implements
     public boolean accept(TreeWalkerAuditEvent treeWalkerAuditEvent) {
         boolean result = true;
         for (TreeWalkerFilter filter : filters) {
-            if (!filter.accept(treeWalkerAuditEvent)) {
+            messageDispatcher.fireTreeWalkerFilterStarted(filter);
+            final boolean acceptance = filter.accept(treeWalkerAuditEvent);
+            messageDispatcher.fireTreeWalkerFilterFinished(filter);
+            if (!acceptance) {
                 result = false;
                 break;
             }
@@ -273,11 +280,26 @@ public class SuppressionXpathFilter extends AbstractAutomaticBean implements
             if (optional) {
                 if (FilterUtil.isFileExists(file)) {
                     filters.addAll(SuppressionsLoader.loadXpathSuppressions(file));
+                    setMessageDispatcher(filters);
                 }
             }
             else {
                 filters.addAll(SuppressionsLoader.loadXpathSuppressions(file));
+                setMessageDispatcher(filters);
             }
+        }
+    }
+
+    @Override
+    public void setMessageDispatcher(MessageDispatcher messageDispatcher) {
+        this.messageDispatcher = messageDispatcher;
+
+        setMessageDispatcher(filters);
+    }
+
+    private void setMessageDispatcher(Set<TreeWalkerFilter> filters) {
+        for (TreeWalkerFilter filter : filters) {
+            filter.setMessageDispatcher(messageDispatcher);
         }
     }
 

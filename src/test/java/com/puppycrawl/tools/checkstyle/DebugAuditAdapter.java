@@ -1,6 +1,6 @@
-///////////////////////////////////////////////////////////////////////////////////////////////
-// checkstyle: Checks Java source code and other text files for adherence to a set of rules.
-// Copyright (C) 2001-2024 the original author or authors.
+////////////////////////////////////////////////////////////////////////////////
+// checkstyle: Checks Java source code for adherence to a set of rules.
+// Copyright (C) 2001-2019 the original author or authors.
 //
 // This library is free software; you can redistribute it and/or
 // modify it under the terms of the GNU Lesser General Public
@@ -15,20 +15,16 @@
 // You should have received a copy of the GNU Lesser General Public
 // License along with this library; if not, write to the Free Software
 // Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
-///////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
 
-package com.puppycrawl.tools.checkstyle.internal.testmodules;
+package com.puppycrawl.tools.checkstyle;
 
 import com.puppycrawl.tools.checkstyle.api.AuditEvent;
 import com.puppycrawl.tools.checkstyle.api.AuditListener;
 
-public final class DebugAuditAdapter implements AuditListener {
-
+class DebugAuditAdapter implements AuditListener {
     /** Keeps track whether this {@code AuditListener} was called. */
     private boolean called;
-
-    /** Keeps track whether this {@code AuditListener} was given {@code AuditEvent}. */
-    private boolean passedEvent;
 
     /** Keeps track of the number of files started. */
     private int numFilesStarted;
@@ -48,103 +44,72 @@ public final class DebugAuditAdapter implements AuditListener {
         return called;
     }
 
-    public boolean wasEventPassed() {
-        return passedEvent;
-    }
-
     public void resetListener() {
         called = false;
-        passedEvent = false;
     }
 
     @Override
     public void addError(AuditEvent event) {
         called = true;
-        if (event != null) {
-            passedEvent = true;
-        }
     }
 
     @Override
     public void addException(AuditEvent event, Throwable throwable) {
         called = true;
-        if (event != null) {
-            passedEvent = true;
-        }
     }
 
     @Override
     public void auditStarted(AuditEvent event) {
         called = true;
-        if (event != null) {
-            passedEvent = true;
-        }
     }
 
     @Override
     public void fileStarted(AuditEvent event) {
         called = true;
         numFilesStarted++;
-        if (event != null) {
-            passedEvent = true;
-        }
     }
 
     @Override
     public void auditFinished(AuditEvent event) {
         called = true;
-        if (event != null) {
-            passedEvent = true;
-        }
     }
 
     @Override
     public void fileFinished(AuditEvent event) {
         called = true;
         numFilesFinished++;
-        if (event != null) {
-            passedEvent = true;
-        }
     }
 
     @Override
     public void fileSetStarted(AuditEvent event) {
-        //dummy method
     }
 
     @Override
     public void checkStarted(AuditEvent event) {
-        //dummy method
     }
 
     @Override
     public void checkFinished(AuditEvent event) {
-        //dummy method
     }
 
     @Override
     public void fileSetFinished(AuditEvent event) {
-        //dummy method
     }
 
     @Override
     public void parseStarted(AuditEvent event) {
-        //dummy method
     }
 
     @Override
     public void parseFinished(AuditEvent event) {
-        //dummy method
     }
 
     @Override
     public void JavaDocParseStarted(AuditEvent event) {
-        //dummy method
     }
 
     @Override
     public void JavaDocParseFinished(AuditEvent event) {
-        //dummy method
     }
 
     @Override
@@ -173,11 +138,9 @@ public final class DebugAuditAdapter implements AuditListener {
 
     @Override
     public void CustomStarted(AuditEvent event) {
-        //dummy method
     }
 
     @Override
     public void CustomFinished(AuditEvent event) {
-        //dummy method
     }
 }

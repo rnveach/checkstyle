@@ -1587,7 +1587,7 @@ public final class JavaAstVisitor extends JavaLanguageParserBaseVisitor<DetailAs
         else {
             // Map all descendants to individual AST's since we can parallelize this
             // operation
-            final Queue<DetailAstImpl> descendantList = binOpList.parallelStream()
+            final Queue<DetailAstImpl> descendantList = binOpList.stream()
                     .map(this::getInnerBopAst)
                     .collect(Collectors.toCollection(ConcurrentLinkedQueue::new));
 

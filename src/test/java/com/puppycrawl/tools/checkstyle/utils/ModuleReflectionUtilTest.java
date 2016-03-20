@@ -43,6 +43,7 @@ import com.puppycrawl.tools.checkstyle.api.AuditListener;
 import com.puppycrawl.tools.checkstyle.api.BeforeExecutionFileFilter;
 import com.puppycrawl.tools.checkstyle.api.FileText;
 import com.puppycrawl.tools.checkstyle.api.Filter;
+import com.puppycrawl.tools.checkstyle.api.MessageDispatcher;
 import com.puppycrawl.tools.checkstyle.api.RootModule;
 
 public class ModuleReflectionUtilTest {
@@ -267,6 +268,10 @@ public class ModuleReflectionUtilTest {
             return false;
         }
 
+        @Override
+        public void setMessageDispatcher(MessageDispatcher dispatcher) {
+        }
+
     }
 
     private static final class FileFilterModuleClass extends AbstractAutomaticBean
@@ -280,6 +285,10 @@ public class ModuleReflectionUtilTest {
         @Override
         public boolean accept(String uri) {
             return false;
+        }
+
+        @Override
+        public void setMessageDispatcher(MessageDispatcher dispatcher) {
         }
 
     }
@@ -326,6 +335,10 @@ public class ModuleReflectionUtilTest {
             return false;
         }
 
+        @Override
+        public void setMessageDispatcher(MessageDispatcher dispatcher) {
+        }
+
     }
 
     private static final class AuditListenerClass
@@ -364,6 +377,80 @@ public class ModuleReflectionUtilTest {
         @Override
         public void addException(AuditEvent event, Throwable throwable) {
             // dummy method
+        }
+
+        @Override
+        public void fileSetStarted(AuditEvent event) {
+            //dummy method
+        }
+
+        @Override
+        public void checkStarted(AuditEvent event) {
+            //dummy method
+        }
+
+        @Override
+        public void checkFinished(AuditEvent event) {
+            //dummy method
+        }
+
+        @Override
+        public void fileSetFinished(AuditEvent event) {
+            //dummy method
+        }
+
+        @Override
+        public void parseStarted(AuditEvent event) {
+            //dummy method
+        }
+
+        @Override
+        public void parseFinished(AuditEvent event) {
+            //dummy method
+        }
+
+        @Override
+        public void JavaDocParseStarted(AuditEvent event) {
+            //dummy method
+        }
+
+        @Override
+        public void JavaDocParseFinished(AuditEvent event) {
+            //dummy method
+        }
+
+        @Override
+        public void filterStarted(AuditEvent event) {
+        }
+
+        @Override
+        public void filterFinished(AuditEvent event) {
+        }
+
+        @Override
+        public void beforeExecutionFileFilterStarted(AuditEvent event) {
+        }
+
+        @Override
+        public void beforeExecutionFileFilterFinished(AuditEvent event) {
+        }
+
+        @Override
+        public void treeWalkerFilterStarted(AuditEvent event) {
+        }
+
+        @Override
+        public void treeWalkerFilterFinished(AuditEvent event) {
+        }
+
+        @Override
+        public void CustomStarted(AuditEvent event) {
+            //dummy method
+        }
+
+        @Override
+        public void CustomFinished(AuditEvent event) {
+            //dummy method
         }
 
     }

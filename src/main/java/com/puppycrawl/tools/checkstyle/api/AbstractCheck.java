@@ -57,6 +57,8 @@ public abstract class AbstractCheck extends AbstractViolationReporter {
      */
     private int tabWidth;
 
+    private MessageDispatcher messageDispatcher;
+
     /**
      * Returns the default token a check is interested in. Only used if the
      * configuration for a check does not define the tokens.
@@ -306,6 +308,14 @@ public abstract class AbstractCheck extends AbstractViolationReporter {
      */
     public final String getLine(int index) {
         return context.get().fileContents.getLine(index);
+    }
+
+    public final void setMessageDispatcher(MessageDispatcher messageDispatcher) {
+        this.messageDispatcher = messageDispatcher;
+    }
+
+    public final MessageDispatcher getMessageDispatcher() {
+        return messageDispatcher;
     }
 
     /**

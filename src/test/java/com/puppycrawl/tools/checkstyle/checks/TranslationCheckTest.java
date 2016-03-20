@@ -45,11 +45,18 @@ import com.puppycrawl.tools.checkstyle.AbstractXmlTestSupport;
 import com.puppycrawl.tools.checkstyle.Checker;
 import com.puppycrawl.tools.checkstyle.DefaultConfiguration;
 import com.puppycrawl.tools.checkstyle.Definitions;
+import com.puppycrawl.tools.checkstyle.TreeWalker;
+import com.puppycrawl.tools.checkstyle.TreeWalkerFilter;
 import com.puppycrawl.tools.checkstyle.XMLLogger;
+import com.puppycrawl.tools.checkstyle.api.AbstractCheck;
+import com.puppycrawl.tools.checkstyle.api.BeforeExecutionFileFilter;
 import com.puppycrawl.tools.checkstyle.api.Configuration;
+import com.puppycrawl.tools.checkstyle.api.FileSetCheck;
 import com.puppycrawl.tools.checkstyle.api.FileText;
+import com.puppycrawl.tools.checkstyle.api.Filter;
 import com.puppycrawl.tools.checkstyle.api.MessageDispatcher;
 import com.puppycrawl.tools.checkstyle.api.Violation;
+import com.puppycrawl.tools.checkstyle.checks.javadoc.AbstractJavadocCheck;
 import com.puppycrawl.tools.checkstyle.internal.utils.TestUtil;
 import com.puppycrawl.tools.checkstyle.internal.utils.XmlUtil;
 import com.puppycrawl.tools.checkstyle.utils.CommonUtil;
@@ -647,6 +654,86 @@ public class TranslationCheckTest extends AbstractXmlTestSupport {
         @Override
         public void fireErrors(String fileName, SortedSet<Violation> errors) {
             savedErrors = new TreeSet<>(errors);
+        }
+
+        @Override
+        public void fireCheckStarted(AbstractCheck check) {
+            // no code needed
+        }
+
+        @Override
+        public void fireCheckFinished(AbstractCheck check) {
+            // no code needed
+        }
+
+        @Override
+        public void fireParseStarted(TreeWalker treeWalker) {
+            // no code needed
+        }
+
+        @Override
+        public void fireParseFinished(TreeWalker treeWalker) {
+            // no code needed
+        }
+
+        @Override
+        public void fireParseJavaDocStarted(AbstractJavadocCheck abstractJavadocCheck) {
+            // no code needed
+        }
+
+        @Override
+        public void fireParseJavaDocFinished(AbstractJavadocCheck abstractJavadocCheck) {
+            // no code needed
+        }
+
+        @Override
+        public void fireCustomStarted(String source) {
+            // no code needed
+        }
+
+        @Override
+        public void fireCustomFinished(String source) {
+            // no code needed
+        }
+
+        @Override
+        public void fireFilterStarted(Filter filter) {
+            // no code needed
+        }
+
+        @Override
+        public void fireFilterFinished(Filter filter) {
+            // no code needed
+        }
+
+        @Override
+        public void fireBeforeExecutionFileFilterStarted(BeforeExecutionFileFilter filter) {
+            // no code needed
+        }
+
+        @Override
+        public void fireBeforeExecutionFileFilterFinished(BeforeExecutionFileFilter filter) {
+            // no code needed
+        }
+
+        @Override
+        public void fireFileSetStarted(FileSetCheck fsc, String fileName) {
+            // no code needed
+        }
+
+        @Override
+        public void fireFileSetFinished(FileSetCheck fsc, String fileName) {
+            // no code needed
+        }
+
+        @Override
+        public void fireTreeWalkerFilterStarted(TreeWalkerFilter filter) {
+            // no code needed
+        }
+
+        @Override
+        public void fireTreeWalkerFilterFinished(TreeWalkerFilter filter) {
+            // no code needed
         }
 
     }
