@@ -307,8 +307,9 @@ public abstract class AbstractJavadocCheck extends AbstractCheck {
                 result = TREE_CACHE.get().get(treeCacheKey);
             }
             else {
-                result = context.get().parser
-                        .parseJavadocAsDetailNode(blockCommentNode);
+                getMessageDispatcher().fireParseJavaDocStarted(this);
+                result = context.get().parser.parseJavadocAsDetailNode(blockCommentNode);
+                getMessageDispatcher().fireParseJavaDocFinished(this);
                 TREE_CACHE.get().put(treeCacheKey, result);
             }
 

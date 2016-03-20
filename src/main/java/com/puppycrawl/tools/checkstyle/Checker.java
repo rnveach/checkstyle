@@ -38,6 +38,7 @@ import java.util.stream.Collectors;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import com.puppycrawl.tools.checkstyle.api.AbstractCheck;
 import com.puppycrawl.tools.checkstyle.api.AuditEvent;
 import com.puppycrawl.tools.checkstyle.api.AuditListener;
 import com.puppycrawl.tools.checkstyle.api.AutomaticBean;
@@ -56,6 +57,7 @@ import com.puppycrawl.tools.checkstyle.api.MessageDispatcher;
 import com.puppycrawl.tools.checkstyle.api.RootModule;
 import com.puppycrawl.tools.checkstyle.api.SeverityLevel;
 import com.puppycrawl.tools.checkstyle.api.SeverityLevelCounter;
+import com.puppycrawl.tools.checkstyle.checks.javadoc.AbstractJavadocCheck;
 import com.puppycrawl.tools.checkstyle.utils.CommonUtil;
 
 /**
@@ -295,7 +297,7 @@ public class Checker extends AutomaticBean implements MessageDispatcher, RootMod
                     cacheFile.put(fileName, timestamp);
                 }
                 fireFileStarted(fileName);
-                final SortedSet<LocalizedMessage> fileMessages = processFile(file);
+                final SortedSet<LocalizedMessage> fileMessages = processFile(file, fileName);
                 fireErrors(fileName, fileMessages);
                 fireFileFinished(fileName);
             }
@@ -329,12 +331,14 @@ public class Checker extends AutomaticBean implements MessageDispatcher, RootMod
      * @throws CheckstyleException if error condition within Checkstyle occurs.
      * @noinspection ProhibitedExceptionThrown
      */
-    private SortedSet<LocalizedMessage> processFile(File file) throws CheckstyleException {
+    private SortedSet<LocalizedMessage> processFile(File file, String fileName) throws CheckstyleException {
         final SortedSet<LocalizedMessage> fileMessages = new TreeSet<>();
         try {
             final FileText theText = new FileText(file.getAbsoluteFile(), charset);
             for (final FileSetCheck fsc : fileSetChecks) {
+                fireFileSetStarted(fsc, fileName);
                 fileMessages.addAll(fsc.process(file, theText));
+                fireFileSetFinished(fsc, fileName);
             }
         }
         catch (final IOException ioe) {
@@ -427,6 +431,68 @@ public class Checker extends AutomaticBean implements MessageDispatcher, RootMod
         final AuditEvent event = new AuditEvent(this, stripped);
         for (final AuditListener listener : listeners) {
             listener.fileFinished(event);
+        }
+    }
+
+    private void fireFileSetFinished(FileSetCheck fsc, String fileName) {
+        final AuditEvent event = new AuditEvent(fsc, fileName);
+        for (final AuditListener listener : listeners) {
+            listener.fileSetFinished(event);
+        }
+    }
+
+    @Override
+    public void fireCheckStarted(AbstractCheck check) {
+        final AuditEvent event = new AuditEvent(check);
+        for (final AuditListener listener : listeners) {
+            listener.checkStarted(event);
+        }
+    }
+
+    @Override
+    public void fireCheckFinished(AbstractCheck check) {
+        final AuditEvent event = new AuditEvent(check);
+        for (final AuditListener listener : listeners) {
+            listener.checkFinished(event);
+        }
+    }
+
+    private void fireFileSetStarted(FileSetCheck fsc, String fileName) {
+        final AuditEvent event = new AuditEvent(fsc, fileName);
+        for (final AuditListener listener : listeners) {
+            listener.fileSetStarted(event);
+        }
+    }
+
+    @Override
+    public void fireParseStarted(TreeWalker treeWalker) {
+        final AuditEvent event = new AuditEvent(treeWalker);
+        for (final AuditListener listener : listeners) {
+            listener.parseStarted(event);
+        }
+    }
+
+    @Override
+    public void fireParseFinished(TreeWalker treeWalker) {
+        final AuditEvent event = new AuditEvent(treeWalker);
+        for (final AuditListener listener : listeners) {
+            listener.parseFinished(event);
+        }
+    }
+
+    @Override
+    public void fireParseJavaDocStarted(AbstractJavadocCheck abstractJavadocCheck) {
+        final AuditEvent event = new AuditEvent(abstractJavadocCheck);
+        for (final AuditListener listener : listeners) {
+            listener.JavaDocParseStarted(event);
+        }
+    }
+
+    @Override
+    public void fireParseJavaDocFinished(AbstractJavadocCheck abstractJavadocCheck) {
+        final AuditEvent event = new AuditEvent(abstractJavadocCheck);
+        for (final AuditListener listener : listeners) {
+            listener.JavaDocParseFinished(event);
         }
     }
 

@@ -51,12 +51,15 @@ import com.puppycrawl.tools.checkstyle.AbstractXmlTestSupport;
 import com.puppycrawl.tools.checkstyle.Checker;
 import com.puppycrawl.tools.checkstyle.DefaultConfiguration;
 import com.puppycrawl.tools.checkstyle.Definitions;
+import com.puppycrawl.tools.checkstyle.TreeWalker;
 import com.puppycrawl.tools.checkstyle.XMLLogger;
+import com.puppycrawl.tools.checkstyle.api.AbstractCheck;
 import com.puppycrawl.tools.checkstyle.api.AutomaticBean;
 import com.puppycrawl.tools.checkstyle.api.Configuration;
 import com.puppycrawl.tools.checkstyle.api.FileText;
 import com.puppycrawl.tools.checkstyle.api.LocalizedMessage;
 import com.puppycrawl.tools.checkstyle.api.MessageDispatcher;
+import com.puppycrawl.tools.checkstyle.checks.javadoc.AbstractJavadocCheck;
 import com.puppycrawl.tools.checkstyle.internal.utils.XmlUtil;
 import com.puppycrawl.tools.checkstyle.utils.CommonUtil;
 
@@ -643,6 +646,36 @@ public class TranslationCheckTest extends AbstractXmlTestSupport {
         @Override
         public void fireErrors(String fileName, SortedSet<LocalizedMessage> errors) {
             savedErrors = new TreeSet<>(errors);
+        }
+
+        @Override
+        public void fireCheckStarted(AbstractCheck check) {
+            // no code needed
+        }
+
+        @Override
+        public void fireCheckFinished(AbstractCheck check) {
+            // no code needed
+        }
+
+        @Override
+        public void fireParseStarted(TreeWalker treeWalker) {
+            // no code needed
+        }
+
+        @Override
+        public void fireParseFinished(TreeWalker treeWalker) {
+            // no code needed
+        }
+
+        @Override
+        public void fireParseJavaDocStarted(AbstractJavadocCheck abstractJavadocCheck) {
+            // no code needed
+        }
+
+        @Override
+        public void fireParseJavaDocFinished(AbstractJavadocCheck abstractJavadocCheck) {
+            // no code needed
         }
 
     }
