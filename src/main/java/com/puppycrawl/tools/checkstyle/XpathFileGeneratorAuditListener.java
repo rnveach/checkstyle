@@ -147,4 +147,44 @@ public class XpathFileGeneratorAuditListener
     protected void finishLocalSetup() {
         // No code by default
     }
+
+    @Override
+    public void fileSetStarted(AuditEvent event) {
+        //dummy method
+    }
+
+    @Override
+    public void checkStarted(AuditEvent event) {
+        //dummy method
+    }
+
+    @Override
+    public void checkFinished(AuditEvent event) {
+        //dummy method
+    }
+
+    @Override
+    public void fileSetFinished(AuditEvent event) {
+        //dummy method
+    }
+
+    @Override
+    public void parseStarted(AuditEvent event) {
+        //dummy method
+    }
+
+    @Override
+    public void parseFinished(AuditEvent event) {
+        //dummy method
+    }
+
+    @Override
+    public void JavaDocParseStarted(AuditEvent event) {
+        //dummy method
+    }
+
+    @Override
+    public void JavaDocParseFinished(AuditEvent event) {
+        //dummy method        
+    }
 }

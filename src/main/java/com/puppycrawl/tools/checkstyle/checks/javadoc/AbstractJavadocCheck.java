@@ -324,7 +324,10 @@ public abstract class AbstractJavadocCheck extends AbstractCheck {
                     blockCommentNode.getColumnNo());
 
             final ParseStatus result = TREE_CACHE.get().computeIfAbsent(treeCacheKey, key -> {
-                return context.get().parser.parseJavadocAsDetailNode(blockCommentNode);
+                getMessageDispatcher().fireParseJavaDocStarted(this);
+                final ParseStatus parseResult = context.get().parser.parseJavadocAsDetailNode(blockCommentNode);
+                getMessageDispatcher().fireParseJavaDocFinished(this);
+                return parseResult;
             });
 
             if (result.getParseErrorMessage() == null) {

@@ -34,6 +34,8 @@ import org.junit.jupiter.api.Test;
 import com.puppycrawl.tools.checkstyle.AbstractModuleTestSupport;
 import com.puppycrawl.tools.checkstyle.Checker;
 import com.puppycrawl.tools.checkstyle.DefaultConfiguration;
+import com.puppycrawl.tools.checkstyle.TreeWalker;
+import com.puppycrawl.tools.checkstyle.checks.javadoc.AbstractJavadocCheck;
 
 public class AbstractFileSetCheckTest extends AbstractModuleTestSupport {
 
@@ -353,6 +355,36 @@ public class AbstractFileSetCheckTest extends AbstractModuleTestSupport {
         public void fireErrors(String fileName, SortedSet<Violation> errors) {
             name = fileName;
             errorList = new TreeSet<>(errors);
+        }
+
+        @Override
+        public void fireCheckStarted(AbstractCheck check) {
+            // no code needed
+        }
+
+        @Override
+        public void fireCheckFinished(AbstractCheck check) {
+            // no code needed
+        }
+
+        @Override
+        public void fireParseStarted(TreeWalker treeWalker) {
+            // no code needed
+        }
+
+        @Override
+        public void fireParseFinished(TreeWalker treeWalker) {
+            // no code needed
+        }
+
+        @Override
+        public void fireParseJavaDocStarted(AbstractJavadocCheck abstractJavadocCheck) {
+            // no code needed
+        }
+
+        @Override
+        public void fireParseJavaDocFinished(AbstractJavadocCheck abstractJavadocCheck) {
+            // no code needed
         }
 
     }

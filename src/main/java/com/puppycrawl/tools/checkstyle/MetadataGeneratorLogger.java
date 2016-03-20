@@ -83,6 +83,46 @@ public class MetadataGeneratorLogger extends AbstractAutomaticBean implements Au
     }
 
     @Override
+    public void fileSetStarted(AuditEvent event) {
+        // no code
+    }
+
+    @Override
+    public void checkStarted(AuditEvent event) {
+        // no code
+    }
+
+    @Override
+    public void checkFinished(AuditEvent event) {
+        // no code
+    }
+
+    @Override
+    public void fileSetFinished(AuditEvent event) {
+        // no code
+    }
+
+    @Override
+    public void parseStarted(AuditEvent event) {
+        // no code
+    }
+
+    @Override
+    public void parseFinished(AuditEvent event) {
+        // no code
+    }
+
+    @Override
+    public void JavaDocParseStarted(AuditEvent event) {
+        // no code
+    }
+
+    @Override
+    public void JavaDocParseFinished(AuditEvent event) {
+        // no code
+    }
+
+    @Override
     public void fileFinished(AuditEvent event) {
         errorWriter.flush();
     }

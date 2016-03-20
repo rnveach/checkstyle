@@ -200,6 +200,38 @@ public class SarifLogger extends AbstractAutomaticBean implements AuditListener 
     }
 
     @Override
+    public void fileSetStarted(AuditEvent event) {
+    }
+
+    @Override
+    public void checkStarted(AuditEvent event) {
+    }
+
+    @Override
+    public void checkFinished(AuditEvent event) {
+    }
+
+    @Override
+    public void fileSetFinished(AuditEvent event) {
+    }
+
+    @Override
+    public void parseStarted(AuditEvent event) {
+    }
+
+    @Override
+    public void parseFinished(AuditEvent event) {
+    }
+
+    @Override
+    public void JavaDocParseStarted(AuditEvent event) {
+    }
+
+    @Override
+    public void JavaDocParseFinished(AuditEvent event) {
+    }
+
+    @Override
     public void fileFinished(AuditEvent event) {
         // No need to implement this method in this class
     }

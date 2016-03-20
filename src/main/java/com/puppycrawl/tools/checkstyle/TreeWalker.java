@@ -192,7 +192,9 @@ public final class TreeWalker extends AbstractFileSetCheck implements ExternalRe
             // whether skip the procedure after parsing Java files.
             boolean skip = false;
             try {
+                getMessageDispatcher().fireParseStarted(this);
                 rootAST = JavaParser.parse(contents);
+                getMessageDispatcher().fireParseFinished(this);
             }
             // -@cs[IllegalCatch] There is no other way to obey skipFileOnJavaParseException field
             catch (Exception ex) {
@@ -353,7 +355,10 @@ public final class TreeWalker extends AbstractFileSetCheck implements ExternalRe
         for (AbstractCheck check : checks) {
             check.setFileContents(contents);
             check.clearViolations();
+            check.setMessageDispatcher(getMessageDispatcher());
+            getMessageDispatcher().fireCheckStarted(check);
             check.beginTree(rootAST);
+            getMessageDispatcher().fireCheckFinished(check);
         }
     }
 
@@ -374,8 +379,10 @@ public final class TreeWalker extends AbstractFileSetCheck implements ExternalRe
         }
 
         for (AbstractCheck check : checks) {
+            getMessageDispatcher().fireCheckStarted(check);
             check.finishTree(rootAST);
             violations.addAll(check.getViolations());
+            getMessageDispatcher().fireCheckFinished(check);
         }
     }
 
@@ -390,7 +397,9 @@ public final class TreeWalker extends AbstractFileSetCheck implements ExternalRe
 
         if (visitors != null) {
             for (AbstractCheck check : visitors) {
+                getMessageDispatcher().fireCheckStarted(check);
                 check.visitToken(ast);
+                getMessageDispatcher().fireCheckFinished(check);
             }
         }
     }
