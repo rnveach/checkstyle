@@ -72,6 +72,38 @@ public final class SeverityLevelCounter implements AuditListener {
     }
 
     @Override
+    public void fileSetStarted(AuditEvent event) {
+    }
+
+    @Override
+    public void checkStarted(AuditEvent event) {
+    }
+
+    @Override
+    public void checkFinished(AuditEvent event) {
+    }
+
+    @Override
+    public void fileSetFinished(AuditEvent event) {
+    }
+
+    @Override
+    public void parseStarted(AuditEvent event) {
+    }
+
+    @Override
+    public void parseFinished(AuditEvent event) {
+    }
+
+    @Override
+    public void JavaDocParseStarted(AuditEvent event) {
+    }
+
+    @Override
+    public void JavaDocParseFinished(AuditEvent event) {
+    }
+
+    @Override
     public void auditFinished(AuditEvent event) {
         // No code by default, should be overridden only by demand at subclasses
     }
