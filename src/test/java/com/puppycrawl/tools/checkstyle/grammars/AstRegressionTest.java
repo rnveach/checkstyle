@@ -34,9 +34,11 @@ import java.util.Arrays;
 
 import org.junit.Test;
 
+import antlr.NoViableAltException;
 import antlr.NoViableAltForCharException;
 import antlr.ParserSharedInputState;
 import antlr.SemanticException;
+import antlr.Token;
 import antlr.TokenBuffer;
 
 import com.puppycrawl.tools.checkstyle.AstTreeStringPrinter;
@@ -162,7 +164,7 @@ public class AstRegressionTest extends BaseCheckTestSupport {
     }
 
     @Test
-    public void testImpossibleExceptions() throws Exception {
+    public void testImpossibleLexerExceptions() throws Exception {
         AssertGeneratedJavaLexer.verifyFail("mSTD_ESC", 'a');
         AssertGeneratedJavaLexer.verifyFail("mSTD_ESC", '0', (char) 0xFFFF);
         AssertGeneratedJavaLexer.verifyFail("mSTD_ESC", '4', (char) 0xFFFF);
@@ -208,6 +210,51 @@ public class AstRegressionTest extends BaseCheckTestSupport {
                 '4', '4', '.', '4', 'P', '4', ';');
         AssertGeneratedJavaLexer.verifyPass("mHEX_DOUBLE_LITERAL", '0', 'x', '2', '_', '4', '.',
                 '4', '4', '.', '4', 'P', '4', 'D', ';');
+    }
+
+    @Test
+    public void testImpossibleRecognizerExceptions() throws Exception {
+        AssertGeneratedJavaRecognizer.verifyFail("unaryExpression", 0);
+        AssertGeneratedJavaRecognizer.verifyFail("typeParameter", GeneratedJavaTokenTypes.IDENT, 0);
+        AssertGeneratedJavaRecognizer.verifyFail("typeArgumentsOrParametersEnd", 0);
+        AssertGeneratedJavaRecognizer.verifyFail("type", 0);
+        AssertGeneratedJavaRecognizer.verifyFail("throwsClause",
+                GeneratedJavaTokenTypes.LITERAL_throws, 0);
+        AssertGeneratedJavaRecognizer.verifyFail("superClassClause", 0);
+        AssertGeneratedJavaRecognizer.verifyFail("statement", 0);
+        AssertGeneratedJavaRecognizer.verifyFail("resourceSpecification",
+                GeneratedJavaTokenTypes.LPAREN, 0);
+        AssertGeneratedJavaRecognizer.verifyFail("parameterModifier", 0);
+        AssertGeneratedJavaRecognizer.verifyFail("resourceSpecification",
+                GeneratedJavaTokenTypes.LPAREN, 0);
+        AssertGeneratedJavaRecognizer.verifyFail("modifier", 0);
+        AssertGeneratedJavaRecognizer.verifyFail("lambdaBody", 0);
+        AssertGeneratedJavaRecognizer.verifyFail("resourceSpecification",
+                GeneratedJavaTokenTypes.LPAREN, 0);
+        AssertGeneratedJavaRecognizer.verifyFail("interfaceExtends", 0);
+        AssertGeneratedJavaRecognizer.verifyFail("initializer", 0);
+        AssertGeneratedJavaRecognizer.verifyFail("implementsClause", 0);
+        AssertGeneratedJavaRecognizer
+                .verifyFail("identifierStar", GeneratedJavaTokenTypes.IDENT, 0);
+        AssertGeneratedJavaRecognizer.verifyFail("forStatement",
+                GeneratedJavaTokenTypes.LITERAL_for, GeneratedJavaTokenTypes.LPAREN, 0);
+        AssertGeneratedJavaRecognizer.verifyFail("forIter", 0);
+        AssertGeneratedJavaRecognizer.verifyFail("forCond", 0);
+        AssertGeneratedJavaRecognizer.verifyFail("expression", 0);
+        AssertGeneratedJavaRecognizer.verifyFail("ctorHead", GeneratedJavaTokenTypes.IDENT,
+                GeneratedJavaTokenTypes.LPAREN, GeneratedJavaTokenTypes.RPAREN, 0);
+        AssertGeneratedJavaRecognizer.verifyFail("constructorBody", GeneratedJavaTokenTypes.LCURLY,
+                0);
+        AssertGeneratedJavaRecognizer.verifyFail("constant", 0);
+        AssertGeneratedJavaRecognizer.verifyFail("builtInType", 0);
+        AssertGeneratedJavaRecognizer.verifyFail("argList", 0);
+        AssertGeneratedJavaRecognizer.verifyFail("annotationMemberArrayValueInitializer", 0);
+        AssertGeneratedJavaRecognizer.verifyFail("annotationArguments", 0);
+        AssertGeneratedJavaRecognizer.verifyFail("aCase", 0);
+        AssertGeneratedJavaRecognizer
+                .verifyFail("tryBlock", GeneratedJavaTokenTypes.LITERAL_try, 0);
+        AssertGeneratedJavaRecognizer.verifyFail("tryBlock", GeneratedJavaTokenTypes.LITERAL_try,
+                GeneratedJavaTokenTypes.LCURLY, GeneratedJavaTokenTypes.RCURLY, 0);
     }
 
     private static void verifyAstRaw(String expectedTextPrintFileName, String actualJava)
@@ -302,6 +349,89 @@ public class AstRegressionTest extends BaseCheckTestSupport {
         @Override
         public int mark() {
             return 1;
+        }
+    }
+
+    private static final class AssertGeneratedJavaRecognizer extends GeneratedJavaRecognizer {
+        private int laPosition;
+        private int[] laResults;
+
+        private AssertGeneratedJavaRecognizer() {
+            super((TokenBuffer) null);
+        }
+
+//        public static void verifyFailNoGuessing(String methodName, int... laResults)
+//                throws Exception {
+//            verify(methodName, false, 0, laResults);
+//        }
+//
+//        public static void verifyPass(String methodName, int... laResults) throws Exception {
+//            verify(methodName, true, 1, laResults);
+//        }
+
+        public static void verifyFail(String methodName, int... laResults) throws Exception {
+            verify(methodName, false, 1, laResults);
+        }
+
+        public static void verify(String methodName, boolean expectPass, int guessing,
+                int... laResults) throws Exception {
+            final AssertGeneratedJavaRecognizer instance = new AssertGeneratedJavaRecognizer();
+            instance.laPosition = 0;
+            instance.laResults = laResults.clone();
+            instance.inputState.guessing = guessing;
+
+            final Method method = GeneratedJavaRecognizer.class.getDeclaredMethod(methodName);
+            boolean exception;
+
+            try {
+                method.invoke(instance);
+                exception = false;
+            }
+            catch (InvocationTargetException ex) {
+                if (expectPass) {
+                    throw ex;
+                }
+
+                final Class<?> clss = ex.getTargetException().getClass();
+                if (clss != NoViableAltException.class) {
+                    throw ex;
+                }
+                exception = true;
+            }
+
+            if (expectPass) {
+                assertFalse("Call to GeneratedJavaLexer." + methodName
+                        + " resulted in an exception", exception);
+            }
+            else {
+                assertTrue("Call to GeneratedJavaLexer." + methodName
+                        + " did not result in an exception", exception);
+            }
+        }
+
+        @Override
+        public int LA(int i) {
+            return laResults[laPosition + i - 1];
+        }
+
+        @Override
+        public Token LT(int i) {
+            return new Token();
+        }
+
+        @Override
+        public void consume() {
+            laPosition++;
+        }
+
+        @Override
+        public int mark() {
+            return 1;
+        }
+
+        @Override
+        public String getFilename() {
+            return "name";
         }
     }
 }
