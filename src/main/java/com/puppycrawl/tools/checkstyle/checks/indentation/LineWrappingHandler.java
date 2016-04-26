@@ -351,20 +351,27 @@ public class LineWrappingHandler {
      *            correct indentation.
      */
     private void logWarningMessage(DetailAST currentNode, int currentIndent) {
-        if (indentCheck.isForceStrictCondition()) {
-            if (expandedTabsColumnNo(currentNode) != currentIndent) {
-                indentCheck.indentationLog(currentNode.getLineNo(),
-                        IndentationCheck.MSG_ERROR, currentNode.getText(),
-                        expandedTabsColumnNo(currentNode), currentIndent);
-            }
+        testIndentation(currentNode.getLineNo(), currentNode.getText(), false, indentCheck.isForceStrictCondition(), expandedTabsColumnNo(currentNode), new IndentLevel(currentIndent));
+    }
+
+    protected void testIndentation(int line, String subType, boolean child, boolean match, int actual,
+            IndentLevel expected) {
+        final String message;
+
+        if (child) {
+            if (expected.isMultiLevel())
+                message = IndentationCheck.MSG_CHILD_ERROR_MULTI;
+            else
+                message = IndentationCheck.MSG_CHILD_ERROR;
         }
         else {
-            if (expandedTabsColumnNo(currentNode) < currentIndent) {
-                indentCheck.indentationLog(currentNode.getLineNo(),
-                        IndentationCheck.MSG_ERROR, currentNode.getText(),
-                        expandedTabsColumnNo(currentNode), currentIndent);
-            }
+            if (expected.isMultiLevel())
+                message = IndentationCheck.MSG_ERROR_MULTI;
+            else
+                message = IndentationCheck.MSG_ERROR;
         }
+
+        indentCheck.checkIndentation(message, subType, "", line, match, actual, expected);
     }
 
 }

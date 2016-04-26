@@ -110,16 +110,8 @@ public class TryHandler extends BlockParentHandler {
      * @param expectedIdent Expected indent level.
      */
     private void checkChildIndentation(DetailAST ast, String subType, IndentLevel expectedIdent) {
-        if (getIndentCheck().isForceStrictCondition()) {
-            if (!expectedIdent.isAcceptable(expandedTabsColumnNo(ast))) {
-                logError(ast, subType, expandedTabsColumnNo(ast), expectedIdent);
-            }
-        }
-        else {
-            if (expandedTabsColumnNo(ast) < expectedIdent.getFirstIndentLevel()) {
-                logError(ast, subType, expandedTabsColumnNo(ast), expectedIdent);
-            }
-        }
+        testIndentation(ast.getLineNo(), subType, false, getIndentCheck().isForceStrictCondition(),
+                expandedTabsColumnNo(ast), expectedIdent);
     }
 
     /**

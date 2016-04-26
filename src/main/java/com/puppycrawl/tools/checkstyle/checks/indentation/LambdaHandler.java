@@ -78,19 +78,14 @@ public class LambdaHandler extends AbstractExpressionHandler {
         // If the argument list is the first element on the line
         final DetailAST firstChild = getMainAst().getFirstChild();
         if (getLineStart(firstChild) == firstChild.getColumnNo()) {
-            final IndentLevel level = getIndent();
-            if (!level.isAcceptable(firstChild.getColumnNo())) {
-                logError(firstChild, "arguments", firstChild.getColumnNo(), level);
-            }
+            testIndentation(firstChild.getLineNo(), "arguments", false, true, firstChild.getColumnNo(), getIndent());
         }
 
         // If the "->" is the first element on the line, assume line wrapping.
         if (getLineStart(getMainAst()) == getMainAst().getColumnNo()) {
             final IndentLevel level =
                 new IndentLevel(getIndent(), getIndentCheck().getLineWrappingIndentation());
-            if (!level.isAcceptable(getMainAst().getColumnNo())) {
-                logError(getMainAst(), "", getMainAst().getColumnNo(), level);
-            }
+            testIndentation(getMainAst().getLineNo(), "", false, true, getMainAst().getColumnNo(), level);
         }
     }
 

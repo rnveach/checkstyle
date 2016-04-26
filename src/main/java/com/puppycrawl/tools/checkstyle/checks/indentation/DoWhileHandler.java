@@ -49,9 +49,8 @@ public class DoWhileHandler extends BlockParentHandler {
 
         final DetailAST whileAst = getMainAst().findFirstToken(TokenTypes.DO_WHILE);
 
-        if (isOnStartOfLine(whileAst)
-                && !getIndent().isAcceptable(expandedTabsColumnNo(whileAst))) {
-            logError(whileAst, "while", expandedTabsColumnNo(whileAst));
+        if (isOnStartOfLine(whileAst)) {
+            testIndentation(whileAst.getLineNo(), "while", false, true, expandedTabsColumnNo(whileAst), getIndent());
         }
 
         // check condition alone

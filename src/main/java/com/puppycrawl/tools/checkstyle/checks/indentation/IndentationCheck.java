@@ -139,6 +139,8 @@ public class IndentationCheck extends AbstractCheck {
     /** How far continuation line should be indented when line-wrapping is present. */
     private int lineWrappingIndentation = DEFAULT_INDENTATION;
 
+    private boolean forceAllAsViolations = false;
+
     /**
      * Force strict condition in line wrapping case. If value is true, line wrap indent
      * have to be same as lineWrappingIndentation parameter, if value is false, line wrap indent
@@ -270,6 +272,37 @@ public class IndentationCheck extends AbstractCheck {
         this.lineWrappingIndentation = lineWrappingIndentation;
     }
 
+    public boolean isForceAllAsViolations() {
+        return forceAllAsViolations;
+    }
+
+    public void setForceAllAsViolations(boolean forceAllAsViolations) {
+        this.forceAllAsViolations = forceAllAsViolations;
+    }
+
+    public void checkIndentation(String message, String typeName, String subType, int line,
+            boolean match, int actual, IndentLevel expected) {
+        final boolean report;
+
+        if (match)
+            report = !expected.isAcceptable(actual);
+        else
+            report = expected.isGreaterThan(actual);
+
+        if (report || forceAllAsViolations) {
+            final String typeStr;
+
+            if (subType.isEmpty()) {
+                typeStr = typeName;
+            }
+            else {
+                typeStr = typeName + " " + subType;
+            }
+
+            indentationLog(line, forceAllAsViolations ? "test" : message, typeStr, actual, expected, match);
+        }
+    }
+
     /**
      * Log an error message.
      *
@@ -279,7 +312,7 @@ public class IndentationCheck extends AbstractCheck {
      *
      * @see java.text.MessageFormat
      */
-    public void indentationLog(int line, String key, Object... args) {
+    private void indentationLog(int line, String key, Object... args) {
         if (!incorrectIndentationLines.contains(line)) {
             incorrectIndentationLines.add(line);
             log(line, key, args);

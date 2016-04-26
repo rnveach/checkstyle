@@ -110,62 +110,6 @@ public abstract class AbstractExpressionHandler {
     }
 
     /**
-     * Log an indentation error.
-     *
-     * @param ast           the expression that caused the error
-     * @param subtypeName   the type of the expression
-     * @param actualIndent  the actual indent level of the expression
-     */
-    protected final void logError(DetailAST ast, String subtypeName,
-                                  int actualIndent) {
-        logError(ast, subtypeName, actualIndent, getIndent());
-    }
-
-    /**
-     * Log an indentation error.
-     *
-     * @param ast            the expression that caused the error
-     * @param subtypeName    the type of the expression
-     * @param actualIndent   the actual indent level of the expression
-     * @param expectedIndent the expected indent level of the expression
-     */
-    protected final void logError(DetailAST ast, String subtypeName,
-                                  int actualIndent, IndentLevel expectedIndent) {
-        final String typeStr;
-
-        if (subtypeName.isEmpty()) {
-            typeStr = "";
-        }
-        else {
-            typeStr = " " + subtypeName;
-        }
-        String messageKey = IndentationCheck.MSG_ERROR;
-        if (expectedIndent.isMultiLevel()) {
-            messageKey = IndentationCheck.MSG_ERROR_MULTI;
-        }
-        indentCheck.indentationLog(ast.getLineNo(), messageKey,
-            typeName + typeStr, actualIndent, expectedIndent);
-    }
-
-    /**
-     * Log child indentation error.
-     *
-     * @param line           the expression that caused the error
-     * @param actualIndent   the actual indent level of the expression
-     * @param expectedIndent the expected indent level of the expression
-     */
-    private void logChildError(int line,
-                               int actualIndent,
-                               IndentLevel expectedIndent) {
-        String messageKey = IndentationCheck.MSG_CHILD_ERROR;
-        if (expectedIndent.isMultiLevel()) {
-            messageKey = IndentationCheck.MSG_CHILD_ERROR_MULTI;
-        }
-        indentCheck.indentationLog(line, messageKey,
-            typeName, actualIndent, expectedIndent);
-    }
-
-    /**
      * Determines if the given expression is at the start of a line.
      *
      * @param ast   the expression to check
@@ -323,14 +267,11 @@ public abstract class AbstractExpressionHandler {
         IndentLevel indentLevel, boolean mustMatch) {
         final String line = indentCheck.getLine(lineNum - 1);
         final int start = getLineStart(line);
-        // if must match is set, it is an error if the line start is not
-        // at the correct indention level; otherwise, it is an only an
-        // error if this statement starts the line and it is less than
-        // the correct indentation level
-        if (mustMatch && !indentLevel.isAcceptable(start)
-                || !mustMatch && colNum == start && indentLevel.isGreaterThan(start)) {
-            logChildError(lineNum, start, indentLevel);
-        }
+
+        if (!mustMatch && colNum != start)
+            return;
+
+        testIndentation(lineNum, "", true, mustMatch, start, indentLevel);
     }
 
     /**
@@ -489,10 +430,8 @@ public abstract class AbstractExpressionHandler {
         for (DetailAST modifier = modifiers.getFirstChild();
              modifier != null;
              modifier = modifier.getNextSibling()) {
-            if (isOnStartOfLine(modifier)
-                && !getIndent().isAcceptable(expandedTabsColumnNo(modifier))) {
-                logError(modifier, "modifier",
-                    expandedTabsColumnNo(modifier));
+            if (isOnStartOfLine(modifier)) {
+                testIndentation(modifier.getLineNo(), "modifier", false, true, expandedTabsColumnNo(modifier), getIndent());
             }
         }
     }
@@ -555,9 +494,8 @@ public abstract class AbstractExpressionHandler {
             final int lparenLevel = expandedTabsColumnNo(lparen);
 
             if (rparenLevel != lparenLevel + 1
-                    && !getIndent().isAcceptable(rparenLevel)
                     && isOnStartOfLine(rparen)) {
-                logError(rparen, "rparen", rparenLevel);
+                testIndentation(rparen.getLineNo(), "rparen", false, true, rparenLevel, getIndent());
             }
         }
     }
@@ -569,11 +507,31 @@ public abstract class AbstractExpressionHandler {
     protected final void checkLeftParen(final DetailAST lparen) {
         // the rcurly can either be at the correct indentation, or on the
         // same line as the lcurly
-        if (lparen != null
-                && !getIndent().isAcceptable(expandedTabsColumnNo(lparen))
-                && isOnStartOfLine(lparen)) {
-            logError(lparen, "lparen", expandedTabsColumnNo(lparen));
+        if (lparen == null
+                || !isOnStartOfLine(lparen)) {
+            return;
         }
+        testIndentation(lparen.getLineNo(), "lparen", false, true, expandedTabsColumnNo(lparen), getIndent());
+    }
+
+    protected void testIndentation(int line, String subType, boolean child, boolean match, int actual,
+            IndentLevel expected) {
+        final String message;
+
+        if (child) {
+            if (expected.isMultiLevel())
+                message = IndentationCheck.MSG_CHILD_ERROR_MULTI;
+            else
+                message = IndentationCheck.MSG_CHILD_ERROR;
+        }
+        else {
+            if (expected.isMultiLevel())
+                message = IndentationCheck.MSG_ERROR_MULTI;
+            else
+                message = IndentationCheck.MSG_ERROR;
+        }
+
+        indentCheck.checkIndentation(message, typeName, subType, line, match, actual, expected);
     }
 
 }

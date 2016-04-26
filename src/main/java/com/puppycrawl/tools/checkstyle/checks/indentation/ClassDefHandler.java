@@ -72,9 +72,8 @@ public class ClassDefHandler extends BlockParentHandler {
             if (getMainAst().getType() != TokenTypes.ANNOTATION_DEF) {
                 final DetailAST ident = getMainAst().findFirstToken(TokenTypes.IDENT);
                 final int lineStart = getLineStart(ident);
-                if (!getIndent().isAcceptable(lineStart)) {
-                    logError(ident, "ident", lineStart);
-                }
+
+                testIndentation(ident.getLineNo(), "ident", false, true, lineStart, getIndent());
             }
         }
         else {

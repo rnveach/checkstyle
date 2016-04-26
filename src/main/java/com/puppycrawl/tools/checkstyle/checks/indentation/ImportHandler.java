@@ -45,8 +45,8 @@ public class ImportHandler extends AbstractExpressionHandler {
     public void checkIndentation() {
         final int columnNo = expandedTabsColumnNo(getMainAst());
 
-        if (!getIndent().isAcceptable(columnNo) && isOnStartOfLine(getMainAst())) {
-            logError(getMainAst(), "", columnNo);
+        if (isOnStartOfLine(getMainAst())) {
+            testIndentation(getMainAst().getLineNo(), "", false, true, columnNo, getIndent());
         }
 
         final DetailAST semi = getMainAst().findFirstToken(TokenTypes.SEMI);

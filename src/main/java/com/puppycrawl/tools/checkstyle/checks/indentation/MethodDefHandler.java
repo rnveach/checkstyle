@@ -50,9 +50,8 @@ public class MethodDefHandler extends BlockParentHandler {
     @Override
     protected void checkModifiers() {
         final DetailAST modifier = getMainAst().findFirstToken(TokenTypes.MODIFIERS);
-        if (isOnStartOfLine(modifier)
-            && !getIndent().isAcceptable(expandedTabsColumnNo(modifier))) {
-            logError(modifier, "modifier", expandedTabsColumnNo(modifier));
+        if (isOnStartOfLine(modifier)) {
+            testIndentation(modifier.getLineNo(), "modifier", false, true, expandedTabsColumnNo(modifier), getIndent());
         }
     }
 

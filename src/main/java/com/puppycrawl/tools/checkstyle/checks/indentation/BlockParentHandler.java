@@ -95,11 +95,13 @@ public class BlockParentHandler extends AbstractExpressionHandler {
     protected void checkTopLevelToken() {
         final DetailAST topLevel = getTopLevelAst();
 
-        if (topLevel != null
-                && !getIndent().isAcceptable(expandedTabsColumnNo(topLevel))
-                && isOnStartOfLine(topLevel)) {
-            logError(topLevel, "", expandedTabsColumnNo(topLevel));
+        if (topLevel == null
+                || getIndent().isAcceptable(expandedTabsColumnNo(topLevel))
+                || !isOnStartOfLine(topLevel)) {
+            return;
         }
+
+        testIndentation(topLevel.getLineNo(), "", false, true, expandedTabsColumnNo(topLevel), getIndent());
     }
 
     /**
@@ -137,10 +139,11 @@ public class BlockParentHandler extends AbstractExpressionHandler {
         // the lcurly can either be at the correct indentation, or nested
         // with a previous expression
         final DetailAST lcurly = getLeftCurly();
-        final int lcurlyPos = expandedTabsColumnNo(lcurly);
 
-        if (!curlyIndent().isAcceptable(lcurlyPos) && isOnStartOfLine(lcurly)) {
-            logError(lcurly, "lcurly", lcurlyPos, curlyIndent());
+        if (isOnStartOfLine(lcurly)) {
+            final int lcurlyPos = expandedTabsColumnNo(lcurly);
+
+            testIndentation(lcurly.getLineNo(), "lcurly", false, true, lcurlyPos, curlyIndent());
         }
     }
 
@@ -167,11 +170,11 @@ public class BlockParentHandler extends AbstractExpressionHandler {
      */
     private void checkRightCurly() {
         final DetailAST rcurly = getRightCurly();
-        final int rcurlyPos = expandedTabsColumnNo(rcurly);
 
-        if (!curlyIndent().isAcceptable(rcurlyPos)
-                && isOnStartOfLine(rcurly)) {
-            logError(rcurly, "rcurly", rcurlyPos, curlyIndent());
+        if (isOnStartOfLine(rcurly)) {
+            final int rcurlyPos = expandedTabsColumnNo(rcurly);
+
+            testIndentation(rcurly.getLineNo(), "rcurly", false, true, rcurlyPos, curlyIndent());
         }
     }
 
