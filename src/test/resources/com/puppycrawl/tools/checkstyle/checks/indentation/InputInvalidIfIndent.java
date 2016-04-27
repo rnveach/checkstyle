@@ -113,12 +113,18 @@ public class InputInvalidIfIndent { //indent:0 exp:0
         // no braces if //indent:8 exp:8
         if (test) //indent:8 exp:8
               System.getProperty("blah"); //indent:14 exp:>=12
+        if (test) //indent:8 exp:8
+System.getProperty("blah"); //indent:0 exp:>=12 warn
 
         // no braces if/else //indent:8 exp:8
         if (test) //indent:8 exp:8
             System.getProperty("blah"); //indent:12 exp:>=12
         else //indent:8 exp:8
             System.getProperty("blah"); //indent:12 exp:>=12
+        if (test) //indent:8 exp:8
+System.getProperty("blah"); //indent:0 exp:>=12 warn
+        else //indent:8 exp:8
+System.getProperty("blah"); //indent:0 exp:>=12 warn
 
 
         // lcurly on same line, and stmt //indent:8 exp:8
@@ -231,6 +237,11 @@ System.getProperty("blah"); //indent:0 exp:12 warn
 
         if (test) { //indent:8 exp:8
             System.getProperty("blah"); } //indent:12 ioffset:28 exp:8 warn
+
+        if (test) { //indent:8 exp:8
+            System.getProperty("blah"); //indent:12 exp:12
+        } else //indent:8 exp:8
+System.getProperty("blah"); //indent:0 exp:8 warn
     } //indent:4 exp:4
 
     public void parenIfTest() { //indent:4 exp:4

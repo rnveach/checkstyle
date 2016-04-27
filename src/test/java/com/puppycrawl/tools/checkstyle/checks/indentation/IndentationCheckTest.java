@@ -1012,7 +1012,10 @@ public class IndentationCheckTest extends BaseCheckTestSupport {
             "105: " + getCheckMessage(MSG_ERROR, "else", 5, 8),
             "106: " + getCheckMessage(MSG_ERROR, "else rcurly", 11, 8),
 
+            "117: " + getCheckMessage(MSG_CHILD_ERROR, "if", 14, 12),
+            "125: " + getCheckMessage(MSG_CHILD_ERROR, "if", 14, 12),
             "126: " + getCheckMessage(MSG_CHILD_ERROR, "if", 14, 12),
+            "127: " + getCheckMessage(MSG_CHILD_ERROR, "if", 14, 12),
             "131: " + getCheckMessage(MSG_ERROR, "if lcurly", 10, 8),
             "132: " + getCheckMessage(MSG_CHILD_ERROR, "if", 10, 12),
             "137: " + getCheckMessage(MSG_CHILD_ERROR, "if", 14, 12),
@@ -1654,8 +1657,8 @@ public class IndentationCheckTest extends BaseCheckTestSupport {
             assertTrue(
                     "input expected warning #" + position + " at line " + comment.getLineNumber()
                             + " to report '" + comment.getExpectedMessage() + "' but got instead: "
-                            + line + ": " + message,
-                    message.endsWith(comment.getExpectedMessage()));
+                            + line + ": " + message,                    line == comment.getLineNumber()
+                            && message.endsWith(comment.getExpectedMessage()));
         }
 
         @Override

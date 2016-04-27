@@ -90,11 +90,31 @@ public class IfHandler extends BlockParentHandler {
         checkExpressionSubtree(condAst, expected, false, false);
     }
 
+    /**
+     * Check the indentation of the contents of the if statement, if there is no curlies. If there
+     * are curlies, the indentation of the contents are checked in {@link #checkLCurly()} and
+     * {@link #checkRCurly()}.
+     */
+    private void checkContents() {
+        if (!hasCurlies()) {
+            final DetailAST expression = getMainAst().findFirstToken(TokenTypes.RPAREN).getNextSibling();
+            // TODO: expression has to be first node of group
+            final IndentLevel indent = new IndentLevel(getIndent(), getBasicOffset());
+
+            if (isOnStartOfLine(expression)
+                    && !indent.isAcceptable(getLineStart(expression))) {
+                logChildError(expression.getLineNo(), expandedTabsColumnNo(expression),
+                        curlyIndent());
+            }
+        }
+    }
+
     @Override
     public void checkIndentation() {
         super.checkIndentation();
         checkCondExpr();
         checkWrappingIndentation(getMainAst(), getIfStatementRightParen(getMainAst()));
+        checkContents();
     }
 
     /**
