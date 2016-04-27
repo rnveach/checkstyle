@@ -191,4 +191,9 @@ int[] //indent:0 exp:8 warn
     } //indent:4 exp:4
 
     /* package scope */ void methodWithCommentBefore() {} //indent:4 exp:4
+
+    @SuppressWarnings( //indent:4 exp:4
+        value="" //indent:8 exp:8
+    ) //indent:4 exp:4
+public void testStartOfSequence() {} //indent:0 exp:4 warn
 } //indent:0 exp:0

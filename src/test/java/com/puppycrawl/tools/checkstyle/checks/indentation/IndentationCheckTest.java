@@ -633,6 +633,7 @@ public class IndentationCheckTest extends BaseCheckTestSupport {
             "179: " + getCheckMessage(MSG_ERROR, "int", 0, 8),
             "180: " + getCheckMessage(MSG_ERROR, "method9", 4, 8),
             "190: " + getCheckMessage(MSG_CHILD_ERROR, "method def", 12, 8),
+            "198: " + getCheckMessage(MSG_ERROR, "method def", 0, 4),
         };
         verifyWarns(checkConfig, fileName, expected, 0);
     }
