@@ -815,7 +815,6 @@ implementsClause
                        |    v:variableDefinitions[#mods,#t] (s6:SEMI)?
                            {
                                #field = #v;
-                               #v.addChild(#s6);
                            }
                        )
                    )
