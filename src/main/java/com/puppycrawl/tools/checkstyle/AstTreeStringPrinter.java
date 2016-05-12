@@ -215,7 +215,7 @@ public final class AstTreeStringPrinter {
      * @throws IOException if the file could not be read.
      * @throws CheckstyleException if the file is not a Java source.
      */
-    private static DetailAST parseFile(File file, boolean withComments)
+    public static DetailAST parseFile(File file, boolean withComments)
             throws IOException, CheckstyleException {
         final FileText text = new FileText(file.getAbsoluteFile(),
             System.getProperty("file.encoding", "UTF-8"));
