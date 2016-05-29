@@ -261,7 +261,8 @@ typeSpec[boolean addImagNode]
 //   (which would make it an array type).
 // - generic type arguments after
 classTypeSpec[boolean addImagNode]
-    :   classOrInterfaceType[addImagNode]
+    :   ({LA(1) == AT}? annotations | )
+        classOrInterfaceType[addImagNode]
         ({LA(1) == AT}? annotations | )
         (options{greedy=true; }:
             ({LA(1) == AT}? annotations

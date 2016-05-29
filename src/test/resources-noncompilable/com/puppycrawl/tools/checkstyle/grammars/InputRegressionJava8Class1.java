@@ -45,6 +45,7 @@ public class InputRegressionJava8Class1 {
         Map.@Nullable Entry e;
         String str = (@Nullable String) "";
         (new Inner3()).<@Nullable String>m();
+        @Nullable Object o = new @Nullable String @Nullable [3];
 
         // method reference
         IntBinaryOperator ibo = Math::max;
