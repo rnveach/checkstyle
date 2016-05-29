@@ -606,7 +606,7 @@ typeParameters
 typeParameter
     :
         // I'm pretty sure Antlr generates the right thing here:
-        (id:IDENT) ( options{generateAmbigWarnings=false;}: typeParameterBounds )?
+        ({LA(1) == AT}? annotations | ) (id:IDENT) ( options{generateAmbigWarnings=false;}: typeParameterBounds )?
         {#typeParameter = #(#[TYPE_PARAMETER,"TYPE_PARAMETER"], #typeParameter);}
     ;
 
@@ -944,7 +944,7 @@ ctorHead
 // This is a list of exception classes that the method is declared to throw
 throwsClause
     :    "throws"^ ({LA(1) == AT}? annotations
-                    | ) identifier ( COMMA identifier )*
+                    | ) identifier ( COMMA ({LA(1) == AT}? annotations | ) identifier )*
     ;
 
 
