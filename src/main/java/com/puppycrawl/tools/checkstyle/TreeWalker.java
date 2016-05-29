@@ -185,12 +185,12 @@ public final class TreeWalker extends AbstractFileSetCheck implements ExternalRe
             catch (final TokenStreamRecognitionException tre) {
                 final String exceptionMsg = String.format(Locale.ROOT, msg,
                         "TokenStreamRecognitionException", fileName);
-                throw new CheckstyleException(exceptionMsg, tre);
+                System.err.println(exceptionMsg);
             }
             catch (RecognitionException | TokenStreamException ex) {
                 final String exceptionMsg = String.format(Locale.ROOT, msg,
                         ex.getClass().getSimpleName(), fileName);
-                throw new CheckstyleException(exceptionMsg, ex);
+                System.err.println(exceptionMsg);
             }
         }
     }
