@@ -1,0 +1,5 @@
+#set your language below
+language: java
+
+build:
+  ci: mvn test
