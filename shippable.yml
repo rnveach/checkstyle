@@ -1,6 +1,14 @@
 #set your language below
 language: java
 
+jdk:
+  - oraclejdk8
+
+   
 build:
+  cache:
+  cache_dir_list:
+    - /root/src/github.com/.m2
+
   ci: 
-    - mvn compile
+    - mvn clean
