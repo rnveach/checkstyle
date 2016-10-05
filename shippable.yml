@@ -2,4 +2,5 @@
 language: java
 
 build:
-  ci: mvn test
+  ci: 
+    - mvn test
