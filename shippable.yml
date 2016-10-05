@@ -8,7 +8,7 @@ jdk:
 build:
   cache:
   cache_dir_list:
-    - /root/src/github.com/.m2
+    - /root/.m2
 
   ci:
     - ls -la /root/src/github.com/
