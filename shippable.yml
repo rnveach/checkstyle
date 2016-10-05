@@ -1,4 +1,3 @@
-#set your language below
 language: java
 
 jdk:
@@ -10,4 +9,4 @@ build:
     - /root/.m2
 
   ci:
-    - mvn -X help:evaluate -Dexpression=settings.localRepository
+    - mvn clean verify
