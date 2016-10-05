@@ -10,5 +10,6 @@ build:
   cache_dir_list:
     - /root/src/github.com/.m2
 
-  ci: 
+  ci:
+    - tree /root/src/github.com/
     - mvn clean
