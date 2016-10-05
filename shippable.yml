@@ -3,4 +3,4 @@ language: java
 
 build:
   ci: 
-    - mvn test
+    - mvn compile
