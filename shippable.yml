@@ -11,5 +11,5 @@ build:
     - /root/src/github.com/.m2
 
   ci:
-    - tree /root/src/github.com/
+    - ls -la /root/src/github.com/
     - mvn clean
