@@ -12,4 +12,5 @@ build:
 
   ci:
     - ls -la /root/src/github.com/
-    - mvn clean
+    - echo $M2_HOME
+    - mvn --version
