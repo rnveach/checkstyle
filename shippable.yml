@@ -11,7 +11,4 @@ build:
     - /root/.m2
 
   ci:
-    - ls -la /root/src/github.com/
-    - echo $M2_HOME
-    - mvn -X --version
     - mvn -X help:evaluate -Dexpression=settings.localRepository
