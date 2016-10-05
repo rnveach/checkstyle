@@ -6,7 +6,7 @@ jdk:
 
    
 build:
-  cache:
+  cache: true
   cache_dir_list:
     - /root/.m2
 
