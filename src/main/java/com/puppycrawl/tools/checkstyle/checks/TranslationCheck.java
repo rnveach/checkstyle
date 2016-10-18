@@ -241,6 +241,12 @@ public class TranslationCheck extends AbstractFileSetCheck {
     }
 
     @Override
+    protected boolean canSkipCachedFileFiltered(File file) {
+        processFiltered(file, null);
+        return true;
+    }
+
+    @Override
     protected void processFiltered(File file, List<String> lines) {
         // We just collecting files for processing at finishProcessing()
         filesToProcess.add(file);

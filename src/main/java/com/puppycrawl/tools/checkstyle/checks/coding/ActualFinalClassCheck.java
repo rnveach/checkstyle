@@ -1,5 +1,7 @@
 package com.puppycrawl.tools.checkstyle.checks.coding;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
@@ -7,13 +9,15 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
 
+import com.puppycrawl.tools.checkstyle.CacheAware;
+import com.puppycrawl.tools.checkstyle.CustomCacheFile;
 import com.puppycrawl.tools.checkstyle.api.AbstractCheck;
 import com.puppycrawl.tools.checkstyle.api.DetailAST;
 import com.puppycrawl.tools.checkstyle.api.FullIdent;
 import com.puppycrawl.tools.checkstyle.api.TokenTypes;
 import com.puppycrawl.tools.checkstyle.utils.CommonUtils;
 
-public class ActualFinalClassCheck extends AbstractCheck {
+public class ActualFinalClassCheck extends AbstractCheck implements CacheAware {
     public static final String MSG_KEY = "final.class";
 
     private String fileName;
@@ -22,6 +26,9 @@ public class ActualFinalClassCheck extends AbstractCheck {
 
     private Map<String, Frame> nonFinalClasses = new TreeMap<String, Frame>();
     private Set<String> inheritedClasses = new HashSet<String>();
+
+    private CustomCacheFile<Set<String>> cache;
+    private File currentFile;
 
     private static class Frame {
         private final String fileName;
@@ -59,9 +66,48 @@ public class ActualFinalClassCheck extends AbstractCheck {
     }
 
     @Override
+    public void init() {
+        this.cache = new CustomCacheFile<Set<String>>(this.getClass().getSimpleName() + ".dat");
+        try {
+            this.cache.load();
+        }
+        catch (Exception e) {
+            throw new IllegalStateException(e);
+        }
+    }
+
+    @Override
+    public void onCacheReset() {
+        this.cache.reset();
+    }
+
+    @Override
+    public boolean canSkipCachedFile(File file) {
+        return (this.cache.get(file) != null);
+    }
+
+    @Override
+    public void skipCachedFile(File file) {
+        this.inheritedClasses.addAll(this.cache.get(file));
+    }
+
+    @Override
+    public void destroy() {
+        this.cache.trimFiles();
+        try {
+            this.cache.save();
+        }
+        catch (IOException e) {
+            throw new IllegalStateException(e);
+        }
+    }
+
+    @Override
     public void beginTree(DetailAST rootAST) {
         this.fileName = getFileContents().getFileName();
         this.importsList.clear();
+        this.currentFile = new File(getFileContents().getFileName());
+        this.cache.put(this.currentFile, new HashSet<String>());
     }
 
     @Override
@@ -77,7 +123,7 @@ public class ActualFinalClassCheck extends AbstractCheck {
             final DetailAST extend = ast.findFirstToken(TokenTypes.EXTENDS_CLAUSE);
 
             if (extend != null) {
-                this.inheritedClasses.add(getFullClassPath(getText(extend)));
+                addInheritedClass(getFullClassPath(getText(extend)));
             }
 
             final DetailAST modifiers = ast.findFirstToken(TokenTypes.MODIFIERS);
@@ -98,7 +144,7 @@ public class ActualFinalClassCheck extends AbstractCheck {
             if (parent.getType() != TokenTypes.LITERAL_NEW)
                 break;
 
-            this.inheritedClasses.add(getFullClassPath(getText(parent)));
+            addInheritedClass(getFullClassPath(getText(parent)));
             break;
         default:
             break;
@@ -114,6 +160,11 @@ public class ActualFinalClassCheck extends AbstractCheck {
                 logExternal(frame.getFileName(), frame.getLineNo(), frame.getColumnNo(), MSG_KEY);
             }
         }
+    }
+
+    private void addInheritedClass(String classPath) {
+        this.inheritedClasses.add(classPath);
+        this.cache.get(this.currentFile).add(classPath);
     }
 
     private String getFullClassPath(String s) {

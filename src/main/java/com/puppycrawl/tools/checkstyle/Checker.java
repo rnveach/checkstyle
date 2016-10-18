@@ -61,7 +61,7 @@ import com.puppycrawl.tools.checkstyle.utils.CommonUtils;
  * @author lkuehne
  * @author Andrei Selkin
  */
-public class Checker extends AutomaticBean implements MessageDispatcher, RootModule {
+public class Checker extends AutomaticBean implements MessageDispatcher, RootModule, CacheAware {
     /** Logger for Checker. */
     private static final Log LOG = LogFactory.getLog(Checker.class);
 
@@ -138,6 +138,10 @@ public class Checker extends AutomaticBean implements MessageDispatcher, RootMod
         addListener(counter);
     }
 
+    public void setCacheDirectory(String cacheDirectory) {
+        CustomCacheFile.cacheLocation = cacheDirectory;
+    }
+
     /**
      * Sets cache file.
      * @param fileName the cache file.
@@ -145,7 +149,7 @@ public class Checker extends AutomaticBean implements MessageDispatcher, RootMod
      */
     public void setCacheFile(String fileName) throws IOException {
         final Configuration configuration = getConfiguration();
-        cache = new PropertyCacheFile(configuration, fileName);
+        cache = new PropertyCacheFile(configuration, CustomCacheFile.cacheLocation + fileName, this);
         cache.load();
     }
 
@@ -277,9 +281,11 @@ public class Checker extends AutomaticBean implements MessageDispatcher, RootMod
             try {
                 final String fileName = file.getAbsolutePath();
                 final long timestamp = file.lastModified();
-                if (cache != null && cache.isInCache(fileName, timestamp)
-                        || !CommonUtils.matchesFileExtension(file, fileExtensions)
-                        || !acceptFileStarted(fileName)) {
+                if (!CommonUtils.matchesFileExtension(file, fileExtensions) || !acceptFileStarted(fileName)) {
+                    continue;
+                }
+                if (cache != null && cache.isInCache(fileName, timestamp) && canSkipCachedFile(file)) {
+                    skipCachedFile(file);
                     continue;
                 }
                 if (cache != null) {
@@ -300,6 +306,36 @@ public class Checker extends AutomaticBean implements MessageDispatcher, RootMod
             catch (Error error) {
                 // We need to catch all errors to put a reason failure (file name) in error
                 throw new Error("Error was thrown while processing " + file.getPath(), error);
+            }
+        }
+    }
+
+    @Override
+    public void onCacheReset() {
+        for (FileSetCheck fsc : fileSetChecks) {
+            if (fsc instanceof CacheAware) {
+                ((CacheAware) fsc).onCacheReset();
+            }
+        }
+    }
+
+    @Override
+    public boolean canSkipCachedFile(File file) {
+        boolean result = true;
+        for (FileSetCheck fsc : fileSetChecks) {
+            if (fsc instanceof CacheAware) {
+                if (!((CacheAware) fsc).canSkipCachedFile(file))
+                    result = false;
+            }
+        }
+        return result;
+    }
+
+    @Override
+    public void skipCachedFile(File file) {
+        for (FileSetCheck fsc : fileSetChecks) {
+            if (fsc instanceof CacheAware) {
+                ((CacheAware) fsc).skipCachedFile(file);
             }
         }
     }
