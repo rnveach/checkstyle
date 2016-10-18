@@ -87,6 +87,8 @@ final class PropertyCacheFile {
     /** Generated configuration hash. **/
     private String configHash;
 
+    private final CacheAware listener;
+
     /**
      * Creates a new {@code PropertyCacheFile} instance.
      *
@@ -94,6 +96,10 @@ final class PropertyCacheFile {
      * @param fileName the cache file
      */
     PropertyCacheFile(Configuration config, String fileName) {
+        this(config, fileName, null);
+    }
+
+    PropertyCacheFile(Configuration config, String fileName, CacheAware listener) {
         if (config == null) {
             throw new IllegalArgumentException("config can not be null");
         }
@@ -102,6 +108,7 @@ final class PropertyCacheFile {
         }
         this.config = config;
         this.fileName = fileName;
+        this.listener = listener;
     }
 
     /**
@@ -155,6 +162,9 @@ final class PropertyCacheFile {
     public void reset() {
         details.clear();
         details.setProperty(CONFIG_HASH_KEY, configHash);
+        if (listener != null) {
+            listener.onCacheReset();
+        }
     }
 
     /**

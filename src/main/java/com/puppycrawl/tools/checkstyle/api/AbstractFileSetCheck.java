@@ -24,6 +24,7 @@ import java.util.Arrays;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
+import com.puppycrawl.tools.checkstyle.CacheAware;
 import com.puppycrawl.tools.checkstyle.utils.CommonUtil;
 
 /**
@@ -33,7 +34,7 @@ import com.puppycrawl.tools.checkstyle.utils.CommonUtil;
  */
 public abstract class AbstractFileSetCheck
     extends AbstractViolationReporter
-    implements FileSetCheck {
+    implements FileSetCheck, CacheAware {
 
     /**
      * Collects the error messages.
@@ -72,6 +73,36 @@ public abstract class AbstractFileSetCheck
     @Override
     public void beginProcessing(String charset) {
         // No code by default, should be overridden only by demand at subclasses
+    }
+
+    @Override
+    public void onCacheReset() {
+        // No code by default, should be overridden only by demand at subclasses
+    }
+
+    protected boolean canSkipCachedFileFiltered(File file) {
+        return true;
+    }
+
+    @Override
+    public final boolean canSkipCachedFile(File file) {
+        // Process only what interested in
+        if (CommonUtil.matchesFileExtension(file, fileExtensions)) {
+            return canSkipCachedFileFiltered(file);
+        }
+        return true;
+    }
+
+    protected void skipCachedFileFiltered(File file) {
+        // No code by default, should be overridden only by demand at subclasses
+    }
+
+    @Override
+    public void skipCachedFile(File file) {
+        // Process only what interested in
+        if (CommonUtil.matchesFileExtension(file, fileExtensions)) {
+            skipCachedFileFiltered(file);
+        }
     }
 
     @Override

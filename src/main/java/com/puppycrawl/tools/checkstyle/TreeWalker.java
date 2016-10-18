@@ -198,6 +198,59 @@ public final class TreeWalker extends AbstractFileSetCheck implements ExternalRe
     }
 
     @Override
+    public final void onCacheReset() {
+        for (AbstractCheck check : commentChecks) {
+            if (check instanceof CacheAware) {
+                ((CacheAware) check).onCacheReset();
+            }
+        }
+
+        for (AbstractCheck check : ordinaryChecks) {
+            if (check instanceof CacheAware) {
+                ((CacheAware) check).onCacheReset();
+            }
+        }
+    }
+
+    @Override
+    protected final boolean canSkipCachedFileFiltered(File file) {
+        boolean result = true;
+
+        for (AbstractCheck check : commentChecks) {
+            if (check instanceof CacheAware) {
+                if (!((CacheAware) check).canSkipCachedFile(file))
+                    result = false;
+            }
+        }
+
+        if (result) {
+            for (AbstractCheck check : ordinaryChecks) {
+                if (check instanceof CacheAware) {
+                    if (!((CacheAware) check).canSkipCachedFile(file))
+                        result = false;
+                }
+            }
+        }
+
+        return false;
+    }
+
+    @Override
+    public void skipCachedFileFiltered(File file) {
+        for (AbstractCheck check : commentChecks) {
+            if (check instanceof CacheAware) {
+                ((CacheAware) check).skipCachedFile(file);
+            }
+        }
+
+        for (AbstractCheck check : ordinaryChecks) {
+            if (check instanceof CacheAware) {
+                ((CacheAware) check).skipCachedFile(file);
+            }
+        }
+    }
+
+    @Override
     protected void finishProcessFiltered() {
         notifyFinish();
     }

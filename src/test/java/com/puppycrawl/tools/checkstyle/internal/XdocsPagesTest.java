@@ -130,7 +130,8 @@ public class XdocsPagesTest {
             "TreeWalker.cacheFile",
             "TreeWalker.upChild",
             "SuppressWithNearbyCommentFilter.fileContents",
-            "SuppressionCommentFilter.fileContents"
+            "SuppressionCommentFilter.fileContents",
+            "Checker.cacheDirectory"
     );
 
     private static final List<String> PROPERTIES_ALLOWED_GET_TYPES_FROM_METHOD = Arrays.asList(
