@@ -123,7 +123,7 @@ public class TreeWalkerTest extends AbstractModuleTestSupport {
      * <pre>
      *     if (filters.isEmpty())
      * </pre>
-     * in {@link TreeWalker#processFiltered(File, FileText)} to survive with Pitest mutations.
+     * in {@link TreeWalker#processFiltered(File, FileContents)} to survive with Pitest mutations.
      *
      * @throws Exception if an error occurs
      */
@@ -329,7 +329,7 @@ public class TreeWalkerTest extends AbstractModuleTestSupport {
         final FileText fileText = new FileText(file, lines);
         treeWalker.setFileContents(new FileContents(fileText));
         try {
-            treeWalker.processFiltered(file, fileText);
+            treeWalker.processFiltered(file, new FileContents(fileText));
             assertWithMessage("Exception expected").fail();
         }
         catch (CheckstyleException ex) {
@@ -346,7 +346,7 @@ public class TreeWalkerTest extends AbstractModuleTestSupport {
         treeWalker.configure(new DefaultConfiguration("default config"));
         final File file = new File(getPath("InputTreeWalkerNotJava.xml"));
         final FileText fileText = new FileText(file, StandardCharsets.ISO_8859_1.name());
-        treeWalker.processFiltered(file, fileText);
+        treeWalker.processFiltered(file, new FileContents(fileText));
         final Collection<Checks> checks = TestUtil.getInternalState(treeWalker, "ordinaryChecks");
         assertWithMessage("No checks -> No parsing")
             .that(checks)
@@ -380,7 +380,7 @@ public class TreeWalkerTest extends AbstractModuleTestSupport {
         final FileText fileText = new FileText(file, lines);
         treeWalker.setFileContents(new FileContents(fileText));
         try {
-            treeWalker.processFiltered(file, fileText);
+            treeWalker.processFiltered(file, new FileContents(fileText));
             assertWithMessage("Exception is expected").fail();
         }
         catch (CheckstyleException exception) {
@@ -404,7 +404,7 @@ public class TreeWalkerTest extends AbstractModuleTestSupport {
         final FileText fileText = new FileText(file, lines);
         treeWalker.setFileContents(new FileContents(fileText));
         try {
-            treeWalker.processFiltered(file, fileText);
+            treeWalker.processFiltered(file, new FileContents(fileText));
             assertWithMessage("Exception is expected").fail();
         }
         catch (CheckstyleException exception) {
@@ -436,7 +436,7 @@ public class TreeWalkerTest extends AbstractModuleTestSupport {
         final File file = new File(temporaryFolder, "file.java");
         final FileText fileText = new FileText(file, new ArrayList<>());
 
-        treeWalker.processFiltered(file, fileText);
+        treeWalker.processFiltered(file, new FileContents(fileText));
         final Collection<Checks> checks = TestUtil.getInternalState(treeWalker, "ordinaryChecks");
         assertWithMessage("No checks -> No parsing")
             .that(checks)
@@ -460,7 +460,7 @@ public class TreeWalkerTest extends AbstractModuleTestSupport {
         treeWalker.setFileContents(new FileContents(fileText));
 
         try {
-            treeWalker.processFiltered(file, fileText);
+            treeWalker.processFiltered(file, new FileContents(fileText));
             assertWithMessage("file is not compilable, exception is expected").fail();
         }
         catch (CheckstyleException exception) {

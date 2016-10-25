@@ -25,7 +25,7 @@ import com.puppycrawl.tools.checkstyle.PropertyType;
 import com.puppycrawl.tools.checkstyle.StatelessCheck;
 import com.puppycrawl.tools.checkstyle.XdocsPropertyType;
 import com.puppycrawl.tools.checkstyle.api.AbstractFileSetCheck;
-import com.puppycrawl.tools.checkstyle.api.FileText;
+import com.puppycrawl.tools.checkstyle.api.FileContents;
 
 /**
  * <p>
@@ -229,8 +229,8 @@ public class RegexpSinglelineCheck extends AbstractFileSetCheck {
     }
 
     @Override
-    protected void processFiltered(File file, FileText fileText) {
-        detector.processLines(fileText);
+    protected void processFiltered(File file, FileContents fileContents) {
+        detector.processLines(fileContents.getText());
     }
 
     /**

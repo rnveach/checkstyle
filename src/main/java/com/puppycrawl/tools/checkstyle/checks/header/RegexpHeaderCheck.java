@@ -27,7 +27,7 @@ import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
 
 import com.puppycrawl.tools.checkstyle.StatelessCheck;
-import com.puppycrawl.tools.checkstyle.api.FileText;
+import com.puppycrawl.tools.checkstyle.api.FileContents;
 import com.puppycrawl.tools.checkstyle.utils.CommonUtil;
 import com.puppycrawl.tools.checkstyle.utils.TokenUtil;
 
@@ -248,9 +248,9 @@ public class RegexpHeaderCheck extends AbstractHeaderCheck {
     }
 
     @Override
-    protected void processFiltered(File file, FileText fileText) {
+    protected void processFiltered(File file, FileContents fileContents) {
         final int headerSize = getHeaderLines().size();
-        final int fileSize = fileText.size();
+        final int fileSize = fileContents.getText().size();
 
         if (headerSize - multiLines.cardinality() > fileSize) {
             log(1, MSG_HEADER_MISSING);
@@ -259,7 +259,7 @@ public class RegexpHeaderCheck extends AbstractHeaderCheck {
             int headerLineNo = 0;
             int index;
             for (index = 0; headerLineNo < headerSize && index < fileSize; index++) {
-                final String line = fileText.get(index);
+                final String line = fileContents.getLine(index);
                 boolean isMatch = isMatch(line, headerLineNo);
                 while (!isMatch && isMultiLine(headerLineNo)) {
                     headerLineNo++;

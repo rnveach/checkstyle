@@ -24,6 +24,7 @@ import java.util.regex.Pattern;
 
 import com.puppycrawl.tools.checkstyle.StatelessCheck;
 import com.puppycrawl.tools.checkstyle.api.AbstractFileSetCheck;
+import com.puppycrawl.tools.checkstyle.api.FileContents;
 import com.puppycrawl.tools.checkstyle.api.FileText;
 import com.puppycrawl.tools.checkstyle.utils.CommonUtil;
 
@@ -165,7 +166,8 @@ public class LineLengthCheck extends AbstractFileSetCheck {
     private Pattern ignorePattern = Pattern.compile("^(package|import) .*");
 
     @Override
-    protected void processFiltered(File file, FileText fileText) {
+    protected void processFiltered(File file, FileContents fileContents) {
+        final FileText fileText = fileContents.getText();
         for (int i = 0; i < fileText.size(); i++) {
             final String line = fileText.get(i);
             final int realLength = CommonUtil.lengthExpandedTabs(

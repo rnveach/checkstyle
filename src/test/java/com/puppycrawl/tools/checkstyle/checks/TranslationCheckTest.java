@@ -32,8 +32,6 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.util.Collections;
 import java.util.Set;
-import java.util.SortedSet;
-import java.util.TreeSet;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
@@ -46,7 +44,9 @@ import com.puppycrawl.tools.checkstyle.DefaultConfiguration;
 import com.puppycrawl.tools.checkstyle.Definitions;
 import com.puppycrawl.tools.checkstyle.XMLLogger;
 import com.puppycrawl.tools.checkstyle.api.AutomaticBean;
+import com.puppycrawl.tools.checkstyle.api.CheckstyleFileResults;
 import com.puppycrawl.tools.checkstyle.api.Configuration;
+import com.puppycrawl.tools.checkstyle.api.FileContents;
 import com.puppycrawl.tools.checkstyle.api.FileText;
 import com.puppycrawl.tools.checkstyle.api.MessageDispatcher;
 import com.puppycrawl.tools.checkstyle.api.Violation;
@@ -139,7 +139,8 @@ public class TranslationCheckTest extends AbstractXmlTestSupport {
         final String charset = StandardCharsets.UTF_8.name();
         final TranslationCheck check = new TranslationCheck();
         check.beginProcessing(charset);
-        check.processFiltered(fileToProcess, new FileText(fileToProcess, charset));
+        check.processFiltered(fileToProcess,
+                new FileContents(new FileText(fileToProcess, charset)));
         check.beginProcessing(charset);
         final Field field = check.getClass().getDeclaredField("filesToProcess");
         field.setAccessible(true);
@@ -644,8 +645,8 @@ public class TranslationCheckTest extends AbstractXmlTestSupport {
         }
 
         @Override
-        public void fireErrors(String fileName, SortedSet<Violation> errors) {
-            savedErrors = new TreeSet<>(errors);
+        public void fireErrors(String fileName, CheckstyleFileResults fileResults) {
+            savedErrors = fileResults.getMessages();
         }
 
     }

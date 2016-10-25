@@ -35,18 +35,17 @@ import java.util.TreeSet;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-
 import com.puppycrawl.tools.checkstyle.api.AuditEvent;
 import com.puppycrawl.tools.checkstyle.api.AuditListener;
 import com.puppycrawl.tools.checkstyle.api.AutomaticBean;
 import com.puppycrawl.tools.checkstyle.api.BeforeExecutionFileFilter;
 import com.puppycrawl.tools.checkstyle.api.BeforeExecutionFileFilterSet;
 import com.puppycrawl.tools.checkstyle.api.CheckstyleException;
+import com.puppycrawl.tools.checkstyle.api.CheckstyleFileResults;
 import com.puppycrawl.tools.checkstyle.api.Configuration;
 import com.puppycrawl.tools.checkstyle.api.Context;
 import com.puppycrawl.tools.checkstyle.api.ExternalResourceHolder;
+import com.puppycrawl.tools.checkstyle.api.FileContents;
 import com.puppycrawl.tools.checkstyle.api.FileSetCheck;
 import com.puppycrawl.tools.checkstyle.api.FileText;
 import com.puppycrawl.tools.checkstyle.api.Filter;
@@ -66,9 +65,6 @@ public class Checker extends AutomaticBean implements MessageDispatcher, RootMod
     /** Message to use when an exception occurs and should be printed as a violation. */
     public static final String EXCEPTION_MSG = "general.exception";
 
-    /** Logger for Checker. */
-    private final Log log;
-
     /** Maintains error count. */
     private final SeverityLevelCounter counter = new SeverityLevelCounter(
             SeverityLevel.ERROR);
@@ -77,7 +73,7 @@ public class Checker extends AutomaticBean implements MessageDispatcher, RootMod
     private final List<AuditListener> listeners = new ArrayList<>();
 
     /** Vector of fileset checks. */
-    private final List<FileSetCheck> fileSetChecks = new ArrayList<>();
+    protected final List<FileSetCheck> fileSetChecks = new ArrayList<>();
 
     /** The audit event before execution file filters. */
     private final BeforeExecutionFileFilterSet beforeExecutionFileFilters =
@@ -121,14 +117,14 @@ public class Checker extends AutomaticBean implements MessageDispatcher, RootMod
     private SeverityLevel severity = SeverityLevel.ERROR;
 
     /** Name of a charset. */
-    private String charset = StandardCharsets.UTF_8.name();
+    protected String charset = StandardCharsets.UTF_8.name();
 
     /** Cache file. **/
     @XdocsPropertyType(PropertyType.FILE)
     private PropertyCacheFile cacheFile;
 
     /** Controls whether exceptions should halt execution or not. */
-    private boolean haltOnException = true;
+    protected boolean haltOnException = true;
 
     /** The tab width for column reporting. */
     private int tabWidth = CommonUtil.DEFAULT_TAB_WIDTH;
@@ -139,7 +135,6 @@ public class Checker extends AutomaticBean implements MessageDispatcher, RootMod
      */
     public Checker() {
         addListener(counter);
-        log = LogFactory.getLog(Checker.class);
     }
 
     /**
@@ -277,7 +272,7 @@ public class Checker extends AutomaticBean implements MessageDispatcher, RootMod
      *      deliver filename that was under processing.
      */
     // -@cs[CyclomaticComplexity] no easy way to split this logic of processing the file
-    private void processFiles(List<File> files) throws CheckstyleException {
+    protected void processFiles(List<File> files) throws CheckstyleException {
         for (final File file : files) {
             String fileName = null;
             try {
@@ -287,13 +282,7 @@ public class Checker extends AutomaticBean implements MessageDispatcher, RootMod
                         || !acceptFileStarted(fileName)) {
                     continue;
                 }
-                if (cacheFile != null) {
-                    cacheFile.put(fileName, timestamp);
-                }
-                fireFileStarted(fileName);
-                final SortedSet<Violation> fileMessages = processFile(file);
-                fireErrors(fileName, fileMessages);
-                fireFileFinished(fileName);
+                workFile(file, timestamp);
             }
             // -@cs[IllegalCatch] There is no other way to deliver filename that was under
             // processing. See https://github.com/checkstyle/checkstyle/issues/2285
@@ -318,6 +307,36 @@ public class Checker extends AutomaticBean implements MessageDispatcher, RootMod
     }
 
     /**
+     * Actually process the file and work its results.
+     *
+     * @param file The file to work.
+     * @param timestamp The timestamp of the file.
+     * @throws Exception if error condition within Checkstyle occurs.
+     */
+    protected void workFile(File file, long timestamp) throws Exception {
+        final String fileName = file.getAbsolutePath();
+        fireFileStarted(fileName);
+        final CheckstyleFileResults fileResults = processFile(file);
+        endWorkingFile(fileName, fileResults, timestamp);
+    }
+
+    /**
+     * Finish working on the file by firing its errors and notifying all listeners.
+     *
+     * @param fileName The name of the file.
+     * @param fileResults The results of the file.
+     * @param timestamp The timestamp of the file.
+     */
+    protected void endWorkingFile(String fileName, CheckstyleFileResults fileResults,
+            long timestamp) {
+        fireErrors(fileName, fileResults);
+        fireFileFinished(fileName);
+        if (cacheFile != null && fileResults.getMessages().isEmpty()) {
+            cacheFile.put(fileName, timestamp);
+        }
+    }
+
+    /**
      * Processes a file with all FileSetChecks.
      *
      * @param file a file to process.
@@ -327,27 +346,41 @@ public class Checker extends AutomaticBean implements MessageDispatcher, RootMod
      * @noinspectionreason ProhibitedExceptionThrown - there is no other way to obey
      *      haltOnException field
      */
-    private SortedSet<Violation> processFile(File file) throws CheckstyleException {
+    private CheckstyleFileResults processFile(File file) throws CheckstyleException {
+        return processFile(file, charset, fileSetChecks, haltOnException);
+    }
+
+    /**
+     * Processes a file with all FileSetChecks.
+     *
+     * @param file a file to process.
+     * @param charset Name of a charset.
+     * @param fileSetChecks List of fileset checks.
+     * @param haltOnException Value of haltOnException.
+     * @return a sorted set of messages to be logged.
+     * @throws CheckstyleException if error condition within Checkstyle occurs.
+     */
+    public static CheckstyleFileResults processFile(File file, String charset,
+            List<FileSetCheck> fileSetChecks, boolean haltOnException) throws CheckstyleException {
         final SortedSet<Violation> fileMessages = new TreeSet<>();
+        FileContents fileContents = null;
         try {
             final FileText theText = new FileText(file.getAbsoluteFile(), charset);
+            fileContents = new FileContents(theText);
             for (final FileSetCheck fsc : fileSetChecks) {
-                fileMessages.addAll(fsc.process(file, theText));
+                fileMessages.addAll(fsc.process(file, fileContents));
             }
         }
         catch (final IOException ioe) {
-            log.debug("IOException occurred.", ioe);
             fileMessages.add(new Violation(1,
                     Definitions.CHECKSTYLE_BUNDLE, EXCEPTION_MSG,
-                    new String[] {ioe.getMessage()}, null, getClass(), null));
+                    new String[] {ioe.getMessage()}, null, Checker.class, null));
         }
         // -@cs[IllegalCatch] There is no other way to obey haltOnException field
         catch (Exception ex) {
             if (haltOnException) {
                 throw ex;
             }
-
-            log.debug("Exception occurred.", ex);
 
             final StringWriter sw = new StringWriter();
             final PrintWriter pw = new PrintWriter(sw, true);
@@ -357,9 +390,9 @@ public class Checker extends AutomaticBean implements MessageDispatcher, RootMod
             fileMessages.add(new Violation(1,
                     Definitions.CHECKSTYLE_BUNDLE, EXCEPTION_MSG,
                     new String[] {sw.getBuffer().toString()},
-                    null, getClass(), null));
+                    null, Checker.class, null));
         }
-        return fileMessages;
+        return new CheckstyleFileResults(fileContents, fileMessages);
     }
 
     /**
@@ -393,14 +426,15 @@ public class Checker extends AutomaticBean implements MessageDispatcher, RootMod
      * Notify all listeners about the errors in a file.
      *
      * @param fileName the audited file
-     * @param errors the audit errors from the file
+     * @param fileResults the audit errors from the file
      */
     @Override
-    public void fireErrors(String fileName, SortedSet<Violation> errors) {
+    public void fireErrors(String fileName, CheckstyleFileResults fileResults) {
         final String stripped = CommonUtil.relativizeAndNormalizePath(basedir, fileName);
         boolean hasNonFilteredViolations = false;
-        for (final Violation element : errors) {
-            final AuditEvent event = new AuditEvent(this, stripped, element);
+        for (final Violation element : fileResults.getMessages()) {
+            final AuditEvent event = new AuditEvent(this, stripped, fileResults.getFileContents(),
+                    element);
             if (filters.accept(event)) {
                 hasNonFilteredViolations = true;
                 for (final AuditListener listener : listeners) {

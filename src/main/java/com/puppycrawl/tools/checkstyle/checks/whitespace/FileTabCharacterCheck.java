@@ -23,7 +23,7 @@ import java.io.File;
 
 import com.puppycrawl.tools.checkstyle.StatelessCheck;
 import com.puppycrawl.tools.checkstyle.api.AbstractFileSetCheck;
-import com.puppycrawl.tools.checkstyle.api.FileText;
+import com.puppycrawl.tools.checkstyle.api.FileContents;
 
 /**
  * <p>
@@ -171,10 +171,10 @@ public class FileTabCharacterCheck extends AbstractFileSetCheck {
     private boolean eachLine;
 
     @Override
-    protected void processFiltered(File file, FileText fileText) {
+    protected void processFiltered(File file, FileContents fileContents) {
         int lineNum = 0;
-        for (int index = 0; index < fileText.size(); index++) {
-            final String line = fileText.get(index);
+        for (int index = 0; index < fileContents.getText().size(); index++) {
+            final String line = fileContents.getText().get(index);
             lineNum++;
             final int tabPosition = line.indexOf('\t');
             if (tabPosition != -1) {

@@ -51,7 +51,7 @@ public class XpathFileGeneratorAstFilterTest {
                 .that(filter.accept(event))
                 .isTrue();
 
-        final AuditEvent auditEvent = new AuditEvent(this, "Test.java", violation);
+        final AuditEvent auditEvent = new AuditEvent(this, "Test.java", null, violation);
 
         assertWithMessage("filter has no queries")
             .that(XpathFileGeneratorAstFilter.findCorrespondingXpathQuery(auditEvent))
@@ -73,7 +73,7 @@ public class XpathFileGeneratorAstFilterTest {
                 .isTrue();
 
         final AuditEvent auditEvent = new AuditEvent(this,
-                getPath("InputXpathFileGeneratorAstFilter.java"), violation);
+                getPath("InputXpathFileGeneratorAstFilter.java"), null, violation);
 
         assertWithMessage("expected xpath")
             .that(XpathFileGeneratorAstFilter.findCorrespondingXpathQuery(auditEvent))
@@ -96,7 +96,7 @@ public class XpathFileGeneratorAstFilterTest {
                 .isTrue();
 
         final AuditEvent auditEvent = new AuditEvent(this,
-                getPath("InputXpathFileGeneratorAstFilter.java"), violation);
+                getPath("InputXpathFileGeneratorAstFilter.java"), null, violation);
 
         assertWithMessage("expected null")
             .that(XpathFileGeneratorAstFilter.findCorrespondingXpathQuery(auditEvent))
@@ -119,7 +119,7 @@ public class XpathFileGeneratorAstFilterTest {
                 .isTrue();
 
         final AuditEvent auditEvent = new AuditEvent(this,
-                getPath("InputXpathFileGeneratorAstFilter.java"), violation);
+                getPath("InputXpathFileGeneratorAstFilter.java"), null, violation);
 
         assertWithMessage("expected xpath")
             .that(XpathFileGeneratorAstFilter.findCorrespondingXpathQuery(auditEvent))

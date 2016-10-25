@@ -19,7 +19,6 @@
 
 package com.puppycrawl.tools.checkstyle.filters;
 
-import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -299,6 +298,9 @@ public class SuppressWithNearbyCommentFilter
     @XdocsPropertyType(PropertyType.PATTERN)
     private String idFormat;
 
+    /** Previous file name. */
+    private String previousFileName;
+
     /**
      * Specify negative/zero/positive value that defines the number of lines
      * preceding/at/following the suppression comment.
@@ -306,41 +308,12 @@ public class SuppressWithNearbyCommentFilter
     private String influenceFormat = DEFAULT_INFLUENCE_FORMAT;
 
     /**
-     * References the current FileContents for this filter.
-     * Since this is a weak reference to the FileContents, the FileContents
-     * can be reclaimed as soon as the strong references in TreeWalker
-     * are reassigned to the next FileContents, at which time filtering for
-     * the current FileContents is finished.
-     */
-    private WeakReference<FileContents> fileContentsReference = new WeakReference<>(null);
-
-    /**
-     * Setter to specify comment pattern to trigger filter to begin suppression.
-     *
-     * @param pattern a pattern.
+     * Constructs a SuppressionCommentFilter.
+     * Initializes comment on, comment off, and check formats
+     * to defaults.
      */
     public final void setCommentFormat(Pattern pattern) {
         commentFormat = pattern;
-    }
-
-    /**
-     * Returns FileContents for this filter.
-     *
-     * @return the FileContents for this filter.
-     */
-    private FileContents getFileContents() {
-        return fileContentsReference.get();
-    }
-
-    /**
-     * Set the FileContents for this filter.
-     *
-     * @param fileContents the FileContents for this filter.
-     * @noinspection WeakerAccess
-     * @noinspectionreason WeakerAccess - we avoid 'protected' when possible
-     */
-    public void setFileContents(FileContents fileContents) {
-        fileContentsReference = new WeakReference<>(fileContents);
     }
 
     /**
@@ -410,16 +383,18 @@ public class SuppressWithNearbyCommentFilter
         boolean accepted = true;
 
         if (event.getViolation() != null) {
-            // Lazy update. If the first event for the current file, update file
-            // contents and tag suppressions
             final FileContents currentContents = event.getFileContents();
 
-            if (getFileContents() != currentContents) {
-                setFileContents(currentContents);
-                tagSuppressions();
-            }
-            if (matchesTag(event)) {
-                accepted = false;
+            if (currentContents != null) {
+                // don't parse the same file more than once
+                if (previousFileName == null || !previousFileName.equals(event.getFileName())) {
+                    tagSuppressions(currentContents);
+                    previousFileName = event.getFileName();
+                }
+
+                if (matchesTag(event)) {
+                    accepted = false;
+                }
             }
         }
         return accepted;
@@ -445,10 +420,11 @@ public class SuppressWithNearbyCommentFilter
     /**
      * Collects all the suppression tags for all comments into a list and
      * sorts the list.
+     *
+     * @param contents Contents of file.
      */
-    private void tagSuppressions() {
+    private void tagSuppressions(FileContents contents) {
         tags.clear();
-        final FileContents contents = getFileContents();
         if (checkCPP) {
             tagSuppressions(contents.getSingleLineComments().values());
         }

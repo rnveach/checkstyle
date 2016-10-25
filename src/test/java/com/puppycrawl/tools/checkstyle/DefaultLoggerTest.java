@@ -148,7 +148,7 @@ public class DefaultLoggerTest {
                 AutomaticBean.OutputStreamOptions.CLOSE);
         dl.finishLocalSetup();
         dl.auditStarted(null);
-        dl.addError(new AuditEvent(this, "fileName", new Violation(1, 2, "bundle", "key",
+        dl.addError(new AuditEvent(this, "fileName", null, new Violation(1, 2, "bundle", "key",
                 null, null, getClass(), "customViolation")));
         dl.auditFinished(null);
         assertWithMessage("expected output")
@@ -173,7 +173,7 @@ public class DefaultLoggerTest {
                 errorStream, OutputStreamOptions.CLOSE);
         dl.finishLocalSetup();
         dl.auditStarted(null);
-        dl.addError(new AuditEvent(this, "fileName", new Violation(1, 2, "bundle", "key",
+        dl.addError(new AuditEvent(this, "fileName", null, new Violation(1, 2, "bundle", "key",
                 null, "moduleId", getClass(), "customViolation")));
         dl.auditFinished(null);
         assertWithMessage("expected output")
@@ -200,7 +200,7 @@ public class DefaultLoggerTest {
         final Violation ignorableViolation = new Violation(1, 2, "bundle", "key",
                                                            null, SeverityLevel.IGNORE, null,
                                                            getClass(), "customViolation");
-        defaultLogger.addError(new AuditEvent(this, "fileName", ignorableViolation));
+        defaultLogger.addError(new AuditEvent(this, "fileName", null, ignorableViolation));
         defaultLogger.auditFinished(null);
         assertWithMessage("No violation was expected")
             .that(errorStream.toString())

@@ -83,7 +83,7 @@ public class SarifLoggerTest extends AbstractModuleTestSupport {
                 new Violation(1, 1,
                         "messages.properties", "ruleId", null, SeverityLevel.ERROR, null,
                         getClass(), "found an error");
-        final AuditEvent ev = new AuditEvent(this, "Test.java", violation);
+        final AuditEvent ev = new AuditEvent(this, "Test.java", null, violation);
         logger.fileStarted(ev);
         logger.addError(ev);
         logger.fileFinished(ev);
@@ -100,7 +100,7 @@ public class SarifLoggerTest extends AbstractModuleTestSupport {
                 new Violation(1, 1,
                         "messages.properties", "ruleId", null, SeverityLevel.WARNING, null,
                         getClass(), "found an error");
-        final AuditEvent ev = new AuditEvent(this, "Test.java", violation);
+        final AuditEvent ev = new AuditEvent(this, "Test.java", null, violation);
         logger.fileStarted(ev);
         logger.addError(ev);
         logger.fileFinished(ev);
@@ -117,12 +117,12 @@ public class SarifLoggerTest extends AbstractModuleTestSupport {
                 new Violation(1, 1,
                         "messages.properties", "ruleId", null, SeverityLevel.INFO, null,
                         getClass(), "found an error");
-        final AuditEvent ev = new AuditEvent(this, "Test.java", violation);
+        final AuditEvent ev = new AuditEvent(this, "Test.java", null, violation);
         final Violation violation2 =
                 new Violation(1, 1,
                         "messages.properties", "ruleId2", null, SeverityLevel.IGNORE, null,
                         getClass(), "found another error");
-        final AuditEvent ev2 = new AuditEvent(this, "Test.java", violation2);
+        final AuditEvent ev2 = new AuditEvent(this, "Test.java", null, violation2);
         logger.fileStarted(ev);
         logger.addError(ev);
         logger.fileFinished(ev);
@@ -142,7 +142,7 @@ public class SarifLoggerTest extends AbstractModuleTestSupport {
                 new Violation(1, 1,
                         "messages.properties", "null", null, null,
                         getClass(), "found an error");
-        final AuditEvent ev = new AuditEvent(this, null, message);
+        final AuditEvent ev = new AuditEvent(this, null, null, message);
         logger.fileStarted(ev);
         logger.addException(ev, new TestException("msg", new RuntimeException("msg")));
         logger.fileFinished(ev);
@@ -159,12 +159,12 @@ public class SarifLoggerTest extends AbstractModuleTestSupport {
                 new Violation(1, 1,
                         "messages.properties", "null", null, null,
                         getClass(), "found an error");
-        final AuditEvent ev = new AuditEvent(this, null, violation);
+        final AuditEvent ev = new AuditEvent(this, null, null, violation);
         final Violation violation2 =
                 new Violation(1, 1,
                         "messages.properties", "null", null, null,
                         getClass(), "found an error");
-        final AuditEvent ev2 = new AuditEvent(this, "Test.java", violation2);
+        final AuditEvent ev2 = new AuditEvent(this, "Test.java", null, violation2);
         logger.fileStarted(ev);
         logger.addException(ev, new TestException("msg", new RuntimeException("msg")));
         logger.fileFinished(ev);
@@ -184,7 +184,7 @@ public class SarifLoggerTest extends AbstractModuleTestSupport {
             new Violation(1, 0,
                 "messages.properties", "ruleId", null, null,
                 getClass(), "found an error");
-        final AuditEvent ev = new AuditEvent(this, "Test.java", violation);
+        final AuditEvent ev = new AuditEvent(this, "Test.java", null, violation);
         logger.fileStarted(ev);
         logger.addError(ev);
         logger.fileFinished(ev);
@@ -201,7 +201,7 @@ public class SarifLoggerTest extends AbstractModuleTestSupport {
                 new Violation(1, 1,
                         "messages.properties", "null", null, null,
                         getClass(), "found an error");
-        final AuditEvent ev = new AuditEvent(this, null, violation);
+        final AuditEvent ev = new AuditEvent(this, null, null, violation);
         logger.fileStarted(ev);
         logger.fileFinished(ev);
         logger.auditFinished(null);

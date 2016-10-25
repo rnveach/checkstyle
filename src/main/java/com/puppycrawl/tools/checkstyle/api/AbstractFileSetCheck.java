@@ -20,11 +20,16 @@
 package com.puppycrawl.tools.checkstyle.api;
 
 import java.io.File;
+import java.util.ArrayDeque;
 import java.util.Arrays;
+import java.util.Map;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
 import com.puppycrawl.tools.checkstyle.utils.CommonUtil;
+import com.rits.cloning.Cloner;
+import com.rits.cloning.IDeepCloner;
+import com.rits.cloning.IFastCloner;
 
 /**
  * Provides common functionality for many FileSetChecks.
@@ -36,7 +41,9 @@ import com.puppycrawl.tools.checkstyle.utils.CommonUtil;
  */
 public abstract class AbstractFileSetCheck
     extends AbstractViolationReporter
-    implements FileSetCheck {
+    implements FileSetCheck, Cloneable {
+    private static Cloner cloner = new Cloner();
+    private static boolean addedFinalCloneClasses;
 
     /**
      * The check context.
@@ -62,14 +69,50 @@ public abstract class AbstractFileSetCheck
      */
     private int tabWidth;
 
+    static {
+        // cloner.setDumpClonedClasses(true);
+        cloner.nullInsteadOfClone(Cloner.class);
+        cloner.dontCloneInstanceOf(net.sf.saxon.sxpath.AbstractStaticContext.class,
+                net.sf.saxon.Configuration.class, //
+                ThreadLocal.class, MessageDispatcher.class, SingleInstance.class);
+        cloner.registerFastCloner(TreeSet.class, new IFastCloner() {
+            @SuppressWarnings({ "unchecked", "rawtypes" })
+            @Override
+            public Object clone(Object t, IDeepCloner deepCloner, Map<Object, Object> clones) {
+                final TreeSet<Object> m = (TreeSet) t;
+                final TreeSet result = new TreeSet(m.comparator());
+                for (final Object v : m)
+                {
+                    final Object value = deepCloner.deepClone(v, clones);
+                    result.add(value);
+                }
+                return result;
+            }
+        });
+        cloner.registerFastCloner(ArrayDeque.class, new IFastCloner() {
+            @SuppressWarnings({ "unchecked", "rawtypes" })
+            @Override
+            public Object clone(Object t, IDeepCloner deepCloner, Map<Object, Object> clones) {
+                final ArrayDeque<Object> m = (ArrayDeque) t;
+                final ArrayDeque result = new ArrayDeque();
+                for (final Object v : m)
+                {
+                    final Object value = deepCloner.deepClone(v, clones);
+                    result.add(value);
+                }
+                return result;
+            }
+        });
+    }
+
     /**
      * Called to process a file that matches the specified file extensions.
      *
      * @param file the file to be processed
-     * @param fileText the contents of the file.
+     * @param fileContents an immutable list of the contents of the file.
      * @throws CheckstyleException if error condition within Checkstyle occurs.
      */
-    protected abstract void processFiltered(File file, FileText fileText)
+    protected abstract void processFiltered(File file, FileContents fileContents)
             throws CheckstyleException;
 
     @Override
@@ -88,14 +131,14 @@ public abstract class AbstractFileSetCheck
     }
 
     @Override
-    public final SortedSet<Violation> process(File file, FileText fileText)
+    public final SortedSet<Violation> process(File file, FileContents fileContents)
             throws CheckstyleException {
         final FileContext fileContext = context.get();
-        fileContext.fileContents = new FileContents(fileText);
+        fileContext.fileContents = fileContents;
         fileContext.violations.clear();
         // Process only what interested in
         if (CommonUtil.matchesFileExtension(file, fileExtensions)) {
-            processFiltered(file, fileText);
+            processFiltered(file, fileContents);
         }
         final SortedSet<Violation> result = new TreeSet<>(fileContext.violations);
         fileContext.violations.clear();
@@ -252,7 +295,33 @@ public abstract class AbstractFileSetCheck
         final FileContext fileContext = context.get();
         final SortedSet<Violation> errors = new TreeSet<>(fileContext.violations);
         fileContext.violations.clear();
-        messageDispatcher.fireErrors(fileName, errors);
+        messageDispatcher.fireErrors(fileName, new CheckstyleFileResults(null, errors));
+    }
+
+    @Override
+    public Object clone() throws CloneNotSupportedException {
+        if (!addedFinalCloneClasses) {
+            // TODO: may not be needed anymore
+            cloner.registerFastCloner(getClass().getClassLoader().getClass(), new IFastCloner() {
+                @Override
+                public Object clone(Object t, IDeepCloner cloner, Map<Object, Object> clones) {
+                    return t;
+                }
+            });
+            addedFinalCloneClasses = true;
+        }
+
+        AbstractFileSetCheck clone = null;
+
+        try {
+            clone = cloner.deepClone(this);
+        } catch (Throwable t) {
+            throw new IllegalStateException("Error occurred when cloning: " + this.getClass().getName(), t);
+        }
+
+        clone.messageDispatcher = messageDispatcher;
+
+        return clone;
     }
 
     /**

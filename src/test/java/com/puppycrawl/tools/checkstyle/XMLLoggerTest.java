@@ -185,7 +185,7 @@ public class XMLLoggerTest extends AbstractXmlTestSupport {
             new Violation(1, 1,
                 "messages.properties", "key", null, SeverityLevel.ERROR, null,
                     getClass(), null);
-        final AuditEvent ev = new AuditEvent(this, "Test.java", violation);
+        final AuditEvent ev = new AuditEvent(this, "Test.java", null, violation);
         logger.fileStarted(ev);
         logger.addError(ev);
         logger.fileFinished(ev);
@@ -201,7 +201,7 @@ public class XMLLoggerTest extends AbstractXmlTestSupport {
                 new Violation(1, 1,
                         "messages.properties", "key", null, SeverityLevel.ERROR, null,
                         getClass(), null);
-        final AuditEvent ev = new AuditEvent(this, null, violation);
+        final AuditEvent ev = new AuditEvent(this, null, null, violation);
         logger.addError(ev);
         logger.auditFinished(null);
         verifyXml(getPath("ExpectedXMLLoggerErrorNullFileName.xml"), outStream,
@@ -216,7 +216,7 @@ public class XMLLoggerTest extends AbstractXmlTestSupport {
             new Violation(1, 1,
                 "messages.properties", "key", null, SeverityLevel.ERROR, "module",
                     getClass(), null);
-        final AuditEvent ev = new AuditEvent(this, "Test.java", violation);
+        final AuditEvent ev = new AuditEvent(this, "Test.java", null, violation);
         logger.addError(ev);
         logger.auditFinished(null);
         verifyXml(getPath("ExpectedXMLLoggerErrorModuleId.xml"), outStream,
@@ -231,7 +231,7 @@ public class XMLLoggerTest extends AbstractXmlTestSupport {
                 new Violation(1, 0,
                         "messages.properties", "key", null, SeverityLevel.ERROR, null,
                         getClass(), null);
-        final AuditEvent ev = new AuditEvent(this, "Test.java", violation);
+        final AuditEvent ev = new AuditEvent(this, "Test.java", null, violation);
         logger.fileStarted(ev);
         logger.addError(ev);
         logger.fileFinished(ev);
@@ -248,7 +248,7 @@ public class XMLLoggerTest extends AbstractXmlTestSupport {
                 new Violation(1, 1,
                         "messages.properties", "key", null, SeverityLevel.IGNORE, null,
                         getClass(), null);
-        final AuditEvent ev = new AuditEvent(this, "Test.java", violation);
+        final AuditEvent ev = new AuditEvent(this, "Test.java", null, violation);
         logger.addError(ev);
         logger.auditFinished(null);
         verifyXml(getPath("ExpectedXMLLoggerEmpty.xml"), outStream);
@@ -262,7 +262,7 @@ public class XMLLoggerTest extends AbstractXmlTestSupport {
         final Violation violation =
             new Violation(1, 1,
                 "messages.properties", null, null, null, getClass(), null);
-        final AuditEvent ev = new AuditEvent(this, "Test.java", violation);
+        final AuditEvent ev = new AuditEvent(this, "Test.java", null, violation);
         logger.addException(ev, new TestException("msg", new RuntimeException("msg")));
         logger.auditFinished(null);
         verifyXml(getPath("ExpectedXMLLoggerException.xml"), outStream);
@@ -279,7 +279,7 @@ public class XMLLoggerTest extends AbstractXmlTestSupport {
         final Violation violation =
                 new Violation(1, 1,
                         "messages.properties", null, null, null, getClass(), null);
-        final AuditEvent ev = new AuditEvent(this, null, violation);
+        final AuditEvent ev = new AuditEvent(this, null, null, violation);
         logger.addException(ev, new TestException("msg", new RuntimeException("msg")));
         logger.auditFinished(null);
         verifyXml(getPath("ExpectedXMLLoggerExceptionNullFileName.xml"), outStream);
@@ -300,7 +300,7 @@ public class XMLLoggerTest extends AbstractXmlTestSupport {
         final Violation violation =
                 new Violation(1, 1,
                         "messages.properties", null, null, null, getClass(), null);
-        final AuditEvent ev = new AuditEvent(this, "Test.java", violation);
+        final AuditEvent ev = new AuditEvent(this, "Test.java", null, violation);
         logger.addException(ev, new TestException("msg", new RuntimeException("msg")));
 
         logger.fileFinished(ev);
@@ -319,7 +319,7 @@ public class XMLLoggerTest extends AbstractXmlTestSupport {
         final Violation violation =
                 new Violation(1, 1,
                         "messages.properties", null, null, null, getClass(), null);
-        final AuditEvent ev = new AuditEvent(this, "Test.java", violation);
+        final AuditEvent ev = new AuditEvent(this, "Test.java", null, violation);
         logger.addException(ev, new TestException("msg", new RuntimeException("msg")));
         final AuditEvent fileFinishedEvent = new AuditEvent(this, "Test.java");
         logger.fileFinished(fileFinishedEvent);
@@ -340,7 +340,7 @@ public class XMLLoggerTest extends AbstractXmlTestSupport {
                         "messages.properties", null, null, null, getClass(), null);
         final AuditEvent fileStartedEvent = new AuditEvent(this, "Test.java");
         logger.fileStarted(fileStartedEvent);
-        final AuditEvent ev = new AuditEvent(this, "Test.java", violation);
+        final AuditEvent ev = new AuditEvent(this, "Test.java", null, violation);
         logger.addException(ev, new TestException("msg", new RuntimeException("msg")));
         final AuditEvent fileFinishedEvent = new AuditEvent(this, "Test.java");
         logger.fileFinished(fileFinishedEvent);
@@ -362,7 +362,7 @@ public class XMLLoggerTest extends AbstractXmlTestSupport {
                 new Violation(1, 1,
                         "messages.properties", "key", null, SeverityLevel.ERROR, null,
                         getClass(), null);
-        final AuditEvent errorEvent = new AuditEvent(this, "Test.java", violation);
+        final AuditEvent errorEvent = new AuditEvent(this, "Test.java", null, violation);
         logger.addError(errorEvent);
 
         logger.fileFinished(errorEvent);

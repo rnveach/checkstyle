@@ -255,7 +255,7 @@ public class SuppressWarningsHolderTest extends AbstractModuleTestSupport {
         final Violation firstViolationForTest =
             new Violation(100, 10, null, null, null, "id", MemberNameCheck.class, "msg");
         final AuditEvent firstEventForTest =
-            new AuditEvent(source, "fileName", firstViolationForTest);
+            new AuditEvent(source, "fileName", null, firstViolationForTest);
         assertWithMessage("Event is suppressed")
                 .that(SuppressWarningsHolder.isSuppressed(firstEventForTest))
                 .isFalse();
@@ -263,7 +263,7 @@ public class SuppressWarningsHolderTest extends AbstractModuleTestSupport {
         final Violation secondViolationForTest =
             new Violation(100, 150, null, null, null, "id", MemberNameCheck.class, "msg");
         final AuditEvent secondEventForTest =
-            new AuditEvent(source, "fileName", secondViolationForTest);
+            new AuditEvent(source, "fileName", null, secondViolationForTest);
         assertWithMessage("Event is not suppressed")
                 .that(SuppressWarningsHolder.isSuppressed(secondEventForTest))
                 .isTrue();
@@ -271,7 +271,7 @@ public class SuppressWarningsHolderTest extends AbstractModuleTestSupport {
         final Violation thirdViolationForTest =
             new Violation(200, 1, null, null, null, "id", MemberNameCheck.class, "msg");
         final AuditEvent thirdEventForTest =
-            new AuditEvent(source, "fileName", thirdViolationForTest);
+            new AuditEvent(source, "fileName", null, thirdViolationForTest);
         assertWithMessage("Event is not suppressed")
                 .that(SuppressWarningsHolder.isSuppressed(thirdEventForTest))
                 .isTrue();
@@ -475,7 +475,7 @@ public class SuppressWarningsHolderTest extends AbstractModuleTestSupport {
         final Checker source = new Checker();
         final Violation violation = new Violation(line, column, null, null, null,
                 moduleId, MemberNameCheck.class, "violation");
-        return new AuditEvent(source, "filename", violation);
+        return new AuditEvent(source, "filename", null, violation);
     }
 
     @Test

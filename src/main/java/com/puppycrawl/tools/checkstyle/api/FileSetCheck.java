@@ -68,11 +68,11 @@ public interface FileSetCheck
      * </p>
      *
      * @param file the file to be processed
-     * @param fileText the contents of the file.
-     * @return the sorted set of violations to be logged.
+     * @param fileContents an immutable list of the contents of the file.
+     * @return the sorted set of messages to be logged.
      * @throws CheckstyleException if error condition within Checkstyle occurs
      */
-    SortedSet<Violation> process(File file, FileText fileText) throws CheckstyleException;
+    SortedSet<Violation> process(File file, FileContents fileContents) throws CheckstyleException;
 
     /**
      * Called when all the files have been processed. This is the time to
@@ -81,4 +81,11 @@ public interface FileSetCheck
      */
     void finishProcessing();
 
+    /**
+     * Create a deep-enough copy of the class. It is up to the specific class whether it should be a
+     * deep or shallow copy.
+     *
+     * @return A copy of the class.
+     */
+    Object clone() throws CloneNotSupportedException;
 }

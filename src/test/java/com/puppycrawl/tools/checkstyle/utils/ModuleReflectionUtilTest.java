@@ -37,7 +37,7 @@ import com.puppycrawl.tools.checkstyle.api.AuditEvent;
 import com.puppycrawl.tools.checkstyle.api.AuditListener;
 import com.puppycrawl.tools.checkstyle.api.AutomaticBean;
 import com.puppycrawl.tools.checkstyle.api.BeforeExecutionFileFilter;
-import com.puppycrawl.tools.checkstyle.api.FileText;
+import com.puppycrawl.tools.checkstyle.api.FileContents;
 import com.puppycrawl.tools.checkstyle.api.Filter;
 import com.puppycrawl.tools.checkstyle.api.RootModule;
 
@@ -230,7 +230,7 @@ public class ModuleReflectionUtilTest {
     private static class FileSetModuleClass extends AbstractFileSetCheck {
 
         @Override
-        protected void processFiltered(File file, FileText fileText) {
+        protected void processFiltered(File file, FileContents fileContents) {
             // dummy method
         }
 

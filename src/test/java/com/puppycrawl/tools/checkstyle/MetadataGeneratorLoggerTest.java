@@ -40,7 +40,7 @@ public class MetadataGeneratorLoggerTest {
         final OutputStream outputStream = new ByteArrayOutputStream();
         final MetadataGeneratorLogger logger = new MetadataGeneratorLogger(outputStream,
                 AutomaticBean.OutputStreamOptions.CLOSE);
-        final AuditEvent event = new AuditEvent(this, "fileName",
+        final AuditEvent event = new AuditEvent(this, "fileName", null,
                 new Violation(1, 2, "bundle", "key",
                         null, SeverityLevel.IGNORE, null, getClass(), "customViolation"));
         logger.finishLocalSetup();

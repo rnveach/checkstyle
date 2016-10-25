@@ -47,8 +47,10 @@ import com.puppycrawl.tools.checkstyle.Definitions;
 import com.puppycrawl.tools.checkstyle.GlobalStatefulCheck;
 import com.puppycrawl.tools.checkstyle.LocalizedMessage;
 import com.puppycrawl.tools.checkstyle.api.AbstractFileSetCheck;
-import com.puppycrawl.tools.checkstyle.api.FileText;
+import com.puppycrawl.tools.checkstyle.api.CheckstyleFileResults;
+import com.puppycrawl.tools.checkstyle.api.FileContents;
 import com.puppycrawl.tools.checkstyle.api.MessageDispatcher;
+import com.puppycrawl.tools.checkstyle.api.SingleInstance;
 import com.puppycrawl.tools.checkstyle.api.Violation;
 import com.puppycrawl.tools.checkstyle.utils.CommonUtil;
 
@@ -199,7 +201,7 @@ import com.puppycrawl.tools.checkstyle.utils.CommonUtil;
  * @since 3.0
  */
 @GlobalStatefulCheck
-public class TranslationCheck extends AbstractFileSetCheck {
+public class TranslationCheck extends AbstractFileSetCheck implements SingleInstance {
 
     /**
      * A key is pointing to the warning message text for missing key
@@ -350,7 +352,7 @@ public class TranslationCheck extends AbstractFileSetCheck {
     }
 
     @Override
-    protected void processFiltered(File file, FileText fileText) {
+    protected void processFiltered(File file, FileContents fileContents) {
         // We are just collecting files for processing at finishProcessing()
         filesToProcess.add(file);
     }
@@ -634,7 +636,8 @@ public class TranslationCheck extends AbstractFileSetCheck {
                 getClass(), null);
         final SortedSet<Violation> messages = new TreeSet<>();
         messages.add(message);
-        getMessageDispatcher().fireErrors(file.getPath(), messages);
+        getMessageDispatcher().fireErrors(file.getPath(),
+                new CheckstyleFileResults(null, messages));
         log.debug("Exception occurred.", exception);
     }
 

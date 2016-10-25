@@ -24,6 +24,7 @@ import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.io.Writer;
 import java.nio.charset.StandardCharsets;
+import java.util.Date;
 
 import com.puppycrawl.tools.checkstyle.api.AuditEvent;
 import com.puppycrawl.tools.checkstyle.api.AuditListener;
@@ -167,13 +168,17 @@ public class DefaultLogger extends AutomaticBean implements AuditListener {
         }
     }
 
+    /** Cache pf when the audit start was fired. */
+    private long start;
+
     @Override
     public void auditStarted(AuditEvent event) {
         final LocalizedMessage auditStartMessage = new LocalizedMessage(
                 Definitions.CHECKSTYLE_BUNDLE, DefaultLogger.class,
                 AUDIT_STARTED_MESSAGE);
-        infoWriter.println(auditStartMessage.getMessage());
+        infoWriter.println(auditStartMessage.getMessage() + new Date());
         infoWriter.flush();
+        start = System.nanoTime();
     }
 
     @Override
@@ -181,7 +186,9 @@ public class DefaultLogger extends AutomaticBean implements AuditListener {
         final LocalizedMessage auditFinishMessage = new LocalizedMessage(
                 Definitions.CHECKSTYLE_BUNDLE, DefaultLogger.class,
                 AUDIT_FINISHED_MESSAGE);
-        infoWriter.println(auditFinishMessage.getMessage());
+        infoWriter.println(auditFinishMessage.getMessage() + new Date());
+        final long end = System.nanoTime();
+        infoWriter.println("Done in " + ((end - start) / 1000000000.0) + " seconds");
         closeStreams();
     }
 

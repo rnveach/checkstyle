@@ -34,7 +34,7 @@ public class AuditEventDefaultFormatterTest {
     public void testFormatFullyQualifiedModuleNameContainsCheckSuffix() {
         final Violation violation = new Violation(1, 1, null, null, null,
                 SeverityLevel.WARNING, null, TestModuleCheck.class, "Mocked violation.");
-        final AuditEvent event = new AuditEvent("", "InputMockFile.java", violation);
+        final AuditEvent event = new AuditEvent("", "InputMockFile.java", null, violation);
         final AuditEventFormatter formatter = new AuditEventDefaultFormatter();
 
         final String expected = "[WARN] InputMockFile.java:1:1: Mocked violation. "
@@ -49,7 +49,7 @@ public class AuditEventDefaultFormatterTest {
     public void testFormatFullyQualifiedModuleNameDoesNotContainCheckSuffix() {
         final Violation violation = new Violation(1, 1, null, null, null,
                 SeverityLevel.WARNING, null, TestModule.class, "Mocked violation.");
-        final AuditEvent event = new AuditEvent("", "InputMockFile.java", violation);
+        final AuditEvent event = new AuditEvent("", "InputMockFile.java", null, violation);
         final AuditEventFormatter formatter = new AuditEventDefaultFormatter();
 
         final String expected = "[WARN] InputMockFile.java:1:1: Mocked violation. "
@@ -64,7 +64,7 @@ public class AuditEventDefaultFormatterTest {
     public void testFormatModuleWithModuleId() {
         final Violation violation = new Violation(1, 1, null, null, null,
                 SeverityLevel.WARNING, "ModuleId", TestModule.class, "Mocked violation.");
-        final AuditEvent event = new AuditEvent("", "InputMockFile.java", violation);
+        final AuditEvent event = new AuditEvent("", "InputMockFile.java", null, violation);
         final AuditEventFormatter formatter = new AuditEventDefaultFormatter();
 
         final String expected = "[WARN] InputMockFile.java:1:1: Mocked violation. [ModuleId]";
@@ -79,7 +79,7 @@ public class AuditEventDefaultFormatterTest {
         final Violation violation = new Violation(1, 1,
                 "messages.properties", "key", null, SeverityLevel.ERROR, null,
                 getClass(), null);
-        final AuditEvent auditEvent = new AuditEvent(new Object(), "fileName", violation);
+        final AuditEvent auditEvent = new AuditEvent(new Object(), "fileName", null, violation);
         final int result = TestUtil.invokeStaticMethod(AuditEventDefaultFormatter.class,
                 "calculateBufferLength", auditEvent, SeverityLevel.ERROR.ordinal());
 

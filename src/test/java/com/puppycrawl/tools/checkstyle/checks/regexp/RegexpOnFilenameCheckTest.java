@@ -33,6 +33,7 @@ import org.junit.jupiter.api.Test;
 import com.puppycrawl.tools.checkstyle.AbstractModuleTestSupport;
 import com.puppycrawl.tools.checkstyle.DefaultConfiguration;
 import com.puppycrawl.tools.checkstyle.api.CheckstyleException;
+import com.puppycrawl.tools.checkstyle.api.FileContents;
 import com.puppycrawl.tools.checkstyle.api.FileText;
 import com.puppycrawl.tools.checkstyle.utils.CommonUtil;
 
@@ -244,9 +245,9 @@ public class RegexpOnFilenameCheckTest extends AbstractModuleTestSupport {
         final File file = new File(getPath("") + "\u0000" + File.separatorChar + "Test");
         final RegexpOnFilenameCheck check = new RegexpOnFilenameCheck();
         check.setFileNamePattern(Pattern.compile("BAD"));
-        final CheckstyleException ex = assertThrows(CheckstyleException.class,
-                () -> check.process(file, new FileText(file, Collections.emptyList())),
-                "CheckstyleException expected");
+        final CheckstyleException ex = assertThrows(CheckstyleException.class, () -> {
+            check.process(file, new FileContents(new FileText(file, Collections.emptyList())));
+        }, "CheckstyleException expected");
         assertWithMessage("Invalid exception message")
                 .that(ex)
                 .hasMessageThat()

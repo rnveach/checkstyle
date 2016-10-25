@@ -35,6 +35,7 @@ import org.junit.jupiter.api.Test;
 
 import com.puppycrawl.tools.checkstyle.AbstractModuleTestSupport;
 import com.puppycrawl.tools.checkstyle.DefaultConfiguration;
+import com.puppycrawl.tools.checkstyle.api.FileContents;
 import com.puppycrawl.tools.checkstyle.api.FileText;
 import com.puppycrawl.tools.checkstyle.api.Violation;
 import com.puppycrawl.tools.checkstyle.utils.CommonUtil;
@@ -130,7 +131,7 @@ public class OrderedPropertiesCheckTest extends AbstractModuleTestSupport {
         final File file = new File(fileName);
         final FileText fileText = new FileText(file, Collections.emptyList());
         final SortedSet<Violation> violations =
-                check.process(file, fileText);
+                check.process(file, new FileContents(fileText));
         assertWithMessage("Wrong violations count")
                 .that(violations)
                 .hasSize(1);
@@ -164,7 +165,7 @@ public class OrderedPropertiesCheckTest extends AbstractModuleTestSupport {
                 getPath("InputOrderedProperties2EmptyValue.properties");
         final File file = new File(fileName);
         final FileText fileText = new FileText(file, Collections.emptyList());
-        final SortedSet<Violation> violations = check.process(file, fileText);
+        final SortedSet<Violation> violations = check.process(file, new FileContents(fileText));
 
         assertWithMessage("Wrong violations count")
                 .that(violations)

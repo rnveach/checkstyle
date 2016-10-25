@@ -112,7 +112,7 @@ public class XpathFileGeneratorAuditListenerTest {
         final OutputStream out = new ByteArrayOutputStream();
         final XpathFileGeneratorAuditListener listener =
                 new XpathFileGeneratorAuditListener(out, AutomaticBean.OutputStreamOptions.CLOSE);
-        final AuditEvent ev = new AuditEvent(this, "Test.java", null);
+        final AuditEvent ev = new AuditEvent(this, "Test.java", null, null);
         listener.fileStarted(ev);
         listener.auditFinished(null);
         final String actual = out.toString();
@@ -126,7 +126,7 @@ public class XpathFileGeneratorAuditListenerTest {
         final OutputStream out = new ByteArrayOutputStream();
         final XpathFileGeneratorAuditListener listener =
                 new XpathFileGeneratorAuditListener(out, AutomaticBean.OutputStreamOptions.CLOSE);
-        final AuditEvent ev = new AuditEvent(this, "Test.java", null);
+        final AuditEvent ev = new AuditEvent(this, "Test.java", null, null);
         listener.fileFinished(ev);
         listener.auditFinished(null);
         final String actual = out.toString();
@@ -144,7 +144,7 @@ public class XpathFileGeneratorAuditListenerTest {
         final Violation violation =
                 new Violation(1, 1,
                         "messages.properties", null, null, null, getClass(), null);
-        final AuditEvent ev = new AuditEvent(this, "Test.java", violation);
+        final AuditEvent ev = new AuditEvent(this, "Test.java", null, violation);
 
         try {
             logger.addException(ev, null);
@@ -278,12 +278,12 @@ public class XpathFileGeneratorAuditListenerTest {
                         null, null, sourceClass, null);
 
         return new AuditEvent(this,
-                getPath(fileName), violation);
+                getPath(fileName), null, violation);
     }
 
     private AuditEvent createAuditEvent(String fileName, Violation violation) {
         return new AuditEvent(this,
-                getPath(fileName), violation);
+                getPath(fileName), null, violation);
     }
 
     private static Violation createViolation(int lineNumber,

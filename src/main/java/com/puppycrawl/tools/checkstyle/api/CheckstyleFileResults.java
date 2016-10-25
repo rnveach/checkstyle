@@ -17,42 +17,24 @@
 // Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 ///////////////////////////////////////////////////////////////////////////////////////////////
 
-package com.puppycrawl.tools.checkstyle.internal.testmodules;
+package com.puppycrawl.tools.checkstyle.api;
 
-import java.io.File;
+import java.util.SortedSet;
 
-import com.puppycrawl.tools.checkstyle.api.AbstractFileSetCheck;
-import com.puppycrawl.tools.checkstyle.api.FileContents;
+public final class CheckstyleFileResults {
+    private final FileContents fileContents;
+    private final SortedSet<Violation> messages;
 
-/**
- * TestFileSetCheck.
- *
- * @noinspection ClassOnlyUsedInOnePackage
- * @noinspectionreason ClassOnlyUsedInOnePackage - class is internal tool, and only used in testing
- */
-public class TestFileSetCheck extends AbstractFileSetCheck {
-
-    private boolean called;
-
-    @Override
-    protected void processFiltered(File file, FileContents fileContents) {
-        called = true;
+    public CheckstyleFileResults(FileContents fileContents, SortedSet<Violation> messages) {
+        this.fileContents = fileContents;
+        this.messages = messages;
     }
 
-    /**
-     * Checks if {@link #processFiltered(File, FileContents)} was called.
-     *
-     * @return {@code true} if it was called.
-     */
-    public boolean wasCalled() {
-        return called;
+    public FileContents getFileContents() {
+        return fileContents;
     }
 
-    /**
-     * Resets the check for testing.
-     */
-    public void resetCheck() {
-        called = false;
+    public SortedSet<Violation> getMessages() {
+        return messages;
     }
-
 }

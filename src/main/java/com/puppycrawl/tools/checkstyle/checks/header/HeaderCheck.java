@@ -23,7 +23,7 @@ import java.io.File;
 import java.util.BitSet;
 
 import com.puppycrawl.tools.checkstyle.StatelessCheck;
-import com.puppycrawl.tools.checkstyle.api.FileText;
+import com.puppycrawl.tools.checkstyle.api.FileContents;
 import com.puppycrawl.tools.checkstyle.utils.TokenUtil;
 
 /**
@@ -185,13 +185,13 @@ public class HeaderCheck extends AbstractHeaderCheck {
     }
 
     @Override
-    protected void processFiltered(File file, FileText fileText) {
-        if (getHeaderLines().size() > fileText.size()) {
+    protected void processFiltered(File file, FileContents fileContents) {
+        if (getHeaderLines().size() > fileContents.getText().size()) {
             log(1, MSG_MISSING);
         }
         else {
             for (int i = 0; i < getHeaderLines().size(); i++) {
-                if (!isMatch(i, fileText.get(i))) {
+                if (!isMatch(i, fileContents.getLine(i))) {
                     log(i + 1, MSG_MISMATCH, getHeaderLines().get(i));
                     break;
                 }

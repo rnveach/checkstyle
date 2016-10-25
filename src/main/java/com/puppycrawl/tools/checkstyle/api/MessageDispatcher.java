@@ -19,8 +19,6 @@
 
 package com.puppycrawl.tools.checkstyle.api;
 
-import java.util.SortedSet;
-
 /**
  * Used by FileSetChecks to distribute AuditEvents to AuditListeners.
  */
@@ -44,8 +42,8 @@ public interface MessageDispatcher {
      * Notify all listeners about the violations in a file.
      *
      * @param fileName the audited file
-     * @param errors the violations from the file
+     * @param fileResults the results from the file
      */
-    void fireErrors(String fileName, SortedSet<Violation> errors);
+    void fireErrors(String fileName, CheckstyleFileResults fileResults);
 
 }

@@ -19,7 +19,6 @@
 
 package com.puppycrawl.tools.checkstyle.filters;
 
-import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -386,14 +385,7 @@ public class SuppressionCommentFilter
     @XdocsPropertyType(PropertyType.PATTERN)
     private String idFormat;
 
-    /**
-     * References the current FileContents for this filter.
-     * Since this is a weak reference to the FileContents, the FileContents
-     * can be reclaimed as soon as the strong references in TreeWalker
-     * are reassigned to the next FileContents, at which time filtering for
-     * the current FileContents is finished.
-     */
-    private WeakReference<FileContents> fileContentsReference = new WeakReference<>(null);
+    private String previousFileName;
 
     /**
      * Setter to specify comment pattern to trigger filter to begin suppression.
@@ -411,26 +403,6 @@ public class SuppressionCommentFilter
      */
     public final void setOnCommentFormat(Pattern pattern) {
         onCommentFormat = pattern;
-    }
-
-    /**
-     * Returns FileContents for this filter.
-     *
-     * @return the FileContents for this filter.
-     */
-    private FileContents getFileContents() {
-        return fileContentsReference.get();
-    }
-
-    /**
-     * Set the FileContents for this filter.
-     *
-     * @param fileContents the FileContents for this filter.
-     * @noinspection WeakerAccess
-     * @noinspectionreason WeakerAccess - we avoid 'protected' when possible
-     */
-    public void setFileContents(FileContents fileContents) {
-        fileContentsReference = new WeakReference<>(fileContents);
     }
 
     /**
@@ -490,16 +462,17 @@ public class SuppressionCommentFilter
         boolean accepted = true;
 
         if (event.getViolation() != null) {
-            // Lazy update. If the first event for the current file, update file
-            // contents and tag suppressions
             final FileContents currentContents = event.getFileContents();
 
-            if (getFileContents() != currentContents) {
-                setFileContents(currentContents);
-                tagSuppressions();
+            if (currentContents != null) {
+                // don't parse the same file more than once
+                if (previousFileName == null || !previousFileName.equals(event.getFileName())) {
+                    tagSuppressions(currentContents);
+                    previousFileName = event.getFileName();
+                }
+                final Tag matchTag = findNearestMatch(event);
+                accepted = matchTag == null || matchTag.getTagType() == TagType.ON;
             }
-            final Tag matchTag = findNearestMatch(event);
-            accepted = matchTag == null || matchTag.getTagType() == TagType.ON;
         }
         return accepted;
     }
@@ -530,10 +503,11 @@ public class SuppressionCommentFilter
     /**
      * Collects all the suppression tags for all comments into a list and
      * sorts the list.
+     *
+     * @param contents File contents.
      */
-    private void tagSuppressions() {
+    private void tagSuppressions(FileContents contents) {
         tags.clear();
-        final FileContents contents = getFileContents();
         if (checkCPP) {
             tagSuppressions(contents.getSingleLineComments().values());
         }

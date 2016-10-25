@@ -32,6 +32,7 @@ import com.puppycrawl.tools.checkstyle.AbstractModuleTestSupport;
 import com.puppycrawl.tools.checkstyle.DefaultConfiguration;
 import com.puppycrawl.tools.checkstyle.api.CheckstyleException;
 import com.puppycrawl.tools.checkstyle.api.Configuration;
+import com.puppycrawl.tools.checkstyle.api.FileContents;
 import com.puppycrawl.tools.checkstyle.api.FileText;
 import com.puppycrawl.tools.checkstyle.utils.CommonUtil;
 
@@ -135,7 +136,7 @@ public class JavadocPackageCheckTest
         final String expectedExceptionMessage =
                 "Exception while getting canonical path to file " + fileWithInvalidPath.getPath();
         try {
-            check.processFiltered(fileWithInvalidPath, mockFileText);
+            check.processFiltered(fileWithInvalidPath, new FileContents(mockFileText));
             assertWithMessage("CheckstyleException expected to be thrown").fail();
         }
         catch (CheckstyleException ex) {

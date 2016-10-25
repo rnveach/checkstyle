@@ -33,6 +33,7 @@ import java.util.regex.Pattern;
 
 import com.puppycrawl.tools.checkstyle.StatelessCheck;
 import com.puppycrawl.tools.checkstyle.api.AbstractFileSetCheck;
+import com.puppycrawl.tools.checkstyle.api.FileContents;
 import com.puppycrawl.tools.checkstyle.api.FileText;
 
 /**
@@ -131,7 +132,7 @@ public class UniquePropertiesCheck extends AbstractFileSetCheck {
     }
 
     @Override
-    protected void processFiltered(File file, FileText fileText) {
+    protected void processFiltered(File file, FileContents fileContents) {
         final UniqueProperties properties = new UniqueProperties();
         try (InputStream inputStream = Files.newInputStream(file.toPath())) {
             properties.load(inputStream);
@@ -144,7 +145,7 @@ public class UniquePropertiesCheck extends AbstractFileSetCheck {
         for (Entry<String, AtomicInteger> duplication : properties
                 .getDuplicatedKeys().entrySet()) {
             final String keyName = duplication.getKey();
-            final int lineNumber = getLineNumber(fileText, keyName);
+            final int lineNumber = getLineNumber(fileContents.getText(), keyName);
             // Number of occurrences is number of duplications + 1
             log(lineNumber, MSG_KEY, keyName, duplication.getValue().get() + 1);
         }

@@ -23,13 +23,13 @@ import static com.google.common.truth.Truth.assertWithMessage;
 import static com.puppycrawl.tools.checkstyle.PackageObjectFactory.AMBIGUOUS_MODULE_NAME_EXCEPTION_MESSAGE;
 import static com.puppycrawl.tools.checkstyle.PackageObjectFactory.BASE_PACKAGE;
 import static com.puppycrawl.tools.checkstyle.PackageObjectFactory.CHECK_SUFFIX;
-import static com.puppycrawl.tools.checkstyle.PackageObjectFactory.ModuleLoadOption.SEARCH_REGISTERED_PACKAGES;
-import static com.puppycrawl.tools.checkstyle.PackageObjectFactory.ModuleLoadOption.TRY_IN_ALL_REGISTERED_PACKAGES;
 import static com.puppycrawl.tools.checkstyle.PackageObjectFactory.NULL_LOADER_MESSAGE;
 import static com.puppycrawl.tools.checkstyle.PackageObjectFactory.NULL_PACKAGE_MESSAGE;
 import static com.puppycrawl.tools.checkstyle.PackageObjectFactory.PACKAGE_SEPARATOR;
 import static com.puppycrawl.tools.checkstyle.PackageObjectFactory.STRING_SEPARATOR;
 import static com.puppycrawl.tools.checkstyle.PackageObjectFactory.UNABLE_TO_INSTANTIATE_EXCEPTION_MESSAGE;
+import static com.puppycrawl.tools.checkstyle.PackageObjectFactory.ModuleLoadOption.SEARCH_REGISTERED_PACKAGES;
+import static com.puppycrawl.tools.checkstyle.PackageObjectFactory.ModuleLoadOption.TRY_IN_ALL_REGISTERED_PACKAGES;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.mockStatic;
 
@@ -52,7 +52,7 @@ import org.mockito.Mockito;
 
 import com.puppycrawl.tools.checkstyle.api.AbstractFileSetCheck;
 import com.puppycrawl.tools.checkstyle.api.CheckstyleException;
-import com.puppycrawl.tools.checkstyle.api.FileText;
+import com.puppycrawl.tools.checkstyle.api.FileContents;
 import com.puppycrawl.tools.checkstyle.api.Violation;
 import com.puppycrawl.tools.checkstyle.checks.annotation.AnnotationLocationCheck;
 import com.puppycrawl.tools.checkstyle.internal.utils.CheckUtil;
@@ -522,7 +522,7 @@ public class PackageObjectFactoryTest {
         }
 
         @Override
-        protected void processFiltered(File file, FileText fileText) {
+        protected void processFiltered(File file, FileContents fileContents) {
             // not used
         }
 

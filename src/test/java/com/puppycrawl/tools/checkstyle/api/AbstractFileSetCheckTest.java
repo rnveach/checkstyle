@@ -27,7 +27,6 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.SortedSet;
-import java.util.TreeSet;
 
 import org.junit.jupiter.api.Test;
 
@@ -68,8 +67,8 @@ public class AbstractFileSetCheckTest extends AbstractModuleTestSupport {
         check.configure(new DefaultConfiguration("filesetcheck"));
         check.setFileExtensions("tmp");
         final File firstFile = new File("inputAbstractFileSetCheck.tmp");
-        final SortedSet<Violation> firstFileMessages =
-            check.process(firstFile, new FileText(firstFile, Collections.emptyList()));
+        final SortedSet<Violation> firstFileMessages = check.process(firstFile,
+                new FileContents(new FileText(firstFile, Collections.emptyList())));
 
         assertWithMessage("Invalid message")
                 .that(firstFileMessages.first().getViolation())
@@ -84,7 +83,7 @@ public class AbstractFileSetCheckTest extends AbstractModuleTestSupport {
         final File secondFile = new File("inputAbstractFileSetCheck.txt");
         final List<String> lines = Arrays.asList("key=value", "ext=tmp");
         final SortedSet<Violation> secondFileMessages =
-            check.process(secondFile, new FileText(secondFile, lines));
+            check.process(secondFile, new FileContents(new FileText(secondFile, lines)));
 
         assertWithMessage("Message should be empty, but was not")
                 .that(secondFileMessages)
@@ -97,7 +96,8 @@ public class AbstractFileSetCheckTest extends AbstractModuleTestSupport {
         check.setFileExtensions("java");
         final File firstFile = new File("inputAbstractFileSetCheck.tmp");
 
-        check.process(firstFile, new FileText(firstFile, Collections.emptyList()));
+        check.process(firstFile,
+                new FileContents(new FileText(firstFile, Collections.emptyList())));
 
         final SortedSet<Violation> internalMessages =
                 check.getViolations();
@@ -115,7 +115,7 @@ public class AbstractFileSetCheckTest extends AbstractModuleTestSupport {
 
         final FileText fileText = new FileText(firstFile, Collections.emptyList());
         try {
-            check.process(firstFile, fileText);
+            check.process(firstFile, new FileContents(fileText));
             assertWithMessage("Exception is expected")
                     .fail();
         }
@@ -136,7 +136,7 @@ public class AbstractFileSetCheckTest extends AbstractModuleTestSupport {
         final File secondFile = new File("inputAbstractFileSetCheck.tmp");
         final FileText fileText2 = new FileText(secondFile, Collections.emptyList());
         try {
-            check.process(secondFile, fileText2);
+            check.process(secondFile, new FileContents(fileText2));
             assertWithMessage("Exception is expected")
                 .fail();
         }
@@ -190,7 +190,8 @@ public class AbstractFileSetCheckTest extends AbstractModuleTestSupport {
         final File file = new File(getPath("InputAbstractFileSetLineColumn.txt"));
         final FileText theText = new FileText(file.getAbsoluteFile(),
                 StandardCharsets.UTF_8.name());
-        final SortedSet<Violation> internalViolations = check.process(file, theText);
+        final SortedSet<Violation> internalViolations = check.process(file,
+                new FileContents(theText));
 
         assertWithMessage("Internal violation should only have 1")
                 .that(internalViolations)
@@ -282,8 +283,8 @@ public class AbstractFileSetCheckTest extends AbstractModuleTestSupport {
         private static final String MSG_KEY = "File should not be empty.";
 
         @Override
-        protected void processFiltered(File file, FileText fileText) {
-            if (fileText.size() == 0) {
+        protected void processFiltered(File file, FileContents fileContents) {
+            if (fileContents.getText().size() == 0) {
                 log(1, MSG_KEY);
             }
         }
@@ -295,7 +296,7 @@ public class AbstractFileSetCheckTest extends AbstractModuleTestSupport {
         private static final String MSG_KEY = "Violation.";
 
         @Override
-        protected void processFiltered(File file, FileText fileText) {
+        protected void processFiltered(File file, FileContents fileContents) {
             log(1, 5, MSG_KEY);
         }
 
@@ -307,7 +308,7 @@ public class AbstractFileSetCheckTest extends AbstractModuleTestSupport {
         private int finishProcessingCount;
 
         @Override
-        protected void processFiltered(File file, FileText fileText) {
+        protected void processFiltered(File file, FileContents fileContents) {
             // no code needed
         }
 
@@ -329,7 +330,7 @@ public class AbstractFileSetCheckTest extends AbstractModuleTestSupport {
         private int count = 1;
 
         @Override
-        protected void processFiltered(File file, FileText fileText) {
+        protected void processFiltered(File file, FileContents fileContents) {
             log(count, MSG_KEY);
             count++;
             throw new IllegalArgumentException("Test");
@@ -352,9 +353,9 @@ public class AbstractFileSetCheckTest extends AbstractModuleTestSupport {
         }
 
         @Override
-        public void fireErrors(String fileName, SortedSet<Violation> errors) {
+        public void fireErrors(String fileName, CheckstyleFileResults fileResults) {
             name = fileName;
-            errorList = new TreeSet<>(errors);
+            errorList = fileResults.getMessages();
         }
 
     }

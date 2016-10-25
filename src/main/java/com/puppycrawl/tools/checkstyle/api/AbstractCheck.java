@@ -37,7 +37,7 @@ import com.puppycrawl.tools.checkstyle.utils.CommonUtil;
  *      define these methods, as needed. They should be overridden only
  *      by demand in subclasses
  */
-public abstract class AbstractCheck extends AbstractViolationReporter {
+public abstract class AbstractCheck extends AbstractViolationReporter implements Cloneable {
 
     /**
      * The check context.
@@ -306,6 +306,11 @@ public abstract class AbstractCheck extends AbstractViolationReporter {
      */
     public final String getLine(int index) {
         return context.get().fileContents.getLine(index);
+    }
+
+    @Override
+    public Object clone() throws CloneNotSupportedException {
+        return super.clone();
     }
 
     /**

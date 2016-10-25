@@ -81,8 +81,8 @@ public class FileSetCheckTest
         }
 
         @Override
-        protected void processFiltered(File file, FileText fileText) {
-            contents = new FileContents(fileText);
+        protected void processFiltered(File file, FileContents fileContents) {
+            contents = fileContents;
         }
 
         @Override

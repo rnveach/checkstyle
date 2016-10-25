@@ -37,6 +37,7 @@ import org.junit.jupiter.api.Test;
 import com.puppycrawl.tools.checkstyle.AbstractModuleTestSupport;
 import com.puppycrawl.tools.checkstyle.DefaultConfiguration;
 import com.puppycrawl.tools.checkstyle.api.CheckstyleException;
+import com.puppycrawl.tools.checkstyle.api.FileContents;
 import com.puppycrawl.tools.checkstyle.api.FileText;
 import com.puppycrawl.tools.checkstyle.api.Violation;
 import com.puppycrawl.tools.checkstyle.internal.utils.TestUtil;
@@ -185,7 +186,7 @@ public class NewlineAtEndOfFileCheckTest
         lines.add("txt");
         final File impossibleFile = new File("");
         final FileText fileText = new FileText(impossibleFile, lines);
-        final Set<Violation> violations = check.process(impossibleFile, fileText);
+        final Set<Violation> violations = check.process(impossibleFile, new FileContents(fileText));
         assertWithMessage("Amount of violations is unexpected")
                 .that(violations)
                 .hasSize(1);

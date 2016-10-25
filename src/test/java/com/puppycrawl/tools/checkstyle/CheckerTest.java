@@ -61,11 +61,12 @@ import com.puppycrawl.tools.checkstyle.api.AuditEvent;
 import com.puppycrawl.tools.checkstyle.api.AuditListener;
 import com.puppycrawl.tools.checkstyle.api.AutomaticBean.OutputStreamOptions;
 import com.puppycrawl.tools.checkstyle.api.CheckstyleException;
+import com.puppycrawl.tools.checkstyle.api.CheckstyleFileResults;
 import com.puppycrawl.tools.checkstyle.api.Configuration;
 import com.puppycrawl.tools.checkstyle.api.Context;
 import com.puppycrawl.tools.checkstyle.api.DetailAST;
 import com.puppycrawl.tools.checkstyle.api.ExternalResourceHolder;
-import com.puppycrawl.tools.checkstyle.api.FileText;
+import com.puppycrawl.tools.checkstyle.api.FileContents;
 import com.puppycrawl.tools.checkstyle.api.Filter;
 import com.puppycrawl.tools.checkstyle.api.FilterSet;
 import com.puppycrawl.tools.checkstyle.api.MessageDispatcher;
@@ -134,7 +135,7 @@ public class CheckerTest extends AbstractModuleTestSupport {
         final SortedSet<Violation> violations = new TreeSet<>();
         violations.add(new Violation(1, 0, "a Bundle", "message.key",
                 new Object[] {"arg"}, null, getClass(), null));
-        checker.fireErrors("Some File Name", violations);
+        checker.fireErrors("Some File Name", new CheckstyleFileResults(null, violations));
 
         assertWithMessage("Checker.destroy() doesn't remove listeners.")
                 .that(auditAdapter.wasCalled())
@@ -196,7 +197,7 @@ public class CheckerTest extends AbstractModuleTestSupport {
         final SortedSet<Violation> violations = new TreeSet<>();
         violations.add(new Violation(1, 0, "a Bundle", "message.key",
                 new Object[] {"arg"}, null, getClass(), null));
-        checker.fireErrors("Some File Name", violations);
+        checker.fireErrors("Some File Name", new CheckstyleFileResults(null, violations));
         assertWithMessage("Checker.fireErrors() doesn't call listener")
                 .that(auditAdapter.wasCalled())
                 .isTrue();
@@ -254,7 +255,7 @@ public class CheckerTest extends AbstractModuleTestSupport {
         final SortedSet<Violation> violations = new TreeSet<>();
         violations.add(new Violation(1, 0, "a Bundle", "message.key",
                 new Object[] {"arg"}, null, getClass(), null));
-        checker.fireErrors("Some File Name", violations);
+        checker.fireErrors("Some File Name", new CheckstyleFileResults(null, violations));
         assertWithMessage("Checker.fireErrors() doesn't call listener")
                 .that(aa2.wasCalled())
                 .isTrue();
@@ -307,7 +308,7 @@ public class CheckerTest extends AbstractModuleTestSupport {
         final SortedSet<Violation> violations = new TreeSet<>();
         violations.add(new Violation(1, 0, "a Bundle", "message.key",
                 new Object[] {"arg"}, null, getClass(), null));
-        checker.fireErrors("Some File Name", violations);
+        checker.fireErrors("Some File Name", new CheckstyleFileResults(null, violations));
         assertWithMessage("Checker.fireErrors() doesn't call filter")
                 .that(filter.wasCalled())
                 .isTrue();
@@ -326,7 +327,7 @@ public class CheckerTest extends AbstractModuleTestSupport {
         final SortedSet<Violation> violations = new TreeSet<>();
         violations.add(new Violation(1, 0, "a Bundle", "message.key",
                 new Object[] {"arg"}, null, getClass(), null));
-        checker.fireErrors("Some File Name", violations);
+        checker.fireErrors("Some File Name", new CheckstyleFileResults(null, violations));
         assertWithMessage("Checker.fireErrors() doesn't call filter")
                 .that(f2.wasCalled())
                 .isTrue();
@@ -1695,7 +1696,7 @@ public class CheckerTest extends AbstractModuleTestSupport {
         implements ExternalResourceHolder {
 
         @Override
-        protected void processFiltered(File file, FileText fileText) {
+        protected void processFiltered(File file, FileContents fileContents) {
             log(1, "test");
         }
 
@@ -1734,7 +1735,7 @@ public class CheckerTest extends AbstractModuleTestSupport {
         }
 
         @Override
-        protected void processFiltered(File file, FileText fileText) {
+        protected void processFiltered(File file, FileContents fileContents) {
             // there is no need in implementation of the method
         }
 
@@ -1911,7 +1912,7 @@ public class CheckerTest extends AbstractModuleTestSupport {
         }
 
         @Override
-        protected void processFiltered(File file, FileText fileText) {
+        protected void processFiltered(File file, FileContents fileContents) {
             methodCalls.add("processFiltered");
         }
 
@@ -1938,7 +1939,7 @@ public class CheckerTest extends AbstractModuleTestSupport {
     public static class VerifyPositionAfterTabFileSet extends AbstractFileSetCheck {
 
         @Override
-        protected void processFiltered(File file, FileText fileText) {
+        protected void processFiltered(File file, FileContents fileContents) {
             int lineNumber = 0;
             for (String line : getFileContents().getLines()) {
                 final int position = line.lastIndexOf('\t');

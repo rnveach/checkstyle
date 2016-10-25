@@ -46,6 +46,7 @@ public final class AuditEvent
     private final String fileName;
     /** Violation associated with the event. **/
     private final Violation violation;
+    private final FileContents fileContents;
 
     /**
      * Creates a new instance.
@@ -63,7 +64,7 @@ public final class AuditEvent
      * @param fileName file associated with the event
      */
     public AuditEvent(Object src, String fileName) {
-        this(src, fileName, null);
+        this(src, fileName, null, null);
     }
 
     /**
@@ -71,11 +72,14 @@ public final class AuditEvent
      *
      * @param src source of the event
      * @param fileName file associated with the event
+     * @param fileContents the contents of the file associated with the event
      * @param violation the actual violation
      */
-    public AuditEvent(Object src, String fileName, Violation violation) {
+    public AuditEvent(Object src, String fileName, FileContents fileContents,
+            Violation violation) {
         super(src);
         this.fileName = fileName;
+        this.fileContents = fileContents;
         this.violation = violation;
     }
 
@@ -87,6 +91,10 @@ public final class AuditEvent
      */
     public String getFileName() {
         return fileName;
+    }
+
+    public FileContents getFileContents() {
+        return fileContents;
     }
 
     /**

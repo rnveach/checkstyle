@@ -47,7 +47,7 @@ public class AuditEventTest {
     public void testFullConstructor() {
         final Violation message = new Violation(1, 2, 3, "bundle", "key", null,
                 SeverityLevel.ERROR, "moduleId", getClass(), "customMessage");
-        final AuditEvent event = new AuditEvent(getClass(), "fileName", message);
+        final AuditEvent event = new AuditEvent(getClass(), "fileName", null, message);
 
         assertWithMessage("invalid file name")
                 .that(event.getFileName())

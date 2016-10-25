@@ -27,7 +27,8 @@ import java.util.concurrent.ConcurrentHashMap;
 import com.puppycrawl.tools.checkstyle.GlobalStatefulCheck;
 import com.puppycrawl.tools.checkstyle.api.AbstractFileSetCheck;
 import com.puppycrawl.tools.checkstyle.api.CheckstyleException;
-import com.puppycrawl.tools.checkstyle.api.FileText;
+import com.puppycrawl.tools.checkstyle.api.FileContents;
+import com.puppycrawl.tools.checkstyle.api.SingleInstance;
 
 /**
  * <p>
@@ -83,7 +84,7 @@ import com.puppycrawl.tools.checkstyle.api.FileText;
  * @since 5.0
  */
 @GlobalStatefulCheck
-public class JavadocPackageCheck extends AbstractFileSetCheck {
+public class JavadocPackageCheck extends AbstractFileSetCheck implements SingleInstance {
 
     /**
      * A key is pointing to the warning message text in "messages.properties"
@@ -113,7 +114,14 @@ public class JavadocPackageCheck extends AbstractFileSetCheck {
     }
 
     @Override
-    protected void processFiltered(File file, FileText fileText) throws CheckstyleException {
+    public void beginProcessing(String charset) {
+        super.beginProcessing(charset);
+        directoriesChecked.clear();
+    }
+
+    @Override
+    protected void processFiltered(File file, FileContents fileContents)
+            throws CheckstyleException {
         // Check if already processed directory
         final File dir;
         try {

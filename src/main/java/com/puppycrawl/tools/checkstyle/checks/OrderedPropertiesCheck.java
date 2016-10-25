@@ -34,6 +34,7 @@ import java.util.regex.Pattern;
 
 import com.puppycrawl.tools.checkstyle.StatelessCheck;
 import com.puppycrawl.tools.checkstyle.api.AbstractFileSetCheck;
+import com.puppycrawl.tools.checkstyle.api.FileContents;
 import com.puppycrawl.tools.checkstyle.api.FileText;
 
 /**
@@ -123,10 +124,10 @@ public class OrderedPropertiesCheck extends AbstractFileSetCheck {
      * Processes the file and check order.
      *
      * @param file the file to be processed
-     * @param fileText the contents of the file.
+     * @param fileContents the contents of the file.
      */
     @Override
-    protected void processFiltered(File file, FileText fileText) {
+    protected void processFiltered(File file, FileContents fileContents) {
         final SequencedProperties properties = new SequencedProperties();
         try (InputStream inputStream = Files.newInputStream(file.toPath())) {
             properties.load(inputStream);
@@ -146,7 +147,7 @@ public class OrderedPropertiesCheck extends AbstractFileSetCheck {
 
             if (String.CASE_INSENSITIVE_ORDER.compare(previousProp, propKey) > 0) {
 
-                final int lineNo = getLineNumber(startLineNo, fileText, previousProp, propKey);
+                final int lineNo = getLineNumber(startLineNo, fileContents.getText(), previousProp, propKey);
                 log(lineNo + 1, MSG_KEY, propKey, previousProp);
                 // start searching at position of the last reported validation
                 startLineNo = lineNo;
