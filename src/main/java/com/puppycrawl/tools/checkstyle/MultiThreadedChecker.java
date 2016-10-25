@@ -48,20 +48,17 @@ public class MultiThreadedChecker extends Checker {
         return super.process(files);
     }
 
-    /** Initializes the class. */
-    public void init() {
+    /**
+     * Initializes the class.
+     * 
+     * @throws CheckstyleException
+     */
+    public void init() throws CheckstyleException {
         if (executor == null) {
             executor = Executors.newFixedThreadPool(numberOfThreads);
         }
         if (tasks == null) {
             tasks = new MultiThreadedTask[numberOfThreads];
-        }
-        for (int i = 0; i < tasks.length; i++) {
-            if (tasks[i] == null) {
-                tasks[i] = new MultiThreadedTask();
-            }
-
-            tasks[i].init(charset, fileSetChecks);
         }
 
         tasksRunning = 0;
@@ -69,6 +66,20 @@ public class MultiThreadedChecker extends Checker {
 
     @Override
     protected void processFiles(List<File> files) throws CheckstyleException {
+        // init tasks
+        for (int i = 0; i < tasks.length; i++) {
+            if (tasks[i] == null) {
+                tasks[i] = new MultiThreadedTask();
+            }
+
+            try {
+                tasks[i].init(charset, fileSetChecks);
+            }
+            catch (CloneNotSupportedException ex) {
+                throw new CheckstyleException("Failed to deep copy a file set", ex);
+            }
+        }
+
         super.processFiles(files);
 
         // keep waiting for tasks to finish before returning
@@ -127,6 +138,13 @@ public class MultiThreadedChecker extends Checker {
         catch (Exception ex) {
             throw new CheckstyleException("Multi-threaded process tasks exception", ex);
         }
+    }
+
+    @Override
+    public void destroy() {
+        super.destroy();
+
+        executor.shutdownNow();
     }
 
     /**

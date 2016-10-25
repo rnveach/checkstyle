@@ -17,6 +17,7 @@
   <property name="severity" value="error"/>
 
   <property name="fileExtensions" value="java, properties, xml, g, g4"/>
+  <property name="numberOfThreads" value="4" />
 
   <!-- BeforeExecutionFileFilters is required for sources that are based on java9 -->
   <module name="BeforeExecutionExclusionFileFilter">
@@ -248,9 +249,6 @@
       <property name="separateLineBetweenGroups" value="true"/>
     </module>
     <module name="IllegalImport"/>
-    <module name="ImportControl">
-      <property name="file" value="${checkstyle.importcontrol.file}"/>
-    </module>
     <module name="ImportOrder">
       <property name="groups" value="/^javax?\./,org"/>
       <property name="ordered" value="true"/>

@@ -32,7 +32,7 @@ import com.puppycrawl.tools.checkstyle.utils.CommonUtils;
  * @see <a href="{@docRoot}/../writingchecks.html" target="_top">Writing
  * your own checks</a>
  */
-public abstract class AbstractCheck extends AbstractViolationReporter {
+public abstract class AbstractCheck extends AbstractViolationReporter implements Cloneable {
     /** Default tab width for column reporting. */
     private static final int DEFAULT_TAB_WIDTH = 8;
 
@@ -262,5 +262,12 @@ public abstract class AbstractCheck extends AbstractViolationReporter {
                 getId(),
                 getClass(),
                 getCustomMessages().get(key)));
+    }
+
+
+
+    @Override
+    public Object clone() throws CloneNotSupportedException {
+        return super.clone();
     }
 }

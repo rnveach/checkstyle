@@ -80,4 +80,11 @@ public interface FileSetCheck
      * method, the implementation is responsible for the logging of messages.
      */
     void finishProcessing();
+
+    /**
+     * Create a deep-enough copy of the class. It is up to the specific class whether it should be a
+     * deep or shallow copy.
+     * @return A copy of the class.
+     */
+    Object clone() throws CloneNotSupportedException;
 }

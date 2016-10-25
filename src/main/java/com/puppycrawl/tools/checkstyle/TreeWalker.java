@@ -37,6 +37,7 @@ import antlr.Token;
 import antlr.TokenStreamException;
 import antlr.TokenStreamHiddenTokenFilter;
 import antlr.TokenStreamRecognitionException;
+
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
 import com.puppycrawl.tools.checkstyle.api.AbstractCheck;
@@ -60,7 +61,7 @@ import com.puppycrawl.tools.checkstyle.utils.TokenUtils;
  *
  * @author Oliver Burn
  */
-public final class TreeWalker extends AbstractFileSetCheck implements ExternalResourceHolder {
+public final class TreeWalker extends AbstractFileSetCheck implements ExternalResourceHolder, Cloneable {
 
     /** Default distance between tab stops. */
     private static final int DEFAULT_TAB_WIDTH = 8;
@@ -96,6 +97,24 @@ public final class TreeWalker extends AbstractFileSetCheck implements ExternalRe
      */
     public TreeWalker() {
         setFileExtensions("java");
+    }
+
+    public TreeWalker(TreeWalker treeWalker) throws CheckstyleException, CloneNotSupportedException {
+        for (AbstractCheck oldCheck : treeWalker.ordinaryChecks) {
+            final AbstractCheck check = (AbstractCheck) oldCheck.clone();
+            registerCheck(check);
+        }
+        for (AbstractCheck oldCheck : treeWalker.commentChecks) {
+            final AbstractCheck check = (AbstractCheck) oldCheck.clone();
+            registerCheck(check);
+        }
+
+        this.tabWidth = treeWalker.tabWidth;
+        this.classLoader = treeWalker.classLoader;
+        this.moduleFactory = treeWalker.moduleFactory;
+        
+        // populate this.childContext
+        finishLocalSetup();
     }
 
     /**
@@ -723,5 +742,15 @@ public final class TreeWalker extends AbstractFileSetCheck implements ExternalRe
          * AST contains comment nodes.
          */
         WITH_COMMENTS
+    }
+
+    @Override
+    public Object clone() throws CloneNotSupportedException {
+        try {
+            return new TreeWalker(this);
+        }
+        catch (CheckstyleException ex) {
+            throw new CloneNotSupportedException(ex.getClass().getName() + ": " + ex.getMessage());
+        }
     }
 }

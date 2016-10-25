@@ -20,6 +20,7 @@
 package com.puppycrawl.tools.checkstyle;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.SortedSet;
 import java.util.concurrent.Callable;
@@ -50,11 +51,32 @@ public class MultiThreadedTask implements Callable<SortedSet<LocalizedMessage>> 
      *            Name of a charset.
      * @param fileSetChecks
      *            List of fileset checks.
+     * @throws CloneNotSupportedException
      */
-    public void init(String charset, List<FileSetCheck> fileSetChecks) {
+    public void init(String charset, List<FileSetCheck> fileSetChecks)
+            throws CloneNotSupportedException {
         this.charset = charset;
 
         // TODO: copy filesets here
+        this.fileSetChecks = copy(fileSetChecks);
+    }
+
+    /**
+     * Make a deep copy of the list.
+     * 
+     * @param list
+     *            Deep list of elements to copy.
+     * @return New list of elements.
+     * @throws CloneNotSupportedException
+     */
+    private List<FileSetCheck> copy(List<FileSetCheck> list) throws CloneNotSupportedException {
+        final List<FileSetCheck> result = new ArrayList<FileSetCheck>();
+
+        for (FileSetCheck fsc : list) {
+            result.add((FileSetCheck) fsc.clone());
+        }
+
+        return result;
     }
 
     /**

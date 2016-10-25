@@ -34,7 +34,7 @@ import com.puppycrawl.tools.checkstyle.utils.CommonUtils;
  */
 public abstract class AbstractFileSetCheck
     extends AbstractViolationReporter
-    implements FileSetCheck {
+    implements FileSetCheck, Cloneable {
 
     /** Collects the error messages. */
     private final LocalizedMessages messageCollector = new LocalizedMessages();
@@ -174,5 +174,10 @@ public abstract class AbstractFileSetCheck
                 .getMessages();
         messageCollector.reset();
         getMessageDispatcher().fireErrors(fileName, errors);
+    }
+
+    @Override
+    public Object clone() throws CloneNotSupportedException {
+        return super.clone();
     }
 }
