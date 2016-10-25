@@ -73,7 +73,7 @@ public class Checker extends AutomaticBean implements MessageDispatcher, Initial
     private final List<AuditListener> listeners = new ArrayList<>();
 
     /** Vector of fileset checks. */
-    private final List<FileSetCheck> fileSetChecks = new ArrayList<>();
+    protected final List<FileSetCheck> fileSetChecks = new ArrayList<>();
 
     /** The audit event before execution file filters. */
     private final BeforeExecutionFileFilterSet beforeExecutionFileFilters =
@@ -119,7 +119,7 @@ public class Checker extends AutomaticBean implements MessageDispatcher, Initial
     private SeverityLevel severityLevel = SeverityLevel.ERROR;
 
     /** Name of a charset. */
-    private String charset = System.getProperty("file.encoding", "UTF-8");
+    protected String charset = System.getProperty("file.encoding", "UTF-8");
 
     /** Cache file. **/
     private PropertyCacheFile cache;
@@ -261,7 +261,7 @@ public class Checker extends AutomaticBean implements MessageDispatcher, Initial
      * @throws CheckstyleException if error condition within Checkstyle occurs.
      * @noinspection ProhibitedExceptionThrown
      */
-    private void processFiles(List<File> files) throws CheckstyleException {
+    protected void processFiles(List<File> files) throws CheckstyleException {
         for (final File file : files) {
             try {
                 final String fileName = file.getAbsolutePath();
@@ -271,13 +271,7 @@ public class Checker extends AutomaticBean implements MessageDispatcher, Initial
                         || !acceptFileStarted(fileName)) {
                     continue;
                 }
-                fireFileStarted(fileName);
-                final SortedSet<LocalizedMessage> fileMessages = processFile(file);
-                fireErrors(fileName, fileMessages);
-                fireFileFinished(fileName);
-                if (cache != null && fileMessages.isEmpty()) {
-                    cache.put(fileName, timestamp);
-                }
+                workFile(file, timestamp);
             }
             // -@cs[IllegalCatch] There is no other way to deliver filename that was under
             // processing. See https://github.com/checkstyle/checkstyle/issues/2285
@@ -294,12 +288,53 @@ public class Checker extends AutomaticBean implements MessageDispatcher, Initial
     }
 
     /**
+     * Actually process the file and work its results.
+     * @param file The file to work.
+     * @param timestamp The timestamp of the file.
+     * @throws Exception if error condition within Checkstyle occurs.
+     */
+    protected void workFile(File file, long timestamp) throws Exception {
+        final String fileName = file.getAbsolutePath();
+        fireFileStarted(fileName);
+        final SortedSet<LocalizedMessage> fileMessages = processFile(file);
+        endWorkingFile(fileName, fileMessages, timestamp);
+    }
+
+    /**
+     * Finish working on the file by firing its errors and notifying all listeners.
+     * @param fileName The name of the file.
+     * @param fileMessages The violation messages the file generated.
+     * @param timestamp The timestamp of the file.
+     */
+    protected void endWorkingFile(String fileName, SortedSet<LocalizedMessage> fileMessages,
+            long timestamp) {
+        fireErrors(fileName, fileMessages);
+        fireFileFinished(fileName);
+        if (cache != null && fileMessages.isEmpty()) {
+            cache.put(fileName, timestamp);
+        }
+    }
+
+    /**
      * Processes a file with all FileSetChecks.
      * @param file a file to process.
      * @return a sorted set of messages to be logged.
      * @throws CheckstyleException if error condition within Checkstyle occurs.
      */
     private SortedSet<LocalizedMessage> processFile(File file) throws CheckstyleException {
+        return processFile(file, charset, fileSetChecks);
+    }
+
+    /**
+     * Processes a file with all FileSetChecks.
+     * @param file a file to process.
+     * @param charset Name of a charset.
+     * @param fileSetChecks List of fileset checks.
+     * @return a sorted set of messages to be logged.
+     * @throws CheckstyleException if error condition within Checkstyle occurs.
+     */
+    public static SortedSet<LocalizedMessage> processFile(File file, String charset,
+            List<FileSetCheck> fileSetChecks) throws CheckstyleException {
         final SortedSet<LocalizedMessage> fileMessages = new TreeSet<>();
         try {
             final FileText theText = new FileText(file.getAbsoluteFile(), charset);
@@ -309,9 +344,9 @@ public class Checker extends AutomaticBean implements MessageDispatcher, Initial
         }
         catch (final IOException ioe) {
             LOG.debug("IOException occurred.", ioe);
-            fileMessages.add(new LocalizedMessage(0,
-                    Definitions.CHECKSTYLE_BUNDLE, "general.exception",
-                    new String[] {ioe.getMessage()}, null, getClass(), null));
+            fileMessages.add(new LocalizedMessage(0, Definitions.CHECKSTYLE_BUNDLE,
+                    "general.exception", new String[] {ioe.getMessage()}, null, Checker.class,
+                    null));
         }
         return fileMessages;
     }
