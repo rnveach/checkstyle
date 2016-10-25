@@ -46,6 +46,11 @@ public class PackageObjectFactoryTest {
         new PackageObjectFactory(new HashSet<>(), null);
     }
 
+    @Test(expected = IllegalArgumentException.class)
+    public void testCtorException2() {
+        new PackageObjectFactory("test", null);
+    }
+
     @Test
     public void testMakeObjectFromName()
             throws CheckstyleException {

@@ -49,6 +49,7 @@ import com.google.common.io.Closeables;
 import com.puppycrawl.tools.checkstyle.api.AuditListener;
 import com.puppycrawl.tools.checkstyle.api.CheckstyleException;
 import com.puppycrawl.tools.checkstyle.api.Configuration;
+import com.puppycrawl.tools.checkstyle.api.InitialModule;
 import com.puppycrawl.tools.checkstyle.utils.CommonUtils;
 
 /**
@@ -409,26 +410,43 @@ public final class Main {
         // create a listener for output
         final AuditListener listener = createListener(cliOptions.format, cliOptions.outputLocation);
 
-        // create Checker object and run it
+        // create InitialModule object and run it
         int errorCounter = 0;
-        final Checker checker = new Checker();
+        final ClassLoader moduleClassLoader = Checker.class.getClassLoader();
+        final InitialModule initialModule = getInitialModule(config.getName(), moduleClassLoader);
 
         try {
 
-            final ClassLoader moduleClassLoader = Checker.class.getClassLoader();
-            checker.setModuleClassLoader(moduleClassLoader);
-            checker.configure(config);
-            checker.addListener(listener);
+            initialModule.setModuleClassLoader(moduleClassLoader);
+            initialModule.configure(config);
+            initialModule.addListener(listener);
 
-            // run Checker
-            errorCounter = checker.process(cliOptions.files);
+            // run InitialModule
+            errorCounter = initialModule.process(cliOptions.files);
 
         }
         finally {
-            checker.destroy();
+            initialModule.destroy();
         }
 
         return errorCounter;
+    }
+
+    /**
+     * Creates a new instance of the initial module that will control and run
+     * Checkstyle.
+     * @param name The name of the module. This will either be a short name that
+     *        will have to be found or the complete package name.
+     * @param moduleClassLoader Class loader used to load the initial module.
+     * @return The new instance of the initial module.
+     * @throws CheckstyleException if no module can be instantiated from name
+     */
+    private static InitialModule getInitialModule(String name, ClassLoader moduleClassLoader)
+            throws CheckstyleException {
+        final ModuleFactory factory = new PackageObjectFactory(
+                Checker.class.getPackage().getName() + ".", moduleClassLoader);
+
+        return (InitialModule) factory.createModule(name);
     }
 
     /**
