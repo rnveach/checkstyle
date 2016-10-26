@@ -20,11 +20,17 @@
 package com.puppycrawl.tools.checkstyle.api;
 
 import java.io.File;
+import java.util.ArrayDeque;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 import java.util.SortedSet;
+import java.util.TreeSet;
 
 import com.puppycrawl.tools.checkstyle.utils.CommonUtils;
+import com.rits.cloning.Cloner;
+import com.rits.cloning.IDeepCloner;
+import com.rits.cloning.IFastCloner;
 
 /**
  * Provides common functionality for many FileSetChecks.
@@ -35,6 +41,11 @@ import com.puppycrawl.tools.checkstyle.utils.CommonUtils;
 public abstract class AbstractFileSetCheck
     extends AbstractViolationReporter
     implements FileSetCheck, Cloneable {
+    private static Cloner cloner = new Cloner();
+    private static boolean addedFinalCloneClasses;
+
+    /** Class loader to resolve classes with. **/
+    private ClassLoader classLoader;
 
     /** Collects the error messages. */
     private final LocalizedMessages messageCollector = new LocalizedMessages();
@@ -45,6 +56,40 @@ public abstract class AbstractFileSetCheck
     /** The file extensions that are accepted by this filter. */
     private String[] fileExtensions = CommonUtils.EMPTY_STRING_ARRAY;
 
+    static {
+        // cloner.setDumpClonedClasses(true);
+        cloner.nullInsteadOfClone(Cloner.class);
+        cloner.dontCloneInstanceOf(MessageDispatcher.class);
+        cloner.registerFastCloner(TreeSet.class, new IFastCloner() {
+            @SuppressWarnings({ "unchecked", "rawtypes" })
+            @Override
+            public Object clone(Object t, IDeepCloner deepCloner, Map<Object, Object> clones) {
+                final TreeSet<Object> m = (TreeSet) t;
+                final TreeSet result = new TreeSet(m.comparator());
+                for (final Object v : m)
+                {
+                    final Object value = deepCloner.deepClone(v, clones);
+                    result.add(value);
+                }
+                return result;
+            }
+        });
+        cloner.registerFastCloner(ArrayDeque.class, new IFastCloner() {
+            @SuppressWarnings({ "unchecked", "rawtypes" })
+            @Override
+            public Object clone(Object t, IDeepCloner deepCloner, Map<Object, Object> clones) {
+                final ArrayDeque<Object> m = (ArrayDeque) t;
+                final ArrayDeque result = new ArrayDeque();
+                for (final Object v : m)
+                {
+                    final Object value = deepCloner.deepClone(v, clones);
+                    result.add(value);
+                }
+                return result;
+            }
+        });
+    }
+
     /**
      * Called to process a file that matches the specified file extensions.
      * @param file the file to be processed
@@ -53,6 +98,20 @@ public abstract class AbstractFileSetCheck
      */
     protected abstract void processFiltered(File file, List<String> lines)
             throws CheckstyleException;
+
+    /**
+     * Retrieves the class loader.
+     */
+    public ClassLoader getClassLoader() {
+        return classLoader;
+    }
+
+    /**
+     * @param classLoader class loader to resolve classes with.
+     */
+    public void setClassLoader(ClassLoader classLoader) {
+        this.classLoader = classLoader;
+    }
 
     @Override
     public void init() {
@@ -179,6 +238,20 @@ public abstract class AbstractFileSetCheck
 
     @Override
     public Object clone() throws CloneNotSupportedException {
-        return super.clone();
+        if (!addedFinalCloneClasses) {
+            cloner.registerFastCloner(classLoader.getClass(), new IFastCloner() {
+                @Override
+                public Object clone(Object t, IDeepCloner cloner, Map<Object, Object> clones) {
+                    return t;
+                }
+            });
+            addedFinalCloneClasses = true;
+        }
+
+        final AbstractFileSetCheck clone = cloner.deepClone(this);
+
+        clone.messageDispatcher = messageDispatcher;
+
+        return clone;
     }
 }

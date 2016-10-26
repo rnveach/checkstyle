@@ -146,7 +146,7 @@ public class DefaultLogger extends AutomaticBean implements AuditListener {
     public void auditFinished(AuditEvent event) {
         long end = System.nanoTime();
         infoWriter.println("Audit done." + new Date());
-        infoWriter.println("Done in " + ((end - start) / 1000000000.0) + " nanos");
+        infoWriter.println("Done in " + ((end - start) / 1000000000.0) + " seconds");
         closeStreams();
     }
 

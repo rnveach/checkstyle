@@ -23,16 +23,13 @@ import java.io.File;
 import java.io.Reader;
 import java.io.StringReader;
 import java.util.AbstractMap.SimpleEntry;
-import java.util.ArrayDeque;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
-import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
-import java.util.TreeSet;
 
 import antlr.CommonHiddenStreamToken;
 import antlr.RecognitionException;
@@ -57,9 +54,6 @@ import com.puppycrawl.tools.checkstyle.grammars.GeneratedJavaLexer;
 import com.puppycrawl.tools.checkstyle.grammars.GeneratedJavaRecognizer;
 import com.puppycrawl.tools.checkstyle.utils.CommonUtils;
 import com.puppycrawl.tools.checkstyle.utils.TokenUtils;
-import com.rits.cloning.Cloner;
-import com.rits.cloning.IDeepCloner;
-import com.rits.cloning.IFastCloner;
 
 /**
  * Responsible for walking an abstract syntax tree and notifying interested
@@ -67,7 +61,7 @@ import com.rits.cloning.IFastCloner;
  *
  * @author Oliver Burn
  */
-public final class TreeWalker extends AbstractFileSetCheck implements ExternalResourceHolder, Cloneable {
+public final class TreeWalker extends AbstractFileSetCheck implements ExternalResourceHolder {
 
     /** Default distance between tab stops. */
     private static final int DEFAULT_TAB_WIDTH = 8;
@@ -89,9 +83,6 @@ public final class TreeWalker extends AbstractFileSetCheck implements ExternalRe
     /** The distance between tab stops. */
     private int tabWidth = DEFAULT_TAB_WIDTH;
 
-    /** Class loader to resolve classes with. **/
-    private ClassLoader classLoader;
-
     /** Context of child components. */
     private Context childContext;
 
@@ -103,73 +94,6 @@ public final class TreeWalker extends AbstractFileSetCheck implements ExternalRe
      */
     public TreeWalker() {
         setFileExtensions("java");
-    }
-
-    public TreeWalker(TreeWalker treeWalker) throws CheckstyleException {
-        Cloner cloner = new Cloner();
-        // cloner.setDumpClonedClasses(true);
-        cloner.registerFastCloner(TreeSet.class, new IFastCloner() {
-            @Override
-            public Object clone(Object t, IDeepCloner cloner, Map<Object, Object> clones) {
-                final TreeSet<Object> m = (TreeSet) t;
-                final TreeSet result = new TreeSet(m.comparator());
-                for (final Object v : m)
-                {
-                    final Object value = cloner.deepClone(v, clones);
-                    result.add(value);
-                }
-                return result;
-            }
-        });
-        cloner.registerFastCloner(ArrayDeque.class, new IFastCloner() {
-            @Override
-            public Object clone(Object t, IDeepCloner cloner, Map<Object, Object> clones) {
-                final ArrayDeque<Object> m = (ArrayDeque) t;
-                final ArrayDeque result = new ArrayDeque();
-                for (final Object v : m)
-                {
-                    final Object value = cloner.deepClone(v, clones);
-                    result.add(value);
-                }
-                return result;
-            }
-        });
-        cloner.registerFastCloner(treeWalker.classLoader.getClass(), new IFastCloner() {
-            @Override
-            public Object clone(Object t, IDeepCloner cloner, Map<Object, Object> clones) {
-                return t;
-            }
-        });
-
-        cloner.deepClone(new AbstractCheck() {
-            @Override
-            public int[] getDefaultTokens() {
-                return new int[]{};
-            }
-        });
-
-        for (AbstractCheck oldCheck : treeWalker.ordinaryChecks) {
-            final AbstractCheck check = cloner.deepClone(oldCheck);
-            registerCheck(check);
-//            break;
-        }
-        for (AbstractCheck oldCheck : treeWalker.commentChecks) {
-            final AbstractCheck check = cloner.deepClone(oldCheck);
-            registerCheck(check);
-            break;
-        }
-
-        this.tabWidth = treeWalker.tabWidth;
-        this.classLoader = treeWalker.classLoader;
-        this.moduleFactory = treeWalker.moduleFactory;
-        // super clone
-        this.setFileExtensions(treeWalker.getFileExtensions());
-        this.setMessageDispatcher(treeWalker.getMessageDispatcher());
-        this.setSeverity(treeWalker.getSeverity());
-        this.setId(treeWalker.getSeverity());
-
-        // populate this.childContext
-        finishLocalSetup();
     }
 
     /**
@@ -194,13 +118,6 @@ public final class TreeWalker extends AbstractFileSetCheck implements ExternalRe
     }
 
     /**
-     * @param classLoader class loader to resolve classes with.
-     */
-    public void setClassLoader(ClassLoader classLoader) {
-        this.classLoader = classLoader;
-    }
-
-    /**
      * Sets the module factory for creating child modules (Checks).
      * @param moduleFactory the factory
      */
@@ -211,7 +128,7 @@ public final class TreeWalker extends AbstractFileSetCheck implements ExternalRe
     @Override
     public void finishLocalSetup() {
         final DefaultContext checkContext = new DefaultContext();
-        checkContext.add("classLoader", classLoader);
+        checkContext.add("classLoader", getClassLoader());
         checkContext.add("messages", getMessageCollector());
         checkContext.add("severity", getSeverity());
         checkContext.add("tabWidth", String.valueOf(tabWidth));
@@ -797,15 +714,5 @@ public final class TreeWalker extends AbstractFileSetCheck implements ExternalRe
          * AST contains comment nodes.
          */
         WITH_COMMENTS
-    }
-
-    @Override
-    public Object clone() throws CloneNotSupportedException {
-        try {
-            return new TreeWalker(this);
-        }
-        catch (CheckstyleException ex) {
-            throw new CloneNotSupportedException(ex.getClass().getName() + ": " + ex.getMessage());
-        }
     }
 }
