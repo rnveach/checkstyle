@@ -264,8 +264,6 @@ public abstract class AbstractCheck extends AbstractViolationReporter implements
                 getCustomMessages().get(key)));
     }
 
-
-
     @Override
     public Object clone() throws CloneNotSupportedException {
         return super.clone();

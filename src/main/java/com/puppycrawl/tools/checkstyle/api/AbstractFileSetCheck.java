@@ -75,6 +75,7 @@ public abstract class AbstractFileSetCheck
         messageCollector.reset();
         // Process only what interested in
         if (CommonUtils.matchesFileExtension(file, fileExtensions)) {
+//            System.out.println("File '" + file.getAbsolutePath() + "' matches extensions " + Arrays.toString(fileExtensions) + " in " + this.getClass().getSimpleName());
             processFiltered(file, lines);
         }
         return messageCollector.getMessages();

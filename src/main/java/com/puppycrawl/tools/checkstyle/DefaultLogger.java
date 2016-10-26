@@ -24,6 +24,7 @@ import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.io.Writer;
 import java.nio.charset.StandardCharsets;
+import java.util.Date;
 
 import com.puppycrawl.tools.checkstyle.api.AuditEvent;
 import com.puppycrawl.tools.checkstyle.api.AuditListener;
@@ -132,15 +133,20 @@ public class DefaultLogger extends AutomaticBean implements AuditListener {
         }
     }
 
+    private long start;
+
     @Override
     public void auditStarted(AuditEvent event) {
-        infoWriter.println("Starting audit...");
+        infoWriter.println("Starting audit..." + new Date());
         infoWriter.flush();
+        start = System.nanoTime();
     }
 
     @Override
     public void auditFinished(AuditEvent event) {
-        infoWriter.println("Audit done.");
+        long end = System.nanoTime();
+        infoWriter.println("Audit done." + new Date());
+        infoWriter.println("Done in " + ((end - start) / 1000000000.0) + " nanos");
         closeStreams();
     }
 

@@ -46,7 +46,7 @@ public class MultiThreadedTask implements Callable<SortedSet<LocalizedMessage>> 
 
     /**
      * Initializes the class.
-     * 
+     *
      * @param charset
      *            Name of a charset.
      * @param fileSetChecks
@@ -56,20 +56,18 @@ public class MultiThreadedTask implements Callable<SortedSet<LocalizedMessage>> 
     public void init(String charset, List<FileSetCheck> fileSetChecks)
             throws CloneNotSupportedException {
         this.charset = charset;
-
-        // TODO: copy filesets here
         this.fileSetChecks = copy(fileSetChecks);
     }
 
     /**
      * Make a deep copy of the list.
-     * 
+     *
      * @param list
      *            Deep list of elements to copy.
      * @return New list of elements.
      * @throws CloneNotSupportedException
      */
-    private List<FileSetCheck> copy(List<FileSetCheck> list) throws CloneNotSupportedException {
+    private static List<FileSetCheck> copy(List<FileSetCheck> list) throws CloneNotSupportedException {
         final List<FileSetCheck> result = new ArrayList<FileSetCheck>();
 
         for (FileSetCheck fsc : list) {

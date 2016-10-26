@@ -30,7 +30,7 @@ import com.puppycrawl.tools.checkstyle.api.LocalizedMessage;
 
 /**
  * This class provides the functionality to check a set of files in a multi-threaded environment.
- * 
+ *
  * @author Richard Veach
  */
 public class MultiThreadedChecker extends Checker {
@@ -50,10 +50,8 @@ public class MultiThreadedChecker extends Checker {
 
     /**
      * Initializes the class.
-     * 
-     * @throws CheckstyleException
      */
-    public void init() throws CheckstyleException {
+    public void init() {
         if (executor == null) {
             executor = Executors.newFixedThreadPool(numberOfThreads);
         }
@@ -122,12 +120,12 @@ public class MultiThreadedChecker extends Checker {
                         else if (file != null) {
                             task.start(executor, file);
                             tasksRunning++;
-                            break;
+                            return;
                         }
                     }
                 }
 
-                if (file == null) {
+                if (file == null || tasksRunning == 0) {
                     break;
                 }
 

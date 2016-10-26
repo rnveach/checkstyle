@@ -250,6 +250,13 @@
       <scope>provided</scope>
     </dependency>
 
+    <!-- multi-threaded deep cloning -->
+    <dependency>
+      <groupId>uk.com.robust-it</groupId>
+      <artifactId>cloning</artifactId>
+      <version>1.9.3</version>
+    </dependency>
+
     <!-- test scope stuff -->
     <dependency>
       <groupId>junit</groupId>

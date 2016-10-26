@@ -23,13 +23,16 @@ import java.io.File;
 import java.io.Reader;
 import java.io.StringReader;
 import java.util.AbstractMap.SimpleEntry;
+import java.util.ArrayDeque;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
+import java.util.TreeSet;
 
 import antlr.CommonHiddenStreamToken;
 import antlr.RecognitionException;
@@ -54,6 +57,9 @@ import com.puppycrawl.tools.checkstyle.grammars.GeneratedJavaLexer;
 import com.puppycrawl.tools.checkstyle.grammars.GeneratedJavaRecognizer;
 import com.puppycrawl.tools.checkstyle.utils.CommonUtils;
 import com.puppycrawl.tools.checkstyle.utils.TokenUtils;
+import com.rits.cloning.Cloner;
+import com.rits.cloning.IDeepCloner;
+import com.rits.cloning.IFastCloner;
 
 /**
  * Responsible for walking an abstract syntax tree and notifying interested
@@ -99,20 +105,69 @@ public final class TreeWalker extends AbstractFileSetCheck implements ExternalRe
         setFileExtensions("java");
     }
 
-    public TreeWalker(TreeWalker treeWalker) throws CheckstyleException, CloneNotSupportedException {
+    public TreeWalker(TreeWalker treeWalker) throws CheckstyleException {
+        Cloner cloner = new Cloner();
+        // cloner.setDumpClonedClasses(true);
+        cloner.registerFastCloner(TreeSet.class, new IFastCloner() {
+            @Override
+            public Object clone(Object t, IDeepCloner cloner, Map<Object, Object> clones) {
+                final TreeSet<Object> m = (TreeSet) t;
+                final TreeSet result = new TreeSet(m.comparator());
+                for (final Object v : m)
+                {
+                    final Object value = cloner.deepClone(v, clones);
+                    result.add(value);
+                }
+                return result;
+            }
+        });
+        cloner.registerFastCloner(ArrayDeque.class, new IFastCloner() {
+            @Override
+            public Object clone(Object t, IDeepCloner cloner, Map<Object, Object> clones) {
+                final ArrayDeque<Object> m = (ArrayDeque) t;
+                final ArrayDeque result = new ArrayDeque();
+                for (final Object v : m)
+                {
+                    final Object value = cloner.deepClone(v, clones);
+                    result.add(value);
+                }
+                return result;
+            }
+        });
+        cloner.registerFastCloner(treeWalker.classLoader.getClass(), new IFastCloner() {
+            @Override
+            public Object clone(Object t, IDeepCloner cloner, Map<Object, Object> clones) {
+                return t;
+            }
+        });
+
+        cloner.deepClone(new AbstractCheck() {
+            @Override
+            public int[] getDefaultTokens() {
+                return new int[]{};
+            }
+        });
+
         for (AbstractCheck oldCheck : treeWalker.ordinaryChecks) {
-            final AbstractCheck check = (AbstractCheck) oldCheck.clone();
+            final AbstractCheck check = cloner.deepClone(oldCheck);
             registerCheck(check);
+//            break;
         }
         for (AbstractCheck oldCheck : treeWalker.commentChecks) {
-            final AbstractCheck check = (AbstractCheck) oldCheck.clone();
+            final AbstractCheck check = cloner.deepClone(oldCheck);
             registerCheck(check);
+            break;
         }
 
         this.tabWidth = treeWalker.tabWidth;
         this.classLoader = treeWalker.classLoader;
         this.moduleFactory = treeWalker.moduleFactory;
-        
+        // super clone
+        this.setFileExtensions(treeWalker.getFileExtensions());
+        this.setMessageDispatcher(treeWalker.getMessageDispatcher());
+        this.setSeverity(treeWalker.getSeverity());
+        this.setId(treeWalker.getSeverity());
+
         // populate this.childContext
         finishLocalSetup();
     }
