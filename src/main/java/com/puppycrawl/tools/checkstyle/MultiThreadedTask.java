@@ -22,14 +22,13 @@ package com.puppycrawl.tools.checkstyle;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.SortedSet;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Future;
 
+import com.puppycrawl.tools.checkstyle.api.CheckstyleFileResults;
 import com.puppycrawl.tools.checkstyle.api.FileSetCheck;
-import com.puppycrawl.tools.checkstyle.api.LocalizedMessage;
 
 /**
  * This class provides the functionality to perform one set of work on a file in a multi-threaded
@@ -37,8 +36,8 @@ import com.puppycrawl.tools.checkstyle.api.LocalizedMessage;
  *
  * @author Richard Veach
  */
-public class MultiThreadedTask implements Callable<SortedSet<LocalizedMessage>> {
-    private Future<SortedSet<LocalizedMessage>> future;
+public class MultiThreadedTask implements Callable<CheckstyleFileResults> {
+    private Future<CheckstyleFileResults> future;
 
     private File file;
     private String charset;
@@ -91,7 +90,7 @@ public class MultiThreadedTask implements Callable<SortedSet<LocalizedMessage>> 
     }
 
     @Override
-    public SortedSet<LocalizedMessage> call() throws Exception {
+    public CheckstyleFileResults call() throws Exception {
         return Checker.processFile(file, charset, fileSetChecks);
     }
 
@@ -122,8 +121,8 @@ public class MultiThreadedTask implements Callable<SortedSet<LocalizedMessage>> 
      * @throws ExecutionException
      *             if the current task was interrupted while waiting
      */
-    public SortedSet<LocalizedMessage> getResult() throws InterruptedException, ExecutionException {
-        final SortedSet<LocalizedMessage> result = future.get();
+    public CheckstyleFileResults getResult() throws InterruptedException, ExecutionException {
+        final CheckstyleFileResults result = future.get();
 
         future = null;
 

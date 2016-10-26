@@ -20,8 +20,6 @@
 package com.puppycrawl.tools.checkstyle.checks;
 
 import com.puppycrawl.tools.checkstyle.api.AbstractCheck;
-import com.puppycrawl.tools.checkstyle.api.DetailAST;
-import com.puppycrawl.tools.checkstyle.api.FileContents;
 import com.puppycrawl.tools.checkstyle.utils.CommonUtils;
 
 /**
@@ -31,17 +29,9 @@ import com.puppycrawl.tools.checkstyle.utils.CommonUtils;
  * @author Mike McMahon
  * @author Rick Giles
  */
+@Deprecated
 public class FileContentsHolder
     extends AbstractCheck {
-    /** The current file contents. */
-    private static final ThreadLocal<FileContents> FILE_CONTENTS = new ThreadLocal<>();
-
-    /**
-     * @return the current file contents.
-     */
-    public static FileContents getContents() {
-        return FILE_CONTENTS.get();
-    }
 
     @Override
     public int[] getDefaultTokens() {
@@ -56,18 +46,5 @@ public class FileContentsHolder
     @Override
     public int[] getRequiredTokens() {
         return getAcceptableTokens();
-    }
-
-    @Override
-    public void beginTree(DetailAST rootAST) {
-        FILE_CONTENTS.set(getFileContents());
-    }
-
-    @Override
-    public void destroy() {
-        // This needs to be called in destroy, rather than finishTree()
-        // as finishTree() is called before the messages are passed to the
-        // filters. Without calling remove, there is a memory leak.
-        FILE_CONTENTS.remove();
     }
 }

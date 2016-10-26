@@ -46,6 +46,7 @@ import com.google.common.collect.SetMultimap;
 import com.google.common.io.Closeables;
 import com.puppycrawl.tools.checkstyle.Definitions;
 import com.puppycrawl.tools.checkstyle.api.AbstractFileSetCheck;
+import com.puppycrawl.tools.checkstyle.api.CheckstyleFileResults;
 import com.puppycrawl.tools.checkstyle.api.LocalizedMessage;
 import com.puppycrawl.tools.checkstyle.api.MessageDispatcher;
 import com.puppycrawl.tools.checkstyle.utils.CommonUtils;
@@ -520,7 +521,7 @@ public class TranslationCheck extends AbstractFileSetCheck {
                 getClass(), null);
         final SortedSet<LocalizedMessage> messages = new TreeSet<>();
         messages.add(message);
-        getMessageDispatcher().fireErrors(file.getPath(), messages);
+        getMessageDispatcher().fireErrors(file.getPath(), new CheckstyleFileResults(null, messages));
         LOG.debug("IOException occurred.", exception);
     }
 

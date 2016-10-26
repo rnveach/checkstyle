@@ -40,6 +40,7 @@ import com.puppycrawl.tools.checkstyle.api.AutomaticBean;
 import com.puppycrawl.tools.checkstyle.api.BeforeExecutionFileFilter;
 import com.puppycrawl.tools.checkstyle.api.BeforeExecutionFileFilterSet;
 import com.puppycrawl.tools.checkstyle.api.CheckstyleException;
+import com.puppycrawl.tools.checkstyle.api.CheckstyleFileResults;
 import com.puppycrawl.tools.checkstyle.api.Configuration;
 import com.puppycrawl.tools.checkstyle.api.Context;
 import com.puppycrawl.tools.checkstyle.api.ExternalResourceHolder;
@@ -296,21 +297,22 @@ public class Checker extends AutomaticBean implements MessageDispatcher, Initial
     protected void workFile(File file, long timestamp) throws Exception {
         final String fileName = file.getAbsolutePath();
         fireFileStarted(fileName);
-        final SortedSet<LocalizedMessage> fileMessages = processFile(file);
-        endWorkingFile(fileName, fileMessages, timestamp);
+        final CheckstyleFileResults fileResults = processFile(file);
+        endWorkingFile(fileName, fileResults, timestamp);
     }
 
     /**
      * Finish working on the file by firing its errors and notifying all listeners.
      * @param fileName The name of the file.
+     * @param fileText 
      * @param fileMessages The violation messages the file generated.
      * @param timestamp The timestamp of the file.
      */
-    protected void endWorkingFile(String fileName, SortedSet<LocalizedMessage> fileMessages,
+    protected void endWorkingFile(String fileName, CheckstyleFileResults fileResults,
             long timestamp) {
-        fireErrors(fileName, fileMessages);
+        fireErrors(fileName, fileResults);
         fireFileFinished(fileName);
-        if (cache != null && fileMessages.isEmpty()) {
+        if (cache != null && fileResults.getMessages().isEmpty()) {
             cache.put(fileName, timestamp);
         }
     }
@@ -321,7 +323,7 @@ public class Checker extends AutomaticBean implements MessageDispatcher, Initial
      * @return a sorted set of messages to be logged.
      * @throws CheckstyleException if error condition within Checkstyle occurs.
      */
-    private SortedSet<LocalizedMessage> processFile(File file) throws CheckstyleException {
+    private CheckstyleFileResults processFile(File file) throws CheckstyleException {
         return processFile(file, charset, fileSetChecks);
     }
 
@@ -333,11 +335,12 @@ public class Checker extends AutomaticBean implements MessageDispatcher, Initial
      * @return a sorted set of messages to be logged.
      * @throws CheckstyleException if error condition within Checkstyle occurs.
      */
-    public static SortedSet<LocalizedMessage> processFile(File file, String charset,
+    public static CheckstyleFileResults processFile(File file, String charset,
             List<FileSetCheck> fileSetChecks) throws CheckstyleException {
         final SortedSet<LocalizedMessage> fileMessages = new TreeSet<>();
+        FileText theText = null;
         try {
-            final FileText theText = new FileText(file.getAbsoluteFile(), charset);
+            theText = getFileText(file, charset);
             for (final FileSetCheck fsc : fileSetChecks) {
                 fileMessages.addAll(fsc.process(file, theText));
             }
@@ -348,7 +351,11 @@ public class Checker extends AutomaticBean implements MessageDispatcher, Initial
                     "general.exception", new String[] {ioe.getMessage()}, null, Checker.class,
                     null));
         }
-        return fileMessages;
+        return new CheckstyleFileResults(theText, fileMessages);
+    }
+
+    public static FileText getFileText(File file, String charset) throws IOException {
+        return new FileText(file.getAbsoluteFile(), charset);
     }
 
     /**
@@ -382,13 +389,13 @@ public class Checker extends AutomaticBean implements MessageDispatcher, Initial
      * Notify all listeners about the errors in a file.
      *
      * @param fileName the audited file
-     * @param errors the audit errors from the file
+     * @param fileResults the audit errors from the file
      */
     @Override
-    public void fireErrors(String fileName, SortedSet<LocalizedMessage> errors) {
+    public void fireErrors(String fileName, CheckstyleFileResults fileResults) {
         final String stripped = CommonUtils.relativizeAndNormalizePath(basedir, fileName);
-        for (final LocalizedMessage element : errors) {
-            final AuditEvent event = new AuditEvent(this, stripped, element);
+        for (final LocalizedMessage element : fileResults.getMessages()) {
+            final AuditEvent event = new AuditEvent(this, stripped, fileResults.getFileText(), element);
             if (filters.accept(event)) {
                 for (final AuditListener listener : listeners) {
                     listener.addError(event);

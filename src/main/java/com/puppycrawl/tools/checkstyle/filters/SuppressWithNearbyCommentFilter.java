@@ -19,7 +19,6 @@
 
 package com.puppycrawl.tools.checkstyle.filters;
 
-import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -34,9 +33,9 @@ import org.apache.commons.beanutils.ConversionException;
 import com.puppycrawl.tools.checkstyle.api.AuditEvent;
 import com.puppycrawl.tools.checkstyle.api.AutomaticBean;
 import com.puppycrawl.tools.checkstyle.api.FileContents;
+import com.puppycrawl.tools.checkstyle.api.FileText;
 import com.puppycrawl.tools.checkstyle.api.Filter;
 import com.puppycrawl.tools.checkstyle.api.TextBlock;
-import com.puppycrawl.tools.checkstyle.checks.FileContentsHolder;
 import com.puppycrawl.tools.checkstyle.utils.CommonUtils;
 
 /**
@@ -107,17 +106,10 @@ public class SuppressWithNearbyCommentFilter
     /** The message format to suppress. */
     private String messageFormat;
 
+    private String previousFileName;
+
     /** The influence of the suppression comment. */
     private String influenceFormat;
-
-    /**
-     * References the current FileContents for this filter.
-     * Since this is a weak reference to the FileContents, the FileContents
-     * can be reclaimed as soon as the strong references in TreeWalker
-     * and FileContentsHolder are reassigned to the next FileContents,
-     * at which time filtering for the current FileContents is finished.
-     */
-    private WeakReference<FileContents> fileContentsReference = new WeakReference<>(null);
 
     /**
      * Constructs a SuppressionCommentFilter.
@@ -137,21 +129,6 @@ public class SuppressWithNearbyCommentFilter
      */
     public final void setCommentFormat(String format) {
         commentRegexp = CommonUtils.createPattern(format);
-    }
-
-    /**
-     * @return the FileContents for this filter.
-     */
-    public FileContents getFileContents() {
-        return fileContentsReference.get();
-    }
-
-    /**
-     * Set the FileContents for this filter.
-     * @param fileContents the FileContents for this filter.
-     */
-    public void setFileContents(FileContents fileContents) {
-        fileContentsReference = new WeakReference<>(fileContents);
     }
 
     /**
@@ -201,15 +178,17 @@ public class SuppressWithNearbyCommentFilter
         boolean accepted = true;
 
         if (event.getLocalizedMessage() != null) {
-            // Lazy update. If the first event for the current file, update file
-            // contents and tag suppressions
-            final FileContents currentContents = FileContentsHolder.getContents();
+            FileText currentText = event.getFileText();
 
-            if (currentContents != null) {
-                if (getFileContents() != currentContents) {
-                    setFileContents(currentContents);
-                    tagSuppressions();
+            if (currentText != null) {
+                final FileContents currentContents = new FileContents(currentText);
+
+                // don't parse the same file more than once
+                if (previousFileName == null || previousFileName.equals(event.getFileName())) {
+                    tagSuppressions(currentContents);
+                    previousFileName = event.getFileName();
                 }
+
                 if (matchesTag(event)) {
                     accepted = false;
                 }
@@ -235,10 +214,10 @@ public class SuppressWithNearbyCommentFilter
     /**
      * Collects all the suppression tags for all comments into a list and
      * sorts the list.
+     * @param contents 
      */
-    private void tagSuppressions() {
+    private void tagSuppressions(FileContents contents) {
         tags.clear();
-        final FileContents contents = getFileContents();
         if (checkCPP) {
             tagSuppressions(contents.getCppComments().values());
         }

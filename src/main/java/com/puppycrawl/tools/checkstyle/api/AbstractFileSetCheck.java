@@ -233,7 +233,7 @@ public abstract class AbstractFileSetCheck
         final SortedSet<LocalizedMessage> errors = messageCollector
                 .getMessages();
         messageCollector.reset();
-        getMessageDispatcher().fireErrors(fileName, errors);
+        getMessageDispatcher().fireErrors(fileName, new CheckstyleFileResults(null, errors));
     }
 
     @Override

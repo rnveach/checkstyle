@@ -21,12 +21,11 @@ package com.puppycrawl.tools.checkstyle;
 
 import java.io.File;
 import java.util.List;
-import java.util.SortedSet;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 import com.puppycrawl.tools.checkstyle.api.CheckstyleException;
-import com.puppycrawl.tools.checkstyle.api.LocalizedMessage;
+import com.puppycrawl.tools.checkstyle.api.CheckstyleFileResults;
 
 /**
  * This class provides the functionality to check a set of files in a multi-threaded environment.
@@ -109,12 +108,12 @@ public class MultiThreadedChecker extends Checker {
                 for (MultiThreadedTask task : tasks) {
                     if (!task.isWorking()) {
                         if (task.hasResults()) {
-                            final SortedSet<LocalizedMessage> taskMessages = task.getResult();
+                            final CheckstyleFileResults taskresults = task.getResult();
                             final File taskFile = task.getFile();
 
                             tasksRunning--;
 
-                            endWorkingFile(taskFile.getAbsolutePath(), taskMessages,
+                            endWorkingFile(taskFile.getAbsolutePath(), taskresults,
                                     taskFile.lastModified());
                         }
                         else if (file != null) {
