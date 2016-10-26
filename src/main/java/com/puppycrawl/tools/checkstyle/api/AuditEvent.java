@@ -44,7 +44,7 @@ public final class AuditEvent
     private static final long serialVersionUID = -3774725606973812736L;
     /** Filename event associated with. **/
     private final String fileName;
-    private final FileText fileText;
+    private final FileContents fileContents;
     /** Message associated with the event. **/
     private final LocalizedMessage localizedMessage;
 
@@ -70,13 +70,14 @@ public final class AuditEvent
      *
      * @param src source of the event
      * @param fileName file associated with the event
+     * @param fileContents the contents of the file associated with the event
      * @param localizedMessage the actual message
-     * @param fileText 
      */
-    public AuditEvent(Object src, String fileName, FileText fileText, LocalizedMessage localizedMessage) {
+    public AuditEvent(Object src, String fileName, FileContents fileContents,
+            LocalizedMessage localizedMessage) {
         super(src);
         this.fileName = fileName;
-        this.fileText = fileText;
+        this.fileContents = fileContents;
         this.localizedMessage = localizedMessage;
     }
 
@@ -88,8 +89,8 @@ public final class AuditEvent
         return fileName;
     }
 
-    public FileText getFileText() {
-        return fileText;
+    public FileContents getFileContents() {
+        return fileContents;
     }
 
     /**

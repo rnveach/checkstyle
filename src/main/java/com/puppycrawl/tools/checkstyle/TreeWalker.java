@@ -26,7 +26,6 @@ import java.util.AbstractMap.SimpleEntry;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Locale;
 import java.util.Map.Entry;
 import java.util.Set;
@@ -48,7 +47,6 @@ import com.puppycrawl.tools.checkstyle.api.Context;
 import com.puppycrawl.tools.checkstyle.api.DetailAST;
 import com.puppycrawl.tools.checkstyle.api.ExternalResourceHolder;
 import com.puppycrawl.tools.checkstyle.api.FileContents;
-import com.puppycrawl.tools.checkstyle.api.FileText;
 import com.puppycrawl.tools.checkstyle.api.TokenTypes;
 import com.puppycrawl.tools.checkstyle.grammars.GeneratedJavaLexer;
 import com.puppycrawl.tools.checkstyle.grammars.GeneratedJavaRecognizer;
@@ -154,14 +152,12 @@ public final class TreeWalker extends AbstractFileSetCheck implements ExternalRe
     }
 
     @Override
-    protected void processFiltered(File file, List<String> lines) throws CheckstyleException {
+    protected void processFiltered(File file, FileContents contents) throws CheckstyleException {
         // check if already checked and passed the file
         if (CommonUtils.matchesFileExtension(file, getFileExtensions())) {
             final String msg = "%s occurred during the analysis of file %s.";
             final String fileName = file.getPath();
             try {
-                final FileText text = FileText.fromLines(file, lines);
-                final FileContents contents = new FileContents(text);
                 final DetailAST rootAST = parse(contents);
 
                 getMessageCollector().reset();

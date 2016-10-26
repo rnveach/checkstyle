@@ -44,6 +44,7 @@ import com.puppycrawl.tools.checkstyle.api.CheckstyleFileResults;
 import com.puppycrawl.tools.checkstyle.api.Configuration;
 import com.puppycrawl.tools.checkstyle.api.Context;
 import com.puppycrawl.tools.checkstyle.api.ExternalResourceHolder;
+import com.puppycrawl.tools.checkstyle.api.FileContents;
 import com.puppycrawl.tools.checkstyle.api.FileSetCheck;
 import com.puppycrawl.tools.checkstyle.api.FileText;
 import com.puppycrawl.tools.checkstyle.api.Filter;
@@ -267,6 +268,10 @@ public class Checker extends AutomaticBean implements MessageDispatcher, Initial
             try {
                 final String fileName = file.getAbsolutePath();
                 final long timestamp = file.lastModified();
+                if (fileName.contains("AbstractFileSetCheck")) {
+                    int a= 0;
+                    a++;
+                }
                 if (cache != null && cache.isInCache(fileName, timestamp)
                         || !CommonUtils.matchesFileExtension(file, fileExtensions)
                         || !acceptFileStarted(fileName)) {
@@ -304,7 +309,7 @@ public class Checker extends AutomaticBean implements MessageDispatcher, Initial
     /**
      * Finish working on the file by firing its errors and notifying all listeners.
      * @param fileName The name of the file.
-     * @param fileText 
+     * @param fileText The contents of the file.
      * @param fileMessages The violation messages the file generated.
      * @param timestamp The timestamp of the file.
      */
@@ -338,11 +343,16 @@ public class Checker extends AutomaticBean implements MessageDispatcher, Initial
     public static CheckstyleFileResults processFile(File file, String charset,
             List<FileSetCheck> fileSetChecks) throws CheckstyleException {
         final SortedSet<LocalizedMessage> fileMessages = new TreeSet<>();
-        FileText theText = null;
+        FileContents fileContents = null;
         try {
-            theText = getFileText(file, charset);
+            if (file.getName().contains("AbstractFileSetCheck")) {
+                int a= 0;
+                a++;
+            }
+            final FileText theText = new FileText(file.getAbsoluteFile(), charset);
+            fileContents = new FileContents(theText);
             for (final FileSetCheck fsc : fileSetChecks) {
-                fileMessages.addAll(fsc.process(file, theText));
+                fileMessages.addAll(fsc.process(file, fileContents));
             }
         }
         catch (final IOException ioe) {
@@ -351,11 +361,7 @@ public class Checker extends AutomaticBean implements MessageDispatcher, Initial
                     "general.exception", new String[] {ioe.getMessage()}, null, Checker.class,
                     null));
         }
-        return new CheckstyleFileResults(theText, fileMessages);
-    }
-
-    public static FileText getFileText(File file, String charset) throws IOException {
-        return new FileText(file.getAbsoluteFile(), charset);
+        return new CheckstyleFileResults(fileContents, fileMessages);
     }
 
     /**
@@ -395,7 +401,7 @@ public class Checker extends AutomaticBean implements MessageDispatcher, Initial
     public void fireErrors(String fileName, CheckstyleFileResults fileResults) {
         final String stripped = CommonUtils.relativizeAndNormalizePath(basedir, fileName);
         for (final LocalizedMessage element : fileResults.getMessages()) {
-            final AuditEvent event = new AuditEvent(this, stripped, fileResults.getFileText(), element);
+            final AuditEvent event = new AuditEvent(this, stripped, fileResults.getFileContents(), element);
             if (filters.accept(event)) {
                 for (final AuditListener listener : listeners) {
                     listener.addError(event);

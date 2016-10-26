@@ -3,16 +3,16 @@ package com.puppycrawl.tools.checkstyle.api;
 import java.util.SortedSet;
 
 public final class CheckstyleFileResults {
-    private final FileText fileText;
+    private final FileContents fileContents;
     private final SortedSet<LocalizedMessage> messages;
 
-    public CheckstyleFileResults(FileText fileText, SortedSet<LocalizedMessage> messages) {
-        this.fileText = fileText;
+    public CheckstyleFileResults(FileContents fileContents, SortedSet<LocalizedMessage> messages) {
+        this.fileContents = fileContents;
         this.messages = messages;
     }
 
-    public FileText getFileText() {
-        return fileText;
+    public FileContents getFileContents() {
+        return fileContents;
     }
 
     public SortedSet<LocalizedMessage> getMessages() {

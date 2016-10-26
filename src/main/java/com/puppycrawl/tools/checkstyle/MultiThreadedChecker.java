@@ -116,7 +116,8 @@ public class MultiThreadedChecker extends Checker {
                             endWorkingFile(taskFile.getAbsolutePath(), taskresults,
                                     taskFile.lastModified());
                         }
-                        else if (file != null) {
+
+                        if (file != null) {
                             task.start(executor, file);
                             tasksRunning++;
                             return;

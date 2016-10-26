@@ -20,11 +20,10 @@
 package com.puppycrawl.tools.checkstyle.checks.regexp;
 
 import java.io.File;
-import java.util.List;
 import java.util.regex.Pattern;
 
 import com.puppycrawl.tools.checkstyle.api.AbstractFileSetCheck;
-import com.puppycrawl.tools.checkstyle.api.FileText;
+import com.puppycrawl.tools.checkstyle.api.FileContents;
 
 /**
  * Implementation of a check that looks that matches across multiple lines in
@@ -63,8 +62,8 @@ public class RegexpMultilineCheck extends AbstractFileSetCheck {
     }
 
     @Override
-    protected void processFiltered(File file, List<String> lines) {
-        detector.processLines(FileText.fromLines(file, lines));
+    protected void processFiltered(File file, FileContents fileContents) {
+        detector.processLines(fileContents.getText());
     }
 
     /**

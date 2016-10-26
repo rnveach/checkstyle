@@ -33,7 +33,6 @@ import org.apache.commons.beanutils.ConversionException;
 import com.puppycrawl.tools.checkstyle.api.AuditEvent;
 import com.puppycrawl.tools.checkstyle.api.AutomaticBean;
 import com.puppycrawl.tools.checkstyle.api.FileContents;
-import com.puppycrawl.tools.checkstyle.api.FileText;
 import com.puppycrawl.tools.checkstyle.api.Filter;
 import com.puppycrawl.tools.checkstyle.api.TextBlock;
 import com.puppycrawl.tools.checkstyle.utils.CommonUtils;
@@ -178,13 +177,11 @@ public class SuppressWithNearbyCommentFilter
         boolean accepted = true;
 
         if (event.getLocalizedMessage() != null) {
-            FileText currentText = event.getFileText();
+            final FileContents currentContents = event.getFileContents();
 
-            if (currentText != null) {
-                final FileContents currentContents = new FileContents(currentText);
-
+            if (currentContents != null) {
                 // don't parse the same file more than once
-                if (previousFileName == null || previousFileName.equals(event.getFileName())) {
+                if (previousFileName == null || !previousFileName.equals(event.getFileName())) {
                     tagSuppressions(currentContents);
                     previousFileName = event.getFileName();
                 }

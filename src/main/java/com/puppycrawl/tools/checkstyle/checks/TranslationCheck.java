@@ -27,7 +27,6 @@ import java.io.InputStream;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Locale;
 import java.util.Optional;
 import java.util.Properties;
@@ -47,6 +46,7 @@ import com.google.common.io.Closeables;
 import com.puppycrawl.tools.checkstyle.Definitions;
 import com.puppycrawl.tools.checkstyle.api.AbstractFileSetCheck;
 import com.puppycrawl.tools.checkstyle.api.CheckstyleFileResults;
+import com.puppycrawl.tools.checkstyle.api.FileContents;
 import com.puppycrawl.tools.checkstyle.api.LocalizedMessage;
 import com.puppycrawl.tools.checkstyle.api.MessageDispatcher;
 import com.puppycrawl.tools.checkstyle.utils.CommonUtils;
@@ -242,7 +242,7 @@ public class TranslationCheck extends AbstractFileSetCheck {
     }
 
     @Override
-    protected void processFiltered(File file, List<String> lines) {
+    protected void processFiltered(File file, FileContents fileContents) {
         // We just collecting files for processing at finishProcessing()
         filesToProcess.add(file);
     }
@@ -521,7 +521,8 @@ public class TranslationCheck extends AbstractFileSetCheck {
                 getClass(), null);
         final SortedSet<LocalizedMessage> messages = new TreeSet<>();
         messages.add(message);
-        getMessageDispatcher().fireErrors(file.getPath(), new CheckstyleFileResults(null, messages));
+        getMessageDispatcher()
+                .fireErrors(file.getPath(), new CheckstyleFileResults(null, messages));
         LOG.debug("IOException occurred.", exception);
     }
 
