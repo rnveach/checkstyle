@@ -49,6 +49,7 @@ import com.puppycrawl.tools.checkstyle.api.CheckstyleFileResults;
 import com.puppycrawl.tools.checkstyle.api.FileContents;
 import com.puppycrawl.tools.checkstyle.api.LocalizedMessage;
 import com.puppycrawl.tools.checkstyle.api.MessageDispatcher;
+import com.puppycrawl.tools.checkstyle.api.SingleInstance;
 import com.puppycrawl.tools.checkstyle.utils.CommonUtils;
 
 /**
@@ -102,7 +103,7 @@ import com.puppycrawl.tools.checkstyle.utils.CommonUtils;
  * @author lkuehne
  * @author Andrei Selkin
  */
-public class TranslationCheck extends AbstractFileSetCheck {
+public class TranslationCheck extends AbstractFileSetCheck implements SingleInstance {
 
     /**
      * A key is pointing to the warning message text for missing key
@@ -244,7 +245,9 @@ public class TranslationCheck extends AbstractFileSetCheck {
     @Override
     protected void processFiltered(File file, FileContents fileContents) {
         // We just collecting files for processing at finishProcessing()
-        filesToProcess.add(file);
+        synchronized (filesToProcess) {
+            filesToProcess.add(file);
+        }
     }
 
     @Override

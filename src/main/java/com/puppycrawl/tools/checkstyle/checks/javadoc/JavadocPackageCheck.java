@@ -20,18 +20,20 @@
 package com.puppycrawl.tools.checkstyle.checks.javadoc;
 
 import java.io.File;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
 import com.puppycrawl.tools.checkstyle.api.AbstractFileSetCheck;
 import com.puppycrawl.tools.checkstyle.api.FileContents;
+import com.puppycrawl.tools.checkstyle.api.SingleInstance;
 
 /**
  * Checks that all packages have a package documentation. See the documentation
  * for more information.
  * @author Oliver Burn
  */
-public class JavadocPackageCheck extends AbstractFileSetCheck {
+public class JavadocPackageCheck extends AbstractFileSetCheck implements SingleInstance {
 
     /**
      * A key is pointing to the warning message text in "messages.properties"
@@ -46,7 +48,7 @@ public class JavadocPackageCheck extends AbstractFileSetCheck {
     public static final String MSG_PACKAGE_INFO = "javadoc.packageInfo";
 
     /** The directories checked. */
-    private final Set<File> directoriesChecked = new HashSet<>();
+    private final Set<File> directoriesChecked = Collections.synchronizedSet(new HashSet<>());
 
     /** Indicates if allow legacy "package.html" file to be used. */
     private boolean allowLegacy;

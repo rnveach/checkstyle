@@ -58,7 +58,7 @@ public abstract class AbstractFileSetCheck
     static {
         // cloner.setDumpClonedClasses(true);
         cloner.nullInsteadOfClone(Cloner.class);
-        cloner.dontCloneInstanceOf(MessageDispatcher.class);
+        cloner.dontCloneInstanceOf(MessageDispatcher.class, SingleInstance.class);
         cloner.registerFastCloner(TreeSet.class, new IFastCloner() {
             @SuppressWarnings({ "unchecked", "rawtypes" })
             @Override
