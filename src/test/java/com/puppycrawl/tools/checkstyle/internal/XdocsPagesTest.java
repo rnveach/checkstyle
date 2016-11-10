@@ -47,11 +47,14 @@ import javax.xml.parsers.ParserConfigurationException;
 
 import org.apache.commons.beanutils.PropertyUtils;
 import org.junit.Assert;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
+
+import com.puppycrawl.tools.checkstyle.utils.ProxyTest;
 
 import com.puppycrawl.tools.checkstyle.Checker;
 import com.puppycrawl.tools.checkstyle.ConfigurationLoader;
@@ -115,6 +118,11 @@ public class XdocsPagesTest {
         new HashSet<>(CheckUtil.getConfigSunStyleModules()));
     private static final Set<String> GOOGLE_MODULES = Collections.unmodifiableSet(
         new HashSet<>(CheckUtil.getConfigGoogleStyleModules()));
+
+    @BeforeClass
+    public static void init() throws Exception {
+        ProxyTest.start();
+    }
 
     @Test
     public void testAllChecksPresentOnAvailableChecksPage() throws Exception {

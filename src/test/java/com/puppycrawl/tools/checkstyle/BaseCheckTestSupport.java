@@ -42,14 +42,22 @@ import java.util.Map;
 import java.util.ResourceBundle;
 import java.util.stream.Collectors;
 
+import org.junit.BeforeClass;
+
 import com.google.common.collect.MapDifference;
 import com.google.common.collect.MapDifference.ValueDifference;
 import com.google.common.collect.Maps;
 import com.puppycrawl.tools.checkstyle.api.Configuration;
 import com.puppycrawl.tools.checkstyle.api.LocalizedMessage;
+import com.puppycrawl.tools.checkstyle.utils.ProxyTest;
 
 public class BaseCheckTestSupport {
     protected final ByteArrayOutputStream stream = new ByteArrayOutputStream();
+
+    @BeforeClass
+    public static void init() throws Exception {
+        ProxyTest.start();
+    }
 
     protected static DefaultConfiguration createCheckConfig(Class<?> clazz) {
         return new DefaultConfiguration(clazz.getName());

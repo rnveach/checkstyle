@@ -26,7 +26,6 @@ import static org.junit.Assert.fail;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.HttpURLConnection;
 import java.net.URI;
 import java.net.URL;
 
@@ -40,7 +39,6 @@ import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
-import com.google.common.io.Closeables;
 import com.puppycrawl.tools.checkstyle.BaseCheckTestSupport;
 import com.puppycrawl.tools.checkstyle.BriefUtLogger;
 import com.puppycrawl.tools.checkstyle.Checker;
@@ -210,19 +208,7 @@ public class SuppressionFilterTest extends BaseCheckTestSupport {
 
     @Test
     public void testRemoteFileExternalResourceContentDoesNotChange() throws Exception {
-        final String[] urlCandidates = {
-            "http://checkstyle.sourceforge.net/files/suppressions_none.xml",
-            "https://raw.githubusercontent.com/checkstyle/checkstyle/master/src/site/resources/"
-                + "files/suppressions_none.xml",
-        };
-
-        String urlForTest = null;
-        for (String url : urlCandidates) {
-            if (isConnectionAvailableAndStable(url)) {
-                urlForTest = url;
-                break;
-            }
-        }
+        final String urlForTest = "http://checkstyle.sourceforge.net/files/suppressions_none.xml";
 
         // Run the test only if connection is available and url is reachable.
         // We must use an if statement over junit's rule or assume because
@@ -261,58 +247,10 @@ public class SuppressionFilterTest extends BaseCheckTestSupport {
 
             checker.configure(secondCheckerConfig);
 
+            checker.configure(secondCheckerConfig);
+
             verify(checker, pathToEmptyFile, expected);
         }
-    }
-
-    private static boolean isConnectionAvailableAndStable(String url) throws Exception {
-        boolean available = false;
-
-        if (isUrlReachable(url)) {
-            final int attemptLimit = 5;
-            int attemptCount = 0;
-
-            while (attemptCount <= attemptLimit) {
-                InputStream stream = null;
-                try {
-                    final URL address = new URL(url);
-                    stream = address.openStream();
-                    // Attempt to read a byte in order to check whether file content is available
-                    available = stream.read() != -1;
-                    break;
-                }
-                catch (IOException ex) {
-                    // for some reason Travis CI failed some times (unstable) on reading the file
-                    if (attemptCount < attemptLimit && ex.getMessage().contains("Unable to read")) {
-                        attemptCount++;
-                        available = false;
-                        // wait for bad / disconnection time to pass
-                        Thread.sleep(1000);
-                    }
-                    else {
-                        Closeables.closeQuietly(stream);
-                        throw ex;
-                    }
-                }
-                finally {
-                    Closeables.closeQuietly(stream);
-                }
-            }
-        }
-        return available;
-    }
-
-    private static boolean isUrlReachable(String url) {
-        boolean result = true;
-        try {
-            final URL verifiableUrl = new URL(url);
-            final HttpURLConnection urlConnect = (HttpURLConnection) verifiableUrl.openConnection();
-            urlConnect.getContent();
-        }
-        catch (IOException ex) {
-            result = false;
-        }
-        return result;
     }
 
     private static SuppressionFilter createSuppressionFilter(String fileName, boolean optional)
