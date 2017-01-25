@@ -22,6 +22,7 @@ package com.puppycrawl.tools.checkstyle.checks.design;
 import com.puppycrawl.tools.checkstyle.api.AbstractCheck;
 import com.puppycrawl.tools.checkstyle.api.DetailAST;
 import com.puppycrawl.tools.checkstyle.api.TokenTypes;
+import com.puppycrawl.tools.checkstyle.api.UserDefinedOption;
 
 /**
  * Implements Bloch, Effective Java, Item 17 -
@@ -51,6 +52,7 @@ public final class InterfaceIsTypeCheck
     public static final String MSG_KEY = "interface.type";
 
     /** Flag to control whether marker interfaces are allowed. */
+    @UserDefinedOption
     private boolean allowMarkerInterfaces = true;
 
     @Override

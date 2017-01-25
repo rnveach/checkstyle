@@ -27,6 +27,7 @@ import com.puppycrawl.tools.checkstyle.api.DetailAST;
 import com.puppycrawl.tools.checkstyle.api.DetailNode;
 import com.puppycrawl.tools.checkstyle.api.JavadocTokenTypes;
 import com.puppycrawl.tools.checkstyle.api.TokenTypes;
+import com.puppycrawl.tools.checkstyle.api.UserDefinedOption;
 import com.puppycrawl.tools.checkstyle.utils.JavadocUtils;
 import com.puppycrawl.tools.checkstyle.utils.TokenUtils;
 
@@ -85,6 +86,7 @@ public class AtclauseOrderCheck extends AbstractJavadocCheck {
     /**
      * Default target of checking atclauses.
      */
+    @UserDefinedOption
     private List<Integer> target = Arrays.asList(
         TokenTypes.CLASS_DEF,
         TokenTypes.INTERFACE_DEF,
@@ -97,6 +99,7 @@ public class AtclauseOrderCheck extends AbstractJavadocCheck {
     /**
      * Order of atclauses.
      */
+    @UserDefinedOption
     private List<String> tagOrder = Arrays.asList(DEFAULT_ORDER);
 
     /**

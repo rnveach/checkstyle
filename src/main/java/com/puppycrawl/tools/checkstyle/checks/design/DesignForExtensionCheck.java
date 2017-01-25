@@ -30,6 +30,7 @@ import com.puppycrawl.tools.checkstyle.api.AbstractCheck;
 import com.puppycrawl.tools.checkstyle.api.DetailAST;
 import com.puppycrawl.tools.checkstyle.api.Scope;
 import com.puppycrawl.tools.checkstyle.api.TokenTypes;
+import com.puppycrawl.tools.checkstyle.api.UserDefinedOption;
 import com.puppycrawl.tools.checkstyle.utils.ScopeUtils;
 import com.puppycrawl.tools.checkstyle.utils.TokenUtils;
 
@@ -102,6 +103,7 @@ public class DesignForExtensionCheck extends AbstractCheck {
     /**
      * A set of annotations which allow the check to skip the method from validation.
      */
+    @UserDefinedOption
     private Set<String> ignoredAnnotations = Stream.of("Test", "Before", "After", "BeforeClass",
         "AfterClass").collect(Collectors.toSet());
 

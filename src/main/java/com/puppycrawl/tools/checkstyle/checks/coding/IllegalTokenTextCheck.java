@@ -23,6 +23,7 @@ import java.util.regex.Pattern;
 
 import com.puppycrawl.tools.checkstyle.api.AbstractCheck;
 import com.puppycrawl.tools.checkstyle.api.DetailAST;
+import com.puppycrawl.tools.checkstyle.api.UserDefinedOption;
 import com.puppycrawl.tools.checkstyle.utils.CommonUtils;
 import com.puppycrawl.tools.checkstyle.utils.TokenUtils;
 
@@ -64,16 +65,19 @@ public class IllegalTokenTextCheck
      * Custom message for report if illegal regexp found
      * ignored if empty.
      */
+    @UserDefinedOption
     private String message = "";
 
     /** The format string of the regexp. */
+    @UserDefinedOption
     private String format = "$^";
 
     /** The regexp to match against. */
     private Pattern regexp = Pattern.compile(format);
 
     /** The flags to use with the regexp. */
-    private int compileFlags;
+    @UserDefinedOption
+    private boolean ignoreCase;
 
     @Override
     public int[] getDefaultTokens() {
@@ -140,21 +144,21 @@ public class IllegalTokenTextCheck
      * @param caseInsensitive true if the match is case insensitive.
      */
     public void setIgnoreCase(boolean caseInsensitive) {
-        if (caseInsensitive) {
-            compileFlags = Pattern.CASE_INSENSITIVE;
-        }
-        else {
-            compileFlags = 0;
-        }
+        ignoreCase = caseInsensitive;
 
         updateRegexp();
     }
 
     /**
      * Updates the {@link #regexp} based on the values from {@link #format} and
-     * {@link #compileFlags}.
+     * {@link #ignoreCase}.
      */
     private void updateRegexp() {
-        regexp = CommonUtils.createPattern(format, compileFlags);
+        if (ignoreCase) {
+            regexp = CommonUtils.createPattern(format, Pattern.CASE_INSENSITIVE);
+        }
+        else {
+            regexp = CommonUtils.createPattern(format);
+        }
     }
 }

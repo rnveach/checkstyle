@@ -23,6 +23,7 @@ import java.io.File;
 import java.util.List;
 
 import com.puppycrawl.tools.checkstyle.api.AbstractFileSetCheck;
+import com.puppycrawl.tools.checkstyle.api.UserDefinedOption;
 
 /**
  * Checks to see if a file contains a tab character.
@@ -43,6 +44,7 @@ public class FileTabCharacterCheck extends AbstractFileSetCheck {
     public static final String MSG_FILE_CONTAINS_TAB = "file.containsTab";
 
     /** Indicates whether to report once per file, or for each line. */
+    @UserDefinedOption
     private boolean eachLine;
 
     @Override

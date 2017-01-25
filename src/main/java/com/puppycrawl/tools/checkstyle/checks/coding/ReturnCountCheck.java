@@ -26,6 +26,7 @@ import java.util.regex.Pattern;
 import com.puppycrawl.tools.checkstyle.api.AbstractCheck;
 import com.puppycrawl.tools.checkstyle.api.DetailAST;
 import com.puppycrawl.tools.checkstyle.api.TokenTypes;
+import com.puppycrawl.tools.checkstyle.api.UserDefinedOption;
 
 /**
  * <p>
@@ -63,11 +64,14 @@ public final class ReturnCountCheck extends AbstractCheck {
     private final Deque<Context> contextStack = new ArrayDeque<>();
 
     /** The regexp to match against. */
+    @UserDefinedOption
     private Pattern format = Pattern.compile("^equals$");
 
     /** Maximum allowed number of return statements. */
+    @UserDefinedOption
     private int max = 2;
     /** Maximum allowed number of return statements for void methods. */
+    @UserDefinedOption
     private int maxForVoid = 1;
     /** Current method context. */
     private Context context;

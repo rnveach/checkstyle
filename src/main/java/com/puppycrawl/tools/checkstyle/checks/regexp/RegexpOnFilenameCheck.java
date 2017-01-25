@@ -26,6 +26,7 @@ import java.util.regex.Pattern;
 
 import com.puppycrawl.tools.checkstyle.api.AbstractFileSetCheck;
 import com.puppycrawl.tools.checkstyle.api.CheckstyleException;
+import com.puppycrawl.tools.checkstyle.api.UserDefinedOption;
 import com.puppycrawl.tools.checkstyle.utils.CommonUtils;
 
 /**
@@ -196,12 +197,16 @@ public class RegexpOnFilenameCheck extends AbstractFileSetCheck {
     public static final String MSG_MISMATCH = "regexp.filename.mismatch";
 
     /** Compiled regexp to match a folder. */
+    @UserDefinedOption
     private Pattern folderPattern;
     /** Compiled regexp to match a file. */
+    @UserDefinedOption
     private Pattern fileNamePattern;
     /** Whether to look for a file name match or mismatch. */
+    @UserDefinedOption
     private boolean match = true;
     /** Whether to ignore the file's extension when looking for matches. */
+    @UserDefinedOption
     private boolean ignoreFileNameExtensions;
 
     /**

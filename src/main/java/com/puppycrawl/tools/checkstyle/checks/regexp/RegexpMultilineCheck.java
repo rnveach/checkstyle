@@ -25,6 +25,7 @@ import java.util.regex.Pattern;
 
 import com.puppycrawl.tools.checkstyle.api.AbstractFileSetCheck;
 import com.puppycrawl.tools.checkstyle.api.FileText;
+import com.puppycrawl.tools.checkstyle.api.UserDefinedOption;
 
 /**
  * Implementation of a check that looks that matches across multiple lines in
@@ -34,14 +35,19 @@ import com.puppycrawl.tools.checkstyle.api.FileText;
 public class RegexpMultilineCheck extends AbstractFileSetCheck {
 
     /** The format of the regular expression to match. */
+    @UserDefinedOption
     private String format = "$.";
     /** The message to report for a match. */
+    @UserDefinedOption
     private String message;
     /** The minimum number of matches required per file. */
+    @UserDefinedOption
     private int minimum;
     /** The maximum number of matches required per file. */
+    @UserDefinedOption
     private int maximum;
     /** Whether to ignore case when matching. */
+    @UserDefinedOption
     private boolean ignoreCase;
 
     /** The detector to use. */

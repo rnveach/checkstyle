@@ -23,6 +23,7 @@ import java.util.regex.Pattern;
 
 import com.puppycrawl.tools.checkstyle.api.DetailAST;
 import com.puppycrawl.tools.checkstyle.api.TokenTypes;
+import com.puppycrawl.tools.checkstyle.api.UserDefinedOption;
 import com.puppycrawl.tools.checkstyle.utils.ScopeUtils;
 
 /**
@@ -78,6 +79,7 @@ public class LocalVariableNameCheck
     /**
      * Allow one character name for initialization expression in FOR loop.
      */
+    @UserDefinedOption
     private boolean allowOneCharVarInForLoop;
 
     /** Creates a new {@code LocalVariableNameCheck} instance. */

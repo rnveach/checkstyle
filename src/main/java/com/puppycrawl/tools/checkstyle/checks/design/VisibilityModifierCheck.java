@@ -34,6 +34,7 @@ import com.puppycrawl.tools.checkstyle.api.AbstractCheck;
 import com.puppycrawl.tools.checkstyle.api.DetailAST;
 import com.puppycrawl.tools.checkstyle.api.FullIdent;
 import com.puppycrawl.tools.checkstyle.api.TokenTypes;
+import com.puppycrawl.tools.checkstyle.api.UserDefinedOption;
 import com.puppycrawl.tools.checkstyle.utils.AnnotationUtility;
 import com.puppycrawl.tools.checkstyle.utils.ScopeUtils;
 
@@ -310,6 +311,7 @@ public class VisibilityModifierCheck
      * With EJB 2.0 it is not longer necessary to have public access
      * for persistent fields.
      */
+    @UserDefinedOption
     private Pattern publicMemberPattern = Pattern.compile("^serialVersionUID$");
 
     /** List of ignore annotations short names. */
@@ -321,22 +323,28 @@ public class VisibilityModifierCheck
         getClassShortNames(DEFAULT_IMMUTABLE_TYPES);
 
     /** List of ignore annotations canonical names. */
+    @UserDefinedOption
     private List<String> ignoreAnnotationCanonicalNames =
         new ArrayList<>(DEFAULT_IGNORE_ANNOTATIONS);
 
     /** Whether protected members are allowed. */
+    @UserDefinedOption
     private boolean protectedAllowed;
 
     /** Whether package visible members are allowed. */
+    @UserDefinedOption
     private boolean packageAllowed;
 
     /** Allows immutable fields of final classes to be declared as public. */
+    @UserDefinedOption
     private boolean allowPublicImmutableFields;
 
     /** Allows final fields to be declared as public. */
+    @UserDefinedOption
     private boolean allowPublicFinalFields;
 
     /** List of immutable classes canonical names. */
+    @UserDefinedOption
     private List<String> immutableClassCanonicalNames = new ArrayList<>(DEFAULT_IMMUTABLE_TYPES);
 
     /**

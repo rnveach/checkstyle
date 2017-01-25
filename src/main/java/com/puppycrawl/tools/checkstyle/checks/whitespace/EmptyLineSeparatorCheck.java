@@ -26,6 +26,7 @@ import com.puppycrawl.tools.checkstyle.api.AbstractCheck;
 import com.puppycrawl.tools.checkstyle.api.DetailAST;
 import com.puppycrawl.tools.checkstyle.api.FileContents;
 import com.puppycrawl.tools.checkstyle.api.TokenTypes;
+import com.puppycrawl.tools.checkstyle.api.UserDefinedOption;
 import com.puppycrawl.tools.checkstyle.utils.CommonUtils;
 import com.puppycrawl.tools.checkstyle.utils.JavadocUtils;
 
@@ -218,12 +219,15 @@ public class EmptyLineSeparatorCheck extends AbstractCheck {
             "empty.line.separator.multiple.lines.inside";
 
     /** Allows no empty line between fields. */
+    @UserDefinedOption
     private boolean allowNoEmptyLineBetweenFields;
 
     /** Allows multiple empty lines between class members. */
+    @UserDefinedOption
     private boolean allowMultipleEmptyLines = true;
 
     /** Allows multiple empty lines inside class members. */
+    @UserDefinedOption
     private boolean allowMultipleEmptyLinesInsideClassMembers = true;
 
     /**

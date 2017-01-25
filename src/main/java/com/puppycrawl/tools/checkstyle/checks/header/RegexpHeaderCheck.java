@@ -28,6 +28,7 @@ import java.util.regex.PatternSyntaxException;
 
 import org.apache.commons.beanutils.ConversionException;
 
+import com.puppycrawl.tools.checkstyle.api.UserDefinedOption;
 import com.puppycrawl.tools.checkstyle.utils.CommonUtils;
 
 /**
@@ -61,6 +62,7 @@ public class RegexpHeaderCheck extends AbstractHeaderCheck {
     private final List<Pattern> headerRegexps = new ArrayList<>();
 
     /** The header lines to repeat (0 or more) in the check, sorted. */
+    @UserDefinedOption
     private int[] multiLines = EMPTY_INT_ARRAY;
 
     /**

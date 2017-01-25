@@ -26,6 +26,7 @@ import org.apache.commons.beanutils.ConversionException;
 import com.puppycrawl.tools.checkstyle.api.AbstractCheck;
 import com.puppycrawl.tools.checkstyle.api.DetailAST;
 import com.puppycrawl.tools.checkstyle.api.TokenTypes;
+import com.puppycrawl.tools.checkstyle.api.UserDefinedOption;
 
 /**
  * <p>Checks the padding of an empty for iterator; that is whether a
@@ -69,6 +70,7 @@ public class EmptyForIteratorPadCheck
     private static final String SEMICOLON = ";";
 
     /** The policy to enforce. */
+    @UserDefinedOption
     private PadOption option = PadOption.NOSPACE;
 
     /**

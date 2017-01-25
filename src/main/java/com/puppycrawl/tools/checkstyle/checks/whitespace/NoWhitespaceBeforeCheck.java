@@ -22,6 +22,7 @@ package com.puppycrawl.tools.checkstyle.checks.whitespace;
 import com.puppycrawl.tools.checkstyle.api.AbstractCheck;
 import com.puppycrawl.tools.checkstyle.api.DetailAST;
 import com.puppycrawl.tools.checkstyle.api.TokenTypes;
+import com.puppycrawl.tools.checkstyle.api.UserDefinedOption;
 import com.puppycrawl.tools.checkstyle.utils.CommonUtils;
 
 /**
@@ -68,6 +69,7 @@ public class NoWhitespaceBeforeCheck
     public static final String MSG_KEY = "ws.preceded";
 
     /** Whether whitespace is allowed if the AST is at a linebreak. */
+    @UserDefinedOption
     private boolean allowLineBreaks;
 
     @Override

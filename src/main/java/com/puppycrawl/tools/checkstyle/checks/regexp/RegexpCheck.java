@@ -27,6 +27,7 @@ import com.puppycrawl.tools.checkstyle.api.DetailAST;
 import com.puppycrawl.tools.checkstyle.api.FileContents;
 import com.puppycrawl.tools.checkstyle.api.FileText;
 import com.puppycrawl.tools.checkstyle.api.LineColumn;
+import com.puppycrawl.tools.checkstyle.api.UserDefinedOption;
 import com.puppycrawl.tools.checkstyle.utils.CommonUtils;
 
 /**
@@ -85,18 +86,23 @@ public class RegexpCheck extends AbstractCheck {
         + "the check is aborting, there may be more unreported errors.";
 
     /** Custom message for report. */
+    @UserDefinedOption
     private String message = "";
 
     /** Ignore matches within comments?. **/
+    @UserDefinedOption
     private boolean ignoreComments;
 
     /** Pattern illegal?. */
+    @UserDefinedOption
     private boolean illegalPattern;
 
     /** Error report limit. */
+    @UserDefinedOption
     private int errorLimit = DEFAULT_ERROR_LIMIT;
 
     /** Disallow more than x duplicates?. */
+    @UserDefinedOption
     private int duplicateLimit;
 
     /** Boolean to say if we should check for duplicates. */
@@ -109,6 +115,7 @@ public class RegexpCheck extends AbstractCheck {
     private int errorCount;
 
     /** The regexp to match against. */
+    @UserDefinedOption
     private Pattern format = Pattern.compile("$^", Pattern.MULTILINE);
 
     /** The matcher. */

@@ -26,6 +26,7 @@ import com.puppycrawl.tools.checkstyle.api.AbstractCheck;
 import com.puppycrawl.tools.checkstyle.api.DetailAST;
 import com.puppycrawl.tools.checkstyle.api.FullIdent;
 import com.puppycrawl.tools.checkstyle.api.TokenTypes;
+import com.puppycrawl.tools.checkstyle.api.UserDefinedOption;
 
 /**
  * <p>
@@ -75,12 +76,15 @@ public class AvoidStarImportCheck
     private static final String STAR_IMPORT_SUFFIX = ".*";
 
     /** The packages/classes to exempt from this check. */
+    @UserDefinedOption
     private final List<String> excludes = new ArrayList<>();
 
     /** Whether to allow all class imports. */
+    @UserDefinedOption
     private boolean allowClassImports;
 
     /** Whether to allow all static member imports. */
+    @UserDefinedOption
     private boolean allowStaticMemberImports;
 
     @Override

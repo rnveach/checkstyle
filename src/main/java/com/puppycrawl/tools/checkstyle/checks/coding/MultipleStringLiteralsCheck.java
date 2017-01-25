@@ -29,6 +29,7 @@ import java.util.regex.Pattern;
 import com.puppycrawl.tools.checkstyle.api.AbstractCheck;
 import com.puppycrawl.tools.checkstyle.api.DetailAST;
 import com.puppycrawl.tools.checkstyle.api.TokenTypes;
+import com.puppycrawl.tools.checkstyle.api.UserDefinedOption;
 import com.puppycrawl.tools.checkstyle.utils.TokenUtils;
 
 /**
@@ -55,17 +56,20 @@ public class MultipleStringLiteralsCheck extends AbstractCheck {
     /**
      * Marks the TokenTypes where duplicate strings should be ignored.
      */
+    @UserDefinedOption
     private final BitSet ignoreOccurrenceContext = new BitSet();
 
     /**
      * The allowed number of string duplicates in a file before an error is
      * generated.
      */
+    @UserDefinedOption
     private int allowedDuplicates = 1;
 
     /**
      * Pattern for matching ignored strings.
      */
+    @UserDefinedOption
     private Pattern ignoreStringsRegexp;
 
     /**

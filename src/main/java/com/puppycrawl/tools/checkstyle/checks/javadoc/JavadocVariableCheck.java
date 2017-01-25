@@ -27,6 +27,7 @@ import com.puppycrawl.tools.checkstyle.api.FileContents;
 import com.puppycrawl.tools.checkstyle.api.Scope;
 import com.puppycrawl.tools.checkstyle.api.TextBlock;
 import com.puppycrawl.tools.checkstyle.api.TokenTypes;
+import com.puppycrawl.tools.checkstyle.api.UserDefinedOption;
 import com.puppycrawl.tools.checkstyle.utils.ScopeUtils;
 
 /**
@@ -44,12 +45,15 @@ public class JavadocVariableCheck
     public static final String MSG_JAVADOC_MISSING = "javadoc.missing";
 
     /** The scope to check. */
+    @UserDefinedOption
     private Scope scope = Scope.PRIVATE;
 
     /** The visibility scope where Javadoc comments shouldn't be checked. **/
+    @UserDefinedOption
     private Scope excludeScope;
 
     /** The pattern to ignore variable name. */
+    @UserDefinedOption
     private Pattern ignoreNamePattern;
 
     /**

@@ -25,6 +25,7 @@ import com.puppycrawl.tools.checkstyle.api.AbstractCheck;
 import com.puppycrawl.tools.checkstyle.api.DetailAST;
 import com.puppycrawl.tools.checkstyle.api.FullIdent;
 import com.puppycrawl.tools.checkstyle.api.TokenTypes;
+import com.puppycrawl.tools.checkstyle.api.UserDefinedOption;
 
 /**
  * <p>
@@ -74,6 +75,7 @@ public class PackageNameCheck
     // Uppercase letters seem rather uncommon, but they're allowed in
     // http://docs.oracle.com/javase/specs/
     //  second_edition/html/packages.doc.html#40169
+    @UserDefinedOption
     private Pattern format = Pattern.compile("^[a-z]+(\\.[a-zA-Z_][a-zA-Z0-9_]*)*$");
 
     /**

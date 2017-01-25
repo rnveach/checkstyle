@@ -28,6 +28,7 @@ import com.puppycrawl.tools.checkstyle.api.AbstractCheck;
 import com.puppycrawl.tools.checkstyle.api.DetailAST;
 import com.puppycrawl.tools.checkstyle.api.Scope;
 import com.puppycrawl.tools.checkstyle.api.TokenTypes;
+import com.puppycrawl.tools.checkstyle.api.UserDefinedOption;
 import com.puppycrawl.tools.checkstyle.utils.ScopeUtils;
 
 /**
@@ -155,8 +156,10 @@ public class DeclarationOrderCheck extends AbstractCheck {
     private Set<String> classFieldNames;
 
     /** If true, ignores the check to constructors. */
+    @UserDefinedOption
     private boolean ignoreConstructors;
     /** If true, ignore the check to modifiers (fields, ...). */
+    @UserDefinedOption
     private boolean ignoreModifiers;
 
     @Override

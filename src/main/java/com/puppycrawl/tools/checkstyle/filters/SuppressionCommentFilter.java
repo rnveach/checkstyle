@@ -36,6 +36,7 @@ import com.puppycrawl.tools.checkstyle.api.AutomaticBean;
 import com.puppycrawl.tools.checkstyle.api.FileContents;
 import com.puppycrawl.tools.checkstyle.api.Filter;
 import com.puppycrawl.tools.checkstyle.api.TextBlock;
+import com.puppycrawl.tools.checkstyle.api.UserDefinedOption;
 import com.puppycrawl.tools.checkstyle.checks.FileContentsHolder;
 import com.puppycrawl.tools.checkstyle.utils.CommonUtils;
 
@@ -79,23 +80,29 @@ public class SuppressionCommentFilter
     private final List<Tag> tags = new ArrayList<>();
 
     /** Whether to look in comments of the C type. */
+    @UserDefinedOption
     private boolean checkC = true;
 
     /** Whether to look in comments of the C++ type. */
     // -@cs[AbbreviationAsWordInName] we can not change it as,
     // Check property is a part of API (used in configurations)
+    @UserDefinedOption
     private boolean checkCPP = true;
 
     /** Parsed comment regexp that turns checkstyle reporting off. */
+    @UserDefinedOption
     private Pattern offCommentFormat = Pattern.compile(DEFAULT_OFF_FORMAT);
 
     /** Parsed comment regexp that turns checkstyle reporting on. */
+    @UserDefinedOption
     private Pattern onCommentFormat = Pattern.compile(DEFAULT_ON_FORMAT);
 
     /** The check format to suppress. */
+    @UserDefinedOption
     private String checkFormat = DEFAULT_CHECK_FORMAT;
 
     /** The message format to suppress. */
+    @UserDefinedOption
     private String messageFormat;
 
     /**

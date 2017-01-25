@@ -19,6 +19,7 @@
 
 package com.puppycrawl.tools.checkstyle.internal;
 
+import java.beans.PropertyDescriptor;
 import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Field;
@@ -26,14 +27,17 @@ import java.lang.reflect.Modifier;
 import java.text.MessageFormat;
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Locale;
 import java.util.Properties;
 import java.util.Set;
+import java.util.TreeSet;
 import java.util.stream.Collectors;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 
+import org.apache.commons.beanutils.PropertyUtils;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -47,6 +51,7 @@ import com.puppycrawl.tools.checkstyle.api.AutomaticBean;
 import com.puppycrawl.tools.checkstyle.api.BeforeExecutionFileFilter;
 import com.puppycrawl.tools.checkstyle.api.Filter;
 import com.puppycrawl.tools.checkstyle.api.RootModule;
+import com.puppycrawl.tools.checkstyle.checks.javadoc.AbstractJavadocCheck;
 import com.puppycrawl.tools.checkstyle.checks.regexp.RegexpMultilineCheck;
 import com.puppycrawl.tools.checkstyle.checks.regexp.RegexpSinglelineCheck;
 import com.puppycrawl.tools.checkstyle.checks.regexp.RegexpSinglelineJavaCheck;
@@ -54,6 +59,26 @@ import com.puppycrawl.tools.checkstyle.utils.JavadocUtils;
 import com.puppycrawl.tools.checkstyle.utils.TokenUtils;
 
 public final class CheckUtil {
+    private static final List<String> UNDOCUMENTED_PROPERTIES = Arrays.asList(
+            "Checker.classLoader",
+            "Checker.classloader",
+            "Checker.moduleClassLoader",
+            "Checker.moduleFactory",
+            "TreeWalker.classLoader",
+            "TreeWalker.moduleFactory",
+            "TreeWalker.cacheFile",
+            "TreeWalker.upChild",
+            "SuppressWithNearbyCommentFilter.fileContents",
+            "SuppressionCommentFilter.fileContents"
+    );
+
+    public static final Set<String> CHECK_PROPERTIES =
+            getModuleProperties(AbstractCheck.class, false);
+    private static final Set<String> JAVADOC_CHECK_PROPERTIES =
+            getModuleProperties(AbstractJavadocCheck.class, false);
+    private static final Set<String> FILESET_PROPERTIES =
+            getModuleProperties(AbstractFileSetCheck.class, false);
+
     private CheckUtil() {
     }
 
@@ -270,6 +295,88 @@ public final class CheckUtil {
     }
 
     /**
+     * Get's the module's properties.
+     * @param module class to examine.
+     * @return a set of checkstyle's module properties.
+     */
+    public static Set<String> getModuleProperties(Class<?> module) {
+        return getModuleProperties(module, true);
+    }
+
+    private static Set<String> getModuleProperties(Class<?> module, boolean fix) {
+        final Set<String> result = new TreeSet<>();
+        final PropertyDescriptor[] map = PropertyUtils.getPropertyDescriptors(module);
+
+        for (PropertyDescriptor p : map) {
+            if (p.getWriteMethod() != null) {
+                result.add(p.getName());
+            }
+        }
+
+        if (fix) {
+            try {
+                fixCapturedProperties(module.newInstance(), module, result);
+            }
+            catch (InstantiationException | IllegalAccessException ex) {
+                throw new IllegalStateException(ex);
+            }
+        }
+
+        return result;
+    }
+
+    private static void fixCapturedProperties(Object instance, Class<?> module,
+            Set<String> properties) {
+        // remove undocumented properties
+        new HashSet<>(properties).stream()
+            .filter(p -> UNDOCUMENTED_PROPERTIES.contains(module.getSimpleName() + "." + p))
+            .forEach(properties::remove);
+
+        if (AbstractFileSetCheck.class.isAssignableFrom(module)) {
+            properties.removeAll(FILESET_PROPERTIES);
+
+            // override
+            properties.add("fileExtensions");
+        }
+
+        if (AbstractCheck.class.isAssignableFrom(module)) {
+            properties.removeAll(CHECK_PROPERTIES);
+
+            final AbstractCheck check = (AbstractCheck) instance;
+
+            final int[] acceptableTokens = check.getAcceptableTokens();
+            Arrays.sort(acceptableTokens);
+            final int[] defaultTokens = check.getDefaultTokens();
+            Arrays.sort(defaultTokens);
+            final int[] requiredTokens = check.getRequiredTokens();
+            Arrays.sort(requiredTokens);
+
+            if (!Arrays.equals(acceptableTokens, defaultTokens)
+                    || !Arrays.equals(acceptableTokens, requiredTokens)) {
+                properties.add("tokens");
+            }
+        }
+
+        if (AbstractJavadocCheck.class.isAssignableFrom(module)) {
+            properties.removeAll(JAVADOC_CHECK_PROPERTIES);
+
+            final AbstractJavadocCheck check = (AbstractJavadocCheck) instance;
+
+            final int[] acceptableJavadocTokens = check.getAcceptableJavadocTokens();
+            Arrays.sort(acceptableJavadocTokens);
+            final int[] defaultJavadocTokens = check.getDefaultJavadocTokens();
+            Arrays.sort(defaultJavadocTokens);
+            final int[] requiredJavadocTokens = check.getRequiredJavadocTokens();
+            Arrays.sort(requiredJavadocTokens);
+
+            if (!Arrays.equals(acceptableJavadocTokens, defaultJavadocTokens)
+                    || !Arrays.equals(acceptableJavadocTokens, requiredJavadocTokens)) {
+                properties.add("javadocTokens");
+            }
+        }
+    }
+
+    /**
      * Get's the check's messages.
      * @param module class to examine.
      * @return a set of checkstyle's module message fields.
@@ -279,19 +386,12 @@ public final class CheckUtil {
         final Set<Field> checkstyleMessages = new HashSet<>();
 
         // get all fields from current class
-        final Field[] fields = module.getDeclaredFields();
+        final Set<Field> fields = TestUtils.getFields(module);
 
         for (Field field : fields) {
             if (field.getName().startsWith("MSG_")) {
                 checkstyleMessages.add(field);
             }
-        }
-
-        // deep scan class through hierarchy
-        final Class<?> superModule = module.getSuperclass();
-
-        if (superModule != null) {
-            checkstyleMessages.addAll(getCheckMessages(superModule));
         }
 
         // special cases that require additional classes

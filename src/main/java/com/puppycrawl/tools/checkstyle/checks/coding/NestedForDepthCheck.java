@@ -22,6 +22,7 @@ package com.puppycrawl.tools.checkstyle.checks.coding;
 import com.puppycrawl.tools.checkstyle.api.AbstractCheck;
 import com.puppycrawl.tools.checkstyle.api.DetailAST;
 import com.puppycrawl.tools.checkstyle.api.TokenTypes;
+import com.puppycrawl.tools.checkstyle.api.UserDefinedOption;
 
 /**
  * Check the number of nested {@code for} -statements. The maximum
@@ -50,6 +51,7 @@ public final class NestedForDepthCheck extends AbstractCheck {
     public static final String MSG_KEY = "nested.for.depth";
 
     /** Maximum allowed nesting depth. */
+    @UserDefinedOption
     private int max = 1;
     /** Current nesting depth. */
     private int depth;

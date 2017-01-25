@@ -29,6 +29,7 @@ import com.puppycrawl.tools.checkstyle.api.AbstractCheck;
 import com.puppycrawl.tools.checkstyle.api.DetailAST;
 import com.puppycrawl.tools.checkstyle.api.Scope;
 import com.puppycrawl.tools.checkstyle.api.TokenTypes;
+import com.puppycrawl.tools.checkstyle.api.UserDefinedOption;
 import com.puppycrawl.tools.checkstyle.utils.CheckUtils;
 import com.puppycrawl.tools.checkstyle.utils.ScopeUtils;
 
@@ -142,9 +143,11 @@ public class HiddenFieldCheck
     private FieldFrame frame;
 
     /** Pattern for names of variables and parameters to ignore. */
+    @UserDefinedOption
     private Pattern ignoreFormat;
 
     /** Controls whether to check the parameter of a property setter method. */
+    @UserDefinedOption
     private boolean ignoreSetter;
 
     /**
@@ -153,12 +156,15 @@ public class HiddenFieldCheck
      * However, is this variable is set to true then setter can also
      * return class in which is declared.
      */
+    @UserDefinedOption
     private boolean setterCanReturnItsClass;
 
     /** Controls whether to check the parameter of a constructor. */
+    @UserDefinedOption
     private boolean ignoreConstructorParameter;
 
     /** Controls whether to check the parameter of abstract methods. */
+    @UserDefinedOption
     private boolean ignoreAbstractMethods;
 
     @Override

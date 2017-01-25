@@ -24,6 +24,7 @@ import java.util.regex.Pattern;
 import com.puppycrawl.tools.checkstyle.api.AbstractCheck;
 import com.puppycrawl.tools.checkstyle.api.DetailAST;
 import com.puppycrawl.tools.checkstyle.api.TokenTypes;
+import com.puppycrawl.tools.checkstyle.api.UserDefinedOption;
 
 /**
  * <p>
@@ -62,6 +63,7 @@ public class TodoCommentCheck
     /**
      * Regular expression pattern compiled from format.
      */
+    @UserDefinedOption
     private Pattern format = Pattern.compile("TODO:");
 
     @Override

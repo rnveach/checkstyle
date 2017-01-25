@@ -34,6 +34,7 @@ import java.util.stream.Stream;
 import com.puppycrawl.tools.checkstyle.api.AbstractCheck;
 import com.puppycrawl.tools.checkstyle.api.DetailAST;
 import com.puppycrawl.tools.checkstyle.api.TokenTypes;
+import com.puppycrawl.tools.checkstyle.api.UserDefinedOption;
 import com.puppycrawl.tools.checkstyle.utils.CheckUtils;
 import com.puppycrawl.tools.checkstyle.utils.ScopeUtils;
 
@@ -147,10 +148,13 @@ public class RequireThisCheck extends AbstractCheck {
     private AbstractFrame current;
 
     /** Whether we should check fields usage. */
+    @UserDefinedOption
     private boolean checkFields = true;
     /** Whether we should check methods usage. */
+    @UserDefinedOption
     private boolean checkMethods = true;
     /** Whether we should check only overlapping by variables or arguments. */
+    @UserDefinedOption
     private boolean validateOnlyOverlapping = true;
 
     /**

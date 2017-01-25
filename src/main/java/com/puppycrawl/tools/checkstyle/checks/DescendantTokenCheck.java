@@ -25,6 +25,7 @@ import java.util.Set;
 import antlr.collections.AST;
 import com.puppycrawl.tools.checkstyle.api.AbstractCheck;
 import com.puppycrawl.tools.checkstyle.api.DetailAST;
+import com.puppycrawl.tools.checkstyle.api.UserDefinedOption;
 import com.puppycrawl.tools.checkstyle.utils.CommonUtils;
 import com.puppycrawl.tools.checkstyle.utils.TokenUtils;
 
@@ -192,20 +193,28 @@ public class DescendantTokenCheck extends AbstractCheck {
     public static final String MSG_KEY_SUM_MAX = "descendant.token.sum.max";
 
     /** Minimum depth. */
+    @UserDefinedOption
     private int minimumDepth;
     /** Maximum depth. */
+    @UserDefinedOption
     private int maximumDepth = Integer.MAX_VALUE;
     /** Minimum number. */
+    @UserDefinedOption
     private int minimumNumber;
     /** Maximum number. */
+    @UserDefinedOption
     private int maximumNumber = Integer.MAX_VALUE;
     /** Whether to sum the number of tokens found. */
+    @UserDefinedOption
     private boolean sumTokenCounts;
     /** Limited tokens. */
+    @UserDefinedOption
     private int[] limitedTokens = CommonUtils.EMPTY_INT_ARRAY;
     /** Error message when minimum count not reached. */
+    @UserDefinedOption
     private String minimumMessage;
     /** Error message when maximum count exceeded. */
+    @UserDefinedOption
     private String maximumMessage;
 
     /**

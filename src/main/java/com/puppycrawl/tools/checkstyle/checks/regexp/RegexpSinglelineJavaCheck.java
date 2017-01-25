@@ -23,6 +23,7 @@ import java.util.Arrays;
 
 import com.puppycrawl.tools.checkstyle.api.AbstractCheck;
 import com.puppycrawl.tools.checkstyle.api.DetailAST;
+import com.puppycrawl.tools.checkstyle.api.UserDefinedOption;
 import com.puppycrawl.tools.checkstyle.utils.CommonUtils;
 
 /**
@@ -33,16 +34,22 @@ import com.puppycrawl.tools.checkstyle.utils.CommonUtils;
 public class RegexpSinglelineJavaCheck extends AbstractCheck {
 
     /** The format of the regular expression to match. */
+    @UserDefinedOption
     private String format = "$.";
     /** The message to report for a match. */
+    @UserDefinedOption
     private String message;
     /** The minimum number of matches required per file. */
+    @UserDefinedOption
     private int minimum;
     /** The maximum number of matches required per file. */
+    @UserDefinedOption
     private int maximum;
     /** Whether to ignore case when matching. */
+    @UserDefinedOption
     private boolean ignoreCase;
     /** Suppress comments. **/
+    @UserDefinedOption
     private boolean ignoreComments;
 
     @Override

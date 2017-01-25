@@ -22,6 +22,7 @@ package com.puppycrawl.tools.checkstyle.checks.sizes;
 import com.puppycrawl.tools.checkstyle.api.AbstractCheck;
 import com.puppycrawl.tools.checkstyle.api.DetailAST;
 import com.puppycrawl.tools.checkstyle.api.TokenTypes;
+import com.puppycrawl.tools.checkstyle.api.UserDefinedOption;
 
 /**
  * <p>
@@ -68,6 +69,7 @@ public class AnonInnerLengthCheck extends AbstractCheck {
     private static final int DEFAULT_MAX = 20;
 
     /** Maximum number of lines. */
+    @UserDefinedOption
     private int max = DEFAULT_MAX;
 
     @Override

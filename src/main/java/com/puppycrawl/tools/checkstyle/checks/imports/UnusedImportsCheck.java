@@ -31,6 +31,7 @@ import com.puppycrawl.tools.checkstyle.api.FileContents;
 import com.puppycrawl.tools.checkstyle.api.FullIdent;
 import com.puppycrawl.tools.checkstyle.api.TextBlock;
 import com.puppycrawl.tools.checkstyle.api.TokenTypes;
+import com.puppycrawl.tools.checkstyle.api.UserDefinedOption;
 import com.puppycrawl.tools.checkstyle.checks.javadoc.JavadocTag;
 import com.puppycrawl.tools.checkstyle.utils.CommonUtils;
 import com.puppycrawl.tools.checkstyle.utils.JavadocUtils;
@@ -83,6 +84,7 @@ public class UnusedImportsCheck extends AbstractCheck {
     /** Flag to indicate when time to start collecting references. */
     private boolean collect;
     /** Flag whether to process Javadoc comments. */
+    @UserDefinedOption
     private boolean processJavadoc = true;
 
     /**

@@ -26,6 +26,7 @@ import java.util.Set;
 import com.puppycrawl.tools.checkstyle.api.AbstractCheck;
 import com.puppycrawl.tools.checkstyle.api.DetailAST;
 import com.puppycrawl.tools.checkstyle.api.TokenTypes;
+import com.puppycrawl.tools.checkstyle.api.UserDefinedOption;
 
 /**
  * Checks that any combination of String literals
@@ -79,6 +80,7 @@ public class EqualsAvoidNullCheck extends AbstractCheck {
     private static final String STRING = "String";
 
     /** Whether to process equalsIgnoreCase() invocations. */
+    @UserDefinedOption
     private boolean ignoreEqualsIgnoreCase;
 
     /** Stack of sets of field names, one for each class of a set of nested classes. */

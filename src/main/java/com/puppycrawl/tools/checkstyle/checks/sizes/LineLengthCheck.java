@@ -23,6 +23,7 @@ import java.util.regex.Pattern;
 
 import com.puppycrawl.tools.checkstyle.api.AbstractCheck;
 import com.puppycrawl.tools.checkstyle.api.DetailAST;
+import com.puppycrawl.tools.checkstyle.api.UserDefinedOption;
 import com.puppycrawl.tools.checkstyle.utils.CommonUtils;
 
 /**
@@ -87,9 +88,11 @@ public class LineLengthCheck extends AbstractCheck {
     private static final Pattern IGNORE_PATTERN = Pattern.compile("^(package|import) .*");
 
     /** The maximum number of columns in a line. */
+    @UserDefinedOption
     private int max = DEFAULT_MAX_COLUMNS;
 
     /** The regexp when long lines are ignored. */
+    @UserDefinedOption
     private Pattern ignorePattern = Pattern.compile("^$");
 
     @Override

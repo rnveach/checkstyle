@@ -29,6 +29,7 @@ import java.util.stream.Collectors;
 import com.puppycrawl.tools.checkstyle.api.AbstractCheck;
 import com.puppycrawl.tools.checkstyle.api.DetailAST;
 import com.puppycrawl.tools.checkstyle.api.TokenTypes;
+import com.puppycrawl.tools.checkstyle.api.UserDefinedOption;
 import com.puppycrawl.tools.checkstyle.utils.CheckUtils;
 import com.puppycrawl.tools.checkstyle.utils.CommonUtils;
 
@@ -98,21 +99,26 @@ public class AbbreviationAsWordInNameCheck extends AbstractCheck {
      * Variable indicates on the allowed amount of capital letters in
      * abbreviations in the classes, interfaces, variables and methods names.
      */
+    @UserDefinedOption
     private int allowedAbbreviationLength =
             DEFAULT_ALLOWED_ABBREVIATIONS_LENGTH;
 
     /**
      * Set of allowed abbreviation to ignore in check.
      */
+    @UserDefinedOption
     private Set<String> allowedAbbreviations = new HashSet<>();
 
     /** Allows to ignore variables with 'final' modifier. */
+    @UserDefinedOption
     private boolean ignoreFinal = true;
 
     /** Allows to ignore variables with 'static' modifier. */
+    @UserDefinedOption
     private boolean ignoreStatic = true;
 
     /** Allows to ignore methods with '@Override' annotation. */
+    @UserDefinedOption
     private boolean ignoreOverriddenMethods = true;
 
     /**

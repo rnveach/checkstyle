@@ -26,6 +26,7 @@ import com.puppycrawl.tools.checkstyle.api.AbstractCheck;
 import com.puppycrawl.tools.checkstyle.api.DetailAST;
 import com.puppycrawl.tools.checkstyle.api.TextBlock;
 import com.puppycrawl.tools.checkstyle.api.TokenTypes;
+import com.puppycrawl.tools.checkstyle.api.UserDefinedOption;
 import com.puppycrawl.tools.checkstyle.checks.javadoc.JavadocTagInfo;
 import com.puppycrawl.tools.checkstyle.utils.AnnotationUtility;
 import com.puppycrawl.tools.checkstyle.utils.CommonUtils;
@@ -141,6 +142,7 @@ public final class MissingDeprecatedCheck extends AbstractCheck {
     private static final String NEXT_TAG = "@";
 
     /** Is deprecated element valid without javadoc. */
+    @UserDefinedOption
     private boolean skipNoJavadoc;
 
     /**

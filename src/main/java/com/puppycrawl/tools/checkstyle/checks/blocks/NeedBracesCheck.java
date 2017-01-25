@@ -22,6 +22,7 @@ package com.puppycrawl.tools.checkstyle.checks.blocks;
 import com.puppycrawl.tools.checkstyle.api.AbstractCheck;
 import com.puppycrawl.tools.checkstyle.api.DetailAST;
 import com.puppycrawl.tools.checkstyle.api.TokenTypes;
+import com.puppycrawl.tools.checkstyle.api.UserDefinedOption;
 import com.puppycrawl.tools.checkstyle.utils.CommonUtils;
 
 /**
@@ -143,11 +144,13 @@ public class NeedBracesCheck extends AbstractCheck {
     /**
      * Check's option for skipping single-line statements.
      */
+    @UserDefinedOption
     private boolean allowSingleLineStatement;
 
     /**
      * Check's option for allowing loops with empty body.
      */
+    @UserDefinedOption
     private boolean allowEmptyLoopBody;
 
     /**

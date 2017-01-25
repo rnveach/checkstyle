@@ -36,6 +36,7 @@ import com.puppycrawl.tools.checkstyle.api.FileContents;
 import com.puppycrawl.tools.checkstyle.api.Scope;
 import com.puppycrawl.tools.checkstyle.api.TextBlock;
 import com.puppycrawl.tools.checkstyle.api.TokenTypes;
+import com.puppycrawl.tools.checkstyle.api.UserDefinedOption;
 import com.puppycrawl.tools.checkstyle.utils.CheckUtils;
 import com.puppycrawl.tools.checkstyle.utils.CommonUtils;
 import com.puppycrawl.tools.checkstyle.utils.ScopeUtils;
@@ -88,28 +89,34 @@ public class JavadocStyleCheck
         .collect(Collectors.toCollection(TreeSet::new)));
 
     /** The scope to check. */
+    @UserDefinedOption
     private Scope scope = Scope.PRIVATE;
 
     /** The visibility scope where Javadoc comments shouldn't be checked. **/
+    @UserDefinedOption
     private Scope excludeScope;
 
     /** Format for matching the end of a sentence. */
+    @UserDefinedOption
     private Pattern endOfSentenceFormat = Pattern.compile("([.?!][ \t\n\r\f<])|([.?!]$)");
 
     /**
      * Indicates if the first sentence should be checked for proper end of
      * sentence punctuation.
      */
+    @UserDefinedOption
     private boolean checkFirstSentence = true;
 
     /**
      * Indicates if the HTML within the comment should be checked.
      */
+    @UserDefinedOption
     private boolean checkHtml = true;
 
     /**
      * Indicates if empty javadoc statements should be checked.
      */
+    @UserDefinedOption
     private boolean checkEmptyJavadoc;
 
     @Override

@@ -23,6 +23,8 @@ import java.io.File;
 import java.util.Arrays;
 import java.util.List;
 
+import com.puppycrawl.tools.checkstyle.api.UserDefinedOption;
+
 /**
  * Checks the header of the source against a fixed header file.
  * In default configuration,if header is not specified,
@@ -49,6 +51,7 @@ public class HeaderCheck extends AbstractHeaderCheck {
     private static final int[] EMPTY_INT_ARRAY = new int[0];
 
     /** The header lines to ignore in the check, sorted. */
+    @UserDefinedOption
     private int[] ignoreLines = EMPTY_INT_ARRAY;
 
     /**

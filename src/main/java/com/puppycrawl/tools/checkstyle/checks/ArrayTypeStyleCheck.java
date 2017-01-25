@@ -22,6 +22,7 @@ package com.puppycrawl.tools.checkstyle.checks;
 import com.puppycrawl.tools.checkstyle.api.AbstractCheck;
 import com.puppycrawl.tools.checkstyle.api.DetailAST;
 import com.puppycrawl.tools.checkstyle.api.TokenTypes;
+import com.puppycrawl.tools.checkstyle.api.UserDefinedOption;
 
 /**
  * Checks the style of array type definitions.
@@ -39,6 +40,7 @@ public class ArrayTypeStyleCheck extends AbstractCheck {
     public static final String MSG_KEY = "array.type.style";
 
     /** Controls whether to use Java or C style. */
+    @UserDefinedOption
     private boolean javaStyle = true;
 
     @Override

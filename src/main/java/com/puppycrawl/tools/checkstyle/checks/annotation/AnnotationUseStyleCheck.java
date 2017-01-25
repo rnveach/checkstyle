@@ -26,6 +26,7 @@ import org.apache.commons.beanutils.ConversionException;
 import com.puppycrawl.tools.checkstyle.api.AbstractCheck;
 import com.puppycrawl.tools.checkstyle.api.DetailAST;
 import com.puppycrawl.tools.checkstyle.api.TokenTypes;
+import com.puppycrawl.tools.checkstyle.api.UserDefinedOption;
 
 /**
  * This check controls the style with the usage of annotations.
@@ -243,6 +244,7 @@ public final class AnnotationUseStyleCheck extends AbstractCheck {
      * ElementStyle option.
      * @see #setElementStyle(String)
      */
+    @UserDefinedOption
     private ElementStyle elementStyle = ElementStyle.COMPACT_NO_ARRAY;
 
     //defaulting to NEVER because of the strange compiler behavior
@@ -250,12 +252,14 @@ public final class AnnotationUseStyleCheck extends AbstractCheck {
      * Trailing array comma option.
      * @see #setTrailingArrayComma(String)
      */
+    @UserDefinedOption
     private TrailingArrayComma trailingArrayComma = TrailingArrayComma.NEVER;
 
     /**
      * Closing parens option.
      * @see #setClosingParens(String)
      */
+    @UserDefinedOption
     private ClosingParens closingParens = ClosingParens.NEVER;
 
     /**

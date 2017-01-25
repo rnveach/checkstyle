@@ -21,6 +21,7 @@ package com.puppycrawl.tools.checkstyle.checks.whitespace;
 
 import com.puppycrawl.tools.checkstyle.api.AbstractCheck;
 import com.puppycrawl.tools.checkstyle.api.DetailAST;
+import com.puppycrawl.tools.checkstyle.api.UserDefinedOption;
 import com.puppycrawl.tools.checkstyle.utils.CommonUtils;
 
 /**
@@ -91,6 +92,7 @@ public class SingleSpaceSeparatorCheck extends AbstractCheck {
     public static final String MSG_KEY = "single.space.separator";
 
     /** Indicates if whitespaces surrounding comments will be ignored. */
+    @UserDefinedOption
     private boolean validateComments;
 
     /**

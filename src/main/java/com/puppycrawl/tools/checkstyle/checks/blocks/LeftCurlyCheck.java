@@ -26,6 +26,7 @@ import org.apache.commons.beanutils.ConversionException;
 import com.puppycrawl.tools.checkstyle.api.AbstractCheck;
 import com.puppycrawl.tools.checkstyle.api.DetailAST;
 import com.puppycrawl.tools.checkstyle.api.TokenTypes;
+import com.puppycrawl.tools.checkstyle.api.UserDefinedOption;
 import com.puppycrawl.tools.checkstyle.utils.CommonUtils;
 
 /**
@@ -102,9 +103,11 @@ public class LeftCurlyCheck
     private static final String OPEN_CURLY_BRACE = "{";
 
     /** If true, Check will ignore enums. */
+    @UserDefinedOption
     private boolean ignoreEnums = true;
 
     /** The policy to enforce. */
+    @UserDefinedOption
     private LeftCurlyOption option = LeftCurlyOption.EOL;
 
     /**

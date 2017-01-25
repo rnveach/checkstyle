@@ -22,6 +22,7 @@ package com.puppycrawl.tools.checkstyle.checks.sizes;
 import com.puppycrawl.tools.checkstyle.api.AbstractCheck;
 import com.puppycrawl.tools.checkstyle.api.DetailAST;
 import com.puppycrawl.tools.checkstyle.api.TokenTypes;
+import com.puppycrawl.tools.checkstyle.api.UserDefinedOption;
 
 /**
  * Checks for the number of defined types at the "outer" level.
@@ -36,6 +37,7 @@ public class OuterTypeNumberCheck extends AbstractCheck {
     public static final String MSG_KEY = "maxOuterTypes";
 
     /** The maximum allowed number of outer types. */
+    @UserDefinedOption
     private int max = 1;
     /** Tracks the current depth in types. */
     private int currentDepth;

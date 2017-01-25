@@ -26,6 +26,7 @@ import org.apache.commons.beanutils.ConversionException;
 import com.puppycrawl.tools.checkstyle.api.AbstractCheck;
 import com.puppycrawl.tools.checkstyle.api.DetailAST;
 import com.puppycrawl.tools.checkstyle.api.TokenTypes;
+import com.puppycrawl.tools.checkstyle.api.UserDefinedOption;
 import com.puppycrawl.tools.checkstyle.utils.CommonUtils;
 
 /**
@@ -91,9 +92,11 @@ public class MethodParamPadCheck
      * Whether whitespace is allowed if the method identifier is at a
      * linebreak.
      */
+    @UserDefinedOption
     private boolean allowLineBreaks;
 
     /** The policy to enforce. */
+    @UserDefinedOption
     private PadOption option = PadOption.NOSPACE;
 
     @Override

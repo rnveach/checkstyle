@@ -22,6 +22,7 @@ package com.puppycrawl.tools.checkstyle.checks.sizes;
 import com.puppycrawl.tools.checkstyle.api.AbstractCheck;
 import com.puppycrawl.tools.checkstyle.api.DetailAST;
 import com.puppycrawl.tools.checkstyle.api.TokenTypes;
+import com.puppycrawl.tools.checkstyle.api.UserDefinedOption;
 import com.puppycrawl.tools.checkstyle.utils.AnnotationUtility;
 import com.puppycrawl.tools.checkstyle.utils.CommonUtils;
 
@@ -82,9 +83,11 @@ public class ParameterNumberCheck
     private static final int DEFAULT_MAX_PARAMETERS = 7;
 
     /** The maximum number of allowed parameters. */
+    @UserDefinedOption
     private int max = DEFAULT_MAX_PARAMETERS;
 
     /** Ignore overridden methods. */
+    @UserDefinedOption
     private boolean ignoreOverriddenMethods;
 
     /**

@@ -31,7 +31,7 @@ import java.util.Map;
 public abstract class AbstractViolationReporter
     extends AutomaticBean {
     /** The severity level of any violations found. */
-    private SeverityLevel severityLevel = SeverityLevel.ERROR;
+    private SeverityLevel severity = SeverityLevel.ERROR;
 
     /** The identifier of the reporter. */
     private String id;
@@ -43,7 +43,7 @@ public abstract class AbstractViolationReporter
      * @see LocalizedMessage#getSeverityLevel
      */
     public final SeverityLevel getSeverityLevel() {
-        return severityLevel;
+        return severity;
     }
 
     /**
@@ -54,7 +54,7 @@ public abstract class AbstractViolationReporter
      * @see SeverityLevel
      */
     public final void setSeverity(String severity) {
-        severityLevel = SeverityLevel.getInstance(severity);
+        this.severity = SeverityLevel.getInstance(severity);
     }
 
     /**
@@ -63,7 +63,7 @@ public abstract class AbstractViolationReporter
      *  @return  the check's severity level name.
      */
     public final String getSeverity() {
-        return severityLevel.getName();
+        return severity.getName();
     }
 
     /**

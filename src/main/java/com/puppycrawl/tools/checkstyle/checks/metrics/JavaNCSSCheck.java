@@ -25,6 +25,7 @@ import java.util.Deque;
 import com.puppycrawl.tools.checkstyle.api.AbstractCheck;
 import com.puppycrawl.tools.checkstyle.api.DetailAST;
 import com.puppycrawl.tools.checkstyle.api.TokenTypes;
+import com.puppycrawl.tools.checkstyle.api.UserDefinedOption;
 
 /**
  * This check calculates the Non Commenting Source Statements (NCSS) metric for
@@ -70,12 +71,15 @@ public class JavaNCSSCheck extends AbstractCheck {
     private static final int METHOD_MAX_NCSS = 50;
 
     /** Maximum ncss for a complete source file. */
+    @UserDefinedOption
     private int fileMaximum = FILE_MAX_NCSS;
 
     /** Maximum ncss for a class. */
+    @UserDefinedOption
     private int classMaximum = CLASS_MAX_NCSS;
 
     /** Maximum ncss for a method. */
+    @UserDefinedOption
     private int methodMaximum = METHOD_MAX_NCSS;
 
     /** List containing the stacked counters. */

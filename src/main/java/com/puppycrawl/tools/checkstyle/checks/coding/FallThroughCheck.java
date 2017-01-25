@@ -25,6 +25,7 @@ import java.util.regex.Pattern;
 import com.puppycrawl.tools.checkstyle.api.AbstractCheck;
 import com.puppycrawl.tools.checkstyle.api.DetailAST;
 import com.puppycrawl.tools.checkstyle.api.TokenTypes;
+import com.puppycrawl.tools.checkstyle.api.UserDefinedOption;
 
 /**
  * Checks for fall through in switch statements
@@ -82,9 +83,11 @@ public class FallThroughCheck extends AbstractCheck {
     public static final String MSG_FALL_THROUGH_LAST = "fall.through.last";
 
     /** Do we need to check last case group. */
+    @UserDefinedOption
     private boolean checkLastCaseGroup;
 
     /** Relief regexp to allow fall through to the next case branch. */
+    @UserDefinedOption
     private Pattern reliefPattern = Pattern.compile("fallthru|falls? ?through");
 
     @Override

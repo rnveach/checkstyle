@@ -28,6 +28,7 @@ import com.puppycrawl.tools.checkstyle.api.FileContents;
 import com.puppycrawl.tools.checkstyle.api.SeverityLevel;
 import com.puppycrawl.tools.checkstyle.api.TextBlock;
 import com.puppycrawl.tools.checkstyle.api.TokenTypes;
+import com.puppycrawl.tools.checkstyle.api.UserDefinedOption;
 import com.puppycrawl.tools.checkstyle.utils.CommonUtils;
 
 /**
@@ -87,11 +88,14 @@ public class WriteTagCheck
     /** Compiled regexp to match tag. **/
     private Pattern tagRegExp;
     /** Compiled regexp to match tag content. **/
+    @UserDefinedOption
     private Pattern tagFormat;
 
     /** Regexp to match tag. */
+    @UserDefinedOption
     private String tag;
     /** The severity level of found tag reports. */
+    @UserDefinedOption
     private SeverityLevel tagSeverity = SeverityLevel.INFO;
 
     /**

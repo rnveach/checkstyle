@@ -22,6 +22,7 @@ package com.puppycrawl.tools.checkstyle.checks.whitespace;
 import com.puppycrawl.tools.checkstyle.api.AbstractCheck;
 import com.puppycrawl.tools.checkstyle.api.DetailAST;
 import com.puppycrawl.tools.checkstyle.api.TokenTypes;
+import com.puppycrawl.tools.checkstyle.api.UserDefinedOption;
 
 /**
  * <p>
@@ -80,6 +81,7 @@ public class NoWhitespaceAfterCheck extends AbstractCheck {
     public static final String MSG_KEY = "ws.followed";
 
     /** Whether whitespace is allowed if the AST is at a linebreak. */
+    @UserDefinedOption
     private boolean allowLineBreaks = true;
 
     @Override

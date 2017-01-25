@@ -25,6 +25,7 @@ import java.util.Deque;
 import com.puppycrawl.tools.checkstyle.api.AbstractCheck;
 import com.puppycrawl.tools.checkstyle.api.DetailAST;
 import com.puppycrawl.tools.checkstyle.api.TokenTypes;
+import com.puppycrawl.tools.checkstyle.api.UserDefinedOption;
 
 /**
  * Restricts the number of executable statements to a specified limit
@@ -47,6 +48,7 @@ public final class ExecutableStatementCountCheck
     private final Deque<Context> contextStack = new ArrayDeque<>();
 
     /** Threshold to report error for. */
+    @UserDefinedOption
     private int max;
 
     /** Current method context. */

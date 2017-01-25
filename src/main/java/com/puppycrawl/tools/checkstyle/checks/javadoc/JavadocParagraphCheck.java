@@ -22,6 +22,7 @@ package com.puppycrawl.tools.checkstyle.checks.javadoc;
 import com.puppycrawl.tools.checkstyle.api.DetailNode;
 import com.puppycrawl.tools.checkstyle.api.JavadocTokenTypes;
 import com.puppycrawl.tools.checkstyle.api.TokenTypes;
+import com.puppycrawl.tools.checkstyle.api.UserDefinedOption;
 import com.puppycrawl.tools.checkstyle.utils.CommonUtils;
 import com.puppycrawl.tools.checkstyle.utils.JavadocUtils;
 
@@ -101,6 +102,7 @@ public class JavadocParagraphCheck extends AbstractJavadocCheck {
     /**
      * Whether the &lt;p&gt; tag should be placed immediately before the first word.
      */
+    @UserDefinedOption
     private boolean allowNewlineParagraph = true;
 
     /**

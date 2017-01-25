@@ -28,6 +28,7 @@ import com.puppycrawl.tools.checkstyle.api.AbstractCheck;
 import com.puppycrawl.tools.checkstyle.api.DetailAST;
 import com.puppycrawl.tools.checkstyle.api.FullIdent;
 import com.puppycrawl.tools.checkstyle.api.TokenTypes;
+import com.puppycrawl.tools.checkstyle.api.UserDefinedOption;
 import com.puppycrawl.tools.checkstyle.utils.AnnotationUtility;
 
 /**
@@ -60,15 +61,18 @@ public final class IllegalThrowsCheck extends AbstractCheck {
     public static final String MSG_KEY = "illegal.throw";
 
     /** Methods which should be ignored. */
+    @UserDefinedOption
     private final Set<String> ignoredMethodNames =
         Stream.of("finalize").collect(Collectors.toSet());
 
     /** Illegal class names. */
+    @UserDefinedOption
     private final Set<String> illegalClassNames = Stream.of("Error", "RuntimeException",
         "Throwable", "java.lang.Error", "java.lang.RuntimeException", "java.lang.Throwable")
         .collect(Collectors.toSet());
 
     /** Property for ignoring overridden methods. */
+    @UserDefinedOption
     private boolean ignoreOverriddenMethods = true;
 
     /**

@@ -31,6 +31,7 @@ import com.puppycrawl.tools.checkstyle.api.AbstractCheck;
 import com.puppycrawl.tools.checkstyle.api.DetailAST;
 import com.puppycrawl.tools.checkstyle.api.FullIdent;
 import com.puppycrawl.tools.checkstyle.api.TokenTypes;
+import com.puppycrawl.tools.checkstyle.api.UserDefinedOption;
 
 /**
  * <p>
@@ -181,21 +182,25 @@ public class VariableDeclarationUsageDistanceCheck extends AbstractCheck {
     private static final int DEFAULT_DISTANCE = 3;
 
     /** Allowed distance between declaration of variable and its first usage. */
+    @UserDefinedOption
     private int allowedDistance = DEFAULT_DISTANCE;
 
     /**
      * RegExp pattern to ignore distance calculation for variables listed in
      * this pattern.
      */
+    @UserDefinedOption
     private Pattern ignoreVariablePattern = Pattern.compile("");
 
     /**
      * Allows to calculate distance between declaration of variable and its
      * first usage in different scopes.
      */
+    @UserDefinedOption
     private boolean validateBetweenScopes;
 
     /** Allows to ignore variables with 'final' modifier. */
+    @UserDefinedOption
     private boolean ignoreFinal = true;
 
     /**

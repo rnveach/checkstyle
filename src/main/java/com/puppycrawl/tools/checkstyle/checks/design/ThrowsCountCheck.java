@@ -22,6 +22,7 @@ package com.puppycrawl.tools.checkstyle.checks.design;
 import com.puppycrawl.tools.checkstyle.api.AbstractCheck;
 import com.puppycrawl.tools.checkstyle.api.DetailAST;
 import com.puppycrawl.tools.checkstyle.api.TokenTypes;
+import com.puppycrawl.tools.checkstyle.api.UserDefinedOption;
 
 /**
  * <p>
@@ -64,9 +65,11 @@ public final class ThrowsCountCheck extends AbstractCheck {
     private static final int DEFAULT_MAX = 4;
 
     /** Whether private methods must be ignored. **/
+    @UserDefinedOption
     private boolean ignorePrivateMethods = true;
 
     /** Maximum allowed throws statements. */
+    @UserDefinedOption
     private int max;
 
     /** Creates new instance of the check. */

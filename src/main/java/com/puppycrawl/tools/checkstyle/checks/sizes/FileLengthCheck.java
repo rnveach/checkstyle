@@ -23,6 +23,7 @@ import java.io.File;
 import java.util.List;
 
 import com.puppycrawl.tools.checkstyle.api.AbstractFileSetCheck;
+import com.puppycrawl.tools.checkstyle.api.UserDefinedOption;
 
 /**
  * <p>
@@ -66,6 +67,7 @@ public class FileLengthCheck extends AbstractFileSetCheck {
     private static final int DEFAULT_MAX_LINES = 2000;
 
     /** The maximum number of lines. */
+    @UserDefinedOption
     private int max = DEFAULT_MAX_LINES;
 
     @Override

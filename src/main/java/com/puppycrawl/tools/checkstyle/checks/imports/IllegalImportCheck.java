@@ -23,6 +23,7 @@ import com.puppycrawl.tools.checkstyle.api.AbstractCheck;
 import com.puppycrawl.tools.checkstyle.api.DetailAST;
 import com.puppycrawl.tools.checkstyle.api.FullIdent;
 import com.puppycrawl.tools.checkstyle.api.TokenTypes;
+import com.puppycrawl.tools.checkstyle.api.UserDefinedOption;
 
 /**
  * <p>
@@ -67,6 +68,7 @@ public class IllegalImportCheck
     public static final String MSG_KEY = "import.illegal";
 
     /** List of illegal packages. */
+    @UserDefinedOption
     private String[] illegalPkgs;
 
     /**

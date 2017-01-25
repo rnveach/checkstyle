@@ -25,6 +25,7 @@ import java.util.List;
 import java.util.Set;
 
 import com.puppycrawl.tools.checkstyle.api.AbstractFileSetCheck;
+import com.puppycrawl.tools.checkstyle.api.UserDefinedOption;
 
 /**
  * Checks that all packages have a package documentation. See the documentation
@@ -49,6 +50,7 @@ public class JavadocPackageCheck extends AbstractFileSetCheck {
     private final Set<File> directoriesChecked = new HashSet<>();
 
     /** Indicates if allow legacy "package.html" file to be used. */
+    @UserDefinedOption
     private boolean allowLegacy;
 
     /**

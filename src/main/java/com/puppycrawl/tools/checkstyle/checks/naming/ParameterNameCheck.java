@@ -24,6 +24,7 @@ import java.util.Optional;
 import com.puppycrawl.tools.checkstyle.api.DetailAST;
 import com.puppycrawl.tools.checkstyle.api.Scope;
 import com.puppycrawl.tools.checkstyle.api.TokenTypes;
+import com.puppycrawl.tools.checkstyle.api.UserDefinedOption;
 import com.puppycrawl.tools.checkstyle.utils.CheckUtils;
 import com.puppycrawl.tools.checkstyle.utils.ScopeUtils;
 
@@ -76,12 +77,15 @@ public class ParameterNameCheck
     /**
      * Allows to skip methods with Override annotation from validation.
      */
+    @UserDefinedOption
     private boolean ignoreOverridden;
 
     /** The visibility scope where methods are checked. */
+    @UserDefinedOption
     private Scope scope = Scope.ANONINNER;
 
     /** The visibility scope where methods shouldn't be checked. */
+    @UserDefinedOption
     private Scope excludeScope;
 
     /**

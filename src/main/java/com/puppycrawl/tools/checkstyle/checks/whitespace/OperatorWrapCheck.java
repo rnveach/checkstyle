@@ -26,6 +26,7 @@ import org.apache.commons.beanutils.ConversionException;
 import com.puppycrawl.tools.checkstyle.api.AbstractCheck;
 import com.puppycrawl.tools.checkstyle.api.DetailAST;
 import com.puppycrawl.tools.checkstyle.api.TokenTypes;
+import com.puppycrawl.tools.checkstyle.api.UserDefinedOption;
 import com.puppycrawl.tools.checkstyle.utils.CommonUtils;
 
 /**
@@ -108,6 +109,7 @@ public class OperatorWrapCheck
     public static final String MSG_LINE_PREVIOUS = "line.previous";
 
     /** The policy to enforce. */
+    @UserDefinedOption
     private WrapOption option = WrapOption.NL;
 
     /**

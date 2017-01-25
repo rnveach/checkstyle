@@ -36,6 +36,8 @@ import java.util.regex.Pattern;
 
 import org.apache.commons.beanutils.ConversionException;
 
+import com.puppycrawl.tools.checkstyle.api.UserDefinedOption;
+
 import com.google.common.io.Closeables;
 import com.puppycrawl.tools.checkstyle.api.AbstractFileSetCheck;
 import com.puppycrawl.tools.checkstyle.api.CheckstyleException;
@@ -56,9 +58,11 @@ public abstract class AbstractHeaderCheck extends AbstractFileSetCheck
     private final List<String> readerLines = new ArrayList<>();
 
     /** The file that contains the header to check against. */
+    @UserDefinedOption
     private URI headerFile;
 
     /** Name of a charset to use for loading the header from a file. */
+    @UserDefinedOption
     private String charset = System.getProperty("file.encoding", "UTF-8");
 
     /**

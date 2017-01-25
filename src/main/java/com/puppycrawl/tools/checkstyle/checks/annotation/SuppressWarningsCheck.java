@@ -25,6 +25,7 @@ import java.util.regex.Pattern;
 import com.puppycrawl.tools.checkstyle.api.AbstractCheck;
 import com.puppycrawl.tools.checkstyle.api.DetailAST;
 import com.puppycrawl.tools.checkstyle.api.TokenTypes;
+import com.puppycrawl.tools.checkstyle.api.UserDefinedOption;
 import com.puppycrawl.tools.checkstyle.utils.AnnotationUtility;
 import com.puppycrawl.tools.checkstyle.utils.CommonUtils;
 
@@ -108,6 +109,7 @@ public class SuppressWarningsCheck extends AbstractCheck {
         "java.lang." + SUPPRESS_WARNINGS;
 
     /** The regexp to match against. */
+    @UserDefinedOption
     private Pattern format = Pattern.compile("^$|^\\s+$");
 
     /**

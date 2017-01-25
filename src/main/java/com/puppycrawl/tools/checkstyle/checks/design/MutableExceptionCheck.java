@@ -26,6 +26,7 @@ import java.util.regex.Pattern;
 import com.puppycrawl.tools.checkstyle.api.AbstractCheck;
 import com.puppycrawl.tools.checkstyle.api.DetailAST;
 import com.puppycrawl.tools.checkstyle.api.TokenTypes;
+import com.puppycrawl.tools.checkstyle.api.UserDefinedOption;
 
 /**
  * <p> Ensures that exceptions (classes with names conforming to some regular
@@ -53,10 +54,12 @@ public final class MutableExceptionCheck extends AbstractCheck {
     /** Stack of checking information for classes. */
     private final Deque<Boolean> checkingStack = new ArrayDeque<>();
     /** Pattern for class name that is being extended. */
+    @UserDefinedOption
     private Pattern extendedClassNameFormat = Pattern.compile(DEFAULT_FORMAT);
     /** Should we check current class or not. */
     private boolean checking;
     /** The regexp to match against. */
+    @UserDefinedOption
     private Pattern format = Pattern.compile(DEFAULT_FORMAT);
 
     /**

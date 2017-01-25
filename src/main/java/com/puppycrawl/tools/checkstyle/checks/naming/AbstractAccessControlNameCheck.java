@@ -19,6 +19,8 @@
 
 package com.puppycrawl.tools.checkstyle.checks.naming;
 
+import com.puppycrawl.tools.checkstyle.api.UserDefinedOption;
+
 import com.puppycrawl.tools.checkstyle.api.DetailAST;
 import com.puppycrawl.tools.checkstyle.api.TokenTypes;
 
@@ -47,15 +49,19 @@ import com.puppycrawl.tools.checkstyle.api.TokenTypes;
 public abstract class AbstractAccessControlNameCheck
     extends AbstractNameCheck {
     /** If true, applies the check be public members. */
+    @UserDefinedOption
     private boolean applyToPublic = true;
 
     /** If true, applies the check be protected members. */
+    @UserDefinedOption
     private boolean applyToProtected = true;
 
     /** If true, applies the check be "package" members. */
+    @UserDefinedOption
     private boolean applyToPackage = true;
 
     /** If true, applies the check be private members. */
+    @UserDefinedOption
     private boolean applyToPrivate = true;
 
     /**

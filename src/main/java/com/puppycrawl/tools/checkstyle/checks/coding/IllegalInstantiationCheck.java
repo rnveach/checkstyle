@@ -24,6 +24,8 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import com.puppycrawl.tools.checkstyle.api.UserDefinedOption;
+
 import antlr.collections.AST;
 import com.puppycrawl.tools.checkstyle.api.AbstractCheck;
 import com.puppycrawl.tools.checkstyle.api.DetailAST;
@@ -83,7 +85,8 @@ public class IllegalInstantiationCheck
     private final Set<DetailAST> instantiations = new HashSet<>();
 
     /** Set of fully qualified class names. E.g. "java.lang.Boolean" */
-    private Set<String> illegalClasses = new HashSet<>();
+    @UserDefinedOption
+    private Set<String> classes = new HashSet<>();
 
     /** Name of the package. */
     private String pkgName;
@@ -221,7 +224,7 @@ public class IllegalInstantiationCheck
     private String getIllegalInstantiation(String className) {
         String fullClassName = null;
 
-        if (illegalClasses.contains(className)) {
+        if (classes.contains(className)) {
             fullClassName = className;
         }
         else {
@@ -234,7 +237,7 @@ public class IllegalInstantiationCheck
                 pkgNameLen = pkgName.length();
             }
 
-            for (String illegal : illegalClasses) {
+            for (String illegal : classes) {
                 if (isStandardClass(className, illegal)
                         || isSamePackage(className, pkgNameLen, illegal)) {
                     fullClassName = illegal;
@@ -267,7 +270,7 @@ public class IllegalInstantiationCheck
                         + className;
             }
             if (CommonUtils.baseClassName(importArg).equals(className)
-                    && illegalClasses.contains(importArg)) {
+                    && classes.contains(importArg)) {
                 illegalType = importArg;
                 break;
             }
@@ -352,6 +355,6 @@ public class IllegalInstantiationCheck
      * @param names a comma separate list of class names
      */
     public void setClasses(String... names) {
-        illegalClasses = Arrays.stream(names).collect(Collectors.toSet());
+        classes = Arrays.stream(names).collect(Collectors.toSet());
     }
 }

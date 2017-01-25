@@ -29,6 +29,7 @@ import org.apache.commons.beanutils.ConversionException;
 
 import com.google.common.io.Closeables;
 import com.puppycrawl.tools.checkstyle.api.AbstractFileSetCheck;
+import com.puppycrawl.tools.checkstyle.api.UserDefinedOption;
 
 /**
  * <p>
@@ -74,6 +75,7 @@ public class NewlineAtEndOfFileCheck
     public static final String MSG_KEY_NO_NEWLINE_EOF = "noNewlineAtEOF";
 
     /** The line separator to check against. */
+    @UserDefinedOption
     private LineSeparatorOption lineSeparator = LineSeparatorOption.SYSTEM;
 
     @Override

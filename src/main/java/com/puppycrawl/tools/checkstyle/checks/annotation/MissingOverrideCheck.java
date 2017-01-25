@@ -26,6 +26,7 @@ import com.puppycrawl.tools.checkstyle.api.AbstractCheck;
 import com.puppycrawl.tools.checkstyle.api.DetailAST;
 import com.puppycrawl.tools.checkstyle.api.TextBlock;
 import com.puppycrawl.tools.checkstyle.api.TokenTypes;
+import com.puppycrawl.tools.checkstyle.api.UserDefinedOption;
 import com.puppycrawl.tools.checkstyle.checks.javadoc.JavadocTagInfo;
 import com.puppycrawl.tools.checkstyle.utils.AnnotationUtility;
 import com.puppycrawl.tools.checkstyle.utils.CommonUtils;
@@ -103,6 +104,7 @@ public final class MissingOverrideCheck extends AbstractCheck {
      * Java 5 compatibility option.
      * @see #setJavaFiveCompatibility(boolean)
      */
+    @UserDefinedOption
     private boolean javaFiveCompatibility;
 
     /**

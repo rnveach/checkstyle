@@ -26,6 +26,7 @@ import java.util.Set;
 
 import com.puppycrawl.tools.checkstyle.api.AbstractCheck;
 import com.puppycrawl.tools.checkstyle.api.DetailAST;
+import com.puppycrawl.tools.checkstyle.api.UserDefinedOption;
 
 /**
  * Checks correct indentation of Java Code.
@@ -122,21 +123,27 @@ public class IndentationCheck extends AbstractCheck {
     private Set<Integer> incorrectIndentationLines;
 
     /** How many tabs or spaces to use. */
+    @UserDefinedOption
     private int basicOffset = DEFAULT_INDENTATION;
 
     /** How much to indent a case label. */
+    @UserDefinedOption
     private int caseIndent = DEFAULT_INDENTATION;
 
     /** How far brace should be indented when on next line. */
+    @UserDefinedOption
     private int braceAdjustment;
 
     /** How far throws should be indented when on next line. */
+    @UserDefinedOption
     private int throwsIndent = DEFAULT_INDENTATION;
 
     /** How much to indent an array initialization when on next line. */
+    @UserDefinedOption
     private int arrayInitIndent = DEFAULT_INDENTATION;
 
     /** How far continuation line should be indented when line-wrapping is present. */
+    @UserDefinedOption
     private int lineWrappingIndentation = DEFAULT_INDENTATION;
 
     /**
@@ -144,6 +151,7 @@ public class IndentationCheck extends AbstractCheck {
      * have to be same as lineWrappingIndentation parameter, if value is false, line wrap indent
      * have to be not less than lineWrappingIndentation parameter.
      */
+    @UserDefinedOption
     private boolean forceStrictCondition;
 
     /**

@@ -22,6 +22,7 @@ package com.puppycrawl.tools.checkstyle.checks.blocks;
 import com.puppycrawl.tools.checkstyle.api.AbstractCheck;
 import com.puppycrawl.tools.checkstyle.api.DetailAST;
 import com.puppycrawl.tools.checkstyle.api.TokenTypes;
+import com.puppycrawl.tools.checkstyle.api.UserDefinedOption;
 
 /**
  * Finds nested blocks.
@@ -95,6 +96,7 @@ public class AvoidNestedBlocksCheck extends AbstractCheck {
      * Whether nested blocks are allowed if they are the
      * only child of a switch case.
      */
+    @UserDefinedOption
     private boolean allowInSwitchCase;
 
     @Override

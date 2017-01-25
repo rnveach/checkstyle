@@ -22,6 +22,7 @@ package com.puppycrawl.tools.checkstyle.checks.coding;
 import com.puppycrawl.tools.checkstyle.api.AbstractCheck;
 import com.puppycrawl.tools.checkstyle.api.DetailAST;
 import com.puppycrawl.tools.checkstyle.api.TokenTypes;
+import com.puppycrawl.tools.checkstyle.api.UserDefinedOption;
 
 /**
  * Restricts nested try-catch-finally blocks to a specified depth (default = 1).
@@ -36,6 +37,7 @@ public final class NestedTryDepthCheck extends AbstractCheck {
     public static final String MSG_KEY = "nested.try.depth";
 
     /** Maximum allowed nesting depth. */
+    @UserDefinedOption
     private int max = 1;
     /** Current nesting depth. */
     private int depth;

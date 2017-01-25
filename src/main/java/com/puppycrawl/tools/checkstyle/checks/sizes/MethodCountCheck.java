@@ -28,6 +28,7 @@ import com.puppycrawl.tools.checkstyle.api.AbstractCheck;
 import com.puppycrawl.tools.checkstyle.api.DetailAST;
 import com.puppycrawl.tools.checkstyle.api.Scope;
 import com.puppycrawl.tools.checkstyle.api.TokenTypes;
+import com.puppycrawl.tools.checkstyle.api.UserDefinedOption;
 import com.puppycrawl.tools.checkstyle.utils.ScopeUtils;
 
 /**
@@ -75,14 +76,19 @@ public final class MethodCountCheck extends AbstractCheck {
     private final Deque<MethodCounter> counters = new ArrayDeque<>();
 
     /** Maximum private methods. */
+    @UserDefinedOption
     private int maxPrivate = DEFAULT_MAX_METHODS;
     /** Maximum package methods. */
+    @UserDefinedOption
     private int maxPackage = DEFAULT_MAX_METHODS;
     /** Maximum protected methods. */
+    @UserDefinedOption
     private int maxProtected = DEFAULT_MAX_METHODS;
     /** Maximum public methods. */
+    @UserDefinedOption
     private int maxPublic = DEFAULT_MAX_METHODS;
     /** Maximum total number of methods. */
+    @UserDefinedOption
     private int maxTotal = DEFAULT_MAX_METHODS;
 
     @Override

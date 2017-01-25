@@ -27,6 +27,7 @@ import com.puppycrawl.tools.checkstyle.api.AbstractCheck;
 import com.puppycrawl.tools.checkstyle.api.DetailAST;
 import com.puppycrawl.tools.checkstyle.api.Scope;
 import com.puppycrawl.tools.checkstyle.api.TokenTypes;
+import com.puppycrawl.tools.checkstyle.api.UserDefinedOption;
 import com.puppycrawl.tools.checkstyle.utils.CheckUtils;
 import com.puppycrawl.tools.checkstyle.utils.CommonUtils;
 import com.puppycrawl.tools.checkstyle.utils.ScopeUtils;
@@ -108,9 +109,11 @@ public class RightCurlyCheck extends AbstractCheck {
     public static final String MSG_KEY_LINE_NEW = "line.new";
 
     /** Do we need to check if right curly starts line. */
+    @UserDefinedOption
     private boolean shouldStartLine = true;
 
     /** The policy to enforce. */
+    @UserDefinedOption
     private RightCurlyOption option = RightCurlyOption.SAME;
 
     /**

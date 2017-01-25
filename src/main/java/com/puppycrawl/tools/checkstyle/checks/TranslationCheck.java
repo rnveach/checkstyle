@@ -48,6 +48,7 @@ import com.puppycrawl.tools.checkstyle.Definitions;
 import com.puppycrawl.tools.checkstyle.api.AbstractFileSetCheck;
 import com.puppycrawl.tools.checkstyle.api.LocalizedMessage;
 import com.puppycrawl.tools.checkstyle.api.MessageDispatcher;
+import com.puppycrawl.tools.checkstyle.api.UserDefinedOption;
 import com.puppycrawl.tools.checkstyle.utils.CommonUtils;
 
 /**
@@ -169,11 +170,13 @@ public class TranslationCheck extends AbstractFileSetCheck {
     private final Set<File> filesToProcess = new HashSet<>();
 
     /** The base name regexp pattern. */
+    @UserDefinedOption
     private Pattern baseName;
 
     /**
      * Language codes of required translations for the check (de, pt, ja, etc).
      */
+    @UserDefinedOption
     private Set<String> requiredTranslations = new HashSet<>();
 
     /**

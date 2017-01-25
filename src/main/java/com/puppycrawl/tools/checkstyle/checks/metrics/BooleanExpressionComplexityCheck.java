@@ -25,6 +25,7 @@ import java.util.Deque;
 import com.puppycrawl.tools.checkstyle.api.AbstractCheck;
 import com.puppycrawl.tools.checkstyle.api.DetailAST;
 import com.puppycrawl.tools.checkstyle.api.TokenTypes;
+import com.puppycrawl.tools.checkstyle.api.UserDefinedOption;
 import com.puppycrawl.tools.checkstyle.utils.CheckUtils;
 
 /**
@@ -51,6 +52,7 @@ public final class BooleanExpressionComplexityCheck extends AbstractCheck {
     /** Stack of contexts. */
     private final Deque<Context> contextStack = new ArrayDeque<>();
     /** Maximum allowed complexity. */
+    @UserDefinedOption
     private int max;
     /** Current context. */
     private Context context = new Context(false);

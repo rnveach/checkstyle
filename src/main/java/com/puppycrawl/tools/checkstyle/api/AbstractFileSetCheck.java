@@ -43,6 +43,7 @@ public abstract class AbstractFileSetCheck
     private MessageDispatcher messageDispatcher;
 
     /** The file extensions that are accepted by this filter. */
+    @UserDefinedOption
     private String[] fileExtensions = CommonUtils.EMPTY_STRING_ARRAY;
 
     /**

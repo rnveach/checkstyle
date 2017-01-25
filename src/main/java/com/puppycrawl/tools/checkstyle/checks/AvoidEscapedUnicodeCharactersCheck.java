@@ -28,6 +28,7 @@ import com.puppycrawl.tools.checkstyle.api.AbstractCheck;
 import com.puppycrawl.tools.checkstyle.api.DetailAST;
 import com.puppycrawl.tools.checkstyle.api.TextBlock;
 import com.puppycrawl.tools.checkstyle.api.TokenTypes;
+import com.puppycrawl.tools.checkstyle.api.UserDefinedOption;
 
 /**
  * <p>
@@ -160,15 +161,19 @@ public class AvoidEscapedUnicodeCharactersCheck
     private Map<Integer, List<TextBlock>> blockComments;
 
     /** Allow use escapes for non-printable(control) characters.  */
+    @UserDefinedOption
     private boolean allowEscapesForControlCharacters;
 
     /** Allow use escapes if trail comment is present. */
+    @UserDefinedOption
     private boolean allowByTailComment;
 
     /** Allow if all characters in literal are escaped. */
+    @UserDefinedOption
     private boolean allowIfAllCharactersEscaped;
 
     /** Allow escapes for space literals. */
+    @UserDefinedOption
     private boolean allowNonPrintableEscapes;
 
     /**

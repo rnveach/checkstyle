@@ -23,6 +23,8 @@ import java.util.Locale;
 
 import org.apache.commons.beanutils.ConversionException;
 
+import com.puppycrawl.tools.checkstyle.api.UserDefinedOption;
+
 import com.puppycrawl.tools.checkstyle.api.AbstractCheck;
 import com.puppycrawl.tools.checkstyle.api.DetailAST;
 import com.puppycrawl.tools.checkstyle.utils.CommonUtils;
@@ -68,6 +70,7 @@ public abstract class AbstractParenPadCheck
     private static final char CLOSE_PARENTHESIS = ')';
 
     /** The policy to enforce. */
+    @UserDefinedOption
     private PadOption option = PadOption.NOSPACE;
 
     /**

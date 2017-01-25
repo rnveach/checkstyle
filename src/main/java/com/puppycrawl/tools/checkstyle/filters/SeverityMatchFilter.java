@@ -23,6 +23,7 @@ import com.puppycrawl.tools.checkstyle.api.AuditEvent;
 import com.puppycrawl.tools.checkstyle.api.AutomaticBean;
 import com.puppycrawl.tools.checkstyle.api.Filter;
 import com.puppycrawl.tools.checkstyle.api.SeverityLevel;
+import com.puppycrawl.tools.checkstyle.api.UserDefinedOption;
 
 /**
  * This is a very simple filter based on severity matching.
@@ -34,9 +35,11 @@ public class SeverityMatchFilter
     extends AutomaticBean
     implements Filter {
     /** The severity level to accept. */
+    @UserDefinedOption
     private SeverityLevel severity = SeverityLevel.ERROR;
 
     /** Whether to accept or reject on severity matches. */
+    @UserDefinedOption
     private boolean acceptOnMatch = true;
 
     /**

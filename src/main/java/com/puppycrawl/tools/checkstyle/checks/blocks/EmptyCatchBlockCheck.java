@@ -24,6 +24,7 @@ import java.util.regex.Pattern;
 import com.puppycrawl.tools.checkstyle.api.AbstractCheck;
 import com.puppycrawl.tools.checkstyle.api.DetailAST;
 import com.puppycrawl.tools.checkstyle.api.TokenTypes;
+import com.puppycrawl.tools.checkstyle.api.UserDefinedOption;
 import com.puppycrawl.tools.checkstyle.utils.CommonUtils;
 
 /**
@@ -133,9 +134,11 @@ public class EmptyCatchBlockCheck extends AbstractCheck {
     public static final String MSG_KEY_CATCH_BLOCK_EMPTY = "catch.block.empty";
 
     /** Format of skipping exception's variable name. */
+    @UserDefinedOption
     private String exceptionVariableName = "^$";
 
     /** Format of comment. */
+    @UserDefinedOption
     private String commentFormat = ".*";
 
     /**

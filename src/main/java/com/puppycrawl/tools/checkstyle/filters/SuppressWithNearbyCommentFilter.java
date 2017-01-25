@@ -36,6 +36,7 @@ import com.puppycrawl.tools.checkstyle.api.AutomaticBean;
 import com.puppycrawl.tools.checkstyle.api.FileContents;
 import com.puppycrawl.tools.checkstyle.api.Filter;
 import com.puppycrawl.tools.checkstyle.api.TextBlock;
+import com.puppycrawl.tools.checkstyle.api.UserDefinedOption;
 import com.puppycrawl.tools.checkstyle.checks.FileContentsHolder;
 import com.puppycrawl.tools.checkstyle.utils.CommonUtils;
 
@@ -91,23 +92,29 @@ public class SuppressWithNearbyCommentFilter
     private final List<Tag> tags = new ArrayList<>();
 
     /** Whether to look for trigger in C-style comments. */
+    @UserDefinedOption
     private boolean checkC = true;
 
     /** Whether to look for trigger in C++-style comments. */
     // -@cs[AbbreviationAsWordInName] We can not change it as,
     // check's property is a part of API (used in configurations).
+    @UserDefinedOption
     private boolean checkCPP = true;
 
     /** Parsed comment regexp that marks checkstyle suppression region. */
+    @UserDefinedOption
     private Pattern commentFormat = Pattern.compile(DEFAULT_COMMENT_FORMAT);
 
     /** The comment pattern that triggers suppression. */
+    @UserDefinedOption
     private String checkFormat = DEFAULT_CHECK_FORMAT;
 
     /** The message format to suppress. */
+    @UserDefinedOption
     private String messageFormat;
 
     /** The influence of the suppression comment. */
+    @UserDefinedOption
     private String influenceFormat = DEFAULT_INFLUENCE_FORMAT;
 
     /**

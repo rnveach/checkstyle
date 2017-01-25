@@ -27,6 +27,8 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 
+import com.puppycrawl.tools.checkstyle.api.UserDefinedOption;
+
 import com.puppycrawl.tools.checkstyle.api.AbstractCheck;
 import com.puppycrawl.tools.checkstyle.api.DetailAST;
 import com.puppycrawl.tools.checkstyle.api.FullIdent;
@@ -71,12 +73,14 @@ public abstract class AbstractTypeAwareCheck extends AbstractCheck {
      *
      * <p>This configuration option was triggered by bug 1422462.
      */
+    @UserDefinedOption
     private boolean logLoadErrors = true;
 
     /**
      * Whether to show class loading errors in the checkstyle report.
      * Request ID 1491630
      */
+    @UserDefinedOption
     private boolean suppressLoadErrors;
 
     /**

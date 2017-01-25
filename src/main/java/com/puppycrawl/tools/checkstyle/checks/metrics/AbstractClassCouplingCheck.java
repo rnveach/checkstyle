@@ -28,6 +28,8 @@ import java.util.TreeSet;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import com.puppycrawl.tools.checkstyle.api.UserDefinedOption;
+
 import com.puppycrawl.tools.checkstyle.api.AbstractCheck;
 import com.puppycrawl.tools.checkstyle.api.DetailAST;
 import com.puppycrawl.tools.checkstyle.api.FullIdent;
@@ -69,8 +71,10 @@ public abstract class AbstractClassCouplingCheck extends AbstractCheck {
     private final Deque<Context> contextStack = new ArrayDeque<>();
 
     /** User-configured class names to ignore. */
+    @UserDefinedOption
     private Set<String> excludedClasses = DEFAULT_EXCLUDED_CLASSES;
     /** Allowed complexity. */
+    @UserDefinedOption
     private int max;
     /** Package of the file we check. */
     private String packageName;

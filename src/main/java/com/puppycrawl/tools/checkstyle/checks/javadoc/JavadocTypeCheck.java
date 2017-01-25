@@ -29,6 +29,7 @@ import com.puppycrawl.tools.checkstyle.api.FileContents;
 import com.puppycrawl.tools.checkstyle.api.Scope;
 import com.puppycrawl.tools.checkstyle.api.TextBlock;
 import com.puppycrawl.tools.checkstyle.api.TokenTypes;
+import com.puppycrawl.tools.checkstyle.api.UserDefinedOption;
 import com.puppycrawl.tools.checkstyle.utils.CheckUtils;
 import com.puppycrawl.tools.checkstyle.utils.CommonUtils;
 import com.puppycrawl.tools.checkstyle.utils.JavadocUtils;
@@ -97,19 +98,25 @@ public class JavadocTypeCheck
             Pattern.compile("\\s+");
 
     /** The scope to check for. */
+    @UserDefinedOption
     private Scope scope = Scope.PRIVATE;
     /** The visibility scope where Javadoc comments shouldn't be checked. **/
+    @UserDefinedOption
     private Scope excludeScope;
     /** Compiled regexp to match author tag content. **/
+    @UserDefinedOption
     private Pattern authorFormat;
     /** Compiled regexp to match version tag content. **/
+    @UserDefinedOption
     private Pattern versionFormat;
     /**
      * Controls whether to ignore errors when a method has type parameters but
      * does not have matching param tags in the javadoc. Defaults to false.
      */
+    @UserDefinedOption
     private boolean allowMissingParamTags;
     /** Controls whether to flag errors for unknown tags. Defaults to false. */
+    @UserDefinedOption
     private boolean allowUnknownTags;
 
     /**

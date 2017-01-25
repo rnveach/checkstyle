@@ -26,6 +26,7 @@ import java.util.Deque;
 import com.puppycrawl.tools.checkstyle.api.AbstractCheck;
 import com.puppycrawl.tools.checkstyle.api.DetailAST;
 import com.puppycrawl.tools.checkstyle.api.TokenTypes;
+import com.puppycrawl.tools.checkstyle.api.UserDefinedOption;
 
 /**
  * Checks the npath complexity against a specified limit (default = 200).
@@ -58,6 +59,7 @@ public final class NPathComplexityCheck extends AbstractCheck {
     private BigInteger currentValue = INITIAL_VALUE;
 
     /** Threshold to report error for. */
+    @UserDefinedOption
     private int max = DEFAULT_MAX;
 
     /**

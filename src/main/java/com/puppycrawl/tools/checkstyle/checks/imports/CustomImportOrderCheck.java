@@ -29,6 +29,7 @@ import com.puppycrawl.tools.checkstyle.api.AbstractCheck;
 import com.puppycrawl.tools.checkstyle.api.DetailAST;
 import com.puppycrawl.tools.checkstyle.api.FullIdent;
 import com.puppycrawl.tools.checkstyle.api.TokenTypes;
+import com.puppycrawl.tools.checkstyle.api.UserDefinedOption;
 
 /**
  * <p>
@@ -355,6 +356,7 @@ public class CustomImportOrderCheck extends AbstractCheck {
     private static final Pattern GROUP_SEPARATOR_PATTERN = Pattern.compile("\\s*###\\s*");
 
     /** List of order declaration customizing by user. */
+    @UserDefinedOption
     private final List<String> customImportOrderRules = new ArrayList<>();
 
     /** Contains objects with import attributes. */
@@ -364,18 +366,23 @@ public class CustomImportOrderCheck extends AbstractCheck {
     private String samePackageDomainsRegExp = "";
 
     /** RegExp for STANDARD_JAVA_PACKAGE group imports. */
+    @UserDefinedOption
     private Pattern standardPackageRegExp = Pattern.compile("^(java|javax)\\.");
 
     /** RegExp for THIRDPARTY_PACKAGE group imports. */
+    @UserDefinedOption
     private Pattern thirdPartyPackageRegExp = Pattern.compile(".*");
 
     /** RegExp for SPECIAL_IMPORTS group imports. */
+    @UserDefinedOption
     private Pattern specialImportsRegExp = Pattern.compile("^$");
 
     /** Force empty line separator between import groups. */
+    @UserDefinedOption
     private boolean separateLineBetweenGroups = true;
 
     /** Force grouping alphabetically, in ASCII order. */
+    @UserDefinedOption
     private boolean sortImportsInGroupAlphabetically;
 
     /** Number of first domains for SAME_PACKAGE group. */

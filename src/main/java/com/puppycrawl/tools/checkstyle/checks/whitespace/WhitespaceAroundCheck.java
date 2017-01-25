@@ -22,6 +22,7 @@ package com.puppycrawl.tools.checkstyle.checks.whitespace;
 import com.puppycrawl.tools.checkstyle.api.AbstractCheck;
 import com.puppycrawl.tools.checkstyle.api.DetailAST;
 import com.puppycrawl.tools.checkstyle.api.TokenTypes;
+import com.puppycrawl.tools.checkstyle.api.UserDefinedOption;
 import com.puppycrawl.tools.checkstyle.utils.CommonUtils;
 
 /**
@@ -178,16 +179,22 @@ public class WhitespaceAroundCheck extends AbstractCheck {
     public static final String MSG_WS_NOT_FOLLOWED = "ws.notFollowed";
 
     /** Whether or not empty constructor bodies are allowed. */
+    @UserDefinedOption
     private boolean allowEmptyConstructors;
     /** Whether or not empty method bodies are allowed. */
+    @UserDefinedOption
     private boolean allowEmptyMethods;
     /** Whether or not empty classes, enums and interfaces are allowed. */
+    @UserDefinedOption
     private boolean allowEmptyTypes;
     /** Whether or not empty loops are allowed. */
+    @UserDefinedOption
     private boolean allowEmptyLoops;
     /** Whether or not empty lambda blocks are allowed. */
+    @UserDefinedOption
     private boolean allowEmptyLambdas;
     /** Whether or not to ignore a colon in a enhanced for loop. */
+    @UserDefinedOption
     private boolean ignoreEnhancedForColon = true;
 
     @Override

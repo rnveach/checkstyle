@@ -32,6 +32,7 @@ import com.puppycrawl.tools.checkstyle.api.DetailAST;
 import com.puppycrawl.tools.checkstyle.api.ExternalResourceHolder;
 import com.puppycrawl.tools.checkstyle.api.FullIdent;
 import com.puppycrawl.tools.checkstyle.api.TokenTypes;
+import com.puppycrawl.tools.checkstyle.api.UserDefinedOption;
 
 /**
  * Check that controls what packages can be imported in each package. Useful
@@ -75,6 +76,7 @@ public class ImportControlCheck extends AbstractCheck implements ExternalResourc
     private String fileLocation;
 
     /** The filepath pattern this check applies to. */
+    @UserDefinedOption
     private Pattern path = Pattern.compile(".*");
     /** Whether to process the current file. */
     private boolean processCurrentFile;

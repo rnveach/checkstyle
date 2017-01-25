@@ -30,6 +30,7 @@ import java.util.Optional;
 import com.puppycrawl.tools.checkstyle.api.AbstractCheck;
 import com.puppycrawl.tools.checkstyle.api.DetailAST;
 import com.puppycrawl.tools.checkstyle.api.TokenTypes;
+import com.puppycrawl.tools.checkstyle.api.UserDefinedOption;
 import com.puppycrawl.tools.checkstyle.utils.ScopeUtils;
 
 /**
@@ -121,6 +122,7 @@ public class FinalLocalVariableCheck extends AbstractCheck {
             new ArrayDeque<>();
 
     /** Controls whether to check enhanced for-loop variable. */
+    @UserDefinedOption
     private boolean validateEnhancedForLoopVariable;
 
     static {

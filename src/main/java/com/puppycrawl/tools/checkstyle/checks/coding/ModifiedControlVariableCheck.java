@@ -31,6 +31,7 @@ import java.util.stream.Stream;
 import com.puppycrawl.tools.checkstyle.api.AbstractCheck;
 import com.puppycrawl.tools.checkstyle.api.DetailAST;
 import com.puppycrawl.tools.checkstyle.api.TokenTypes;
+import com.puppycrawl.tools.checkstyle.api.UserDefinedOption;
 
 /**
  * Check for ensuring that for loop control variables are not modified
@@ -117,6 +118,7 @@ public final class ModifiedControlVariableCheck extends AbstractCheck {
     private final Deque<Deque<String>> variableStack = new ArrayDeque<>();
 
     /** Controls whether to skip enhanced for-loop variable. */
+    @UserDefinedOption
     private boolean skipEnhancedForLoopVariable;
 
     /**

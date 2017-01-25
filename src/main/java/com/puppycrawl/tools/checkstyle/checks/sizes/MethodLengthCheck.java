@@ -23,6 +23,7 @@ import com.puppycrawl.tools.checkstyle.api.AbstractCheck;
 import com.puppycrawl.tools.checkstyle.api.DetailAST;
 import com.puppycrawl.tools.checkstyle.api.FileContents;
 import com.puppycrawl.tools.checkstyle.api.TokenTypes;
+import com.puppycrawl.tools.checkstyle.api.UserDefinedOption;
 import com.puppycrawl.tools.checkstyle.utils.CommonUtils;
 
 /**
@@ -67,9 +68,11 @@ public class MethodLengthCheck extends AbstractCheck {
     private static final int DEFAULT_MAX_LINES = 150;
 
     /** Whether to ignore empty lines and single line comments. */
+    @UserDefinedOption
     private boolean countEmpty = true;
 
     /** The maximum number of lines. */
+    @UserDefinedOption
     private int max = DEFAULT_MAX_LINES;
 
     @Override

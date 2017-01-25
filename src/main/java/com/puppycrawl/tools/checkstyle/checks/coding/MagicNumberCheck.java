@@ -24,6 +24,7 @@ import java.util.Arrays;
 import com.puppycrawl.tools.checkstyle.api.AbstractCheck;
 import com.puppycrawl.tools.checkstyle.api.DetailAST;
 import com.puppycrawl.tools.checkstyle.api.TokenTypes;
+import com.puppycrawl.tools.checkstyle.api.UserDefinedOption;
 import com.puppycrawl.tools.checkstyle.utils.CheckUtils;
 import com.puppycrawl.tools.checkstyle.utils.CommonUtils;
 import com.puppycrawl.tools.checkstyle.utils.ScopeUtils;
@@ -149,6 +150,7 @@ public class MagicNumberCheck extends AbstractCheck {
      * The token types that are allowed in the AST path from the
      * number literal to the enclosing constant definition.
      */
+    @UserDefinedOption
     private int[] constantWaiverParentToken = {
         TokenTypes.ASSIGN,
         TokenTypes.ARRAY_INIT,
@@ -166,15 +168,19 @@ public class MagicNumberCheck extends AbstractCheck {
     };
 
     /** The numbers to ignore in the check, sorted. */
+    @UserDefinedOption
     private double[] ignoreNumbers = {-1, 0, 1, 2};
 
     /** Whether to ignore magic numbers in a hash code method. */
+    @UserDefinedOption
     private boolean ignoreHashCodeMethod;
 
     /** Whether to ignore magic numbers in annotation. */
+    @UserDefinedOption
     private boolean ignoreAnnotation;
 
     /** Whether to ignore magic numbers in field declaration. */
+    @UserDefinedOption
     private boolean ignoreFieldDeclaration;
 
     /**

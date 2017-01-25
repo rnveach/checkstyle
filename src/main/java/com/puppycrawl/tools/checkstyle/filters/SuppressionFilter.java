@@ -33,6 +33,7 @@ import com.puppycrawl.tools.checkstyle.api.CheckstyleException;
 import com.puppycrawl.tools.checkstyle.api.ExternalResourceHolder;
 import com.puppycrawl.tools.checkstyle.api.Filter;
 import com.puppycrawl.tools.checkstyle.api.FilterSet;
+import com.puppycrawl.tools.checkstyle.api.UserDefinedOption;
 import com.puppycrawl.tools.checkstyle.utils.CommonUtils;
 
 /**
@@ -46,8 +47,10 @@ import com.puppycrawl.tools.checkstyle.utils.CommonUtils;
 public class SuppressionFilter extends AutomaticBean implements Filter, ExternalResourceHolder {
 
     /** Filename of supression file. */
+    @UserDefinedOption
     private String file;
     /** Tells whether config file existence is optional. */
+    @UserDefinedOption
     private boolean optional;
     /** Set of individual suppresses. */
     private FilterSet filters = new FilterSet();

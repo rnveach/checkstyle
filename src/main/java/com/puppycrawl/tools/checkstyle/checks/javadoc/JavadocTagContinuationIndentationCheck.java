@@ -25,6 +25,7 @@ import java.util.List;
 import com.puppycrawl.tools.checkstyle.api.DetailNode;
 import com.puppycrawl.tools.checkstyle.api.JavadocTokenTypes;
 import com.puppycrawl.tools.checkstyle.api.TokenTypes;
+import com.puppycrawl.tools.checkstyle.api.UserDefinedOption;
 import com.puppycrawl.tools.checkstyle.utils.JavadocUtils;
 
 /**
@@ -57,6 +58,7 @@ public class JavadocTagContinuationIndentationCheck extends AbstractJavadocCheck
     /**
      * How many spaces to use for new indentation level.
      */
+    @UserDefinedOption
     private int offset = DEFAULT_INDENTATION;
 
     /**

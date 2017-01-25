@@ -29,6 +29,7 @@ import com.puppycrawl.tools.checkstyle.api.AbstractCheck;
 import com.puppycrawl.tools.checkstyle.api.DetailAST;
 import com.puppycrawl.tools.checkstyle.api.FullIdent;
 import com.puppycrawl.tools.checkstyle.api.TokenTypes;
+import com.puppycrawl.tools.checkstyle.api.UserDefinedOption;
 import com.puppycrawl.tools.checkstyle.utils.CommonUtils;
 
 /**
@@ -210,12 +211,16 @@ public class ImportOrderCheck
     private static final Pattern[] EMPTY_PATTERN_ARRAY = new Pattern[0];
 
     /** List of import groups specified by the user. */
+    @UserDefinedOption
     private Pattern[] groups = EMPTY_PATTERN_ARRAY;
     /** Require imports in group be separated. */
+    @UserDefinedOption
     private boolean separated;
     /** Require imports in group. */
+    @UserDefinedOption
     private boolean ordered = true;
     /** Should comparison be case sensitive. */
+    @UserDefinedOption
     private boolean caseSensitive = true;
 
     /** Last imported group. */
@@ -229,11 +234,14 @@ public class ImportOrderCheck
     /** Whether there was any imports. */
     private boolean beforeFirstImport;
     /** Whether static imports should be sorted alphabetically or not. */
+    @UserDefinedOption
     private boolean sortStaticImportsAlphabetically;
     /** Whether to use container ordering (Eclipse IDE term) for static imports or not. */
+    @UserDefinedOption
     private boolean useContainerOrderingForStatic;
 
     /** The policy to enforce. */
+    @UserDefinedOption
     private ImportOrderOption option = ImportOrderOption.UNDER;
 
     /**

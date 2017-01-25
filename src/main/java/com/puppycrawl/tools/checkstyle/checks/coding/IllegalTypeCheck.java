@@ -30,6 +30,7 @@ import com.puppycrawl.tools.checkstyle.api.AbstractCheck;
 import com.puppycrawl.tools.checkstyle.api.DetailAST;
 import com.puppycrawl.tools.checkstyle.api.FullIdent;
 import com.puppycrawl.tools.checkstyle.api.TokenTypes;
+import com.puppycrawl.tools.checkstyle.api.UserDefinedOption;
 import com.puppycrawl.tools.checkstyle.utils.CheckUtils;
 import com.puppycrawl.tools.checkstyle.utils.TokenUtils;
 
@@ -123,20 +124,26 @@ public final class IllegalTypeCheck extends AbstractCheck {
     };
 
     /** Illegal classes. */
+    @UserDefinedOption
     private final Set<String> illegalClassNames = new HashSet<>();
     /** Legal abstract classes. */
+    @UserDefinedOption
     private final Set<String> legalAbstractClassNames = new HashSet<>();
     /** Methods which should be ignored. */
+    @UserDefinedOption
     private final Set<String> ignoredMethodNames = new HashSet<>();
     /** Check methods and fields with only corresponding modifiers. */
+    @UserDefinedOption
     private List<Integer> memberModifiers;
 
     /** The regexp to match against. */
+    @UserDefinedOption
     private Pattern format = Pattern.compile("^(.*[.])?Abstract.*$");
 
     /**
      * Controls whether to validate abstract class names.
      */
+    @UserDefinedOption
     private boolean validateAbstractClassNames;
 
     /** Creates new instance of the check. */

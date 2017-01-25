@@ -28,6 +28,7 @@ import java.util.regex.Pattern;
 import com.puppycrawl.tools.checkstyle.api.AbstractCheck;
 import com.puppycrawl.tools.checkstyle.api.DetailAST;
 import com.puppycrawl.tools.checkstyle.api.TextBlock;
+import com.puppycrawl.tools.checkstyle.api.UserDefinedOption;
 import com.puppycrawl.tools.checkstyle.utils.CommonUtils;
 
 /**
@@ -106,9 +107,11 @@ public class TrailingCommentCheck extends AbstractCheck {
     public static final String MSG_KEY = "trailing.comments";
 
     /** Pattern for legal trailing comment. */
+    @UserDefinedOption
     private Pattern legalComment;
 
     /** The regexp to match against. */
+    @UserDefinedOption
     private Pattern format = Pattern.compile("^[\\s\\});]*$");
 
     /**

@@ -26,6 +26,7 @@ import com.puppycrawl.tools.checkstyle.api.AbstractCheck;
 import com.puppycrawl.tools.checkstyle.api.DetailAST;
 import com.puppycrawl.tools.checkstyle.api.FullIdent;
 import com.puppycrawl.tools.checkstyle.api.TokenTypes;
+import com.puppycrawl.tools.checkstyle.api.UserDefinedOption;
 
 /**
  * Detects uncommented main methods. Basically detects
@@ -49,6 +50,7 @@ public class UncommentedMainCheck
     public static final String MSG_KEY = "uncommented.main";
 
     /** Compiled regexp to exclude classes from check. */
+    @UserDefinedOption
     private Pattern excludedClasses = Pattern.compile("^$");
     /** Current class name. */
     private String currentClass;

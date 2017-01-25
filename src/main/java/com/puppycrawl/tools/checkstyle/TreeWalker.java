@@ -49,6 +49,7 @@ import com.puppycrawl.tools.checkstyle.api.ExternalResourceHolder;
 import com.puppycrawl.tools.checkstyle.api.FileContents;
 import com.puppycrawl.tools.checkstyle.api.FileText;
 import com.puppycrawl.tools.checkstyle.api.TokenTypes;
+import com.puppycrawl.tools.checkstyle.api.UserDefinedOption;
 import com.puppycrawl.tools.checkstyle.grammars.GeneratedJavaLexer;
 import com.puppycrawl.tools.checkstyle.grammars.GeneratedJavaRecognizer;
 import com.puppycrawl.tools.checkstyle.utils.CommonUtils;
@@ -80,6 +81,7 @@ public final class TreeWalker extends AbstractFileSetCheck implements ExternalRe
     private final Set<AbstractCheck> commentChecks = new HashSet<>();
 
     /** The distance between tab stops. */
+    @UserDefinedOption
     private int tabWidth = DEFAULT_TAB_WIDTH;
 
     /** Class loader to resolve classes with. **/

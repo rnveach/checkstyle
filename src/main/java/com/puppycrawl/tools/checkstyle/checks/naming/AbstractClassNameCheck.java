@@ -24,6 +24,7 @@ import java.util.regex.Pattern;
 import com.puppycrawl.tools.checkstyle.api.AbstractCheck;
 import com.puppycrawl.tools.checkstyle.api.DetailAST;
 import com.puppycrawl.tools.checkstyle.api.TokenTypes;
+import com.puppycrawl.tools.checkstyle.api.UserDefinedOption;
 
 /**
  * <p>
@@ -56,12 +57,15 @@ public final class AbstractClassNameCheck extends AbstractCheck {
     public static final String MSG_NO_ABSTRACT_CLASS_MODIFIER = "no.abstract.class.modifier";
 
     /** Whether to ignore checking the modifier. */
+    @UserDefinedOption
     private boolean ignoreModifier;
 
     /** Whether to ignore checking the name. */
+    @UserDefinedOption
     private boolean ignoreName;
 
     /** The regexp to match against. */
+    @UserDefinedOption
     private Pattern format = Pattern.compile("^Abstract.+$");
 
     /**

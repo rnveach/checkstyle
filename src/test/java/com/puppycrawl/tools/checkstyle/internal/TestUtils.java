@@ -20,7 +20,10 @@
 package com.puppycrawl.tools.checkstyle.internal;
 
 import java.lang.reflect.Constructor;
+import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.Set;
 
 import org.junit.Assert;
@@ -55,5 +58,33 @@ public final class TestUtils {
         final ClassLoader cl = TestUtils.class.getClassLoader();
         final Set<String> packageNames = PackageNamesLoader.getPackageNames(cl);
         return new PackageObjectFactory(packageNames, cl);
+    }
+
+    public static Set<Field> getFields(Class<?> clss) {
+        final Set<Field> result = new HashSet<>();
+
+        if (clss != null) {
+            result.addAll(Arrays.asList(clss.getDeclaredFields()));
+
+            result.addAll(getFields(clss.getSuperclass()));
+        }
+
+        return result;
+    }
+
+    public static Field getField(Class<?> clss, String propertyName) {
+        Field result = null;
+
+        if (clss != null) {
+            try {
+                result = clss.getDeclaredField(propertyName);
+                result.setAccessible(true);
+            }
+            catch (NoSuchFieldException ex) {
+                result = getField(clss.getSuperclass(), propertyName);
+            }
+        }
+
+        return result;
     }
 }

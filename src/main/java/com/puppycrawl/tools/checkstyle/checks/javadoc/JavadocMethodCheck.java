@@ -36,6 +36,7 @@ import com.puppycrawl.tools.checkstyle.api.FullIdent;
 import com.puppycrawl.tools.checkstyle.api.Scope;
 import com.puppycrawl.tools.checkstyle.api.TextBlock;
 import com.puppycrawl.tools.checkstyle.api.TokenTypes;
+import com.puppycrawl.tools.checkstyle.api.UserDefinedOption;
 import com.puppycrawl.tools.checkstyle.checks.AbstractTypeAwareCheck;
 import com.puppycrawl.tools.checkstyle.utils.CheckUtils;
 import com.puppycrawl.tools.checkstyle.utils.CommonUtils;
@@ -130,12 +131,15 @@ public class JavadocMethodCheck extends AbstractTypeAwareCheck {
     private static final int DEFAULT_MIN_LINE_COUNT = -1;
 
     /** The visibility scope where Javadoc comments are checked. */
+    @UserDefinedOption
     private Scope scope = Scope.PRIVATE;
 
     /** The visibility scope where Javadoc comments shouldn't be checked. */
+    @UserDefinedOption
     private Scope excludeScope;
 
     /** Minimal amount of lines in method to demand documentation presence.*/
+    @UserDefinedOption
     private int minLineCount = DEFAULT_MIN_LINE_COUNT;
 
     /**
@@ -144,23 +148,27 @@ public class JavadocMethodCheck extends AbstractTypeAwareCheck {
      */
     // -@cs[AbbreviationAsWordInName] We can not change it as,
     // check's property is part of API (used in configurations).
+    @UserDefinedOption
     private boolean allowUndeclaredRTE;
 
     /**
      * Allows validating throws tags.
      */
+    @UserDefinedOption
     private boolean validateThrows;
 
     /**
      * Controls whether to allow documented exceptions that are subclass of one
      * of declared exception. Defaults to false (backward compatibility).
      */
+    @UserDefinedOption
     private boolean allowThrowsTagsForSubclasses;
 
     /**
      * Controls whether to ignore errors when a method has parameters but does
      * not have matching param tags in the javadoc. Defaults to false.
      */
+    @UserDefinedOption
     private boolean allowMissingParamTags;
 
     /**
@@ -168,30 +176,36 @@ public class JavadocMethodCheck extends AbstractTypeAwareCheck {
      * exceptions but does not have matching throws tags in the javadoc.
      * Defaults to false.
      */
+    @UserDefinedOption
     private boolean allowMissingThrowsTags;
 
     /**
      * Controls whether to ignore errors when a method returns non-void type
      * but does not have a return tag in the javadoc. Defaults to false.
      */
+    @UserDefinedOption
     private boolean allowMissingReturnTag;
 
     /**
      * Controls whether to ignore errors when there is no javadoc. Defaults to
      * false.
      */
+    @UserDefinedOption
     private boolean allowMissingJavadoc;
 
     /**
      * Controls whether to allow missing Javadoc on accessor methods for
      * properties (setters and getters).
      */
+    @UserDefinedOption
     private boolean allowMissingPropertyJavadoc;
 
     /** List of annotations that could allow missed documentation. */
+    @UserDefinedOption
     private List<String> allowedAnnotations = Collections.singletonList("Override");
 
     /** Method names that match this pattern do not require javadoc blocks. */
+    @UserDefinedOption
     private Pattern ignoreMethodNamesRegex;
 
     /**

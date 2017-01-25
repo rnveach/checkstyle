@@ -28,6 +28,7 @@ import com.puppycrawl.tools.checkstyle.api.DetailAST;
 import com.puppycrawl.tools.checkstyle.api.DetailNode;
 import com.puppycrawl.tools.checkstyle.api.JavadocTokenTypes;
 import com.puppycrawl.tools.checkstyle.api.TokenTypes;
+import com.puppycrawl.tools.checkstyle.api.UserDefinedOption;
 import com.puppycrawl.tools.checkstyle.utils.JavadocUtils;
 
 /**
@@ -70,9 +71,11 @@ public class SingleLineJavadocCheck extends AbstractJavadocCheck {
     /**
      * Allows to specify a list of tags to be ignored by check.
      */
+    @UserDefinedOption
     private List<String> ignoredTags = new ArrayList<>();
 
     /** Whether inline tags must be ignored. **/
+    @UserDefinedOption
     private boolean ignoreInlineTags = true;
 
     /**

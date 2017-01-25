@@ -27,6 +27,7 @@ import java.util.stream.Stream;
 import com.puppycrawl.tools.checkstyle.api.AbstractCheck;
 import com.puppycrawl.tools.checkstyle.api.DetailAST;
 import com.puppycrawl.tools.checkstyle.api.TokenTypes;
+import com.puppycrawl.tools.checkstyle.api.UserDefinedOption;
 import com.puppycrawl.tools.checkstyle.utils.CheckUtils;
 import com.puppycrawl.tools.checkstyle.utils.CommonUtils;
 
@@ -82,6 +83,7 @@ public class FinalParametersCheck extends AbstractCheck {
     /**
      * Option to ignore primitive types as params.
      */
+    @UserDefinedOption
     private boolean ignorePrimitiveTypes;
 
     /**

@@ -37,6 +37,7 @@ public abstract class AbstractCheck extends AbstractViolationReporter {
     private static final int DEFAULT_TAB_WIDTH = 8;
 
     /** The tokens the check is interested in. */
+    @UserDefinedOption
     private final Set<String> tokens = new HashSet<>();
 
     /** The current file contents. */
