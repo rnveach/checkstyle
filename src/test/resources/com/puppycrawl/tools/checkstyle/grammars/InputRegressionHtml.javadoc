@@ -1,0 +1,13 @@
+<html>
+<head></head>
+<body>
+Test.<br />
+<p>Paragraph</p>
+<p>Paragraph<br/>Paragraph</p>
+<colgroup><col/></colgroup>
+<table><tr><th>Header</th><td>Column</td></tr></table>
+<center><h1>Header</h1></center>
+ <ul><li>Item</li></ul> 
+<hr><hr/>
+</body>
+</html>

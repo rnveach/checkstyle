@@ -181,6 +181,24 @@ public class BaseCheckTestSupport {
     }
 
     /**
+     * Performs verification of the given text node tree representation.
+     * @param expectedTextPrintFileName expected text node tree representation.
+     * @param actualJavadocFileName actual text node tree representation.
+     * @throws Exception if exception occurs during verification.
+     */
+    protected static void verifyNode(String expectedTextPrintFileName,
+            String actualJavadocFileName) throws Exception {
+        final String expectedContents = new String(Files.readAllBytes(
+            Paths.get(expectedTextPrintFileName)), StandardCharsets.UTF_8)
+            .replaceAll("\\\\r\\\\n", "\\\\n");
+        final String actualContents = DetailNodeTreeStringPrinter.printFileAst(
+                new File(actualJavadocFileName)).replaceAll("\\\\r\\\\n", "\\\\n");
+
+        assertEquals("Generated Node from Javadoc file should match pre-defined Node",
+                expectedContents, actualContents);
+    }
+
+    /**
      * Performs verification of the file with the given file name. Uses specified configuration.
      * Expected messages are represented by the array of strings.
      * This implementation uses overloaded
