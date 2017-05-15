@@ -203,8 +203,8 @@ public class FinalLocalVariableCheck extends AbstractCheck {
                 break;
             case TokenTypes.PARAMETER_DEF:
                 if (!isInLambda(ast)
-                        && ast.findFirstToken(TokenTypes.MODIFIERS)
-                            .findFirstToken(TokenTypes.FINAL) == null
+                        // && ast.findFirstToken(TokenTypes.MODIFIERS)
+                        //     .findFirstToken(TokenTypes.FINAL) == null
                         && !isInAbstractOrNativeMethod(ast)
                         && !ScopeUtils.isInInterfaceBlock(ast)
                         && !isMultipleTypeCatch(ast)) {
@@ -213,8 +213,8 @@ public class FinalLocalVariableCheck extends AbstractCheck {
                 break;
             case TokenTypes.VARIABLE_DEF:
                 if (ast.getParent().getType() != TokenTypes.OBJBLOCK
-                        && ast.findFirstToken(TokenTypes.MODIFIERS)
-                            .findFirstToken(TokenTypes.FINAL) == null
+                        // && ast.findFirstToken(TokenTypes.MODIFIERS)
+                        //     .findFirstToken(TokenTypes.FINAL) == null
                         && !isVariableInForInit(ast)
                         && shouldCheckEnhancedForLoopVariable(ast)) {
                     insertVariable(ast);
@@ -273,7 +273,9 @@ public class FinalLocalVariableCheck extends AbstractCheck {
         if (scope != null) {
             for (FinalVariableCandidate candidate : scope.values()) {
                 final DetailAST ident = candidate.variableIdent;
-                log(ident.getLineNo(), ident.getColumnNo(), MSG_KEY, ident.getText());
+                if (ident.branchContains(TokenTypes.FINAL)) {
+                    log(ident.getLineNo(), ident.getColumnNo(), MSG_KEY, ident.getText());
+                }
             }
         }
     }
