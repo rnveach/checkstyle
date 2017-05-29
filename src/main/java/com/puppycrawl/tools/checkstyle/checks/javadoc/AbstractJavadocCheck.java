@@ -240,7 +240,7 @@ public abstract class AbstractJavadocCheck extends AbstractCheck {
     }
 
     @Override
-    public final void beginTree(DetailAST rootAST) {
+    public void beginTree(DetailAST rootAST) {
         TREE_CACHE.get().clear();
     }
 
