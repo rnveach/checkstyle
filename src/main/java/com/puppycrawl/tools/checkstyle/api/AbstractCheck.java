@@ -49,7 +49,7 @@ public abstract class AbstractCheck extends AbstractViolationReporter {
     /** The tab width for column reporting. */
     private int tabWidth = CommonUtil.DEFAULT_TAB_WIDTH;
 
-    private MessageDispatcher messageDispatcher;
+    private static MessageDispatcher messageDispatcher;
 
     /**
      * Returns the default token a check is interested in. Only used if the
@@ -297,10 +297,11 @@ public abstract class AbstractCheck extends AbstractViolationReporter {
     }
 
     public void setMessageDispatcher(MessageDispatcher messageDispatcher) {
-        this.messageDispatcher = messageDispatcher;
+        if (messageDispatcher != null)
+            AbstractCheck.messageDispatcher = messageDispatcher;
     }
 
-    protected final MessageDispatcher getMessageDispatcher() {
+    public final static MessageDispatcher getMessageDispatcher() {
         return messageDispatcher;
     }
 

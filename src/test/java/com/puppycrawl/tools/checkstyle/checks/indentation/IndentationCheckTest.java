@@ -2864,6 +2864,16 @@ public class IndentationCheckTest extends AbstractModuleTestSupport {
         public void JavaDocParseFinished(AuditEvent event) {
             // No code needed
         }
+
+        @Override
+        public void CustomStarted(AuditEvent event) {
+            // No code needed
+        }
+
+        @Override
+        public void CustomFinished(AuditEvent event) {
+            // No code needed
+        }
     }
 
     private static final class IndentComment {
