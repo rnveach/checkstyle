@@ -116,16 +116,6 @@ htmlTag: htmlElementOpen (htmlElement
                               | text
                                //{isSameTagNames($htmlElementOpen.ctx, $htmlElementClose.ctx)}?
                               | javadocInlineTag)* htmlElementClose
-
-            | htmlElementOpen (htmlElement
-                              | ({!isNextJavadocTag()}? LEADING_ASTERISK)
-                              | htmlComment
-                              | CDATA
-                              | NEWLINE
-                              | text
-                              | javadocInlineTag)*
-            {notifyErrorListeners($htmlElementOpen.ctx.getToken(HTML_TAG_NAME, 0).getSymbol()
-                                         , "javadoc.missed.html.close", null);}
             ;
 
 //////////////////////////////////////////////////////////////////////////////////////
