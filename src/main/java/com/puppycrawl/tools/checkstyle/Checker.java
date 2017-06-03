@@ -495,6 +495,22 @@ public class Checker extends AutomaticBean implements MessageDispatcher, RootMod
     }
 
     @Override
+    public void fireCustomStarted(String source) {
+        final AuditEvent event = new AuditEvent(source);
+        for (final AuditListener listener : listeners) {
+            listener.CustomStarted(event);
+        }
+    }
+
+    @Override
+    public void fireCustomFinished(String source) {
+        final AuditEvent event = new AuditEvent(source);
+        for (final AuditListener listener : listeners) {
+            listener.CustomFinished(event);
+        }
+    }
+
+    @Override
     protected void finishLocalSetup() throws CheckstyleException {
         final Locale locale = new Locale(localeLanguage, localeCountry);
         LocalizedMessage.setLocale(locale);

@@ -57,7 +57,7 @@ public abstract class AbstractCheck extends AbstractViolationReporter {
      */
     private int tabWidth;
 
-    private MessageDispatcher messageDispatcher;
+    private static MessageDispatcher messageDispatcher;
 
     /**
      * Returns the default token a check is interested in. Only used if the
@@ -311,10 +311,11 @@ public abstract class AbstractCheck extends AbstractViolationReporter {
     }
 
     public void setMessageDispatcher(MessageDispatcher messageDispatcher) {
-        this.messageDispatcher = messageDispatcher;
+        if (messageDispatcher != null)
+            AbstractCheck.messageDispatcher = messageDispatcher;
     }
 
-    protected final MessageDispatcher getMessageDispatcher() {
+    public final static MessageDispatcher getMessageDispatcher() {
         return messageDispatcher;
     }
 
