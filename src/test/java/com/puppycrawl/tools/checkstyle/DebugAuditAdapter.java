@@ -111,4 +111,12 @@ class DebugAuditAdapter implements AuditListener {
     @Override
     public void JavaDocParseFinished(AuditEvent event) {
     }
+
+    @Override
+    public void CustomStarted(AuditEvent event) {
+    }
+
+    @Override
+    public void CustomFinished(AuditEvent event) {
+    }
 }

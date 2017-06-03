@@ -187,4 +187,14 @@ public class XpathFileGeneratorAuditListener
     public void JavaDocParseFinished(AuditEvent event) {
         //dummy method        
     }
+
+    @Override
+    public void CustomStarted(AuditEvent event) {
+        //dummy method
+    }
+
+    @Override
+    public void CustomFinished(AuditEvent event) {
+        //dummy method
+    }
 }

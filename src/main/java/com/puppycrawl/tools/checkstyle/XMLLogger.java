@@ -167,6 +167,14 @@ public class XMLLogger
     }
 
     @Override
+    public void CustomStarted(AuditEvent event) {
+    }
+
+    @Override
+    public void CustomFinished(AuditEvent event) {
+    }
+
+    @Override
     public void fileFinished(AuditEvent event) {
         final String fileName = event.getFileName();
         final FileMessages messages = fileMessages.get(fileName);

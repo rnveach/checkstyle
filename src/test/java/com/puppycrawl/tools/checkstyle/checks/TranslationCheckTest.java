@@ -682,6 +682,16 @@ public class TranslationCheckTest extends AbstractXmlTestSupport {
             // no code needed
         }
 
+        @Override
+        public void fireCustomStarted(String source) {
+            // no code needed
+        }
+
+        @Override
+        public void fireCustomFinished(String source) {
+            // no code needed
+        }
+
     }
 
 }

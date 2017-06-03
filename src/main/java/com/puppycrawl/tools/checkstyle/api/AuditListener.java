@@ -72,6 +72,10 @@ public interface AuditListener
 
     void JavaDocParseFinished(AuditEvent event);
 
+    void CustomStarted(AuditEvent event);
+
+    void CustomFinished(AuditEvent event);
+
     /**
      * Notify that audit is finished on a specific file.
      *

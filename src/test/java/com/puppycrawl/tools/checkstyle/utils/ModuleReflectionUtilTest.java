@@ -406,6 +406,16 @@ public class ModuleReflectionUtilTest {
             //dummy method
         }
 
+        @Override
+        public void CustomStarted(AuditEvent event) {
+            //dummy method
+        }
+
+        @Override
+        public void CustomFinished(AuditEvent event) {
+            //dummy method
+        }
+
     }
 
     private static final class NotCheckstyleCheck {

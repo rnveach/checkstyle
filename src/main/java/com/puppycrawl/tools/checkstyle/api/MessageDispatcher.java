@@ -62,4 +62,8 @@ public interface MessageDispatcher {
     void fireParseJavaDocStarted(AbstractJavadocCheck abstractJavadocCheck);
 
     void fireParseJavaDocFinished(AbstractJavadocCheck abstractJavadocCheck);
+
+    void fireCustomStarted(String source);
+
+    void fireCustomFinished(String source);
 }

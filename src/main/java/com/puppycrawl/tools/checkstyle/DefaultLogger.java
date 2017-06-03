@@ -237,6 +237,14 @@ public class DefaultLogger extends AbstractAutomaticBean implements AuditListene
     }
 
     @Override
+    public void CustomStarted(AuditEvent event) {
+    }
+
+    @Override
+    public void CustomFinished(AuditEvent event) {
+    }
+
+    @Override
     public void fileFinished(AuditEvent event) {
         infoWriter.flush();
     }

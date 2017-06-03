@@ -21,28 +21,37 @@ package com.puppycrawl.tools.checkstyle.api;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Stack;
+import java.util.TreeMap;
 import java.util.concurrent.atomic.AtomicLong;
 
 public class DebugListener extends AutomaticBean implements AuditListener {
-    private final Map<String, AtomicLong> checkTime = new HashMap<String, AtomicLong>();
+    private final Map<String, AtomicLong> checkTime = new TreeMap<String, AtomicLong>();
     private final Map<String, AtomicLong> checkUses = new HashMap<String, AtomicLong>();
     private final Map<String, AtomicLong> checkMin = new HashMap<String, AtomicLong>();
     private final Map<String, AtomicLong> checkMax = new HashMap<String, AtomicLong>();
 
-    private final Map<String, AtomicLong> fileSetTime = new HashMap<String, AtomicLong>();
+    private final Map<String, AtomicLong> fileSetTime = new TreeMap<String, AtomicLong>();
     private final Map<String, AtomicLong> fileSetUses = new HashMap<String, AtomicLong>();
     private final Map<String, AtomicLong> fileSetMin = new HashMap<String, AtomicLong>();
     private final Map<String, AtomicLong> fileSetMax = new HashMap<String, AtomicLong>();
 
-    private final Map<String, AtomicLong> fileTime = new HashMap<String, AtomicLong>();
+    private final Map<String, AtomicLong> fileTime = new TreeMap<String, AtomicLong>();
     private final Map<String, AtomicLong> fileUses = new HashMap<String, AtomicLong>();
     private final Map<String, AtomicLong> fileMin = new HashMap<String, AtomicLong>();
     private final Map<String, AtomicLong> fileMax = new HashMap<String, AtomicLong>();
 
-    private final Map<String, AtomicLong> parseTime = new HashMap<String, AtomicLong>();
+    private final Map<String, AtomicLong> parseTime = new TreeMap<String, AtomicLong>();
     private final Map<String, AtomicLong> parseUses = new HashMap<String, AtomicLong>();
     private final Map<String, AtomicLong> parseMin = new HashMap<String, AtomicLong>();
     private final Map<String, AtomicLong> parseMax = new HashMap<String, AtomicLong>();
+
+    private final Map<String, AtomicLong> customTime = new TreeMap<String, AtomicLong>();
+    private final Map<String, AtomicLong> customUses = new HashMap<String, AtomicLong>();
+    private final Map<String, AtomicLong> customMin = new HashMap<String, AtomicLong>();
+    private final Map<String, AtomicLong> customMax = new HashMap<String, AtomicLong>();
+    private final Stack<Long> customStartTimeMemory = new Stack<Long>();
+    private final Stack<String> customNamesMemory = new Stack<String>();
 
     private long startTime;
     private long fileStartTime;
@@ -50,6 +59,7 @@ public class DebugListener extends AutomaticBean implements AuditListener {
     private long checkStartTime;
     private long parseStartTime;
     private long javaDocParseStartTime;
+    private long customStartTime;
 
     @Override
     public void auditStarted(AuditEvent event) {
@@ -57,6 +67,7 @@ public class DebugListener extends AutomaticBean implements AuditListener {
         this.fileStartTime = 0;
         this.fileSetStartTime = 0;
         this.checkStartTime = 0;
+        this.customStartTime = 0;
 
         this.checkTime.clear();
         this.checkUses.clear();
@@ -74,6 +85,12 @@ public class DebugListener extends AutomaticBean implements AuditListener {
         this.parseUses.clear();
         this.parseMin.clear();
         this.parseMax.clear();
+        this.customTime.clear();
+        this.customUses.clear();
+        this.customMin.clear();
+        this.customMax.clear();
+        this.customStartTimeMemory.clear();
+        this.customNamesMemory.clear();
     }
 
     @Override
@@ -133,6 +150,20 @@ public class DebugListener extends AutomaticBean implements AuditListener {
                     + format(parseTime.get(key).get(), parseUses.get(key).get()));
         }
 
+        System.out.println();
+        System.out.println();
+        System.out.println("Customs: (" + customTime.size() + ")");
+
+        for (String key : customTime.keySet()) {
+            System.out.println(key + "\t" + customUses.get(key).get() + "\t"
+                    + format(customTime.get(key).get(), 1)
+                    + "\t" //
+                    + format(customMin.get(key).get(), 1)
+                    + "\t" //
+                    + format(customMax.get(key).get(), 1) + "\t"
+                    + format(customTime.get(key).get(), customUses.get(key).get()));
+        }
+
         System.out.println("------------------");
     }
 
@@ -172,6 +203,15 @@ public class DebugListener extends AutomaticBean implements AuditListener {
     @Override
     public void JavaDocParseStarted(AuditEvent event) {
         this.javaDocParseStartTime = System.nanoTime();
+    }
+
+    @Override
+    public void CustomStarted(AuditEvent event) {
+        if (this.customStartTime != 0)
+            customStartTimeMemory.push(this.customStartTime);
+        this.customNamesMemory.push(event.getSource().toString());
+
+        this.customStartTime = System.nanoTime();
     }
 
     @Override
@@ -327,6 +367,44 @@ public class DebugListener extends AutomaticBean implements AuditListener {
         if (this.checkStartTime != 0) {
             this.checkStartTime += d;
         }
+    }
+
+    @Override
+    public void CustomFinished(AuditEvent event) {
+        if (this.customStartTime == 0)
+            return;
+
+        final String src = event.getSource().toString();
+        final String startSrc = this.customNamesMemory.pop();
+
+        if (!startSrc.equals(src)) {
+            System.err.println("Custom name mis-match: " + src + " vs " + startSrc);
+        }
+        
+        final long d = System.nanoTime() - this.customStartTime;
+
+        if (this.customStartTimeMemory.size() > 0)
+            this.customStartTime = this.customStartTimeMemory.pop() + d;
+        else
+            this.customStartTime = 0;
+
+        if (this.customTime.get(src) == null) {
+            this.customTime.put(src, new AtomicLong());
+            this.customUses.put(src, new AtomicLong());
+            this.customMin.put(src, new AtomicLong(Long.MAX_VALUE));
+            this.customMax.put(src, new AtomicLong(Long.MIN_VALUE));
+        }
+
+        final AtomicLong min = this.customMin.get(src);
+        if (d < min.get())
+            min.set(d);
+
+        final AtomicLong max = this.customMax.get(src);
+        if (d > max.get())
+            max.set(d);
+
+        this.customTime.get(src).addAndGet(d);
+        this.customUses.get(src).addAndGet(1);
     }
 
     @Override

@@ -104,6 +104,14 @@ public final class SeverityLevelCounter implements AuditListener {
     }
 
     @Override
+    public void CustomStarted(AuditEvent event) {
+    }
+
+    @Override
+    public void CustomFinished(AuditEvent event) {
+    }
+
+    @Override
     public void auditFinished(AuditEvent event) {
         // No code by default, should be overridden only by demand at subclasses
     }
