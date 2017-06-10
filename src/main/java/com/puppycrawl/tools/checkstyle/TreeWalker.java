@@ -720,20 +720,4 @@ public final class TreeWalker extends AbstractFileSetCheck implements ExternalRe
         }
         return new SimpleEntry<>(lines, columns);
     }
-
-    /**
-     * State of AST.
-     * Indicates whether tree contains certain nodes.
-     */
-    private enum AstState {
-        /**
-         * Ordinary tree.
-         */
-        ORDINARY,
-
-        /**
-         * AST contains comment nodes.
-         */
-        WITH_COMMENTS
-    }
 }
