@@ -236,7 +236,7 @@ public final class AstTreeStringPrinter {
         final DetailAST result;
         try {
             if (withComments) {
-                result = TreeWalker.parseWithComments(contents);
+                result = new TreeWalker().parseWithComments(contents);
             }
             else {
                 result = TreeWalker.parse(contents);

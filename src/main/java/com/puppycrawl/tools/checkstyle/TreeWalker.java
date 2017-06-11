@@ -456,7 +456,7 @@ public final class TreeWalker extends AbstractFileSetCheck implements ExternalRe
      * @throws RecognitionException if parser failed
      * @throws TokenStreamException if lexer failed
      */
-    public static DetailAST parseWithComments(FileContents contents)
+    public DetailAST parseWithComments(FileContents contents)
             throws RecognitionException, TokenStreamException {
         return appendHiddenCommentNodes(parse(contents));
     }
@@ -524,7 +524,8 @@ public final class TreeWalker extends AbstractFileSetCheck implements ExternalRe
      *        root of AST.
      * @return root of AST with comment nodes.
      */
-    private static DetailAST appendHiddenCommentNodes(DetailAST root) {
+    public DetailAST appendHiddenCommentNodes(DetailAST root) {
+        this.test();
         DetailAST result = root;
         DetailAST curNode = root;
         DetailAST lastNode = root;
@@ -573,6 +574,11 @@ public final class TreeWalker extends AbstractFileSetCheck implements ExternalRe
             }
         }
         return result;
+    }
+
+    private void test() {
+        // TODO Auto-generated method stub
+        
     }
 
     /**

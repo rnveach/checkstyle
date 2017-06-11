@@ -251,7 +251,7 @@ public class MainFrameModel {
     public DetailAST parseFileWithComments(File file) throws IOException, ANTLRException {
         final FileText fileText = getFileText(file);
         final FileContents contents = new FileContents(fileText);
-        return TreeWalker.parseWithComments(contents);
+        return new TreeWalker().parseWithComments(contents);
     }
 
     /**
