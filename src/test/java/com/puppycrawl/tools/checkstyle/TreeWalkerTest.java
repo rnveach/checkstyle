@@ -61,8 +61,8 @@ public class TreeWalkerTest extends BaseCheckTestSupport {
         spy(TreeWalker.class);
         doNothing().when(treeWalkerSpy, "walk",
                 any(DetailAST.class), any(FileContents.class), any(classAstState));
-        when(treeWalkerSpy, "appendHiddenCommentNodes", any(DetailAST.class))
-                .thenReturn(null);
+//        when(treeWalkerSpy, "appendHiddenCommentNodes", any(DetailAST.class))
+//                .thenReturn(null);
         treeWalkerSpy.processFiltered(temporaryFolder.newFile("file.java"), new ArrayList<>());
         verifyPrivate(treeWalkerSpy, times(1))
                 .invoke("appendHiddenCommentNodes", any(DetailAST.class))
