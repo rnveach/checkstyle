@@ -209,29 +209,14 @@ public class VersionRegressionTest {
                 System.out.println();
             }
 
-            Process process = null;
+            final InternalProcess process = new InternalProcess(command, version);
 
-            // while (true) {
-            process = new ProcessBuilder(command).start();
-
-            if (!process.waitFor(20, TimeUnit.SECONDS)) {
-                System.err.println("Timeout issue on " + version);
-
-                try {
-                    process.destroyForcibly();
-                }
-                catch (Exception ex) {
-                    // ignore
-                }
-
+            if (process.getProcess() == null)
                 continue;
-            }
-            // }
 
-            final int returnCode = process.exitValue();
-
-            String errorStream = toString(process.getErrorStream());
-            String inputStream = toString(process.getInputStream());
+            final int returnCode = process.getReturnCode();
+            final String errorStream = process.getErrorStream();
+            final String inputStream = process.getInputStream();
 
             if (DEBUG) {
                 System.out.println(inputStream);
@@ -252,15 +237,6 @@ public class VersionRegressionTest {
                 }
             }
             else {
-                if (errorStream.length() == 0) {
-                    errorStream = inputStream;
-                    inputStream = "";
-                }
-
-                if (errorStream.startsWith("Error: Unable to access jarfile")) {
-                    throw new Exception(errorStream);
-                }
-
                 // good
                 if (errorStream
                         .contains("org.apache.commons.beanutils.ConversionException: Can't convert value 'abc' to")
@@ -333,7 +309,7 @@ public class VersionRegressionTest {
                 }
             }
 
-            process.destroyForcibly();
+            process.destroy();
         }
 
         return result;
@@ -349,20 +325,6 @@ public class VersionRegressionTest {
         return Float.parseFloat(split[0] + "." + split[1]);
     }
 
-    private static String toString(InputStream inputStream) throws IOException {
-        final StringBuilder sb = new StringBuilder();
-
-        try (BufferedReader br = new BufferedReader(new InputStreamReader(inputStream))) {
-            String line = null;
-
-            while ((line = br.readLine()) != null) {
-                sb.append(line + System.getProperty("line.separator"));
-            }
-        }
-
-        return sb.toString();
-    }
-
     private static Set<String> getProperties(Class<?> clss) {
         final Set<String> result = new TreeSet<>();
         final PropertyDescriptor[] map = PropertyUtils.getPropertyDescriptors(clss);
@@ -374,5 +336,94 @@ public class VersionRegressionTest {
         }
 
         return result;
+    }
+
+    private static final class InternalProcess {
+        private Process process;
+        private String errorStream;
+        private String inputStream;
+        private int returnCode;
+
+        public InternalProcess(String[] command, String version) throws Exception {
+            process = null;
+
+            for (int i = 0; (i < 5) && (process == null); i++) {
+                process = new ProcessBuilder(command).start();
+
+                if (!process.waitFor(20, TimeUnit.SECONDS)) {
+                    System.err.println("Timeout issue on " + version);
+
+                    destroy();
+
+                    process = null;
+                    Thread.sleep(1000);
+                    continue;
+                }
+
+                returnCode = process.exitValue();
+                errorStream = toString(process.getErrorStream());
+                inputStream = toString(process.getInputStream());
+
+                if (errorStream.length() == 0) {
+                    errorStream = inputStream;
+                    inputStream = "";
+                }
+
+                if (errorStream.startsWith("Error: Unable to access jarfile")) {
+                    throw new Exception(errorStream);
+                }
+
+                if (errorStream.contains("unable to read " + CONFIG.getAbsolutePath())) {
+                    System.err.println("Config issue on " + version);
+
+                    destroy();
+
+                    process = null;
+                    Thread.sleep(5000);
+                    continue;
+                }
+            }
+        }
+
+        public void destroy() {
+            if (process != null) {
+                try {
+                    process.destroyForcibly();
+                }
+                catch (Exception ex) {
+                    // ignore
+                }
+            }
+        }
+
+        private static String toString(InputStream inputStream) throws IOException {
+            final StringBuilder sb = new StringBuilder();
+
+            try (BufferedReader br = new BufferedReader(new InputStreamReader(inputStream))) {
+                String line = null;
+
+                while ((line = br.readLine()) != null) {
+                    sb.append(line + System.getProperty("line.separator"));
+                }
+            }
+
+            return sb.toString();
+        }
+
+        public Process getProcess() {
+            return process;
+        }
+
+        public String getErrorStream() {
+            return errorStream;
+        }
+
+        public String getInputStream() {
+            return inputStream;
+        }
+
+        public int getReturnCode() {
+            return returnCode;
+        }
     }
 }
