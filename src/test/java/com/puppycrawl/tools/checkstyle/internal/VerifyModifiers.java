@@ -148,8 +148,7 @@ public class VerifyModifiers {
             int linePosition = 1;
             for (String line : fileLines) {
                 if (linePosition == violation.lineStart) {
-                    if ((line.length() < violation.columnStart)
-                            || (line.length() < violation.columnEnd)) {
+                    if (line.length() < violation.columnEnd) {
                         System.out.println("ERROR: Line is too short for replacement");
                     }
                     else {
@@ -255,6 +254,15 @@ public class VerifyModifiers {
 
             lineEnd = Integer.parseInt(end[0]);
             columnEnd = Integer.parseInt(end[1]);
+
+            if (lineEnd < lineStart) {
+                System.out.println("ERROR: violation file has out of order lines - " + lineStart
+                        + " vs " + lineEnd);
+            }
+            if (columnEnd < columnStart) {
+                System.out.println("ERROR: violation file has out of order columns - "
+                        + columnStart + " vs " + columnEnd);
+            }
         }
 
         private static String getFile(String line) {
