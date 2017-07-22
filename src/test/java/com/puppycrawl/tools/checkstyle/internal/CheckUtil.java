@@ -172,6 +172,8 @@ public final class CheckUtil {
                 .filter(cls -> !cls.getName().endsWith("Stub"))
                 .filter(cls -> !cls.getCanonicalName()
                         .startsWith("com.puppycrawl.tools.checkstyle.packageobjectfactory"))
+                .filter(cls -> !cls.getCanonicalName()
+                        .equals("com.puppycrawl.tools.checkstyle.checks.coding.ModifierViolationCheck"))
                 .collect(Collectors.toSet());
     }
 
