@@ -113,9 +113,10 @@ public class VerifyModifiers {
                     System.out.println("ERROR: File is has too little lines");
 
                 // restore original file
-                file.delete();
-                Files.write(file.toPath(), originalBytes, StandardOpenOption.CREATE);
-                Thread.sleep(1000);
+                // file.delete();
+                Files.write(file.toPath(), originalBytes, StandardOpenOption.CREATE,
+                        StandardOpenOption.TRUNCATE_EXISTING);
+                // Thread.sleep(1000);
 
                 if (file.length() != originalBytes.length) {
                     System.out.println("ERROR: file restoration doesn't match expected amount by "
@@ -169,7 +170,7 @@ public class VerifyModifiers {
             bw.flush();
         }
 
-        Thread.sleep(1000);
+        // Thread.sleep(1000);
 
         final long afterLength = file.length();
 
