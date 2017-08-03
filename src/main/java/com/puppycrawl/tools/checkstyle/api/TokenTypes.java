@@ -725,7 +725,7 @@ public final class TokenTypes {
     /**
      * A reference to a method or constructor without arguments. Part of Java 8 syntax.
      * The token should be used for subscribing for double colon literal.
-     * {@link #DOUBLE_COLON} token does not appear in the tree.
+     * {@link #DOUBLE_COLON} token does not appear in the tree and shouldn't be used.
      *
      * <p>For example:</p>
      * <pre>
@@ -1469,6 +1469,7 @@ public final class TokenTypes {
      *
      * @see #METHOD_REF
      */
+    @Deprecated
     public static final int DOUBLE_COLON = GeneratedJavaTokenTypes.DOUBLE_COLON;
     /**
      * The <code>if</code> keyword.
