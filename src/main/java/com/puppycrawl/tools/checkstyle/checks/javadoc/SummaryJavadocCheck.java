@@ -137,7 +137,7 @@ public class SummaryJavadocCheck extends AbstractJavadocCheck {
 
     @Override
     public void visitJavadocToken(DetailNode ast) {
-        String firstSentence = getFirstSentence(ast);
+        String firstSentence = getSummarySentence(ast);
         final int endOfSentence = firstSentence.lastIndexOf(period);
         final String summaryDoc = getSummarySentence(ast);
         if (summaryDoc.isEmpty()) {
@@ -216,35 +216,6 @@ public class SummaryJavadocCheck extends AbstractJavadocCheck {
             tempNode = JavadocUtils.getNextSibling(tempNode);
         }
         return contents.toString();
-    }
-
-    /**
-     * Finds and returns first sentence.
-     * @param ast Javadoc root node.
-     * @return first sentence.
-     */
-    private static String getFirstSentence(DetailNode ast) {
-        final StringBuilder result = new StringBuilder(256);
-        final String periodSuffix = PERIOD + ' ';
-        for (DetailNode child : ast.getChildren()) {
-            final String text;
-            if (child.getChildren().length == 0) {
-                text = child.getText();
-            }
-            else {
-                text = getFirstSentence(child);
-            }
-
-            if (child.getType() != JavadocTokenTypes.JAVADOC_INLINE_TAG
-                && text.contains(periodSuffix)) {
-                result.append(text.substring(0, text.indexOf(periodSuffix) + 1));
-                break;
-            }
-            else {
-                result.append(text);
-            }
-        }
-        return result.toString();
     }
 
     /**
