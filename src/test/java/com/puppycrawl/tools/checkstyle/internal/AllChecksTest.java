@@ -19,8 +19,12 @@
 
 package com.puppycrawl.tools.checkstyle.internal;
 
+import java.io.File;
+import java.io.IOException;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -535,6 +539,89 @@ public class AllChecksTest extends AbstractModuleTestSupport {
                     !"todo.match".equals(messageString)
                             && result.trim().startsWith("TODO"));
         }
+    }
+
+    @Test
+    public void testAllTestsHaveProductionCode() throws Exception {
+        final Map<String, List<String>> allTests = new HashMap<>();
+
+        Files.walk(Paths.get("src/main/java"))
+            .forEach(filePath -> {
+                grabAllFiles(allTests, filePath.toFile());
+            });
+        Files.walk(Paths.get("src/test/java"))
+            .forEach(filePath -> {
+                verifyHasProductionFile(allTests, filePath.toFile());
+            });
+    }
+
+    private static void grabAllFiles(Map<String, List<String>> allTests, File file) {
+        if (file.isFile()) {
+            String path = null;
+
+            try {
+                path = getSimplePath(file.getCanonicalPath());
+            }
+            catch (IOException ex) {
+                throw new IllegalStateException(ex);
+            }
+
+            final int slash = path.lastIndexOf(File.separatorChar);
+            final String packge = path.substring(0, slash);
+
+            List<String> classes = allTests.get(packge);
+
+            if (classes == null) {
+                classes = new ArrayList<String>();
+
+                allTests.put(packge, classes);
+            }
+
+            classes.add(path.substring(slash + 1));
+        }
+    }
+
+    private static void verifyHasProductionFile(Map<String, List<String>> allTests, File file) {
+        if (file.isFile()) {
+            final String fileName = file.getName().toString().replace("Test.java", ".java");
+
+            if (!fileName.endsWith("TestSupport.java")) {
+                String path = null;
+
+                try {
+                    path = getSimplePath(file.getCanonicalPath());
+                }
+                catch (IOException ex) {
+                    throw new IllegalStateException(ex);
+                }
+
+                if (!path.contains(File.separatorChar + "grammars" + File.separatorChar)
+                        && !path.contains(File.separatorChar + "internal" + File.separatorChar)) {
+                    final int slash = path.lastIndexOf(File.separatorChar);
+                    final String packge = path.substring(0, slash);
+                    final List<String> classes = allTests.get(packge);
+                    boolean found = false;
+
+                    if (classes != null) {
+                        for (String clss : classes) {
+                            if (clss.equals(fileName)) {
+                                found = true;
+                                break;
+                            }
+                        }
+                    }
+
+                    // TODO
+                    if (!found) {
+                        System.err.println(path);
+                    }
+                }
+            }
+        }
+    }
+
+    private static String getSimplePath(String path) {
+        return path.substring(path.lastIndexOf("com" + File.separator + "puppycrawl"));
     }
 
     /**
