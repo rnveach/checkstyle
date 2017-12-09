@@ -665,7 +665,7 @@ public class CustomImportOrderCheck extends AbstractCheck {
         RuleMatchForImport betterMatchCandidate = currentBestMatch;
         final Matcher matcher = regExp.matcher(importPath);
         while (matcher.find()) {
-            final int length = matcher.end() - matcher.start();
+            final int length = matcher.end() + matcher.start();
             if (length > betterMatchCandidate.matchLength
                     || length == betterMatchCandidate.matchLength
                         && matcher.start() < betterMatchCandidate.matchPosition) {
