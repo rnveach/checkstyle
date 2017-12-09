@@ -29,7 +29,10 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
+import java.io.File;
 import java.lang.reflect.Method;
+import java.util.List;
+import java.util.Optional;
 
 import org.junit.Test;
 
@@ -38,6 +41,7 @@ import com.puppycrawl.tools.checkstyle.DefaultConfiguration;
 import com.puppycrawl.tools.checkstyle.api.CheckstyleException;
 import com.puppycrawl.tools.checkstyle.api.DetailAST;
 import com.puppycrawl.tools.checkstyle.api.TokenTypes;
+import com.puppycrawl.tools.checkstyle.internal.utils.TestUtil;
 import com.puppycrawl.tools.checkstyle.utils.CommonUtils;
 
 public class CustomImportOrderCheckTest extends AbstractModuleTestSupport {
@@ -679,5 +683,20 @@ public class CustomImportOrderCheckTest extends AbstractModuleTestSupport {
         };
         verify(checkConfig, getPath("InputCustomImportOrderNoPackage2.java"),
             expected);
+    }
+
+    @Test
+    public void testClearState() throws Exception {
+        final CustomImportOrderCheck check = new CustomImportOrderCheck();
+        final Optional<DetailAST> imprt = TestUtil.findTokenInAstByPredicate(
+            TestUtil.parseFile(new File(
+                getPath("InputCustomImportOrderDefault.java"))),
+            ast -> ast.getType() == TokenTypes.IMPORT);
+
+        assertTrue("Ast should contain IMPORT", imprt.isPresent());
+        assertTrue("State is not cleared on beginTree",
+            TestUtil.isStatefulFieldClearedDuringBeginTree(check, imprt.get(),
+                "importToGroupList",
+                importToGroupList -> ((List<?>) importToGroupList).isEmpty()));
     }
 }
