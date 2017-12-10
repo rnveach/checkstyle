@@ -2298,22 +2298,6 @@
               </targetClasses>
               <targetTests>
                 <param>com.puppycrawl.tools.checkstyle.utils.*</param>
-                <param>com.puppycrawl.tools.checkstyle.checks.coding.*</param>
-                <param>com.puppycrawl.tools.checkstyle.AstTreeStringPrinterTest</param>
-                <param>com.puppycrawl.tools.checkstyle.ConfigurationLoaderTest</param>
-                <param>com.puppycrawl.tools.checkstyle.DetailNodeTreeStringPrinterTest</param>
-                <param>com.puppycrawl.tools.checkstyle.PackageObjectFactoryTest</param>
-                <param>com.puppycrawl.tools.checkstyle.checks.FinalParametersCheckTest</param>
-                <param>com.puppycrawl.tools.checkstyle.checks.TranslationCheckTest</param>
-                <param>com.puppycrawl.tools.checkstyle.checks.blocks.RightCurlyCheckTest</param>
-                <param>com.puppycrawl.tools.checkstyle.checks.coding.MultipleVariableDeclarationsCheckTest</param>
-                <param>com.puppycrawl.tools.checkstyle.checks.design.FinalClassCheckTest</param>
-                <param>com.puppycrawl.tools.checkstyle.checks.javadoc.*</param>
-                <param>com.puppycrawl.tools.checkstyle.checks.regexp.RegexpOnFilenameCheckTest</param>
-                <param>com.puppycrawl.tools.checkstyle.checks.whitespace.*</param>
-                <param>com.puppycrawl.tools.checkstyle.filters.SuppressionCommentFilter</param>
-                <param>com.puppycrawl.tools.checkstyle.filters.SuppressWithNearbyCommentFilterTest</param>
-                <param>com.puppycrawl.tools.checkstyle.internal.AllChecksTest</param>
               </targetTests>
               <mutationThreshold>100</mutationThreshold>
               <timeoutFactor>${pitest.plugin.timeout.factor}</timeoutFactor>
