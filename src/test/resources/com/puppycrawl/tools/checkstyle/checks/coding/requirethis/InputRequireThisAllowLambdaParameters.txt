@@ -1,0 +1,33 @@
+------------------------------
+2:0 - Class (InputRequireThisAllowLambdaParameters)
+    Instance Members: s1, x, y
+    Instance Methods: foo1, foo2
+7:4 - Method (foo1)
+7:16 - Block
+    Local Variables: strings
+16:4 - Method (foo2)
+16:16 - Block
+    Local Variables: strings
+23:4 - Class (FirstLevel)
+    Instance Members: x, y, z
+    Instance Methods: methodInFirstLevel
+28:8 - Method (methodInFirstLevel)
+    Parameters: x
+28:39 - Block
+    Local Variables: myConsumer
+30:12 - Block
+------------------------------
+42:0 - Class (Calculator)
+    Instance Members: a, b
+    Instance Methods: operateBinary, addSub
+46:4 - Class (IntegerMath)
+    Instance Methods: operation
+47:8 - Method (operation)
+    Parameters: a, b
+50:4 - Method (operateBinary)
+    Parameters: a, b, op
+50:59 - Block
+54:4 - Method (addSub)
+    Parameters: args
+54:39 - Block
+    Local Variables: myApp, addition, subtraction

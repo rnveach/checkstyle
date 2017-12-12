@@ -38,6 +38,10 @@ public class FrameTrackingUtil {
     /** Tree of all the parsed frames. */
     private final Map<DetailAST, AbstractFrame> frames = new HashMap<>();
 
+    public Map<DetailAST, AbstractFrame> getFrames() {
+        return frames;
+    }
+
     /**
      * Used to reset the frames of the entire class.
      * @param rootAST The new root to reset based on.
@@ -216,6 +220,27 @@ public class FrameTrackingUtil {
         CATCH_FRAME,
         /** Lambda frame type. */
         FOR_FRAME,
+        ;
+
+        @Override
+        public String toString() {
+            switch (this) {
+            case CLASS_FRAME:
+                return "Class";
+            case CTOR_FRAME:
+                return "Constructor";
+            case METHOD_FRAME:
+                return "Method";
+            case BLOCK_FRAME:
+                return "Block";
+            case CATCH_FRAME:
+                return "Catch";
+            case FOR_FRAME:
+                return "For";
+            default:
+                return null;
+            }
+        }
 
     }
 
@@ -257,6 +282,10 @@ public class FrameTrackingUtil {
          */
         private void addIdent(DetailAST identToAdd) {
             varIdents.add(identToAdd);
+        }
+
+        public Set<DetailAST> getVarIdents() {
+            return varIdents;
         }
 
         public AbstractFrame getParent() {
@@ -425,6 +454,22 @@ public class FrameTrackingUtil {
         @Override
         public FrameType getType() {
             return FrameType.CLASS_FRAME;
+        }
+
+        public Set<DetailAST> getInstanceMembers() {
+            return instanceMembers;
+        }
+
+        public Set<DetailAST> getInstanceMethods() {
+            return instanceMethods;
+        }
+
+        public Set<DetailAST> getStaticMembers() {
+            return staticMembers;
+        }
+
+        public Set<DetailAST> getStaticMethods() {
+            return staticMethods;
         }
 
         /**

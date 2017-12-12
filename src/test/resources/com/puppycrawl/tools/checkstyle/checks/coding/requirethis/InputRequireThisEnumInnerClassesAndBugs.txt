@@ -1,0 +1,114 @@
+------------------------------
+8:0 - Class (InputRequireThisEnumInnerClassesAndBugs)
+    Instance Members: i, I
+    Instance Methods: method1, method2, method3, method4
+10:4 - Method (method1)
+10:19 - Block
+14:4 - Method (method2)
+    Parameters: i
+14:24 - Block
+18:12 - Block
+21:8 - Catch
+    Local Variables: e
+21:35 - Block
+29:4 - Method (method3)
+30:4 - Block
+34:4 - Method (method4)
+34:19 - Block
+39:4 - Class (I)
+------------------------------
+42:0 - Class (MyEnum)
+    Static Members: A, B
+    Instance Members: z
+    Instance Methods: doSomething
+47:8 - Method (doSomething)
+48:8 - Block
+54:4 - Constructor (MyEnum)
+55:4 - Block
+------------------------------
+60:0 - Class (Bug2123003)
+    Instance Members: band
+64:4 - Class (Inner)
+    Instance Members: band
+69:4 - Class (Inner2)
+    Instance Members: band
+74:4 - Class (Rock)
+------------------------------
+79:0 - Class (Bug1155921)
+    Static Members: CONST
+    Static Methods: static_method
+    Instance Methods: method1, method2
+81:4 - Method (static_method)
+81:39 - Block
+85:4 - Method (method1)
+85:26 - Block
+89:4 - Method (method2)
+89:26 - Block
+------------------------------
+94:0 - Class (Issue155)
+    Static Members: BASE, EXT
+------------------------------
+99:0 - Class (Issue257)
+    Instance Methods: foo
+100:4 - Method (foo)
+100:22 - Block
+101:78 - Block
+104:8 - Catch
+    Local Variables: e
+104:36 - Block
+------------------------------
+110:0 - Class (Issue2240)
+    Instance Members: i
+    Instance Methods: foo, instanceMethod
+112:4 - Method (foo)
+112:15 - Block
+    Local Variables: i
+117:4 - Method (instanceMethod)
+117:26 - Block
+119:4 - Class (Nested)
+    Instance Methods: bar
+120:8 - Method (bar)
+120:19 - Block
+------------------------------
+127:0 - Class (Issue2539)
+    Static Methods: foo
+    Instance Methods: foo, foo, bar
+128:4 - Method (foo)
+    Parameters: i
+128:20 - Block
+129:4 - Method (foo)
+    Parameters: i
+129:30 - Block
+130:4 - Method (foo)
+130:15 - Block
+132:4 - Method (bar)
+132:15 - Block
+------------------------------
+137:0 - Class (NestedRechange)
+    Instance Members: s
+140:4 - Constructor (NestedRechange)
+140:21 - Block
+    Local Variables: s
+145:4 - Class (NestedStatic)
+    Static Members: s
+    Instance Methods: method
+148:8 - Method (method)
+148:29 - Block
+------------------------------
+153:0 - Class (NestedFrames)
+    Instance Members: a, b
+    Instance Methods: oneReturnInMethod2, oneReturnInMethod3
+157:4 - Method (oneReturnInMethod2)
+157:36 - Block
+158:8 - For
+    Local Variables: i
+158:37 - Block
+    Local Variables: a
+160:32 - Block
+161:34 - Block
+162:36 - Block
+171:4 - Method (oneReturnInMethod3)
+171:36 - Block
+172:8 - For
+    Local Variables: b
+172:37 - Block
