@@ -431,7 +431,7 @@ public class FrameTrackingUtil {
          * Adds static member's ident.
          * @param ident an ident of static member of the class.
          */
-        public void addStaticMember(final DetailAST ident) {
+        private void addStaticMember(final DetailAST ident) {
             staticMembers.add(ident);
         }
 
@@ -439,7 +439,7 @@ public class FrameTrackingUtil {
          * Adds static method's name.
          * @param ident an ident of static method of the class.
          */
-        public void addStaticMethod(final DetailAST ident) {
+        private void addStaticMethod(final DetailAST ident) {
             staticMethods.add(ident);
         }
 
@@ -447,7 +447,7 @@ public class FrameTrackingUtil {
          * Adds instance member's ident.
          * @param ident an ident of instance member of the class.
          */
-        public void addInstanceMember(final DetailAST ident) {
+        private void addInstanceMember(final DetailAST ident) {
             instanceMembers.add(ident);
         }
 
@@ -455,7 +455,7 @@ public class FrameTrackingUtil {
          * Adds instance method's name.
          * @param ident an ident of instance method of the class.
          */
-        public void addInstanceMethod(final DetailAST ident) {
+        private void addInstanceMethod(final DetailAST ident) {
             instanceMethods.add(ident);
         }
 
