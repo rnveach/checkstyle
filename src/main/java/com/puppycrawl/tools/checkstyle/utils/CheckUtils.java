@@ -416,6 +416,41 @@ public final class CheckUtils {
     }
 
     /**
+     * Checks if the token is a Lambda parameter.
+     * @param ast the {@code DetailAST} value of the token to be checked
+     * @return true if the token is a Lambda parameter
+     */
+    public static boolean isLambdaParameter(DetailAST ast) {
+        DetailAST parent;
+        for (parent = ast.getParent(); parent != null; parent = parent.getParent()) {
+            if (parent.getType() == TokenTypes.LAMBDA) {
+                break;
+            }
+        }
+        final boolean isLambdaParameter;
+        if (parent == null) {
+            isLambdaParameter = false;
+        }
+        else if (ast.getType() == TokenTypes.PARAMETER_DEF) {
+            isLambdaParameter = true;
+        }
+        else {
+            final DetailAST lambdaParameters = parent.findFirstToken(TokenTypes.PARAMETERS);
+            if (lambdaParameters == null) {
+                isLambdaParameter = parent.getFirstChild().getText().equals(ast.getText());
+            }
+            else {
+                isLambdaParameter = TokenUtils.findFirstTokenByPredicate(lambdaParameters,
+                    paramDef -> {
+                        final DetailAST param = paramDef.findFirstToken(TokenTypes.IDENT);
+                        return param != null && param.getText().equals(ast.getText());
+                    }).isPresent();
+            }
+        }
+        return isLambdaParameter;
+    }
+
+    /**
      * Returns {@link AccessModifier} based on the information about access modifier
      * taken from the given token of type {@link TokenTypes#MODIFIERS}.
      * @param modifiersToken token of type {@link TokenTypes#MODIFIERS}.

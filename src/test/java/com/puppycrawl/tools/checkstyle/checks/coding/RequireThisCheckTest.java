@@ -36,6 +36,7 @@ import com.puppycrawl.tools.checkstyle.api.LocalizedMessage;
 import com.puppycrawl.tools.checkstyle.api.TokenTypes;
 import com.puppycrawl.tools.checkstyle.internal.utils.TestUtil;
 import com.puppycrawl.tools.checkstyle.utils.CommonUtils;
+import com.puppycrawl.tools.checkstyle.utils.FrameTrackingUtil;
 
 public class RequireThisCheckTest extends AbstractModuleTestSupport {
 
@@ -363,7 +364,7 @@ public class RequireThisCheckTest extends AbstractModuleTestSupport {
         final DetailAST ident = new DetailAST();
         ident.setText("testName");
 
-        final Class<?> cls = Class.forName(RequireThisCheck.class.getName() + "$CatchFrame");
+        final Class<?> cls = Class.forName(FrameTrackingUtil.class.getName() + "$CatchFrame");
         final Constructor<?> constructor = cls.getDeclaredConstructors()[0];
         constructor.setAccessible(true);
         final Object o = constructor.newInstance(null, ident);
