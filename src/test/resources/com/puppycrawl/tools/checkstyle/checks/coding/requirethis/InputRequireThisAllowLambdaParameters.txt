@@ -5,9 +5,13 @@
 7:4 - Method (foo1)
 7:16 - Block
     Local Variables: strings
+10:35 - Lambda
+    Parameters: s1
 16:4 - Method (foo2)
 16:16 - Block
     Local Variables: strings
+19:35 - Lambda
+    Parameters: s1
 23:4 - Class (FirstLevel)
     Instance Members: x, y, z
     Instance Methods: methodInFirstLevel
@@ -15,6 +19,8 @@
     Parameters: x
 28:39 - Block
     Local Variables: myConsumer
+29:47 - Lambda
+    Parameters: y
 30:12 - Block
 ------------------------------
 42:0 - Class (Calculator)
@@ -31,3 +37,7 @@
     Parameters: args
 54:39 - Block
     Local Variables: myApp, addition, subtraction
+57:38 - Lambda
+    Parameters: a, b
+58:41 - Lambda
+    Parameters: a, b

@@ -109,13 +109,14 @@ public class FrameTackingUtilTest extends AbstractPathTestSupport {
             case BLOCK_FRAME:
             case CATCH_FRAME:
             case FOR_FRAME:
+            case LAMBDA_FRAME:
             default:
                 break;
             }
 
             result += "\n";
 
-            if (frameType == FrameType.METHOD_FRAME) {
+            if (frameType == FrameType.METHOD_FRAME || frameType == FrameType.LAMBDA_FRAME) {
                 result += printAstNames("Parameters", frame.getVarIdents());
             } else {
                 result += printAstNames("Local Variables", frame.getVarIdents());

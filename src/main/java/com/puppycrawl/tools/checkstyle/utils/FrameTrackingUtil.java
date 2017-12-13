@@ -78,7 +78,6 @@ public class FrameTrackingUtil {
                 break;
             case TokenTypes.PARAMETER_DEF :
                 if (!CheckUtils.isReceiverParameter(ast)
-                        && !CheckUtils.isLambdaParameter(ast)
                         && ast.getParent().getType() != TokenTypes.LITERAL_CATCH) {
                     final DetailAST parameterIdent = ast.findFirstToken(TokenTypes.IDENT);
                     frame.addIdent(parameterIdent);
@@ -129,6 +128,16 @@ public class FrameTrackingUtil {
                             ast.getFirstChild().toString()));
                 }
                 break;
+            case TokenTypes.LAMBDA:
+                final AbstractFrame lambdaFrame = new LambdaFrame(frame, ast);
+                final DetailAST parameter = ast.findFirstToken(TokenTypes.IDENT);
+
+                if (parameter != null) {
+                    lambdaFrame.addIdent(parameter);
+                }
+
+                frameStack.addFirst(lambdaFrame);
+                break;
             default:
                 // do nothing
         }
@@ -173,6 +182,7 @@ public class FrameTrackingUtil {
             case TokenTypes.CTOR_DEF :
             case TokenTypes.LITERAL_CATCH :
             case TokenTypes.LITERAL_FOR :
+            case TokenTypes.LAMBDA:
                 frames.put(ast, frameStack.poll());
                 break;
             case TokenTypes.LITERAL_NEW :
@@ -220,6 +230,8 @@ public class FrameTrackingUtil {
         CATCH_FRAME,
         /** Lambda frame type. */
         FOR_FRAME,
+        /** Lambda frame type. */
+        LAMBDA_FRAME,
         ;
 
         @Override
@@ -237,6 +249,8 @@ public class FrameTrackingUtil {
                 return "Catch";
             case FOR_FRAME:
                 return "For";
+            case LAMBDA_FRAME:
+                return "Lambda";
             default:
                 return null;
             }
@@ -651,6 +665,17 @@ public class FrameTrackingUtil {
             return frameName;
         }
 
+    }
+
+    public static class LambdaFrame extends MethodFrame {
+        protected LambdaFrame(AbstractFrame parent, DetailAST ident) {
+            super(parent, ident);
+        }
+
+        @Override
+        public FrameType getType() {
+            return FrameType.LAMBDA_FRAME;
+        }
     }
 
     /**
