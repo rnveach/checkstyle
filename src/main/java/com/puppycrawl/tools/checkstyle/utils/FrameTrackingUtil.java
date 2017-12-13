@@ -215,6 +215,18 @@ public class FrameTrackingUtil {
         return frames.get(ast);
     }
 
+    public AbstractFrame findFrame(DetailAST ast) {
+        DetailAST parent = ast;
+        AbstractFrame result = getFrame(parent);
+
+        while (result == null && parent != null) {
+            parent = parent.getParent();
+            result = getFrame(parent);
+        }
+
+        return result;
+    }
+
     /** An AbstractFrame type. */
     public enum FrameType {
 
@@ -268,10 +280,10 @@ public class FrameTrackingUtil {
         private final Set<DetailAST> varIdents;
 
         /** Parent frame. */
-        private final AbstractFrame parent;
+        protected final AbstractFrame parent;
 
         /** Name identifier token. */
-        private final DetailAST frameNameIdent;
+        protected final DetailAST frameNameIdent;
 
         /**
          * Constructor -- invocable only via super() from subclasses.
@@ -306,6 +318,7 @@ public class FrameTrackingUtil {
             return parent;
         }
 
+        // TODO: could be removed
         public String getFrameName() {
             return frameNameIdent.getText();
         }
@@ -315,20 +328,22 @@ public class FrameTrackingUtil {
         }
 
         /**
-         * Check whether the frame contains a field or a variable with the given name.
+         * Check whether the frame directly contains a field or a variable with the given name.
          * @param nameToFind the IDENT ast of the name we're looking for.
          * @return whether it was found.
          */
+        @Deprecated
         protected boolean containsFieldOrVariable(DetailAST nameToFind) {
             return containsFieldOrVariableDef(varIdents, nameToFind);
         }
 
         /**
-         * Check whether the frame contains a given name.
+         * Check whether the frame or it's parent contains a given name.
          * @param nameToFind IDENT ast of the name we're looking for.
          * @param lookForMethod whether we are looking for a method name.
-         * @return whether it was found.
+         * @return Frame where name was found.
          */
+        @Deprecated
         public AbstractFrame getIfContains(DetailAST nameToFind, boolean lookForMethod) {
             final AbstractFrame frame;
 
@@ -342,6 +357,20 @@ public class FrameTrackingUtil {
             return frame;
         }
 
+        public DetailAST findVariableDeclaration(DetailAST variableIdent, Boolean instance) {
+            DetailAST result = null;
+
+            if (instance == null || instance == false) {
+                result = findProperDefinition(varIdents, variableIdent);
+            }
+
+            if (result == null) {
+                result = parent.findVariableDeclaration(variableIdent, instance);
+            }
+
+            return result;
+        }
+
         /**
          * Whether the set contains a declaration with the text of the specified
          * IDENT ast and it is declared in a proper position.
@@ -350,11 +379,30 @@ public class FrameTrackingUtil {
          * @return true if the set contains a declaration with the text of the specified
          *         IDENT ast and it is declared in a proper position.
          */
+        @Deprecated
         public boolean containsFieldOrVariableDef(Set<DetailAST> set, DetailAST ident) {
             boolean result = false;
             for (DetailAST ast: set) {
                 if (isProperDefinition(ident, ast)) {
                     result = true;
+                    break;
+                }
+            }
+            return result;
+        }
+
+        /**
+         * Whether the set contains a declaration with the text of the specified
+         * IDENT ast and it is declared in a proper position.
+         * @param set the set of declarations.
+         * @param ident the specified IDENT ast.
+         * @return the IDENT that matches the proper definition.
+         */
+        protected DetailAST findProperDefinition(Set<DetailAST> set, DetailAST ident) {
+            DetailAST result = null;
+            for (DetailAST ast: set) {
+                if (isProperDefinition(ident, ast)) {
+                    result = ast;
                     break;
                 }
             }
@@ -381,9 +429,10 @@ public class FrameTrackingUtil {
          */
         private static boolean checkPosition(DetailAST ast1, DetailAST ast2) {
             boolean result = false;
+            // TODO: can this be used on fields where field is declared after use?
             if (ast1.getLineNo() < ast2.getLineNo()
                     || ast1.getLineNo() == ast2.getLineNo()
-                    && ast1.getColumnNo() < ast2.getColumnNo()) {
+                    && ast1.getColumnNo() <= ast2.getColumnNo()) {
                 result = true;
             }
             return result;
@@ -524,6 +573,7 @@ public class FrameTrackingUtil {
          * @return true is the given name is a name of a known
          *         instance member of the class.
          */
+        @Deprecated
         public boolean hasInstanceMember(final DetailAST ident) {
             return containsFieldOrVariableDef(instanceMembers, ident);
         }
@@ -534,6 +584,7 @@ public class FrameTrackingUtil {
          * @return true if the given ast is correspondent to a known
          *         instance method of the class.
          */
+        @Deprecated
         public boolean hasInstanceMethod(final DetailAST ident) {
             return containsMethodDef(instanceMethods, ident);
         }
@@ -544,6 +595,7 @@ public class FrameTrackingUtil {
          * @return true is the given ast is correspondent to a known
          *         instance method of the class.
          */
+        @Deprecated
         public boolean hasStaticMethod(final DetailAST ident) {
             return containsMethodDef(staticMethods, ident);
         }
@@ -553,6 +605,7 @@ public class FrameTrackingUtil {
          * @param instanceMember an instance member of a class.
          * @return true if given instance member has final modifier.
          */
+        @Deprecated
         public boolean hasFinalField(final DetailAST instanceMember) {
             boolean result = false;
             for (DetailAST member : instanceMembers) {
@@ -567,6 +620,7 @@ public class FrameTrackingUtil {
         }
 
         @Override
+        @Deprecated
         protected boolean containsFieldOrVariable(DetailAST nameToFind) {
             return containsFieldOrVariableDef(instanceMembers, nameToFind)
                     || containsFieldOrVariableDef(staticMembers, nameToFind);
@@ -578,6 +632,7 @@ public class FrameTrackingUtil {
             return nameToFind.equals(ast.getText());
         }
 
+        @Deprecated
         @Override
         public AbstractFrame getIfContains(DetailAST nameToFind, boolean lookForMethod) {
             AbstractFrame frame = null;
@@ -586,10 +641,28 @@ public class FrameTrackingUtil {
                 || containsFieldOrVariable(nameToFind)) {
                 frame = this;
             }
-            else if (getParent() != null) {
-                frame = getParent().getIfContains(nameToFind, lookForMethod);
+            else if (parent != null) {
+                frame = parent.getIfContains(nameToFind, lookForMethod);
             }
             return frame;
+        }
+
+        @Override
+        public DetailAST findVariableDeclaration(DetailAST variableIdent, Boolean instance) {
+            DetailAST result = null;
+
+            if (instance == null || instance == false) {
+                result = findProperDefinition(staticMembers, variableIdent);
+            }
+            if (result == null && (instance == null || instance == true)) {
+                result = findProperDefinition(instanceMembers, variableIdent);
+            }
+
+            if (result == null && parent != null) {
+                result = parent.findVariableDeclaration(variableIdent, instance);
+            }
+
+            return result;
         }
 
         /**
@@ -597,6 +670,7 @@ public class FrameTrackingUtil {
          * @param methodToFind the AST of the method to find.
          * @return true, if a method with the same name and number of parameters is found.
          */
+        @Deprecated
         private boolean containsMethod(DetailAST methodToFind) {
             return containsMethodDef(instanceMethods, methodToFind)
                 || containsMethodDef(staticMethods, methodToFind);
@@ -613,7 +687,7 @@ public class FrameTrackingUtil {
         private static boolean containsMethodDef(Set<DetailAST> set, DetailAST ident) {
             boolean result = false;
             for (DetailAST ast: set) {
-                if (isSimilarSignature(ident, ast)) {
+                if (isMethodSignatureSimilar(ident, ast)) {
                     result = true;
                     break;
                 }
@@ -623,17 +697,17 @@ public class FrameTrackingUtil {
 
         /**
          * Whether the method definition has the same name and number of parameters.
-         * @param ident the specified method call IDENT ast.
-         * @param ast the ast of a method definition to compare with.
+         * @param methodCallIdent the specified method call IDENT ast.
+         * @param methodAst the ast of a method definition to compare with.
          * @return true if a method definition has the same name and number of parameters
          *     as the method call.
          */
-        private static boolean isSimilarSignature(DetailAST ident, DetailAST ast) {
+        private static boolean isMethodSignatureSimilar(DetailAST methodCallIdent, DetailAST methodAst) {
             boolean result = false;
-            final DetailAST elistToken = ident.getParent().findFirstToken(TokenTypes.ELIST);
-            if (elistToken != null && ident.getText().equals(ast.getText())) {
+            final DetailAST elistToken = methodCallIdent.getParent().findFirstToken(TokenTypes.ELIST);
+            if (elistToken != null && methodCallIdent.getText().equals(methodAst.getText())) {
                 final int paramsNumber =
-                    ast.getParent().findFirstToken(TokenTypes.PARAMETERS).getChildCount();
+                    methodAst.getParent().findFirstToken(TokenTypes.PARAMETERS).getChildCount();
                 final int argsNumber = elistToken.getChildCount();
                 result = paramsNumber == argsNumber;
             }
