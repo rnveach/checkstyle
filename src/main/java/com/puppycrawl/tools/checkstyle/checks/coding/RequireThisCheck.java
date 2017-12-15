@@ -336,7 +336,6 @@ public class RequireThisCheck extends AbstractCheck {
                 break;
             case TokenTypes.PARAMETER_DEF :
                 if (!CheckUtils.isReceiverParameter(ast)
-                        && !isLambdaParameter(ast)
                         && ast.getParent().getType() != TokenTypes.LITERAL_CATCH) {
                     final DetailAST parameterIdent = ast.findFirstToken(TokenTypes.IDENT);
                     frame.addIdent(parameterIdent);
@@ -383,6 +382,16 @@ public class RequireThisCheck extends AbstractCheck {
                             ast.getFirstChild().toString()));
                 }
                 break;
+            case TokenTypes.LAMBDA:
+                final AbstractFrame lambdaFrame = new LambdaFrame(frame, ast);
+                final DetailAST parameter = ast.findFirstToken(TokenTypes.IDENT);
+
+                if (parameter != null) {
+                    lambdaFrame.addIdent(parameter);
+                }
+
+                frameStack.addFirst(lambdaFrame);
+                break;
             default:
                 // do nothing
         }
@@ -426,6 +435,7 @@ public class RequireThisCheck extends AbstractCheck {
             case TokenTypes.METHOD_DEF :
             case TokenTypes.CTOR_DEF :
             case TokenTypes.LITERAL_CATCH :
+            case TokenTypes.LAMBDA :
                 frames.put(ast, frameStack.poll());
                 break;
             case TokenTypes.LITERAL_NEW :
@@ -966,6 +976,8 @@ public class RequireThisCheck extends AbstractCheck {
         BLOCK_FRAME,
         /** Catch frame type. */
         CATCH_FRAME,
+        /** Lambda frame type. */
+        LAMBDA_FRAME,
     }
 
     /**
@@ -1348,6 +1360,26 @@ public class RequireThisCheck extends AbstractCheck {
         @Override
         protected String getFrameName() {
             return frameName;
+        }
+    }
+
+    /**
+     * A frame initiated on entering a lambda block; holds local lambda variable names.
+     * @author Richard Veach
+     */
+    public static class LambdaFrame extends MethodFrame {
+        /**
+         * Creates lambda frame.
+         * @param parent parent frame.
+         * @param ident ident frame name ident.
+         */
+        protected LambdaFrame(AbstractFrame parent, DetailAST ident) {
+            super(parent, ident);
+        }
+
+        @Override
+        public FrameType getType() {
+            return FrameType.LAMBDA_FRAME;
         }
     }
 
