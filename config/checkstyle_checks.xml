@@ -12,6 +12,7 @@
     <property name="tabWidth" value="4"/>
 
     <module name="TooManyReassignments" />
+    <module name="AvoidDirectReassignment" />
   </module>
 
 </module>

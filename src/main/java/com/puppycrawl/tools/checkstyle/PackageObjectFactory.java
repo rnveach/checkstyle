@@ -448,6 +448,8 @@ public class PackageObjectFactory implements ModuleFactory {
     private static void fillChecksFromCodingPackage() {
         NAME_TO_FULL_MODULE_NAME.put("TooManyReassignmentsCheck",
                 BASE_PACKAGE + ".checks.coding.TooManyReassignmentsCheck");
+        NAME_TO_FULL_MODULE_NAME.put("AvoidDirectReassignment",
+                BASE_PACKAGE + ".checks.coding.AvoidDirectReassignment");
         NAME_TO_FULL_MODULE_NAME.put("ArrayTrailingCommaCheck",
                 BASE_PACKAGE + ".checks.coding.ArrayTrailingCommaCheck");
         NAME_TO_FULL_MODULE_NAME.put("AvoidInlineConditionalsCheck",
