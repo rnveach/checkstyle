@@ -199,6 +199,8 @@ public class RequireThisCheck extends AbstractCheck {
             TokenTypes.CTOR_DEF,
             TokenTypes.METHOD_DEF,
             TokenTypes.LITERAL_FOR,
+            TokenTypes.LITERAL_CATCH,
+            TokenTypes.LAMBDA,
             TokenTypes.SLIST,
             TokenTypes.IDENT,
         };
@@ -229,6 +231,8 @@ public class RequireThisCheck extends AbstractCheck {
             case TokenTypes.METHOD_DEF :
             case TokenTypes.CTOR_DEF :
             case TokenTypes.LITERAL_FOR :
+            case TokenTypes.LITERAL_CATCH:
+            case TokenTypes.LAMBDA:
                 current.push(frameTracker.getFrame(ast));
                 break;
             default :
@@ -247,6 +251,8 @@ public class RequireThisCheck extends AbstractCheck {
             case TokenTypes.METHOD_DEF :
             case TokenTypes.CTOR_DEF :
             case TokenTypes.LITERAL_FOR:
+            case TokenTypes.LITERAL_CATCH:
+            case TokenTypes.LAMBDA:
                 current.pop();
                 break;
             default :
