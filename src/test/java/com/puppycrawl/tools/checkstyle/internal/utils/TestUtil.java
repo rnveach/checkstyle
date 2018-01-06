@@ -24,6 +24,7 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
 import java.util.function.Predicate;
@@ -85,6 +86,18 @@ public final class TestUtil {
         }
         resultField.setAccessible(true);
         return resultField;
+    }
+
+    public static Set<Field> getFields(Class<?> clss) {
+        final Set<Field> result = new HashSet<>();
+
+        if (clss != null) {
+            result.addAll(Arrays.asList(clss.getDeclaredFields()));
+
+            result.addAll(getFields(clss.getSuperclass()));
+        }
+
+        return result;
     }
 
     /**

@@ -45,6 +45,11 @@ import com.puppycrawl.tools.checkstyle.ModuleFactory;
 import com.puppycrawl.tools.checkstyle.api.AbstractCheck;
 import com.puppycrawl.tools.checkstyle.api.CheckstyleException;
 import com.puppycrawl.tools.checkstyle.api.Configuration;
+import com.puppycrawl.tools.checkstyle.api.DetailAST;
+import com.puppycrawl.tools.checkstyle.api.FileContents;
+import com.puppycrawl.tools.checkstyle.api.UserDefinedOption;
+import com.puppycrawl.tools.checkstyle.checks.header.HeaderCheck;
+import com.puppycrawl.tools.checkstyle.checks.header.RegexpHeaderCheck;
 import com.puppycrawl.tools.checkstyle.checks.imports.ImportControlCheck;
 import com.puppycrawl.tools.checkstyle.internal.utils.CheckUtil;
 import com.puppycrawl.tools.checkstyle.internal.utils.ConfigurationUtil;
@@ -323,6 +328,92 @@ public class AllChecksTest extends AbstractModuleTestSupport {
                             + " of default tokens.", check.getName());
                     Assert.fail(errorMessage);
                 }
+            }
+        }
+    }
+
+    @Test
+    public void testAllUserDefinedFieldsHaveAnnotation() throws Exception {
+        for (Class<?> module : CheckUtil.getCheckstyleModules()) {
+            final Set<String> properties = CheckUtil.getModuleProperties(module);
+
+            for (Field field : TestUtil.getFields(module)) {
+                final String fieldName = field.getName();
+
+                if (properties.contains(fieldName)) {
+                    Assert.assertTrue("Field '" + fieldName + "' should have the annotation "
+                            + "'UserDefinedOption' on it in module '" + module.getSimpleName()
+                            + "'", field.isAnnotationPresent(UserDefinedOption.class));
+                    properties.remove(fieldName);
+                }
+                else if (!skipUserDefinedField(module, fieldName)) {
+                    Assert.assertFalse("Field '" + fieldName + "' should NOT have the annotation "
+                            + "'UserDefinedOption' on it in module '" + module.getSimpleName()
+                            + "'", field.isAnnotationPresent(UserDefinedOption.class));
+                }
+            }
+
+            // multiple properties for one field
+            if (module == RegexpHeaderCheck.class || module == HeaderCheck.class) {
+                properties.remove("header");
+            }
+
+            Assert.assertTrue("Module '" + module.getSimpleName()
+                    + "' should have the following fields with the annotation "
+                    + "'UserDefinedOption' in it: " + properties, properties.isEmpty());
+        }
+    }
+
+    public boolean skipUserDefinedField(Class<?> module, String fieldName) {
+        return
+                // optional documentation
+                ("tokens".equals(fieldName) && AbstractCheck.class.isAssignableFrom(module));
+    }
+
+    @Test
+    public void testAllNonUserDefinedCheckFieldsAreReset() throws Exception {
+        @SuppressWarnings("deprecation")
+        final FileContents fileContents = new FileContents("fileName");
+        final Configuration configuration = new DefaultConfiguration("test");
+        final DetailAST rootModule = null;
+
+        for (Class<?> check : CheckUtil.getCheckstyleChecks()) {
+            final Object instance = check.newInstance();
+            final Set<String> properties = CheckUtil.getModuleProperties(check);
+            final Set<Field> fields = TestUtil.getFields(check);
+
+            // set values
+            for (Field field : fields) {
+                final String fieldName = field.getName();
+
+                if (properties.contains(fieldName)
+                        || CheckUtil.CHECK_PROPERTIES.contains(fieldName)) {
+                    continue;
+                }
+
+                field.setAccessible(true);
+                Class<?> type = field.getType();
+
+                if (type == boolean.class) {
+                    field.set(instance, !(Boolean) field.get(instance));
+                } else if (type == int.class) {
+                    field.set(instance, ((Integer) field.get(instance)) + 1);
+                } else {
+                    Assert.fail("Unknown type in '" + check.getSimpleName() + "' for field '"
+                            + fieldName + "': " + type.getName());
+                }
+            }
+
+            ((AbstractCheck) instance).setFileContents(fileContents);
+            // TODO: is this needed?
+            // ((AbstractCheck) instance).configure(configuration);
+
+            // run
+            ((AbstractCheck) instance).beginTree(rootModule);
+
+            // verify values
+            for (Field field : fields) {
+                // TODO
             }
         }
     }
