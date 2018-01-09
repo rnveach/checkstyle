@@ -60,7 +60,6 @@ import com.puppycrawl.tools.checkstyle.ConfigurationLoader;
 import com.puppycrawl.tools.checkstyle.ModuleFactory;
 import com.puppycrawl.tools.checkstyle.PropertiesExpander;
 import com.puppycrawl.tools.checkstyle.api.AbstractCheck;
-import com.puppycrawl.tools.checkstyle.api.AbstractFileSetCheck;
 import com.puppycrawl.tools.checkstyle.api.CheckstyleException;
 import com.puppycrawl.tools.checkstyle.api.Configuration;
 import com.puppycrawl.tools.checkstyle.api.Scope;
@@ -81,6 +80,7 @@ import com.puppycrawl.tools.checkstyle.internal.utils.CheckUtil;
 import com.puppycrawl.tools.checkstyle.internal.utils.TestUtil;
 import com.puppycrawl.tools.checkstyle.internal.utils.XdocUtil;
 import com.puppycrawl.tools.checkstyle.internal.utils.XmlUtil;
+import com.puppycrawl.tools.checkstyle.utils.ModuleReflectionUtils;
 import com.puppycrawl.tools.checkstyle.utils.TokenUtils;
 
 public class XdocsPagesTest {
@@ -113,24 +113,6 @@ public class XdocsPagesTest {
             "name=\"UniqueProperties\"",
             "name=\"FileLength\"",
             "name=\"FileTabCharacter\""
-    );
-
-    private static final Set<String> CHECK_PROPERTIES = getProperties(AbstractCheck.class);
-    private static final Set<String> JAVADOC_CHECK_PROPERTIES =
-            getProperties(AbstractJavadocCheck.class);
-    private static final Set<String> FILESET_PROPERTIES = getProperties(AbstractFileSetCheck.class);
-
-    private static final List<String> UNDOCUMENTED_PROPERTIES = Arrays.asList(
-            "Checker.classLoader",
-            "Checker.classloader",
-            "Checker.moduleClassLoader",
-            "Checker.moduleFactory",
-            "TreeWalker.classLoader",
-            "TreeWalker.moduleFactory",
-            "TreeWalker.cacheFile",
-            "TreeWalker.upChild",
-            "SuppressWithNearbyCommentFilter.fileContents",
-            "SuppressionCommentFilter.fileContents"
     );
 
     private static final List<String> PROPERTIES_ALLOWED_GET_TYPES_FROM_METHOD = Arrays.asList(
@@ -453,10 +435,7 @@ public class XdocsPagesTest {
 
     private static void validatePropertySection(String fileName, String sectionName,
             Node subSection, Object instance) throws Exception {
-        final Set<String> properties = getProperties(instance.getClass());
-        final Class<?> clss = instance.getClass();
-
-        fixCapturedProperties(sectionName, instance, clss, properties);
+        final Set<String> properties = ModuleReflectionUtils.getUserModuleProperties(instance);
 
         if (subSection != null) {
             Assert.assertTrue(fileName + " section '" + sectionName
@@ -468,65 +447,6 @@ public class XdocsPagesTest {
 
         Assert.assertTrue(fileName + " section '" + sectionName + "' should show properties: "
                 + properties, properties.isEmpty());
-    }
-
-    private static void fixCapturedProperties(String sectionName, Object instance, Class<?> clss,
-            Set<String> properties) {
-        // remove global properties that don't need documentation
-        if (hasParentModule(sectionName)) {
-            if (AbstractJavadocCheck.class.isAssignableFrom(clss)) {
-                properties.removeAll(JAVADOC_CHECK_PROPERTIES);
-
-                // override
-                properties.add("violateExecutionOnNonTightHtml");
-            }
-            else if (AbstractCheck.class.isAssignableFrom(clss)) {
-                properties.removeAll(CHECK_PROPERTIES);
-            }
-        }
-        if (AbstractFileSetCheck.class.isAssignableFrom(clss)) {
-            properties.removeAll(FILESET_PROPERTIES);
-
-            // override
-            properties.add("fileExtensions");
-        }
-
-        // remove undocumented properties
-        new HashSet<>(properties).stream()
-            .filter(prop -> UNDOCUMENTED_PROPERTIES.contains(clss.getSimpleName() + "." + prop))
-            .forEach(properties::remove);
-
-        if (AbstractCheck.class.isAssignableFrom(clss)) {
-            final AbstractCheck check = (AbstractCheck) instance;
-
-            final int[] acceptableTokens = check.getAcceptableTokens();
-            Arrays.sort(acceptableTokens);
-            final int[] defaultTokens = check.getDefaultTokens();
-            Arrays.sort(defaultTokens);
-            final int[] requiredTokens = check.getRequiredTokens();
-            Arrays.sort(requiredTokens);
-
-            if (!Arrays.equals(acceptableTokens, defaultTokens)
-                    || !Arrays.equals(acceptableTokens, requiredTokens)) {
-                properties.add("tokens");
-            }
-        }
-
-        if (AbstractJavadocCheck.class.isAssignableFrom(clss)) {
-            final AbstractJavadocCheck check = (AbstractJavadocCheck) instance;
-
-            final int[] acceptableJavadocTokens = check.getAcceptableJavadocTokens();
-            Arrays.sort(acceptableJavadocTokens);
-            final int[] defaultJavadocTokens = check.getDefaultJavadocTokens();
-            Arrays.sort(defaultJavadocTokens);
-            final int[] requiredJavadocTokens = check.getRequiredJavadocTokens();
-            Arrays.sort(requiredJavadocTokens);
-
-            if (!Arrays.equals(acceptableJavadocTokens, defaultJavadocTokens)
-                    || !Arrays.equals(acceptableJavadocTokens, requiredJavadocTokens)) {
-                properties.add("javadocTokens");
-            }
-        }
     }
 
     private static void validatePropertySectionProperties(String fileName, String sectionName,
@@ -641,12 +561,11 @@ public class XdocsPagesTest {
         Assert.assertEquals(
                 fileName + " section '" + sectionName + "' should have all the acceptable tokens",
                 "subset of tokens "
-                        + CheckUtil.getTokenText(check.getAcceptableTokens(),
-                                check.getRequiredTokens()), columns.get(2).getTextContent()
-                        .replaceAll("\\s+", " ").trim());
+                        + ModuleReflectionUtils.getTreeWalkerCheckAcceptableTokensText(check),
+                columns.get(2).getTextContent().replaceAll("\\s+", " ").trim());
         Assert.assertEquals(fileName + " section '" + sectionName
                 + "' should have all the default tokens",
-                CheckUtil.getTokenText(check.getDefaultTokens(), check.getRequiredTokens()),
+                ModuleReflectionUtils.getTreeWalkerCheckDefaultTokensText(check),
                 columns.get(3).getTextContent().replaceAll("\\s+", " ").trim());
     }
 
@@ -659,15 +578,13 @@ public class XdocsPagesTest {
                 fileName + " section '" + sectionName
                         + "' should have all the acceptable javadoc tokens",
                 "subset of javadoc tokens "
-                        + CheckUtil.getJavadocTokenText(check.getAcceptableJavadocTokens(),
-                                check.getRequiredJavadocTokens()), columns.get(2).getTextContent()
-                        .replaceAll("\\s+", " ").trim());
+                        + ModuleReflectionUtils.getTreeWalkerCheckAcceptableJavadocTokensText(check),
+                columns.get(2).getTextContent().replaceAll("\\s+", " ").trim());
         Assert.assertEquals(
                 fileName + " section '" + sectionName
                         + "' should have all the default javadoc tokens",
-                CheckUtil.getJavadocTokenText(check.getDefaultJavadocTokens(),
-                        check.getRequiredJavadocTokens()), columns.get(3).getTextContent()
-                        .replaceAll("\\s+", " ").trim());
+                ModuleReflectionUtils.getTreeWalkerCheckAcceptableJavadocTokensText(check),
+                columns.get(3).getTextContent().replaceAll("\\s+", " ").trim());
     }
 
     /**
@@ -1047,22 +964,6 @@ public class XdocsPagesTest {
             || "DescendantToken".equals(sectionName) && "limitedTokens".equals(propertyName);
     }
 
-    private static Field getField(Class<?> clss, String propertyName) {
-        Field result = null;
-
-        if (clss != null) {
-            try {
-                result = clss.getDeclaredField(propertyName);
-                result.setAccessible(true);
-            }
-            catch (NoSuchFieldException ignored) {
-                result = getField(clss.getSuperclass(), propertyName);
-            }
-        }
-
-        return result;
-    }
-
     private static Class<?> getFieldClass(String fileName, String sectionName, Object instance,
             Field field, String propertyName) throws Exception {
         Class<?> result = null;
@@ -1254,19 +1155,6 @@ public class XdocsPagesTest {
             if (find.contains(search)) {
                 result = false;
                 break;
-            }
-        }
-
-        return result;
-    }
-
-    private static Set<String> getProperties(Class<?> clss) {
-        final Set<String> result = new TreeSet<>();
-        final PropertyDescriptor[] map = PropertyUtils.getPropertyDescriptors(clss);
-
-        for (PropertyDescriptor p : map) {
-            if (p.getWriteMethod() != null) {
-                result.add(p.getName());
             }
         }
 

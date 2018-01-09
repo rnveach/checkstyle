@@ -20,6 +20,7 @@
 package com.puppycrawl.tools.checkstyle.utils;
 
 import java.lang.reflect.Field;
+import java.util.Arrays;
 import java.util.Locale;
 import java.util.Optional;
 import java.util.ResourceBundle;
@@ -163,6 +164,51 @@ public final class TokenUtils {
             "com.puppycrawl.tools.checkstyle.api.tokentypes";
         final ResourceBundle bundle = ResourceBundle.getBundle(tokenTypes, Locale.ROOT);
         return bundle.getString(name);
+    }
+
+    public static String getTokenNames(int[] tokens, int... subtractions) {
+        final String tokenText;
+        if (subtractions.length == 0 && Arrays.equals(tokens, TokenUtils.getAllTokenIds())) {
+            tokenText = "TokenTypes."; // TODOs
+        }
+        else {
+            final StringBuilder result = new StringBuilder(50);
+            boolean first = true;
+
+            for (int token : tokens) {
+                boolean found = false;
+
+                for (int subtraction : subtractions) {
+                    if (subtraction == token) {
+                        found = true;
+                        break;
+                    }
+                }
+
+                if (found) {
+                    continue;
+                }
+
+                if (first) {
+                    first = false;
+                }
+                else {
+                    result.append(", ");
+                }
+
+                result.append(getTokenName(token));
+            }
+
+            if (result.length() == 0) {
+                result.append("empty"); // TODO
+            }
+            else {
+                result.append('.');
+            }
+
+            tokenText = result.toString();
+        }
+        return tokenText;
     }
 
     /**

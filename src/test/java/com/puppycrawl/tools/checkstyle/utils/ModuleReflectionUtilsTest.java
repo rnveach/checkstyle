@@ -87,9 +87,9 @@ public class ModuleReflectionUtilsTest {
     @Test
     public void testIsCheckstyleCheck() {
         assertTrue("Should return true when valid checkstyle check is passed",
-                ModuleReflectionUtils.isCheckstyleTreeWalkerCheck(CheckClass.class));
+                ModuleReflectionUtils.isTreeWalkerCheck(CheckClass.class));
         assertFalse("Should return false when invalid class is passed",
-                ModuleReflectionUtils.isCheckstyleTreeWalkerCheck(NotCheckstyleCheck.class));
+                ModuleReflectionUtils.isTreeWalkerCheck(NotCheckstyleCheck.class));
     }
 
     @Test

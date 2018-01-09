@@ -118,6 +118,44 @@ public final class JavadocUtils {
     private JavadocUtils() {
     }
 
+    public static String getTokenNames(int[] tokens, int... subtractions) {
+        final StringBuilder result = new StringBuilder(50);
+        boolean first = true;
+
+        for (int token : tokens) {
+            boolean found = false;
+
+            for (int subtraction : subtractions) {
+                if (subtraction == token) {
+                    found = true;
+                    break;
+                }
+            }
+
+            if (found) {
+                continue;
+            }
+
+            if (first) {
+                first = false;
+            }
+            else {
+                result.append(", ");
+            }
+
+            result.append(getTokenName(token));
+        }
+
+        if (result.length() == 0) {
+            result.append("empty");
+        }
+        else {
+            result.append('.');
+        }
+
+        return result.toString();
+    }
+
     /**
      * Gets validTags from a given piece of Javadoc.
      * @param textBlock

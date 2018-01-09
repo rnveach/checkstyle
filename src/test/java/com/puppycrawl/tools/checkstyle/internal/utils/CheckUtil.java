@@ -23,7 +23,6 @@ import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Field;
 import java.text.MessageFormat;
-import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Locale;
 import java.util.Properties;
@@ -42,7 +41,6 @@ import com.google.common.reflect.ClassPath;
 import com.puppycrawl.tools.checkstyle.checks.regexp.RegexpMultilineCheck;
 import com.puppycrawl.tools.checkstyle.checks.regexp.RegexpSinglelineCheck;
 import com.puppycrawl.tools.checkstyle.checks.regexp.RegexpSinglelineJavaCheck;
-import com.puppycrawl.tools.checkstyle.utils.JavadocUtils;
 import com.puppycrawl.tools.checkstyle.utils.ModuleReflectionUtils;
 import com.puppycrawl.tools.checkstyle.utils.TokenUtils;
 
@@ -70,15 +68,8 @@ public final class CheckUtil {
      * @return a set of simple names.
      */
     public static Set<String> getSimpleNames(Set<Class<?>> checks) {
-        return checks.stream().map(check -> {
-            String name = check.getSimpleName();
-
-            if (name.endsWith("Check")) {
-                name = name.substring(0, name.length() - 5);
-            }
-
-            return name;
-        }).collect(Collectors.toSet());
+        return checks.stream().map(ModuleReflectionUtils::getModuleSimpleName)
+                .collect(Collectors.toSet());
     }
 
     /**
@@ -88,7 +79,7 @@ public final class CheckUtil {
      *            file path of checkstyle_checks.xml.
      * @return names of checkstyle's checks which are referenced in checkstyle_checks.xml.
      */
-    private static Set<String> getCheckStyleModulesReferencedInConfig(String configFilePath) {
+    public static Set<String> getCheckStyleModulesReferencedInConfig(String configFilePath) {
         try {
             final DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
 
@@ -140,7 +131,7 @@ public final class CheckUtil {
                 .getContextClassLoader();
         final String packageName = "com.puppycrawl.tools.checkstyle";
         return getCheckstyleModulesRecursive(packageName, loader).stream()
-                .filter(ModuleReflectionUtils::isCheckstyleTreeWalkerCheck)
+                .filter(ModuleReflectionUtils::isTreeWalkerCheck)
                 .collect(Collectors.toSet());
     }
 
@@ -247,51 +238,6 @@ public final class CheckUtil {
         return checkMessage;
     }
 
-    public static String getTokenText(int[] tokens, int... subtractions) {
-        final String tokenText;
-        if (subtractions.length == 0 && Arrays.equals(tokens, TokenUtils.getAllTokenIds())) {
-            tokenText = "TokenTypes.";
-        }
-        else {
-            final StringBuilder result = new StringBuilder(50);
-            boolean first = true;
-
-            for (int token : tokens) {
-                boolean found = false;
-
-                for (int subtraction : subtractions) {
-                    if (subtraction == token) {
-                        found = true;
-                        break;
-                    }
-                }
-
-                if (found) {
-                    continue;
-                }
-
-                if (first) {
-                    first = false;
-                }
-                else {
-                    result.append(", ");
-                }
-
-                result.append(TokenUtils.getTokenName(token));
-            }
-
-            if (result.length() == 0) {
-                result.append("empty");
-            }
-            else {
-                result.append('.');
-            }
-
-            tokenText = result.toString();
-        }
-        return tokenText;
-    }
-
     public static Set<String> getTokenNameSet(int... tokens) {
         final Set<String> result = new HashSet<>();
 
@@ -301,43 +247,4 @@ public final class CheckUtil {
 
         return result;
     }
-
-    public static String getJavadocTokenText(int[] tokens, int... subtractions) {
-        final StringBuilder result = new StringBuilder(50);
-        boolean first = true;
-
-        for (int token : tokens) {
-            boolean found = false;
-
-            for (int subtraction : subtractions) {
-                if (subtraction == token) {
-                    found = true;
-                    break;
-                }
-            }
-
-            if (found) {
-                continue;
-            }
-
-            if (first) {
-                first = false;
-            }
-            else {
-                result.append(", ");
-            }
-
-            result.append(JavadocUtils.getTokenName(token));
-        }
-
-        if (result.length() == 0) {
-            result.append("empty");
-        }
-        else {
-            result.append('.');
-        }
-
-        return result.toString();
-    }
-
 }

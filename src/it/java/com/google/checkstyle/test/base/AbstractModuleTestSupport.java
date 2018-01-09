@@ -136,7 +136,7 @@ public abstract class AbstractModuleTestSupport extends AbstractPathTestSupport 
         for (Class<?> moduleClass : checkstyleModules) {
             if (moduleClass.getSimpleName().equals(name)
                     || moduleClass.getSimpleName().equals(name + "Check")) {
-                if (ModuleReflectionUtils.isCheckstyleTreeWalkerCheck(moduleClass)
+                if (ModuleReflectionUtils.isTreeWalkerCheck(moduleClass)
                         || ModuleReflectionUtils.isTreeWalkerFilterModule(moduleClass)) {
                     moduleCreationOption = ModuleCreationOption.IN_TREEWALKER;
                 }
