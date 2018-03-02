@@ -365,7 +365,6 @@ public class RequireThisCheck extends AbstractCheck {
                 break;
             case TokenTypes.PARAMETER_DEF :
                 if (!CheckUtils.isReceiverParameter(ast)
-                        && !isLambdaParameter(ast)
                         && ast.getParent().getType() != TokenTypes.LITERAL_CATCH) {
                     final DetailAST parameterIdent = ast.findFirstToken(TokenTypes.IDENT);
                     frame.addIdent(parameterIdent);
@@ -416,6 +415,16 @@ public class RequireThisCheck extends AbstractCheck {
                             ast.getFirstChild().toString()));
                 }
                 break;
+            case TokenTypes.LAMBDA:
+                final AbstractFrame lambdaFrame = new LambdaFrame(frame, ast);
+                final DetailAST parameter = ast.findFirstToken(TokenTypes.IDENT);
+
+                if (parameter != null) {
+                    lambdaFrame.addIdent(parameter);
+                }
+
+                frameStack.addFirst(lambdaFrame);
+                break;
             default:
                 // do nothing
         }
@@ -460,6 +469,7 @@ public class RequireThisCheck extends AbstractCheck {
             case TokenTypes.CTOR_DEF :
             case TokenTypes.LITERAL_CATCH :
             case TokenTypes.LITERAL_FOR :
+            case TokenTypes.LAMBDA:
                 frames.put(ast, frameStack.poll());
                 break;
             case TokenTypes.LITERAL_NEW :
@@ -994,8 +1004,10 @@ public class RequireThisCheck extends AbstractCheck {
         BLOCK_FRAME,
         /** Catch frame type. */
         CATCH_FRAME,
-        /** Lambda frame type. */
+        /** For frame type. */
         FOR_FRAME,
+        /** Lambda frame type. */
+        LAMBDA_FRAME,
 
     }
 
@@ -1453,6 +1465,17 @@ public class RequireThisCheck extends AbstractCheck {
             return FrameType.FOR_FRAME;
         }
 
+    }
+
+    public static class LambdaFrame extends MethodFrame {
+        protected LambdaFrame(AbstractFrame parent, DetailAST ident) {
+            super(parent, ident);
+        }
+
+        @Override
+        public FrameType getType() {
+            return FrameType.LAMBDA_FRAME;
+        }
     }
 
 }
