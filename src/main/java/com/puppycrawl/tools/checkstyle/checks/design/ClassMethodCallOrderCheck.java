@@ -15,6 +15,7 @@ import com.puppycrawl.tools.checkstyle.api.DetailAST;
 import com.puppycrawl.tools.checkstyle.api.FullIdent;
 import com.puppycrawl.tools.checkstyle.api.TokenTypes;
 import com.puppycrawl.tools.checkstyle.utils.FrameTrackingUtil;
+import com.puppycrawl.tools.checkstyle.utils.FrameTrackingUtil.AbstractFrame;
 
 public class ClassMethodCallOrderCheck extends AbstractCheck {
     public static final String MSG_KEY = "method.layout";
@@ -112,7 +113,12 @@ public class ClassMethodCallOrderCheck extends AbstractCheck {
     }
 
     private void visitMethodCall(DetailAST ast) {
-        // TODO
+        final DetailAST variableIdent = ast.getFirstChild().getFirstChild();
+        final AbstractFrame frame = frameTracker.findFrame(variableIdent);
+
+        if (frame != null) {
+            // TODO
+        }
     }
 
     /**
