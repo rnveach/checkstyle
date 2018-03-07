@@ -13,6 +13,7 @@
 
     <module name="TooManyReassignments" />
     <module name="AvoidDirectReassignment" />
+    <module name="ClassMethodCallOrder" />
   </module>
 
 </module>

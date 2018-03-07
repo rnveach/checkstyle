@@ -542,6 +542,8 @@ public class PackageObjectFactory implements ModuleFactory {
      * Fill short-to-full module names map with Checks from design package.
      */
     private static void fillChecksFromDesignPackage() {
+        NAME_TO_FULL_MODULE_NAME.put("ClassMethodCallOrderCheck",
+                BASE_PACKAGE + ".checks.design.ClassMethodCallOrderCheck");
         NAME_TO_FULL_MODULE_NAME.put("DesignForExtensionCheck",
                 BASE_PACKAGE + ".checks.design.DesignForExtensionCheck");
         NAME_TO_FULL_MODULE_NAME.put("FinalClassCheck",
