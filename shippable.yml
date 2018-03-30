@@ -33,10 +33,6 @@ env:
     # we do not do thorough testing of gui part
     #- PROFILE="pitest-gui"
 
-branches:
-  only:
-    - master
-
 build:
   cache: true
   cache_dir_list:
