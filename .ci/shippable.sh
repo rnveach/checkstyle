@@ -6,7 +6,7 @@ set -e
 function checkPitestReport() {
   ignored=("$@")
   fail=0
-  SEARCH_REGEXP="(span  class='survived'|class='uncovered'><pre>)"
+  SEARCH_REGEXP="(span  class='survived'|class='uncovered'><pre>||class='uncertain')"
   grep -irE "$SEARCH_REGEXP" target/pit-reports | sed -E 's/.*\/([A-Za-z]+.java.html)/\1/' | sort > target/actual.txt
   printf "%s\n" "${ignored[@]}" | sed '/^$/d' > target/ignored.txt
   if [ "$(diff --unified target/ignored.txt target/actual.txt)" != "" ] ; then
