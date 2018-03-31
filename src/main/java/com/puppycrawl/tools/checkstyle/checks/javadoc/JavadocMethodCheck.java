@@ -631,18 +631,16 @@ public class JavadocMethodCheck extends AbstractTypeAwareCheck {
         final List<JavadocTag> tags = new ArrayList<>();
         final String param1 = argMultilineStart.group(1);
         final String param2 = argMultilineStart.group(2);
-        int remIndex = lineIndex + 1;
-        while (remIndex < lines.length) {
+        for (int remIndex = lineIndex + 1; remIndex < lines.length; remIndex++) {
             final Matcher multilineCont = MATCH_JAVADOC_MULTILINE_CONT.matcher(lines[remIndex]);
             if (multilineCont.find()) {
-                remIndex = lines.length;
                 final String lFin = multilineCont.group(1);
                 if (!lFin.equals(NEXT_TAG)
                     && !lFin.equals(END_JAVADOC)) {
                     tags.add(new JavadocTag(tagLine, column, param1, param2));
                 }
+                break;
             }
-            remIndex++;
         }
         return tags;
     }
