@@ -387,4 +387,48 @@ public class SuppressionsLoaderTest extends AbstractPathTestSupport {
             .hasSize(1);
     }
 
+    @Test
+    public void testSuppressionSplit() throws Exception {
+        final FilterSet fc =
+            SuppressionsLoader.loadSuppressions(getPath("InputSuppressionsLoaderSplit.xml"));
+        final FilterSet fc2 = new FilterSet();
+
+        final SuppressFilterElement se0 =
+                new SuppressFilterElement("files1", "A", null, null, null, null);
+        fc2.addFilter(se0);
+        final SuppressFilterElement se1 =
+                new SuppressFilterElement("files1", "B", null, null, null, null);
+        fc2.addFilter(se1);
+        final SuppressFilterElement se2 =
+                new SuppressFilterElement("files2", "Aa", null, null, null, null);
+        fc2.addFilter(se2);
+        final SuppressFilterElement se3 =
+                new SuppressFilterElement("files2", "Bb", null, null, null, null);
+        fc2.addFilter(se3);
+        final SuppressFilterElement se4 =
+                new SuppressFilterElement("files2", "Cc", null, null, null, null);
+        fc2.addFilter(se4);
+        final SuppressFilterElement se5 =
+                new SuppressFilterElement("files3", "A", null, null, null, null);
+        fc2.addFilter(se5);
+        final SuppressFilterElement se6 =
+                new SuppressFilterElement("files3", "B", null, null, null, null);
+        fc2.addFilter(se6);
+        final SuppressFilterElement se7 =
+                new SuppressFilterElement("files4", "Aa", null, null, null, null);
+        fc2.addFilter(se7);
+        final SuppressFilterElement se8 =
+                new SuppressFilterElement("files4", "Bb", null, null, null, null);
+        fc2.addFilter(se8);
+        final SuppressFilterElement se9 =
+                new SuppressFilterElement("files4", "Cc", null, null, null, null);
+        fc2.addFilter(se9);
+        final SuppressFilterElement se10 =
+                new SuppressFilterElement("[\\\\/]path[\\\\/]", "checks", null, null, null, null);
+        fc2.addFilter(se10);
+        assertWithMessage("suppressions were loaded incorrectly")
+            .that(fc.toString())
+            .isEqualTo(fc2.toString());
+    }
+
 }

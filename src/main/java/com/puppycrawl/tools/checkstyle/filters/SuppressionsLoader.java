@@ -22,11 +22,15 @@ package com.puppycrawl.tools.checkstyle.filters;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URI;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.regex.PatternSyntaxException;
 
 import javax.xml.parsers.ParserConfigurationException;
@@ -139,8 +143,10 @@ public final class SuppressionsLoader
             throws SAXException {
         if ("suppress".equals(qName)) {
             // add SuppressFilterElement filter to the filter chain
-            final SuppressFilterElement suppress = getSuppressElement(attributes);
-            filterChain.addFilter(suppress);
+            final Set<SuppressFilterElement> suppresses = getSuppressElements(attributes);
+            for (SuppressFilterElement suppress : suppresses) {
+                filterChain.addFilter(suppress);
+            }
         }
         else if ("suppress-xpath".equals(qName)) {
             final XpathFilterElement filter = getXpathFilter(attributes);
@@ -156,7 +162,7 @@ public final class SuppressionsLoader
      * @return the suppress element
      * @throws SAXException if an error occurs.
      */
-    private static SuppressFilterElement getSuppressElement(Attributes attributes)
+    private static Set<SuppressFilterElement> getSuppressElements(Attributes attributes)
             throws SAXException {
         final String checks = attributes.getValue(ATTRIBUTE_NAME_CHECKS);
         final String modId = attributes.getValue(ATTRIBUTE_NAME_ID);
@@ -165,18 +171,19 @@ public final class SuppressionsLoader
             // -@cs[IllegalInstantiation] SAXException is in the overridden method signature
             throw new SAXException("missing checks or id or message attribute");
         }
-        final SuppressFilterElement suppress;
+        final Set<SuppressFilterElement> suppresses;
         try {
             final String files = attributes.getValue(ATTRIBUTE_NAME_FILES);
             final String lines = attributes.getValue(ATTRIBUTE_NAME_LINES);
             final String columns = attributes.getValue(ATTRIBUTE_NAME_COLUMNS);
-            suppress = new SuppressFilterElement(files, checks, message, modId, lines, columns);
+            suppresses = createSuppressElements(files, checks, message, modId, lines, columns);
         }
         catch (final PatternSyntaxException ex) {
-            // -@cs[IllegalInstantiation] SAXException is in the overridden method signature
+            // -@cs[IllegalInstantiation] SAXException is in the overridden
+            // method signature
             throw new SAXException("invalid files or checks or message format", ex);
         }
-        return suppress;
+        return suppresses;
     }
 
     /**
@@ -321,4 +328,136 @@ public final class SuppressionsLoader
         return map;
     }
 
+    /**
+     * Create.
+     *
+     * @param files pass.
+     * @param checks pass.
+     * @param message pass.
+     * @param modId pass.
+     * @param lines pass.
+     * @param columns pass.
+     * @return List of suppressions.
+     */
+    private static Set<SuppressFilterElement> createSuppressElements(String files, String checks,
+            String message, String modId, String lines, String columns) {
+        final Set<SuppressFilterElement> results = new HashSet<>();
+        final Set<String> multipleChecks = new HashSet<>();
+        if (checks != null && checks.contains("|")) {
+            multipleChecks.addAll(splitRegularExpression(checks, new AtomicInteger()));
+        }
+        else {
+            multipleChecks.add(checks);
+        }
+
+        final Set<String> multipleFiles = new HashSet<>();
+        if (files != null && files.contains("|")) {
+            multipleFiles.addAll(splitRegularExpression(files, new AtomicInteger()));
+        }
+        else {
+            multipleFiles.add(files);
+        }
+
+        final Set<String> multipleMessages = new HashSet<>();
+        if (message != null && message.contains("|")) {
+            multipleMessages.addAll(splitRegularExpression(message, new AtomicInteger()));
+        }
+        else {
+            multipleMessages.add(message);
+        }
+
+        for (String singleFile : multipleFiles) {
+            for (String singleCheck : multipleChecks) {
+                for (String singleMessage : multipleMessages) {
+                    results.add(new SuppressFilterElement(singleFile, singleCheck, singleMessage,
+                            modId, lines, columns));
+                }
+            }
+        }
+
+        return results;
+    }
+
+    /**
+     * Split.
+     *
+     * @param string pass.
+     * @param position pass.
+     * @return List of split regular expressions.
+     */
+    private static Collection<String> splitRegularExpression(String string,
+            AtomicInteger position) {
+        final List<String> results = new ArrayList<>();
+        final int length = string.length();
+
+        for (; position.get() < length; position.incrementAndGet()) {
+            final char ch = string.charAt(position.get());
+
+            if (ch == ')') {
+                break;
+            }
+            else if (ch == '(') {
+                position.incrementAndGet();
+                final Collection<String> inner = splitRegularExpression(string, position);
+
+                multiplyAll(results, inner);
+            }
+            else if (ch == '|') {
+                position.incrementAndGet();
+                final Collection<String> inner = splitRegularExpression(string, position);
+
+                results.addAll(inner);
+                break;
+            }
+            else {
+                addChar(results, ch);
+
+                if (ch == '\\') {
+                    position.incrementAndGet();
+                    addChar(results, string.charAt(position.get()));
+                }
+            }
+        }
+
+        return results;
+    }
+
+    /**
+     * Add.
+     *
+     * @param results pass.
+     * @param character pass.
+     */
+    private static void addChar(List<String> results, char character) {
+        if (results.size() == 0) {
+            results.add(String.valueOf(character));
+        }
+        else {
+            for (int index = 0; index < results.size(); index++) {
+                results.set(index, results.get(index) + character);
+            }
+        }
+    }
+
+    /**
+     * Multiply.
+     *
+     * @param results pass.
+     * @param inner pass.
+     */
+    private static void multiplyAll(List<String> results, Collection<String> inner) {
+        if (results.size() == 0) {
+            results.addAll(inner);
+        }
+        else {
+            final List<String> temp = new ArrayList<>(results);
+            results.clear();
+
+            for (String leftSize : temp) {
+                for (String rightSide : inner) {
+                    results.add(leftSize + rightSide);
+                }
+            }
+        }
+    }
 }
