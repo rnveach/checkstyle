@@ -662,4 +662,13 @@ public class Checker extends AbstractAutomaticBean implements MessageDispatcher,
         return localizedMessage.getMessage();
     }
 
+    /**
+     * Retrieve all the filters.
+     *
+     * @return All the filters.
+     */
+    public FilterSet getFilters() {
+        return filters;
+    }
+
 }

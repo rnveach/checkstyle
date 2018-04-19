@@ -191,4 +191,22 @@ public class SuppressionFilter
         return UnmodifiableCollectionUtil.singleton(file);
     }
 
+    /**
+     * Get.
+     *
+     * @return All filters.
+     */
+    public FilterSet getFilters() {
+        return filters;
+    }
+
+    /**
+     * Get.
+     *
+     * @return File.
+     */
+    public String getFile() {
+        return file;
+    }
+
 }

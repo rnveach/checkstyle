@@ -195,6 +195,9 @@
   <suppress checks="FileTabCharacter"
     files="src[\\/]xdocs[\\/]checks[\\/]whitespace[\\/]filetabcharacter\.xml"/>
 
-    <!-- mine -->
-    <suppress checks="MultipleStringLiterals" files="SuppressionsLoader\.java"/>
+  <!-- mine -->
+  <suppress checks="MultipleStringLiterals" files="SuppressionsLoader\.java"/>
+  <suppress id="ImportControlMain" files="ReportExcessSuppressionsCheck\.java"/>
+  <suppress checks="MultipleStringLiterals" files="SuppressFilterElement\.java"/>
+  <suppress checks="Translation" message="Key 'suppression.unused' missing"/>
 </suppressions>

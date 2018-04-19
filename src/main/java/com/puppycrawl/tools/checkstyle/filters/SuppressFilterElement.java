@@ -64,6 +64,9 @@ public class SuppressFilterElement
     /** CSV for column number filter. */
     private final String columnsCsv;
 
+    /** Is used. */
+    private boolean used;
+
     /**
      * Constructs a {@code SuppressFilterElement} for a
      * file name pattern.
@@ -146,8 +149,33 @@ public class SuppressFilterElement
         }
     }
 
+    /**
+     * Is used.
+     *
+     * @return true/false.
+     */
+    public boolean isUsed() {
+        return used;
+    }
+
     @Override
     public boolean accept(AuditEvent event) {
+        final boolean result = acceptEx(event);
+
+        if (!result) {
+            this.used = true;
+        }
+
+        return result;
+    }
+
+    /**
+     * Accept.
+     *
+     * @param event pass.
+     * @return true/false.
+     */
+    private boolean acceptEx(AuditEvent event) {
         return !isFileNameAndModuleNameMatching(event)
                 || !isMessageNameMatching(event)
                 || !isLineAndColumnMatching(event);
@@ -229,4 +257,35 @@ public class SuppressFilterElement
         }
         return result;
     }
+
+    @Override
+    public String toString() {
+        String result = "{";
+
+        if (this.fileRegexp != null) {
+            result += "Files: '" + this.fileRegexp + "', ";
+        }
+        if (this.checkRegexp != null) {
+            result += "Checks: '" + this.checkRegexp + "', ";
+        }
+        if (this.messageRegexp != null) {
+            result += "Message: '" + this.messageRegexp + "', ";
+        }
+        if (this.moduleId != null) {
+            result += "ID: '" + this.moduleId + "', ";
+        }
+        if (this.linesCsv != null) {
+            result += "Lines: '" + this.linesCsv + "', ";
+        }
+        if (this.columnsCsv != null) {
+            result += "Columns: '" + this.columnsCsv + "', ";
+        }
+
+        if (result.length() > 1) {
+            result = result.substring(0, result.length() - 2);
+        }
+
+        return result + "}";
+    }
+
 }

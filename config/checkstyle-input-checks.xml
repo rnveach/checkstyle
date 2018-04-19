@@ -7,8 +7,6 @@
   <property name="charset" value="UTF-8"/>
   <property name="haltOnException" value="false"/>
 
-  <property name="cacheFile" value="target/cache_input_resources"/>
-
   <!-- Suppressions for resources -->
   <module name="SuppressionFilter">
     <property name="file"
@@ -32,4 +30,6 @@
                value="'// ok' comments should have an explanation, or they are unnecessary."/>
     </module>
   </module>
+
+  <module name="com.puppycrawl.tools.checkstyle.checks.ReportExcessSuppressionsCheck" />
 </module>

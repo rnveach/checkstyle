@@ -178,6 +178,9 @@
     <allow class="com.puppycrawl.tools.checkstyle.FileStatefulCheck"/>
     <allow class="com.puppycrawl.tools.checkstyle.GlobalStatefulCheck"/>
 
+    <file name="ReportExcessSuppressionsCheck">
+      <allow class="java.util.TreeSet"/>
+    </file>
     <file name="TranslationCheck">
       <allow class="com.puppycrawl.tools.checkstyle.LocalizedMessage"/>
     </file>

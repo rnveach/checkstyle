@@ -1,8 +1,8 @@
 <?xml version="1.0"?>
 
 <!DOCTYPE suppressions PUBLIC
-        "-//Checkstyle//DTD SuppressionFilter Configuration 1.1//EN"
-        "https://checkstyle.org/dtds/suppressions_1_1.dtd">
+        "-//Checkstyle//DTD SuppressionFilter Configuration 1.2//EN"
+        "https://checkstyle.org/dtds/suppressions_1_2.dtd">
 
 <suppressions>
 
@@ -49,5 +49,10 @@
 
   <!-- Required for reversing a list -->
   <suppress checks="ForbidCertainImports" files="SiteUtil\.java"/>
+
+  <!-- mine -->
+  <suppress checks="MultipleStringLiteralsExtended" files="SuppressionsLoader\.java"/>
+  <suppress checks="SingleBreakOrContinue" files="SuppressionsLoader\.java"/>
+  <suppress checks="MultipleStringLiteralsExtended" files="SuppressFilterElement\.java"/>
 
 </suppressions>

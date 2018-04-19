@@ -21,6 +21,7 @@ package com.puppycrawl.tools.checkstyle.api;
 
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Set;
 
 /**
@@ -29,7 +30,7 @@ import java.util.Set;
  * AuditEvent is rejected. Otherwise, the AuditEvent is accepted.
  */
 public class FilterSet
-    implements Filter {
+    implements Filter, Iterable<Filter> {
 
     /** Filter set. */
     private final Set<Filter> filters = new HashSet<>();
@@ -81,6 +82,11 @@ public class FilterSet
     /** Clears the FilterSet. */
     public void clear() {
         filters.clear();
+    }
+
+    @Override
+    public Iterator<Filter> iterator() {
+        return this.filters.iterator();
     }
 
 }

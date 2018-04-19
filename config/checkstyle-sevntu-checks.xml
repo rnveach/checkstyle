@@ -7,8 +7,6 @@
 <module name="Checker">
   <!-- All checks are from https://github.com/sevntu-checkstyle/sevntu.checkstyle project -->
 
-  <property name="cacheFile" value="${checkstyle.sevntu.cache.file}"/>
-
   <!-- Filters -->
   <module name="SuppressionFilter">
     <property name="file" value="config/sevntu-suppressions.xml"/>
@@ -219,4 +217,6 @@
       <property name="argumentCount" value="1"/>
     </module>
   </module>
+
+  <!-- <module name="com.puppycrawl.tools.checkstyle.checks.ReportExcessSuppressionsCheck" /> -->
 </module>
