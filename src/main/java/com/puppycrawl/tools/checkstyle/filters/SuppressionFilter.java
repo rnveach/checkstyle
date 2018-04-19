@@ -107,4 +107,20 @@ public class SuppressionFilter extends AutomaticBean implements Filter, External
         return Collections.singleton(file);
     }
 
+    /**
+     * Get.
+     * @return All filters.
+     */
+    public FilterSet getFilters() {
+        return filters;
+    }
+
+    /**
+     * Get.
+     * @return File.
+     */
+    public String getFile() {
+        return file;
+    }
+
 }

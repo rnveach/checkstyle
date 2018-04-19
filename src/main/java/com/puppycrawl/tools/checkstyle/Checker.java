@@ -623,4 +623,12 @@ public class Checker extends AutomaticBean implements MessageDispatcher, RootMod
         }
     }
 
+    /**
+     * Retrieve all the filters.
+     * @return All the filters.
+     */
+    public FilterSet getFilters() {
+        return filters;
+    }
+
 }

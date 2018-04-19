@@ -111,4 +111,7 @@
 
     <!-- mine -->
     <suppress checks="MultipleStringLiterals" files="SuppressionsLoader\.java"/>
+    <suppress id="ImportControlMain" files="ReportExcessSuppressionsCheck\.java"/>
+    <suppress checks="MultipleStringLiterals" files="SuppressElement\.java"/>
+    <suppress checks="Translation" message="Key 'suppression.unused' missing"/>
 </suppressions>

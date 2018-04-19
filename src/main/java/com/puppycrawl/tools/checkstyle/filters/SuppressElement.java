@@ -73,6 +73,9 @@ public class SuppressElement
     /** CSV for column number filter. */
     private final String columnsCsv;
 
+    /** Is used. */
+    private boolean used;
+
     /**
      * Constructs a {@code SuppressElement} for a
      * file name pattern.
@@ -124,8 +127,31 @@ public class SuppressElement
         }
     }
 
+    /**
+     * Is used.
+     * @return true/false.
+     */
+    public boolean isUsed() {
+        return used;
+    }
+
     @Override
     public boolean accept(AuditEvent event) {
+        final boolean result = acceptEx(event);
+
+        if (!result) {
+            this.used = true;
+        }
+
+        return result;
+    }
+
+    /**
+     * Accept.
+     * @param event pass.
+     * @return true/false.
+     */
+    private boolean acceptEx(AuditEvent event) {
         return isFileNameAndModuleNotMatching(event)
                 || !isMessageNameMatching(event)
                 || isLineAndColumnMatch(event);
@@ -185,6 +211,36 @@ public class SuppressElement
                 && Objects.equals(moduleId, suppressElement.moduleId)
                 && Objects.equals(linesCsv, suppressElement.linesCsv)
                 && Objects.equals(columnsCsv, suppressElement.columnsCsv);
+    }
+
+    @Override
+    public String toString() {
+        String result = "{";
+
+        if (this.filePattern != null) {
+            result += "Files: '" + this.filePattern + "', ";
+        }
+        if (this.checkPattern != null) {
+            result += "Checks: '" + this.checkPattern + "', ";
+        }
+        if (this.messagePattern != null) {
+            result += "Message: '" + this.messagePattern + "', ";
+        }
+        if (this.moduleId != null) {
+            result += "ID: '" + this.moduleId + "', ";
+        }
+        if (this.linesCsv != null) {
+            result += "Lines: '" + this.linesCsv + "', ";
+        }
+        if (this.columnsCsv != null) {
+            result += "Columns: '" + this.columnsCsv + "', ";
+        }
+
+        if (result.length() > 1) {
+            result = result.substring(0, result.length() - 2);
+        }
+
+        return result + "}";
     }
 
 }
