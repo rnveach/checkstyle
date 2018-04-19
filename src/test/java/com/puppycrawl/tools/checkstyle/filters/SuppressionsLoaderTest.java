@@ -371,4 +371,46 @@ public class SuppressionsLoaderTest extends AbstractPathTestSupport {
         assertEquals("Invalid number of filters", 1, filterSet.size());
     }
 
+    @Test
+    public void testSuppressionSplit() throws Exception {
+        final FilterSet fc =
+            SuppressionsLoader.loadSuppressions(getPath("InputSuppressionsLoaderSplit.xml"));
+        final FilterSet fc2 = new FilterSet();
+
+        final SuppressElement se0 =
+                new SuppressElement("files1", "A", null, null, null, null);
+        fc2.addFilter(se0);
+        final SuppressElement se1 =
+                new SuppressElement("files1", "B", null, null, null, null);
+        fc2.addFilter(se1);
+        final SuppressElement se2 =
+                new SuppressElement("files2", "Aa", null, null, null, null);
+        fc2.addFilter(se2);
+        final SuppressElement se3 =
+                new SuppressElement("files2", "Bb", null, null, null, null);
+        fc2.addFilter(se3);
+        final SuppressElement se4 =
+                new SuppressElement("files2", "Cc", null, null, null, null);
+        fc2.addFilter(se4);
+        final SuppressElement se5 =
+                new SuppressElement("files3", "A", null, null, null, null);
+        fc2.addFilter(se5);
+        final SuppressElement se6 =
+                new SuppressElement("files3", "B", null, null, null, null);
+        fc2.addFilter(se6);
+        final SuppressElement se7 =
+                new SuppressElement("files4", "Aa", null, null, null, null);
+        fc2.addFilter(se7);
+        final SuppressElement se8 =
+                new SuppressElement("files4", "Bb", null, null, null, null);
+        fc2.addFilter(se8);
+        final SuppressElement se9 =
+                new SuppressElement("files4", "Cc", null, null, null, null);
+        fc2.addFilter(se9);
+        final SuppressElement se10 =
+                new SuppressElement("[\\\\/]path[\\\\/]", "checks", null, null, null, null);
+        fc2.addFilter(se10);
+        assertEquals("suppressions were loaded incorrectly", fc2, fc);
+    }
+
 }

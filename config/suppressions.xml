@@ -107,4 +107,8 @@
 
     <!-- HandlerFactory crosses allowed limit for executable statements -->
     <suppress checks="ExecutableStatementCount" files="HandlerFactory\.java"/>
+
+
+    <!-- mine -->
+    <suppress checks="MultipleStringLiterals" files="SuppressionsLoader\.java"/>
 </suppressions>
