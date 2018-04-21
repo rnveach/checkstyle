@@ -153,6 +153,7 @@ public class RequireThisCheckTest extends AbstractModuleTestSupport {
             "19:25: " + getCheckMessage(MSG_METHOD, "doSideEffect", ""),
             "23:24: " + getCheckMessage(MSG_VARIABLE, "bar", "InputRequireThisAnonymousEmpty."),
             "46:17: " + getCheckMessage(MSG_VARIABLE, "foobar", ""),
+            "61:24: " + getCheckMessage(MSG_VARIABLE, "bar", "InputRequireThisAnonymousEmpty."),
         };
         verify(checkConfig,
                 getPath("InputRequireThisAnonymousEmpty.java"),

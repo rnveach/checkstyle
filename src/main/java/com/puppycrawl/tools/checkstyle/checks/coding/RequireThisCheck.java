@@ -1303,7 +1303,9 @@ public class RequireThisCheck extends AbstractCheck {
                 frame = this;
             }
             else if (getParent() != null) {
-                frame = getParent().getIfContains(nameToFind, lookForMethod, isAnonymousClass() || fieldsOnly);
+                frame = getParent().getIfContains(nameToFind, lookForMethod,
+                        isAnonymousClass()
+                            || fieldsOnly);
             }
             return frame;
         }

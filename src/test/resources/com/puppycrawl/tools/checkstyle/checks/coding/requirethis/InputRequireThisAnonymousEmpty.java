@@ -47,4 +47,19 @@ public class InputRequireThisAnonymousEmpty {
             }
         };
     }
+
+    void method2() {
+        int bar = 0;
+        bar++;
+
+        AnonWithEmpty foo = new AnonWithEmpty() {
+            @Override
+            public void fooEmpty() {
+            }
+
+            public int doSideEffect() {
+                return bar;
+            }
+        };
+    }
 }
