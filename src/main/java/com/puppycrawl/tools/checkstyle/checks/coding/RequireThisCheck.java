@@ -901,7 +901,7 @@ public class RequireThisCheck extends AbstractCheck {
      */
     private static AbstractFrame findFrame(AbstractFrame frame, DetailAST name,
             boolean lookForMethod) {
-        return frame.getIfContains(name, lookForMethod);
+        return frame.getIfContains(name, lookForMethod, false);
     }
 
     /**
@@ -1052,8 +1052,8 @@ public class RequireThisCheck extends AbstractCheck {
          * @param nameToFind the IDENT ast of the name we're looking for.
          * @return whether it was found.
          */
-        protected boolean containsFieldOrVariable(DetailAST nameToFind) {
-            return containsFieldOrVariableDef(varIdents, nameToFind);
+        protected boolean containsFieldOrVariable(DetailAST nameToFind, boolean fieldsOnly) {
+            return !fieldsOnly && containsFieldOrVariableDef(varIdents, nameToFind);
         }
 
         /**
@@ -1062,15 +1062,15 @@ public class RequireThisCheck extends AbstractCheck {
          * @param lookForMethod whether we are looking for a method name.
          * @return whether it was found.
          */
-        protected AbstractFrame getIfContains(DetailAST nameToFind, boolean lookForMethod) {
+        protected AbstractFrame getIfContains(DetailAST nameToFind, boolean lookForMethod, boolean fieldsOnly) {
             final AbstractFrame frame;
 
             if (!lookForMethod
-                && containsFieldOrVariable(nameToFind)) {
+                && containsFieldOrVariable(nameToFind, fieldsOnly)) {
                 frame = this;
             }
             else {
-                frame = parent.getIfContains(nameToFind, lookForMethod);
+                frame = parent.getIfContains(nameToFind, lookForMethod, fieldsOnly);
             }
             return frame;
         }
@@ -1198,6 +1198,10 @@ public class RequireThisCheck extends AbstractCheck {
             return FrameType.CLASS_FRAME;
         }
 
+        protected boolean isAnonymousClass() {
+            return false;
+        }
+
         /**
          * Adds static member's ident.
          * @param ident an ident of static member of the class.
@@ -1279,7 +1283,7 @@ public class RequireThisCheck extends AbstractCheck {
         }
 
         @Override
-        protected boolean containsFieldOrVariable(DetailAST nameToFind) {
+        protected boolean containsFieldOrVariable(DetailAST nameToFind, boolean fieldsOnly) {
             return containsFieldOrVariableDef(instanceMembers, nameToFind)
                     || containsFieldOrVariableDef(staticMembers, nameToFind);
         }
@@ -1291,15 +1295,15 @@ public class RequireThisCheck extends AbstractCheck {
         }
 
         @Override
-        protected AbstractFrame getIfContains(DetailAST nameToFind, boolean lookForMethod) {
+        protected AbstractFrame getIfContains(DetailAST nameToFind, boolean lookForMethod, boolean fieldsOnly) {
             AbstractFrame frame = null;
 
             if (lookForMethod && containsMethod(nameToFind)
-                || containsFieldOrVariable(nameToFind)) {
+                || containsFieldOrVariable(nameToFind, fieldsOnly)) {
                 frame = this;
             }
             else if (getParent() != null) {
-                frame = getParent().getIfContains(nameToFind, lookForMethod);
+                frame = getParent().getIfContains(nameToFind, lookForMethod, isAnonymousClass() || fieldsOnly);
             }
             return frame;
         }
@@ -1370,6 +1374,11 @@ public class RequireThisCheck extends AbstractCheck {
         protected AnonymousClassFrame(AbstractFrame parent, String frameName) {
             super(parent, null);
             this.frameName = frameName;
+        }
+
+        @Override
+        protected boolean isAnonymousClass() {
+            return true;
         }
 
         @Override
