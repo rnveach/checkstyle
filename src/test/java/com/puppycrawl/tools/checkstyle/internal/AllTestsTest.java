@@ -19,10 +19,13 @@
 
 package com.puppycrawl.tools.checkstyle.internal;
 
+import static java.nio.charset.StandardCharsets.UTF_8;
+
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.NoSuchFileException;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -52,10 +55,20 @@ public class AllTestsTest {
         Assert.assertTrue("found tests", !allTests.keySet().isEmpty());
 
         walk(Paths.get("src/test/resources/com/puppycrawl"), filePath -> {
-            verifyInputFile(allTests, filePath.toFile());
+            try {
+                verifyInputFile(allTests, filePath.toFile());
+            }
+            catch (IOException ex) {
+                throw new IllegalStateException(ex);
+            }
         });
         walk(Paths.get("src/test/resources-noncompilable/com/puppycrawl"), filePath -> {
-            verifyInputFile(allTests, filePath.toFile());
+            try {
+                verifyInputFile(allTests, filePath.toFile());
+            }
+            catch (IOException ex) {
+                throw new IllegalStateException(ex);
+            }
         });
     }
 
@@ -138,7 +151,7 @@ public class AllTestsTest {
         }
     }
 
-    private static void verifyInputFile(Map<String, List<String>> allTests, File file) {
+    private static void verifyInputFile(Map<String, List<String>> allTests, File file) throws IOException {
         if (file.isFile()) {
             final String path;
 
@@ -174,37 +187,41 @@ public class AllTestsTest {
                     }
                 }
 
-                verifyInputFile(allTests, skipFileNaming, path, fileName);
+                verifyInputFile(allTests, skipFileNaming, path, fileName, file.getName());
             }
         }
     }
 
     private static void verifyInputFile(Map<String, List<String>> allTests, boolean skipFileNaming,
-            String path, String fileName) {
+            String path, String fileName, String fullFileName) throws IOException {
         List<String> classes;
         int slash = path.lastIndexOf(File.separatorChar);
         String packge = path.substring(0, slash);
         boolean found = false;
 
         for (int depth = 0; depth < 4; depth++) {
-            // -@cs[MoveVariableInsideIf] assignment value is modified later so it can't be
-            // moved
             final String folderPath = packge;
             slash = packge.lastIndexOf(File.separatorChar);
             packge = path.substring(0, slash);
             classes = allTests.get(packge);
 
-            if (classes != null
-                    && checkInputMatchCorrectFileStructure(classes, folderPath, skipFileNaming,
-                            fileName)) {
-                found = true;
-                break;
+            if (classes != null) {
+                final String classForInput = findInputMatchCorrectFileStructure(classes,
+                        folderPath, skipFileNaming, fileName);
+
+                if (classForInput != null) {
+                    if (skipFileNaming
+                            || isInputFileUsedInTest(packge, classForInput, fullFileName)) {
+                        found = true;
+                        break;
+                    }
+                }
             }
         }
 
         Assert.assertTrue("Resource must be named after a Test like 'InputMyCustomCase.java' "
                 + "and be in the sub-package of the test like 'mycustom' "
-                + "for test 'MyCustomCheckTest': " + path, found);
+                + "for test 'MyCustomCheckTest' and must be used in the test: " + path, found);
     }
 
     private static void verifyHasProductionFile(Map<String, List<String>> allTests, File file) {
@@ -237,19 +254,51 @@ public class AllTestsTest {
         }
     }
 
-    private static boolean checkInputMatchCorrectFileStructure(List<String> classes,
+    private static String findInputMatchCorrectFileStructure(List<String> classes,
             String folderPath, boolean skipFileNaming, String fileName) {
-        boolean result = false;
+        String result = null;
 
         for (String clss : classes) {
             if (folderPath.endsWith(File.separatorChar + clss.toLowerCase(Locale.ENGLISH))
                     && (skipFileNaming || fileName.startsWith(clss))) {
-                result = true;
+                result = clss;
                 break;
             }
         }
 
         return result;
+    }
+
+    private static boolean isInputFileUsedInTest(String packge, String testFileName, String inputName) throws IOException {
+        if (
+                // UT dtd for coverage
+                inputName.contains(".dtd")
+                // pulled in by scanning directory
+                || inputName.contains("InputDetailASTJustToMakeStackoverflowError")
+                // helper inputs
+                || inputName.contains("InputIllegalTypeGregorianCalendar")
+                || inputName.contains("InputMagicNumberIntMethodAnnotation")
+                || inputName.contains("InputDesignForExtensionsLocalAnnotations")
+                || inputName.contains("InputVisibilityModifierGregorianCalendar")
+                || inputName.contains("InputVisibilityModifierLocalAnnotations")
+                || inputName.contains("InputAvoidStaticImportNestedClass")
+                || inputName.contains("InputImportOrderBug")
+                || inputName.contains("InputRedundantImportBug")
+                || inputName.contains("InputUnusedImports15Extensions")) {
+            return true;
+        }
+
+        String input = "";
+        
+        try {
+            input = new String(Files.readAllBytes(new File("src/test/java/" + packge
+                    + File.separatorChar + testFileName + "Test.java").toPath()), UTF_8);
+        } catch(NoSuchFileException ex) {
+            input = new String(Files.readAllBytes(new File("src/test/java/" + packge
+                    + File.separatorChar + testFileName + "CheckTest.java").toPath()), UTF_8);
+        }
+
+        return input.contains("\"" + inputName + "\"");
     }
 
     private static boolean shouldSkipInputFileNameCheck(String path, String fileName) {
