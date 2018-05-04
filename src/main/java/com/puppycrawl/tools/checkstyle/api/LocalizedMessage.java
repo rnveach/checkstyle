@@ -29,6 +29,7 @@ import java.nio.charset.StandardCharsets;
 import java.text.MessageFormat;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
@@ -459,32 +460,22 @@ public final class LocalizedMessage
 
     @Override
     public int compareTo(LocalizedMessage other) {
-        final int result;
-
-        if (lineNo == other.lineNo) {
-            if (columnNo == other.columnNo) {
-                if (Objects.equals(moduleId, other.moduleId)) {
-                    result = getMessage().compareTo(other.getMessage());
-                }
-                else if (moduleId == null) {
-                    result = -1;
-                }
-                else if (other.moduleId == null) {
-                    result = 1;
-                }
-                else {
-                    result = moduleId.compareTo(other.moduleId);
-                }
-            }
-            else {
-                result = Integer.compare(columnNo, other.columnNo);
-            }
-        }
-        else {
-            result = Integer.compare(lineNo, other.lineNo);
-        }
-        return result;
+        return Comparator.comparingInt((LocalizedMessage message) -> message.lineNo)
+                .thenComparingInt(message -> message.columnNo)
+                .thenComparing(message -> message.severityLevel)
+                .thenComparing(message -> message.moduleId, nullSafeStringComparator)
+                .thenComparing(message -> message.customMessage, nullSafeStringComparator)
+//                .thenComparing(message -> message.args)
+                .thenComparing(message -> message.key)
+                .thenComparing(message -> message.bundle)
+                .thenComparingInt(message -> message.tokenType)
+                .thenComparingInt(message -> message.columnCharIndex)
+//                .thenComparing(message -> message.sourceClass)
+                .compare(this, other);
     }
+
+    private static Comparator<String> nullSafeStringComparator = Comparator
+            .nullsFirst(String::compareToIgnoreCase); 
 
     /**
      * <p>

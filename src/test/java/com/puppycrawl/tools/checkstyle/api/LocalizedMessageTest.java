@@ -210,22 +210,31 @@ public class LocalizedMessageTest {
 
     @Test
     public void testCompareToWithDifferentModuleId() {
-        final LocalizedMessage message1 = createSampleLocalizedMessageWithId("module1");
-        final LocalizedMessage message2 = createSampleLocalizedMessageWithId("module2");
-        final LocalizedMessage messageNull = createSampleLocalizedMessageWithId(null);
+        final LocalizedMessage message = new LocalizedMessage(0, 0, 0, 0, "bundle", "key",
+                EMPTY_OBJECT_ARRAY, SeverityLevel.ERROR, "module1", LocalizedMessage.class, null);
+        final LocalizedMessage messageModule = new LocalizedMessage(0, 0, 0, 0, "bundle", "key",
+                EMPTY_OBJECT_ARRAY, SeverityLevel.ERROR, "module2", LocalizedMessage.class, null);
+        final LocalizedMessage messageModuleNull = new LocalizedMessage(0, 0, 0, 0, "bundle", "key",
+                EMPTY_OBJECT_ARRAY, SeverityLevel.ERROR, null, LocalizedMessage.class, null);
+        final LocalizedMessage messageSeverity = new LocalizedMessage(0, 0, 0, 0, "bundle", "key",
+                EMPTY_OBJECT_ARRAY, SeverityLevel.IGNORE, "module1", LocalizedMessage.class, null);
+        final LocalizedMessage messageColumn = new LocalizedMessage(0, 1, 0, 0, "bundle", "key",
+                EMPTY_OBJECT_ARRAY, SeverityLevel.ERROR, "module1", LocalizedMessage.class, null);
+        final LocalizedMessage messageLine = new LocalizedMessage(-1, 0, 0, 0, "bundle", "key",
+                EMPTY_OBJECT_ARRAY, SeverityLevel.ERROR, "module1", LocalizedMessage.class, null);
 
-        assertTrue("Invalid comparing result", message1.compareTo(messageNull) > 0);
-        assertTrue("Invalid comparing result", messageNull.compareTo(message1) < 0);
-        assertTrue("Invalid comparing result", message1.compareTo(message2) < 0);
+        assertTrue("Invalid comparing result", message.compareTo(message) == 0);
+        assertTrue("Invalid comparing result", message.compareTo(messageModuleNull) > 0);
+        assertTrue("Invalid comparing result", messageModuleNull.compareTo(message) < 0);
+        assertTrue("Invalid comparing result", message.compareTo(messageModule) < 0);
+        assertTrue("Invalid comparing result", message.compareTo(messageSeverity) > 0);
+        assertTrue("Invalid comparing result", message.compareTo(messageColumn) < 0);
+        assertTrue("Invalid comparing result", message.compareTo(messageLine) > 0);
     }
 
     private static LocalizedMessage createSampleLocalizedMessage() {
-        return createSampleLocalizedMessageWithId("module");
-    }
-
-    private static LocalizedMessage createSampleLocalizedMessageWithId(String id) {
         return new LocalizedMessage(0, "com.puppycrawl.tools.checkstyle.checks.coding.messages",
-                "empty.statement", EMPTY_OBJECT_ARRAY, id, LocalizedMessage.class, null);
+                "empty.statement", EMPTY_OBJECT_ARRAY, "module", LocalizedMessage.class, null);
     }
 
     @After
