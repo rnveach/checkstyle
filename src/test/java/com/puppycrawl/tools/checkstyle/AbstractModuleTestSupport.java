@@ -309,6 +309,7 @@ public abstract class AbstractModuleTestSupport extends AbstractPathTestSupport 
         }
 
         checker.destroy();
+        stream.reset();
     }
 
     /**
