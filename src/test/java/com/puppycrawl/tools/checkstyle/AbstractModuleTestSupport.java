@@ -382,6 +382,7 @@ public abstract class AbstractModuleTestSupport extends AbstractPathTestSupport 
         });
 
         checker.destroy();
+        stream.reset();
     }
 
     /**
@@ -466,6 +467,7 @@ public abstract class AbstractModuleTestSupport extends AbstractPathTestSupport 
         final Map<String, List<String>> actualViolations =
                 getActualViolations(checker.process(files));
         checker.destroy();
+        stream.reset();
         return actualViolations.getOrDefault(file, new ArrayList<>());
     }
 
