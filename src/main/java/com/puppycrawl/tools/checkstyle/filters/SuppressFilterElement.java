@@ -155,7 +155,10 @@ public class SuppressFilterElement
      * @return true/false.
      */
     public boolean isUsed() {
-        return used;
+        return used
+                || this.fileRegexp != null && this.fileRegexp.pattern().trim().length() == 0
+                || this.messageRegexp != null && this.messageRegexp.pattern().trim().length() == 0
+                || this.checkRegexp != null && this.checkRegexp.pattern().trim().length() == 0;
     }
 
     @Override
