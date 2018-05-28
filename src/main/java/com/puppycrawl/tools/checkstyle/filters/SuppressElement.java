@@ -132,7 +132,10 @@ public class SuppressElement
      * @return true/false.
      */
     public boolean isUsed() {
-        return used;
+        return used
+                || ((this.filePattern != null && this.filePattern.trim().length() == 0)
+                || (this.messagePattern != null && this.messagePattern.trim().length() == 0)
+                || (this.checkPattern != null && this.checkPattern.trim().length() == 0));
     }
 
     @Override
