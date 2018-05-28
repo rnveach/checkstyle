@@ -165,6 +165,33 @@ public class XdocsPagesTest {
     }
 
     @Test
+    public void testChecksPage() throws Exception {
+        final String fileName = AVAILABLE_CHECKS_PATH.toString();
+        final String input = new String(Files.readAllBytes(AVAILABLE_CHECKS_PATH), UTF_8);
+        final Document document = XmlUtil.getRawXml(fileName, input, input);
+        final NodeList rows = document.getElementsByTagName("tr");
+        String lastCheckName = null;
+
+        for (int position = 0; position < rows.getLength(); position++) {
+            final Node row = rows.item(position);
+            final List<Node> columns = new ArrayList<>(XmlUtil.findChildElementsByTag(row, "td"));
+            final String checkName = columns.get(0).getTextContent().trim();
+
+            Assert.assertTrue(fileName + " '" + checkName + "' shouldn't end with 'Check'",
+                    !checkName.endsWith("Check"));
+            if (lastCheckName != null && !"SuppressWarningsHolder".equals(checkName)) {
+                Assert.assertTrue(
+                        fileName + " section '" + checkName + "' is out of order compared to '"
+                                + lastCheckName + "'",
+                        checkName.toLowerCase(Locale.ENGLISH).compareTo(
+                                lastCheckName.toLowerCase(Locale.ENGLISH)) >= 0);
+            }
+
+            lastCheckName = checkName;
+        }
+    }
+
+    @Test
     public void testAllXmlExamples() throws Exception {
         for (Path path : XdocUtil.getXdocsFilePaths()) {
             final String input = new String(Files.readAllBytes(path), UTF_8);
