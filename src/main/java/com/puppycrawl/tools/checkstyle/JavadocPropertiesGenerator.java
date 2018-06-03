@@ -255,28 +255,26 @@ public final class JavadocPropertiesGenerator {
             throws CheckstyleException {
         boolean wrapWithCodeTag = false;
         for (DetailNode node : inlineTag.getChildren()) {
-            switch (node.getType()) {
-                case JavadocTokenTypes.CODE_LITERAL:
-                    wrapWithCodeTag = true;
-                    break;
+            final int nodeType = node.getType();
+
+            if (nodeType == JavadocTokenTypes.CODE_LITERAL) {
+                wrapWithCodeTag = true;
+            }
+            else if (nodeType == JavadocTokenTypes.TEXT) {
                 // The text to append.
-                case JavadocTokenTypes.TEXT:
-                    if (wrapWithCodeTag) {
-                        builder.append("<code>").append(node.getText()).append("</code>");
-                    }
-                    else {
-                        builder.append(node.getText());
-                    }
-                    break;
-                // Empty content tags.
-                case JavadocTokenTypes.LITERAL_LITERAL:
-                case JavadocTokenTypes.JAVADOC_INLINE_TAG_START:
-                case JavadocTokenTypes.JAVADOC_INLINE_TAG_END:
-                case JavadocTokenTypes.WS:
-                    break;
-                default:
-                    throw new CheckstyleException("Unsupported inline tag "
-                        + JavadocUtils.getTokenName(node.getType()));
+                if (wrapWithCodeTag) {
+                    builder.append("<code>").append(node.getText()).append("</code>");
+                }
+                else {
+                    builder.append(node.getText());
+                }
+            }
+            else if (nodeType != JavadocTokenTypes.LITERAL_LITERAL
+                    && nodeType != JavadocTokenTypes.JAVADOC_INLINE_TAG_START
+                    && nodeType != JavadocTokenTypes.JAVADOC_INLINE_TAG_END
+                    && nodeType != JavadocTokenTypes.WS) {
+                throw new CheckstyleException("Unsupported inline tag "
+                    + JavadocUtils.getTokenName(node.getType()));
             }
         }
     }
@@ -287,19 +285,18 @@ public final class JavadocPropertiesGenerator {
      * @param node to format
      */
     private static void formatHtmlElement(StringBuilder builder, DetailNode node) {
-        switch (node.getType()) {
-            case JavadocTokenTypes.START:
-            case JavadocTokenTypes.HTML_TAG_NAME:
-            case JavadocTokenTypes.END:
-            case JavadocTokenTypes.TEXT:
-            case JavadocTokenTypes.SLASH:
-                builder.append(node.getText());
-                break;
-            default:
-                for (DetailNode child : node.getChildren()) {
-                    formatHtmlElement(builder, child);
-                }
-                break;
+        final int nodeType = node.getType();
+        if (nodeType == JavadocTokenTypes.START
+                || nodeType == JavadocTokenTypes.HTML_TAG_NAME
+                || nodeType == JavadocTokenTypes.END
+                || nodeType == JavadocTokenTypes.TEXT
+                || nodeType == JavadocTokenTypes.SLASH) {
+            builder.append(node.getText());
+        }
+        else {
+            for (DetailNode child : node.getChildren()) {
+                formatHtmlElement(builder, child);
+            }
         }
     }
 

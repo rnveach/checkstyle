@@ -8,8 +8,12 @@
     <!-- can't split long messages between lines -->
     <suppress checks="RegexpSingleline" files="google_checks\.xml" lines="37,77"/>
 
+    <!-- list of tokens are very long making class very big -->
+    <suppress checks="FileLength|ExecutableStatementCount|JavaNCSS"
+              files="TokenTypes.java"/>
+
     <suppress checks="FileLength"
-              files="TokenTypes.java|IndentationCheckTest.java"
+              files="IndentationCheckTest.java"
               lines="1"/>
 
     <!-- illegal words are part of Javadoc -->
