@@ -1779,7 +1779,7 @@
             <version>${pitest.plugin.version}</version>
             <configuration>
               <mutators>
-                <mutator>REMOVE_CONDITIONALS</mutator>
+                <mutator>NON_VOID_METHOD_CALLS</mutator>
                 
                 
                 
@@ -1850,7 +1850,7 @@
             <version>${pitest.plugin.version}</version>
             <configuration>
               <mutators>
-                <mutator>REMOVE_CONDITIONALS</mutator>
+                <mutator>NON_VOID_METHOD_CALLS</mutator>
                 
                 
                 
@@ -1891,7 +1891,7 @@
             <version>${pitest.plugin.version}</version>
             <configuration>
               <mutators>
-                <mutator>REMOVE_CONDITIONALS</mutator>
+                <mutator>NON_VOID_METHOD_CALLS</mutator>
                 
                 
                 
@@ -1932,7 +1932,7 @@
             <version>${pitest.plugin.version}</version>
             <configuration>
               <mutators>
-                <mutator>REMOVE_CONDITIONALS</mutator>
+                <mutator>NON_VOID_METHOD_CALLS</mutator>
                 
                 
                 
@@ -1973,7 +1973,7 @@
             <version>${pitest.plugin.version}</version>
             <configuration>
               <mutators>
-                <mutator>REMOVE_CONDITIONALS</mutator>
+                <mutator>NON_VOID_METHOD_CALLS</mutator>
                 
                 
                 
@@ -2014,7 +2014,7 @@
             <version>${pitest.plugin.version}</version>
             <configuration>
               <mutators>
-                <mutator>REMOVE_CONDITIONALS</mutator>
+                <mutator>NON_VOID_METHOD_CALLS</mutator>
                 
                 
                 
@@ -2055,7 +2055,7 @@
             <version>${pitest.plugin.version}</version>
             <configuration>
               <mutators>
-                <mutator>REMOVE_CONDITIONALS</mutator>
+                <mutator>NON_VOID_METHOD_CALLS</mutator>
                 
                 
                 
@@ -2096,7 +2096,7 @@
             <version>${pitest.plugin.version}</version>
             <configuration>
               <mutators>
-                <mutator>REMOVE_CONDITIONALS</mutator>
+                <mutator>NON_VOID_METHOD_CALLS</mutator>
                 
                 
                 
@@ -2137,7 +2137,7 @@
             <version>${pitest.plugin.version}</version>
             <configuration>
               <mutators>
-                <mutator>REMOVE_CONDITIONALS</mutator>
+                <mutator>NON_VOID_METHOD_CALLS</mutator>
                 
                 
                 
@@ -2178,7 +2178,7 @@
             <version>${pitest.plugin.version}</version>
             <configuration>
               <mutators>
-                <mutator>REMOVE_CONDITIONALS</mutator>
+                <mutator>NON_VOID_METHOD_CALLS</mutator>
                 
                 
                 
@@ -2219,7 +2219,7 @@
             <version>${pitest.plugin.version}</version>
             <configuration>
               <mutators>
-                <mutator>REMOVE_CONDITIONALS</mutator>
+                <mutator>NON_VOID_METHOD_CALLS</mutator>
                 
                 
                 
@@ -2260,7 +2260,7 @@
             <version>${pitest.plugin.version}</version>
             <configuration>
               <mutators>
-                <mutator>REMOVE_CONDITIONALS</mutator>
+                <mutator>NON_VOID_METHOD_CALLS</mutator>
                 
                 
                 
@@ -2301,7 +2301,7 @@
             <version>${pitest.plugin.version}</version>
             <configuration>
               <mutators>
-                <mutator>REMOVE_CONDITIONALS</mutator>
+                <mutator>NON_VOID_METHOD_CALLS</mutator>
                 
                 
                 
@@ -2342,7 +2342,7 @@
             <version>${pitest.plugin.version}</version>
             <configuration>
               <mutators>
-                <mutator>REMOVE_CONDITIONALS</mutator>
+                <mutator>NON_VOID_METHOD_CALLS</mutator>
                 
                 
                 
@@ -2383,7 +2383,7 @@
             <version>${pitest.plugin.version}</version>
             <configuration>
               <mutators>
-                <mutator>REMOVE_CONDITIONALS</mutator>
+                <mutator>NON_VOID_METHOD_CALLS</mutator>
                 
                 
                 
@@ -2425,7 +2425,7 @@
             <version>${pitest.plugin.version}</version>
             <configuration>
               <mutators>
-                <mutator>REMOVE_CONDITIONALS</mutator>
+                <mutator>NON_VOID_METHOD_CALLS</mutator>
                 
                 
                 
@@ -2466,7 +2466,7 @@
             <version>${pitest.plugin.version}</version>
             <configuration>
               <mutators>
-                <mutator>REMOVE_CONDITIONALS</mutator>
+                <mutator>NON_VOID_METHOD_CALLS</mutator>
                 
                 
                 
@@ -2504,7 +2504,7 @@
             <version>${pitest.plugin.version}</version>
             <configuration>
               <mutators>
-                <mutator>REMOVE_CONDITIONALS</mutator>
+                <mutator>NON_VOID_METHOD_CALLS</mutator>
                 
                 
                 
@@ -2572,7 +2572,7 @@
             <version>${pitest.plugin.version}</version>
             <configuration>
               <mutators>
-                <mutator>REMOVE_CONDITIONALS</mutator>
+                <mutator>NON_VOID_METHOD_CALLS</mutator>
                 
                 
                 
@@ -2629,7 +2629,7 @@
             <version>${pitest.plugin.version}</version>
             <configuration>
               <mutators>
-                <mutator>REMOVE_CONDITIONALS</mutator>
+                <mutator>NON_VOID_METHOD_CALLS</mutator>
                 
                 
                 
@@ -2667,7 +2667,7 @@
             <version>${pitest.plugin.version}</version>
             <configuration>
               <mutators>
-                <mutator>REMOVE_CONDITIONALS</mutator>
+                <mutator>NON_VOID_METHOD_CALLS</mutator>
                 
                 
                 
@@ -2754,7 +2754,7 @@
             <version>${pitest.plugin.version}</version>
             <configuration>
               <mutators>
-                <mutator>REMOVE_CONDITIONALS</mutator>
+                <mutator>NON_VOID_METHOD_CALLS</mutator>
                 
                 
                 
@@ -2795,7 +2795,7 @@
             <version>${pitest.plugin.version}</version>
             <configuration>
               <mutators>
-                <mutator>REMOVE_CONDITIONALS</mutator>
+                <mutator>NON_VOID_METHOD_CALLS</mutator>
                 
                 
                 
@@ -2838,7 +2838,7 @@
             <version>${pitest.plugin.version}</version>
             <configuration>
               <mutators>
-                <mutator>REMOVE_CONDITIONALS</mutator>
+                <mutator>NON_VOID_METHOD_CALLS</mutator>
                 
                 
                 
@@ -2897,7 +2897,7 @@
             <version>${pitest.plugin.version}</version>
             <configuration>
               <mutators>
-                <mutator>REMOVE_CONDITIONALS</mutator>
+                <mutator>NON_VOID_METHOD_CALLS</mutator>
                 
                 
                 
@@ -2963,7 +2963,7 @@
             <version>${pitest.plugin.version}</version>
             <configuration>
               <mutators>
-                <mutator>REMOVE_CONDITIONALS</mutator>
+                <mutator>NON_VOID_METHOD_CALLS</mutator>
                 
                 
                 
