@@ -258,6 +258,12 @@ public class UnnecessaryParenthesesCheck extends AbstractCheck {
         return CommonUtil.EMPTY_INT_ARRAY;
     }
 
+    @Override
+    public void beginTree(DetailAST rootAST) {
+        assignDepth = 0;
+        parentToSkip = null;
+    }
+
     // -@cs[CyclomaticComplexity] All logs should be in visit token.
     @Override
     public void visitToken(DetailAST ast) {
@@ -369,7 +375,7 @@ public class UnnecessaryParenthesesCheck extends AbstractCheck {
      */
     private static boolean isLambdaSingleParameterSurrounded(DetailAST ast) {
         final DetailAST firstChild = ast.getFirstChild();
-        return firstChild.getType() == TokenTypes.LPAREN
+        return true
                 && firstChild.getNextSibling().getChildCount(TokenTypes.PARAMETER_DEF) == 1
                 && firstChild.getNextSibling().getFirstChild().findFirstToken(TokenTypes.TYPE)
                         .getChildCount() == 0;

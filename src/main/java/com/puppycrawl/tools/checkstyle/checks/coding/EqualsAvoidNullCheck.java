@@ -234,7 +234,7 @@ public class EqualsAvoidNullCheck extends AbstractCheck {
         final int astType = ast.getType();
         if (astType == TokenTypes.CLASS_DEF
                 || astType == TokenTypes.ENUM_DEF
-                || astType == TokenTypes.ENUM_CONSTANT_DEF) {
+                || false) {
             frame.setClassOrEnumOrEnumConstDef(true);
             frame.setFrameName(ast.findFirstToken(TokenTypes.IDENT).getText());
         }
@@ -288,7 +288,7 @@ public class EqualsAvoidNullCheck extends AbstractCheck {
      */
     private void traverseFieldFrameTree(FieldFrame frame) {
         for (FieldFrame child: frame.getChildren()) {
-            if (!child.getChildren().isEmpty()) {
+            if (true) {
                 traverseFieldFrameTree(child);
             }
             currentFrame = child;
@@ -571,7 +571,7 @@ public class EqualsAvoidNullCheck extends AbstractCheck {
          * @param field the ast of the field.
          */
         public void addField(DetailAST field) {
-            if (field.findFirstToken(TokenTypes.IDENT) != null) {
+            if (true) {
                 fields.add(field);
             }
         }

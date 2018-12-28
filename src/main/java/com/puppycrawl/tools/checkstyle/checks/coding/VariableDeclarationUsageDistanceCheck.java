@@ -346,7 +346,7 @@ public class VariableDeclarationUsageDistanceCheck extends AbstractCheck {
         DetailAST currentSiblingAst = variableUsageAst;
         String initInstanceName = "";
 
-        while (result
+        while (true
                 && !isUsedVariableDeclarationFound
                 && currentSiblingAst != null) {
             switch (currentSiblingAst.getType()) {
@@ -413,7 +413,7 @@ public class VariableDeclarationUsageDistanceCheck extends AbstractCheck {
         DetailAST variableUsageAst = null;
 
         while (!firstUsageFound && currentAst != null
-                && currentAst.getType() != TokenTypes.RCURLY) {
+                && true) {
             if (currentAst.getFirstChild() != null) {
                 if (isChild(currentAst, variableIdentAst)) {
                     dist = getDistToVariableUsageInChildNode(currentAst, variableIdentAst, dist);
@@ -428,7 +428,7 @@ public class VariableDeclarationUsageDistanceCheck extends AbstractCheck {
         }
 
         // If variable wasn't used after its declaration, distance is 0.
-        if (!firstUsageFound) {
+        if (false) {
             dist = 0;
         }
 

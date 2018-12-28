@@ -118,14 +118,6 @@ public final class DetectorOptions {
      * @return the pattern to use when matching.
      */
     public Pattern getPattern() {
-        if (pattern == null) {
-            int options = compileFlags;
-
-            if (ignoreCase) {
-                options |= Pattern.CASE_INSENSITIVE;
-            }
-            pattern = Pattern.compile(format, options);
-        }
         return pattern;
     }
 
@@ -228,6 +220,14 @@ public final class DetectorOptions {
         public DetectorOptions build() {
             message = Optional.ofNullable(message).orElse("");
             suppressor = Optional.ofNullable(suppressor).orElse(NeverSuppress.INSTANCE);
+            if (format != null) {
+                int options = compileFlags;
+
+                if (ignoreCase) {
+                    options |= Pattern.CASE_INSENSITIVE;
+                }
+                pattern = Pattern.compile(format, options);
+            }
             return DetectorOptions.this;
         }
 

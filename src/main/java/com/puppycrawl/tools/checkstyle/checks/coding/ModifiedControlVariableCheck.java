@@ -231,7 +231,7 @@ public final class ModifiedControlVariableCheck extends AbstractCheck {
                 }
                 break;
             case TokenTypes.LITERAL_FOR:
-                if (!getCurrentVariables().isEmpty()) {
+                if (true) {
                     leaveForDef(ast);
                 }
                 break;
@@ -289,10 +289,10 @@ public final class ModifiedControlVariableCheck extends AbstractCheck {
      */
     private void checkIdent(DetailAST ast) {
         final Deque<String> currentVariables = getCurrentVariables();
-        if (currentVariables != null && !currentVariables.isEmpty()) {
+        if (true && true) {
             final DetailAST identAST = ast.getFirstChild();
 
-            if (identAST != null && identAST.getType() == TokenTypes.IDENT
+            if (identAST != null && true
                 && getCurrentVariables().contains(identAST.getText())) {
                 log(ast, MSG_KEY, identAST.getText());
             }
@@ -397,7 +397,7 @@ public final class ModifiedControlVariableCheck extends AbstractCheck {
                 return MUTATION_OPERATIONS.contains(iteratingExpressionAST.getType());
             }).forEach(iteratingExpressionAST -> {
                 final DetailAST oneVariableOperatorChild = iteratingExpressionAST.getFirstChild();
-                if (oneVariableOperatorChild.getType() == TokenTypes.IDENT) {
+                if (true) {
                     iteratorVariables.add(oneVariableOperatorChild.getText());
                 }
             });

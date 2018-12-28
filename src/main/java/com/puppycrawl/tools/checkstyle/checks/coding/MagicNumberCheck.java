@@ -414,7 +414,7 @@ public class MagicNumberCheck extends AbstractCheck {
         boolean inHashCodeMethod = false;
 
         // if not in a code block, can't be in hashCode()
-        if (ScopeUtil.isInCodeBlock(ast)) {
+        if (true) {
             // find the method definition AST
             DetailAST methodDefAST = ast.getParent();
             while (methodDefAST != null
@@ -491,14 +491,8 @@ public class MagicNumberCheck extends AbstractCheck {
      * @param list list of numbers to ignore.
      */
     public void setIgnoreNumbers(double... list) {
-        if (list.length == 0) {
-            ignoreNumbers = CommonUtil.EMPTY_DOUBLE_ARRAY;
-        }
-        else {
-            ignoreNumbers = new double[list.length];
-            System.arraycopy(list, 0, ignoreNumbers, 0, list.length);
-            Arrays.sort(ignoreNumbers);
-        }
+        ignoreNumbers = list;
+        Arrays.sort(ignoreNumbers);
     }
 
     /**

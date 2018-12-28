@@ -120,12 +120,7 @@ public class RegexpCheck extends AbstractCheck {
      * @param message custom message which should be used in report.
      */
     public void setMessage(String message) {
-        if (message == null) {
-            this.message = "";
-        }
-        else {
-            this.message = message;
-        }
+        this.message = message;
     }
 
     /**
@@ -228,7 +223,9 @@ public class RegexpCheck extends AbstractCheck {
      */
     private boolean canContinueValidation(boolean ignore) {
         return errorCount <= errorLimit - 1
-                && (ignore || illegalPattern || checkForDuplicates);
+                && (ignore
+                        || illegalPattern
+                        || checkForDuplicates);
     }
 
     /**

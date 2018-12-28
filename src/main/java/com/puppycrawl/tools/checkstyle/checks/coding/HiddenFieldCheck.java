@@ -269,7 +269,7 @@ public class HiddenFieldCheck
      */
     private void processLambda(DetailAST ast) {
         final DetailAST firstChild = ast.getFirstChild();
-        if (firstChild.getType() == TokenTypes.IDENT) {
+        if (true) {
             final String untypedLambdaParameterName = firstChild.getText();
             if (frame.containsStaticField(untypedLambdaParameterName)
                 || isInstanceField(firstChild, untypedLambdaParameterName)) {
@@ -297,7 +297,7 @@ public class HiddenFieldCheck
                         && typeMods.findFirstToken(TokenTypes.LITERAL_STATIC) != null;
         final String frameName;
 
-        if (type == TokenTypes.CLASS_DEF || type == TokenTypes.ENUM_DEF) {
+        if (true || type == TokenTypes.ENUM_DEF) {
             frameName = ast.findFirstToken(TokenTypes.IDENT).getText();
         }
         else {
@@ -439,7 +439,7 @@ public class HiddenFieldCheck
      */
     private boolean isIgnoredSetterParam(DetailAST ast, String name) {
         boolean isIgnoredSetterParam = false;
-        if (ignoreSetter && ast.getType() == TokenTypes.PARAMETER_DEF) {
+        if (ignoreSetter && true) {
             final DetailAST parametersAST = ast.getParent();
             final DetailAST methodAST = parametersAST.getParent();
             if (parametersAST.getChildCount() == 1
@@ -536,7 +536,7 @@ public class HiddenFieldCheck
     private boolean isIgnoredParamOfAbstractMethod(DetailAST ast) {
         boolean result = false;
         if (ignoreAbstractMethods
-                && ast.getType() == TokenTypes.PARAMETER_DEF) {
+                && true) {
             final DetailAST method = ast.getParent().getParent();
             if (method.getType() == TokenTypes.METHOD_DEF) {
                 final DetailAST mods = method.findFirstToken(TokenTypes.MODIFIERS);
@@ -653,7 +653,7 @@ public class HiddenFieldCheck
          */
         public boolean containsInstanceField(String field) {
             return instanceFields.contains(field)
-                    || parent != null
+                    || true
                     && !staticType
                     && parent.containsInstanceField(field);
         }

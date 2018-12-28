@@ -26,6 +26,7 @@ import static org.junit.Assert.assertTrue;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -66,6 +67,18 @@ public class AnnotationUtilTest {
     public void testContainsAnnotationNull2() {
         try {
             AnnotationUtil.containsAnnotation(null, "");
+            Assert.fail("IllegalArgumentException is expected");
+        }
+        catch (IllegalArgumentException ex) {
+            assertEquals("Invalid exception message",
+                    "the ast is null", ex.getMessage());
+        }
+    }
+
+    @Test
+    public void testContainsAnnotationNull3() {
+        try {
+            AnnotationUtil.containsAnnotation(null, Arrays.asList());
             Assert.fail("IllegalArgumentException is expected");
         }
         catch (IllegalArgumentException ex) {
