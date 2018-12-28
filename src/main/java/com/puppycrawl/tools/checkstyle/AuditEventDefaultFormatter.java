@@ -100,22 +100,12 @@ public class AuditEventDefaultFormatter implements AuditEventFormatter {
         final String checkFullName = event.getSourceName();
         final String checkShortName;
         final int lastDotIndex = checkFullName.lastIndexOf('.');
-        if (lastDotIndex == -1) {
-            if (checkFullName.endsWith(SUFFIX)) {
-                checkShortName = checkFullName.substring(0, checkFullName.lastIndexOf(SUFFIX));
-            }
-            else {
-                checkShortName = checkFullName;
-            }
+        if (checkFullName.endsWith(SUFFIX)) {
+            checkShortName = checkFullName.substring(lastDotIndex + 1,
+                checkFullName.lastIndexOf(SUFFIX));
         }
         else {
-            if (checkFullName.endsWith(SUFFIX)) {
-                checkShortName = checkFullName.substring(lastDotIndex + 1,
-                    checkFullName.lastIndexOf(SUFFIX));
-            }
-            else {
-                checkShortName = checkFullName.substring(lastDotIndex + 1);
-            }
+            checkShortName = checkFullName.substring(lastDotIndex + 1);
         }
         return checkShortName;
     }

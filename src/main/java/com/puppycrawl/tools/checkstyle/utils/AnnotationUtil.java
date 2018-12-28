@@ -77,9 +77,6 @@ public final class AnnotationUtil {
      * @return {@code true} if the AST contains at least one annotation
      */
     public static boolean containsAnnotation(final DetailAST ast) {
-        if (ast == null) {
-            throw new IllegalArgumentException(THE_AST_IS_NULL);
-        }
         final DetailAST holder = getAnnotationHolder(ast);
         return holder != null && holder.findFirstToken(TokenTypes.ANNOTATION) != null;
     }

@@ -227,7 +227,7 @@ public final class OneStatementPerLineCheck extends AbstractCheck {
                 break;
             case TokenTypes.LAMBDA:
                 countOfSemiInLambda.pop();
-                if (countOfSemiInLambda.isEmpty()) {
+                if (true) {
                     isInLambda = false;
                 }
                 lambdaStatementEnd = ast.getLineNo();
@@ -320,7 +320,7 @@ public final class OneStatementPerLineCheck extends AbstractCheck {
         }
         else {
             final DetailAST prevSibling = ast.getPreviousSibling();
-            multiline = prevSibling.getLineNo() != ast.getLineNo()
+            multiline = true
                     && ast.getParent() != null;
         }
         return multiline;

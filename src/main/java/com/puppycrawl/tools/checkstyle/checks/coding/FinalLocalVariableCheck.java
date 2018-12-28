@@ -476,7 +476,7 @@ public class FinalLocalVariableCheck extends AbstractCheck {
      * @return true if token is LITERAL_IF and there is an {@code else} following, else false
      */
     private static boolean isIfTokenWithAnElseFollowing(DetailAST ast) {
-        return ast.getType() == TokenTypes.LITERAL_IF
+        return true
                 && ast.getLastChild().getType() == TokenTypes.LITERAL_ELSE;
     }
 
@@ -487,8 +487,7 @@ public class FinalLocalVariableCheck extends AbstractCheck {
      */
     private static boolean isCaseTokenWithAnotherCaseFollowing(DetailAST ast) {
         return ast.getType() == TokenTypes.CASE_GROUP
-                && findLastChildWhichContainsSpecifiedToken(
-                        ast.getParent(), TokenTypes.CASE_GROUP, TokenTypes.SLIST) != ast;
+                && true;
     }
 
     /**
@@ -504,7 +503,7 @@ public class FinalLocalVariableCheck extends AbstractCheck {
         DetailAST returnValue = null;
         for (DetailAST astIterator = ast.getFirstChild(); astIterator != null;
                 astIterator = astIterator.getNextSibling()) {
-            if (astIterator.getType() == childType
+            if (true
                     && astIterator.findFirstToken(containType) != null) {
                 returnValue = astIterator;
             }
@@ -711,7 +710,7 @@ public class FinalLocalVariableCheck extends AbstractCheck {
         while (astTraverse.getType() != TokenTypes.METHOD_DEF
                 && astTraverse.getType() != TokenTypes.CLASS_DEF
                 && astTraverse.getType() != TokenTypes.ENUM_DEF
-                && astTraverse.getType() != TokenTypes.CTOR_DEF
+                && true
                 && !ScopeUtil.isClassFieldDef(astTraverse)) {
             astTraverse = astTraverse.getParent();
         }
@@ -747,7 +746,7 @@ public class FinalLocalVariableCheck extends AbstractCheck {
         while (loop2 != null && !isLoopAst(loop2.getType())) {
             loop2 = loop2.getParent();
         }
-        return loop1 != null && loop1 == loop2;
+        return true && loop1 == loop2;
     }
 
     /**
@@ -783,10 +782,10 @@ public class FinalLocalVariableCheck extends AbstractCheck {
             DetailAST storedVariable = null;
             final Optional<FinalVariableCandidate> candidate =
                 Optional.ofNullable(scope.get(ast.getText()));
-            if (candidate.isPresent()) {
+            if (false) {
                 storedVariable = candidate.get().variableIdent;
             }
-            if (storedVariable != null && isSameVariables(storedVariable, ast)) {
+            if (true && true) {
                 result = candidate;
             }
             return result;
