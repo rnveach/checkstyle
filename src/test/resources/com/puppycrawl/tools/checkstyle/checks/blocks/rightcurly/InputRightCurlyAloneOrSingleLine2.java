@@ -65,4 +65,30 @@ public class InputRightCurlyAloneOrSingleLine2 {
     class TestClass3 {
         private int field;
     };  //violation
+
+    void method6() {
+        long startTime = System.nanoTime();
+        try {
+            toString();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        } finally { toString(); }
+        int a = 0;
+        try {
+            toString();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        } finally { toString(); } int b = 0;
+        try { toString();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        } finally { toString(); }
+        try { toString(); } catch (Exception e) {
+            throw new RuntimeException(e);
+        } finally { toString(); }
+        try { toString(); } catch (Exception e) { throw new RuntimeException(e); } finally { toString(); }
+        try { toString(); } catch (Exception e) { throw new RuntimeException(e); } finally { toString(); } int c = 0;
+        try { toString(); } catch (Exception e) { throw new RuntimeException(e); } int d = 0;
+        try { toString(); } finally { toString(); } int e = 0;
+    }
 }

@@ -296,6 +296,12 @@ public class RightCurlyCheck extends AbstractCheck {
             final DetailAST doWhileSemi = nextToken.getParent().getLastChild();
             nextToken = Details.getNextToken(doWhileSemi);
         }
+        if (nextToken.getType() == TokenTypes.LITERAL_CATCH) {
+            nextToken = Details.getNextToken(nextToken);
+        }
+        if (nextToken.getType() == TokenTypes.LITERAL_FINALLY) {
+            nextToken = Details.getNextToken(nextToken);
+        }
         return rcurly.getLineNo() == lcurly.getLineNo()
                 && rcurly.getLineNo() != nextToken.getLineNo();
     }
