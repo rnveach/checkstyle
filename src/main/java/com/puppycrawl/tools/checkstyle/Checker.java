@@ -206,7 +206,7 @@ public class Checker extends AutomaticBean implements MessageDispatcher, RootMod
         }
 
         // Prepare to start
-        fireAuditStarted();
+//        fireAuditStarted();
         for (final FileSetCheck fsc : fileSetChecks) {
             fsc.beginProcessing(charset);
         }
@@ -224,7 +224,7 @@ public class Checker extends AutomaticBean implements MessageDispatcher, RootMod
         fileSetChecks.forEach(FileSetCheck::destroy);
 
         final int errorCount = counter.getCount();
-        fireAuditFinished();
+//        fireAuditFinished();
         return errorCount;
     }
 

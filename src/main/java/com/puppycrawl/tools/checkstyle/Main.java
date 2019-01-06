@@ -26,6 +26,8 @@ import java.io.OutputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
@@ -352,45 +354,38 @@ public final class Main {
             ignoredModulesOptions = ConfigurationLoader.IgnoredModulesOptions.OMIT;
         }
 
-        final Configuration config = ConfigurationLoader.loadConfiguration(
-                options.configurationFile, new PropertiesExpander(props),
-                ignoredModulesOptions, multiThreadModeSettings);
-
-        // create RootModule object and run it
-        final int errorCounter;
         final ClassLoader moduleClassLoader = Checker.class.getClassLoader();
-        final RootModule rootModule = getRootModule(config.getName(), moduleClassLoader);
+        final AuditListener listener = createListener(options.format, options.outputPath);
+        int errorCounter = 0;
+
+        listener.auditStarted(null);
+
+        Collections.shuffle(filesToProcess);
 
         try {
-            final AuditListener listener;
-            if (options.generateXpathSuppressionsFile) {
-                // create filter to print generated xpath suppressions file
-                final Configuration treeWalkerConfig = getTreeWalkerConfig(config);
-                if (treeWalkerConfig != null) {
-                    final DefaultConfiguration moduleConfig =
-                            new DefaultConfiguration(
-                                    XpathFileGeneratorAstFilter.class.getName());
-                    moduleConfig.addAttribute(CliOptions.ATTRIB_TAB_WIDTH_NAME,
-                            String.valueOf(options.tabWidth));
-                    ((DefaultConfiguration) treeWalkerConfig).addChild(moduleConfig);
+            for (File fileToProcess : filesToProcess) {
+                final Configuration config = ConfigurationLoader.loadConfiguration(
+                        options.configurationFile, new PropertiesExpander(props),
+                        ignoredModulesOptions, multiThreadModeSettings);
+
+                // create RootModule object and run it
+                final RootModule rootModule = getRootModule(config.getName(), moduleClassLoader);
+
+                try {
+                    rootModule.setModuleClassLoader(moduleClassLoader);
+                    rootModule.configure(config);
+                    rootModule.addListener(listener);
+
+                    // run RootModule
+                    errorCounter += rootModule.process(Arrays.asList(fileToProcess));
                 }
-
-                listener = new XpathFileGeneratorAuditListener(System.out,
-                        AutomaticBean.OutputStreamOptions.NONE);
+                finally {
+                    rootModule.destroy();
+                }
             }
-            else {
-                listener = createListener(options.format, options.outputPath);
-            }
-
-            rootModule.setModuleClassLoader(moduleClassLoader);
-            rootModule.configure(config);
-            rootModule.addListener(listener);
-
-            // run RootModule
-            errorCounter = rootModule.process(filesToProcess);
         }
         finally {
-            rootModule.destroy();
+            listener.auditFinished(null);
         }
 
         return errorCounter;
