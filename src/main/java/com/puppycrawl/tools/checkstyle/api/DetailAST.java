@@ -431,4 +431,27 @@ public final class DetailAST extends CommonASTWithHiddenTokens {
         }
     }
 
+    Integer parentHash = null;
+    Integer siblingHash = null;
+
+    @Override
+    public int hashCode() {
+        if (parentHash == null) {
+            parentHash = parent == null ? 0 : parent.hashCode();
+        }
+        if (siblingHash == null) {
+            siblingHash = previousSibling == null ? 0 : previousSibling.hashCode();
+        }
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + parentHash;
+        result = prime * result + siblingHash;
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        return super.equals(obj);
+    }
+
 }

@@ -398,4 +398,16 @@ public abstract class AutomaticBean
 
     }
 
+
+
+    @Override
+    public int hashCode() {
+        return getClass().getName().hashCode();
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        return super.equals(obj);
+    }
+
 }

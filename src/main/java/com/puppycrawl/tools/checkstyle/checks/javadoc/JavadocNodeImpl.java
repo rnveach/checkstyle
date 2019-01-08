@@ -179,4 +179,27 @@ public class JavadocNodeImpl implements DetailNode {
                 + ", parent=" + parent + ']';
     }
 
+    Integer parentHash = null;
+    Integer childrenHash = null;
+
+    @Override
+    public int hashCode() {
+        if (parentHash == null) {
+            parentHash = parent == null ? 0 : parent.hashCode();
+        }
+        if (childrenHash == null) {
+            childrenHash = children == null ? 0 : Objects.hashCode(children);
+        }
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + parentHash;
+        result = prime * result + childrenHash;
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        return super.equals(obj);
+    }
+
 }
