@@ -78,6 +78,9 @@ public class EqualsAvoidNullCheck extends AbstractCheck {
     /** Type name for comparison. */
     private static final String STRING = "String";
 
+    /** Curly for comparison. */
+    private static final String LEFT_CURLY = "{";
+
     /** Whether to process equalsIgnoreCase() invocations. */
     private boolean ignoreEqualsIgnoreCase;
 
@@ -190,7 +193,7 @@ public class EqualsAvoidNullCheck extends AbstractCheck {
      * @param ast SLIST ast.
      */
     private void processSlist(DetailAST ast) {
-        if ("{".equals(ast.getText())) {
+        if (LEFT_CURLY.equals(ast.getText())) {
             final FieldFrame frame = new FieldFrame(currentFrame);
             currentFrame.addChild(frame);
             currentFrame = frame;
@@ -202,7 +205,7 @@ public class EqualsAvoidNullCheck extends AbstractCheck {
      * @param ast SLIST ast.
      */
     private void leaveSlist(DetailAST ast) {
-        if ("{".equals(ast.getText())) {
+        if (LEFT_CURLY.equals(ast.getText())) {
             currentFrame = currentFrame.getParent();
         }
     }
@@ -256,7 +259,7 @@ public class EqualsAvoidNullCheck extends AbstractCheck {
     /**
      * Determine whether LITERAL_NEW is an anonymous class definition and leave
      * the frame it is in.
-     * 
+     *
      * @param ast LITERAL_NEW ast.
      */
     private void leaveLiteralNew(DetailAST ast) {
