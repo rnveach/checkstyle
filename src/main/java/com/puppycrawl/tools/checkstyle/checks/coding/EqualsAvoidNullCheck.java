@@ -504,7 +504,6 @@ public class EqualsAvoidNullCheck extends AbstractCheck {
 
         /** Set of fields. */
         private final Set<DetailAST> fields = new HashSet<>();
-        private final Set<String> fieldNames = new HashSet<>();
 
         /** Set of equals calls. */
         private final Set<DetailAST> methodCalls = new HashSet<>();
@@ -570,13 +569,6 @@ public class EqualsAvoidNullCheck extends AbstractCheck {
         public void addField(DetailAST field) {
             if (field.findFirstToken(TokenTypes.IDENT) != null) {
                 fields.add(field);
-                final String name = getFieldName(field);
-//              System.out.println("Name: " + name + ", " + field.toString());
-                if (fieldNames.contains(name)) {
-                    throw new IllegalArgumentException(
-                            "Duplicate field: " + name + ", " + field.toString());
-                }
-                fieldNames.add(name);
             }
         }
 
