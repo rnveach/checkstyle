@@ -149,6 +149,12 @@ public class EqualsAvoidNullCheck extends AbstractCheck {
             case TokenTypes.LITERAL_NEW:
                 processLiteralNew(ast);
                 break;
+            case TokenTypes.OBJBLOCK:
+                final int parentType = ast.getParent().getType();
+                if (parentType != TokenTypes.CLASS_DEF && parentType != TokenTypes.ENUM_DEF) {
+                    processFrame(ast);
+                }
+                break;
             default:
                 processFrame(ast);
         }
@@ -160,12 +166,18 @@ public class EqualsAvoidNullCheck extends AbstractCheck {
         if (astType == TokenTypes.SLIST) {
             leaveSlist(ast);
         }
+        else if (astType == TokenTypes.LITERAL_NEW) {
+            leaveLiteralNew(ast);
+        }
+        else if (astType == TokenTypes.OBJBLOCK) {
+            final int parentType = ast.getParent().getType();
+            if (parentType != TokenTypes.CLASS_DEF && parentType != TokenTypes.ENUM_DEF) {
+                currentFrame = currentFrame.getParent();
+            }
+        }
         else if (astType != TokenTypes.VARIABLE_DEF
                 && astType != TokenTypes.PARAMETER_DEF
-                && astType != TokenTypes.METHOD_CALL
-                && astType != TokenTypes.LITERAL_NEW
-                || astType == TokenTypes.LITERAL_NEW
-                    && ast.findFirstToken(TokenTypes.OBJBLOCK) != null) {
+                && astType != TokenTypes.METHOD_CALL) {
             currentFrame = currentFrame.getParent();
         }
     }
@@ -241,6 +253,18 @@ public class EqualsAvoidNullCheck extends AbstractCheck {
             final FieldFrame frame = new FieldFrame(currentFrame);
             currentFrame.addChild(frame);
             currentFrame = frame;
+        }
+    }
+
+    /**
+     * Determine whether LITERAL_NEW is an anonymous class definition and leave
+     * the frame it is in.
+     * 
+     * @param ast LITERAL_NEW ast.
+     */
+    private void leaveLiteralNew(DetailAST ast) {
+        if (ast.findFirstToken(TokenTypes.OBJBLOCK) != null) {
+            currentFrame = currentFrame.getParent();
         }
     }
 
