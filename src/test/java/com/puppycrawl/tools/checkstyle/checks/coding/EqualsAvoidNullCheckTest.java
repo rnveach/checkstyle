@@ -27,6 +27,7 @@ import org.junit.Test;
 
 import com.puppycrawl.tools.checkstyle.AbstractModuleTestSupport;
 import com.puppycrawl.tools.checkstyle.DefaultConfiguration;
+import com.puppycrawl.tools.checkstyle.utils.CommonUtil;
 
 public class EqualsAvoidNullCheckTest extends AbstractModuleTestSupport {
 
@@ -174,6 +175,15 @@ public class EqualsAvoidNullCheckTest extends AbstractModuleTestSupport {
             "20:48: " + getCheckMessage(MSG_EQUALS_IGNORE_CASE_AVOID_NULL),
         };
         verify(checkConfig, getPath("InputEqualsAvoidNullNested.java"), expected);
+    }
+
+    @Test
+    public void testMisc() throws Exception {
+        final DefaultConfiguration checkConfig =
+                createModuleConfig(EqualsAvoidNullCheck.class);
+
+        final String[] expected = CommonUtil.EMPTY_STRING_ARRAY;
+        verify(checkConfig, getPath("InputEqualsAvoidNullMisc.java"), expected);
     }
 
     @Test
