@@ -773,6 +773,7 @@ public class RequireThisCheck extends AbstractCheck {
                 vertex = vertex.getFirstChild();
             }
         }
+        Collections.shuffle(result);
         return result;
     }
 
@@ -805,6 +806,7 @@ public class RequireThisCheck extends AbstractCheck {
                 vertex = vertex.getFirstChild();
             }
         }
+        Collections.shuffle(result);
         return result;
     }
 
@@ -837,6 +839,7 @@ public class RequireThisCheck extends AbstractCheck {
                 vertex = vertex.getFirstChild();
             }
         }
+        Collections.shuffle(result);
         return result;
     }
 
@@ -1090,6 +1093,7 @@ public class RequireThisCheck extends AbstractCheck {
          */
         protected boolean containsFieldOrVariableDef(List<DetailAST> set, DetailAST ident) {
             boolean result = false;
+            Collections.shuffle(set);
             for (DetailAST ast: set) {
                 if (isProperDefinition(ident, ast)) {
                     result = true;
