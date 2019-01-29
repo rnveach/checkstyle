@@ -1002,6 +1002,7 @@ public class RequireThisCheck extends AbstractCheck {
 
         /** Set of name of variables declared in this frame. */
         private final Set<DetailAST> varIdents;
+        private final Set<String> varIdentNames;
 
         /** Parent frame. */
         private final AbstractFrame parent;
@@ -1018,6 +1019,7 @@ public class RequireThisCheck extends AbstractCheck {
             this.parent = parent;
             frameNameIdent = ident;
             varIdents = new HashSet<>();
+            varIdentNames = new HashSet<>();
         }
 
         /**
@@ -1031,6 +1033,9 @@ public class RequireThisCheck extends AbstractCheck {
          * @param identToAdd the name we're adding.
          */
         private void addIdent(DetailAST identToAdd) {
+            if (varIdentNames.contains(identToAdd.getText()))
+                throw new IllegalStateException(identToAdd.getText());
+            varIdentNames.add(identToAdd.getText());
             varIdents.add(identToAdd);
         }
 
