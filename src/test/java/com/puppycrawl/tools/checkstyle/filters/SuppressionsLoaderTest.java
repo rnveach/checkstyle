@@ -410,6 +410,9 @@ public class SuppressionsLoaderTest extends AbstractPathTestSupport {
         final SuppressElement se10 =
                 new SuppressElement("[\\\\/]path[\\\\/]", "checks", null, null, null, null);
         fc2.addFilter(se10);
+        final SuppressElement se11 = new SuppressElement("[\\\\/]path[\\\\/].*(?<!Support)\\.java",
+                "checks", null, null, null, null);
+        fc2.addFilter(se11);
         assertEquals("suppressions were loaded incorrectly", fc2, fc);
     }
 
