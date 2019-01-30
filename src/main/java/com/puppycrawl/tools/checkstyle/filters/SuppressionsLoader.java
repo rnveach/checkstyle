@@ -23,6 +23,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URI;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -398,7 +399,16 @@ public final class SuppressionsLoader
             }
             else if (ch == '(') {
                 position.incrementAndGet();
-                final Collection<String> inner = splitRegularExpression(string, position);
+                Collection<String> inner = splitRegularExpression(string, position);
+
+                if (inner.size() == 1) {
+                    String first = inner.iterator().next();
+                    if (first.startsWith("?<!")) {
+                        // not sure why it needs the ()
+                        first = "(" + first + ")";
+                        inner = Arrays.asList(first);
+                    }
+                }
 
                 multiplyAll(results, inner);
             }

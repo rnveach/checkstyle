@@ -426,6 +426,9 @@ public class SuppressionsLoaderTest extends AbstractPathTestSupport {
         final SuppressFilterElement se10 =
                 new SuppressFilterElement("[\\\\/]path[\\\\/]", "checks", null, null, null, null);
         fc2.addFilter(se10);
+        final SuppressFilterElement se11 = new SuppressFilterElement(
+                "[\\\\/]path[\\\\/].*(?<!Support)\\.java", "checks", null, null, null, null);
+        fc2.addFilter(se11);
         assertWithMessage("suppressions were loaded incorrectly")
             .that(fc.toString())
             .isEqualTo(fc2.toString());

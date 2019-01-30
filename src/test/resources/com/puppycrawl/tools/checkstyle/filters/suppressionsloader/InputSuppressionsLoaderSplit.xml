@@ -8,4 +8,5 @@
     <suppress checks="(A|B)" files="files3" />
     <suppress checks="(Aa|Bb)|Cc" files="files4" />
     <suppress checks="checks" files="[\\/]path[\\/]" />
+    <suppress checks="checks" files="[\\/]path[\\/].*(?&lt;!Support)\.java" />
 </suppressions>
