@@ -45,6 +45,7 @@ import com.puppycrawl.tools.checkstyle.Checker;
 import com.puppycrawl.tools.checkstyle.DefaultConfiguration;
 import com.puppycrawl.tools.checkstyle.Definitions;
 import com.puppycrawl.tools.checkstyle.TreeWalker;
+import com.puppycrawl.tools.checkstyle.TreeWalkerFilter;
 import com.puppycrawl.tools.checkstyle.XMLLogger;
 import com.puppycrawl.tools.checkstyle.api.AbstractCheck;
 import com.puppycrawl.tools.checkstyle.api.AutomaticBean;
@@ -52,6 +53,7 @@ import com.puppycrawl.tools.checkstyle.api.BeforeExecutionFileFilter;
 import com.puppycrawl.tools.checkstyle.api.Configuration;
 import com.puppycrawl.tools.checkstyle.api.FileSetCheck;
 import com.puppycrawl.tools.checkstyle.api.FileText;
+import com.puppycrawl.tools.checkstyle.api.Filter;
 import com.puppycrawl.tools.checkstyle.api.MessageDispatcher;
 import com.puppycrawl.tools.checkstyle.api.Violation;
 import com.puppycrawl.tools.checkstyle.checks.javadoc.AbstractJavadocCheck;
@@ -694,12 +696,12 @@ public class TranslationCheckTest extends AbstractXmlTestSupport {
         }
 
         @Override
-        public void fireFilterStarted(Object filter) {
+        public void fireFilterStarted(Filter filter) {
             // no code needed
         }
 
         @Override
-        public void fireFilterFinished(Object filter) {
+        public void fireFilterFinished(Filter filter) {
             // no code needed
         }
 
@@ -720,6 +722,16 @@ public class TranslationCheckTest extends AbstractXmlTestSupport {
 
         @Override
         public void fireFileSetFinished(FileSetCheck fsc, String fileName) {
+            // no code needed
+        }
+
+        @Override
+        public void fireTreeWalkerFilterStarted(TreeWalkerFilter filter) {
+            // no code needed
+        }
+
+        @Override
+        public void fireTreeWalkerFilterFinished(TreeWalkerFilter filter) {
             // no code needed
         }
 

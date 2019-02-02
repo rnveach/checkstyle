@@ -449,7 +449,7 @@ public class Checker extends AutomaticBean implements MessageDispatcher, RootMod
     }
 
     @Override
-    public void fireFilterStarted(Object filter) {
+    public void fireFilterStarted(Filter filter) {
         final AuditEvent event = new AuditEvent(filter);
         for (final AuditListener listener : listeners) {
             listener.filterStarted(event);
@@ -457,10 +457,26 @@ public class Checker extends AutomaticBean implements MessageDispatcher, RootMod
     }
 
     @Override
-    public void fireFilterFinished(Object filter) {
+    public void fireFilterFinished(Filter filter) {
         final AuditEvent event = new AuditEvent(filter);
         for (final AuditListener listener : listeners) {
             listener.filterFinished(event);
+        }
+    }
+
+    @Override
+    public void fireTreeWalkerFilterStarted(TreeWalkerFilter filter) {
+        final AuditEvent event = new AuditEvent(filter);
+        for (final AuditListener listener : listeners) {
+            listener.treeWalkerFilterStarted(event);
+        }
+    }
+
+    @Override
+    public void fireTreeWalkerFilterFinished(TreeWalkerFilter filter) {
+        final AuditEvent event = new AuditEvent(filter);
+        for (final AuditListener listener : listeners) {
+            listener.treeWalkerFilterFinished(event);
         }
     }
 
