@@ -48,7 +48,9 @@ import com.puppycrawl.tools.checkstyle.Definitions;
 import com.puppycrawl.tools.checkstyle.TreeWalker;
 import com.puppycrawl.tools.checkstyle.XMLLogger;
 import com.puppycrawl.tools.checkstyle.api.AbstractCheck;
+import com.puppycrawl.tools.checkstyle.api.BeforeExecutionFileFilter;
 import com.puppycrawl.tools.checkstyle.api.Configuration;
+import com.puppycrawl.tools.checkstyle.api.FileSetCheck;
 import com.puppycrawl.tools.checkstyle.api.FileText;
 import com.puppycrawl.tools.checkstyle.api.MessageDispatcher;
 import com.puppycrawl.tools.checkstyle.api.Violation;
@@ -689,6 +691,36 @@ public class TranslationCheckTest extends AbstractXmlTestSupport {
 
         @Override
         public void fireCustomFinished(String source) {
+            // no code needed
+        }
+
+        @Override
+        public void fireFilterStarted(Object filter) {
+            // no code needed
+        }
+
+        @Override
+        public void fireFilterFinished(Object filter) {
+            // no code needed
+        }
+
+        @Override
+        public void fireBeforeExecutionFileFilterStarted(BeforeExecutionFileFilter filter) {
+            // no code needed
+        }
+
+        @Override
+        public void fireBeforeExecutionFileFilterFinished(BeforeExecutionFileFilter filter) {
+            // no code needed
+        }
+
+        @Override
+        public void fireFileSetStarted(FileSetCheck fsc, String fileName) {
+            // no code needed
+        }
+
+        @Override
+        public void fireFileSetFinished(FileSetCheck fsc, String fileName) {
             // no code needed
         }
 

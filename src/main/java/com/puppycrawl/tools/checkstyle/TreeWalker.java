@@ -30,8 +30,6 @@ import java.util.Map;
 import java.util.Set;
 import java.util.SortedSet;
 import java.util.TreeSet;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import com.puppycrawl.tools.checkstyle.api.AbstractCheck;
 import com.puppycrawl.tools.checkstyle.api.AbstractFileSetCheck;
@@ -149,6 +147,14 @@ public final class TreeWalker extends AbstractFileSetCheck implements ExternalRe
 
         try {
             module = moduleFactory.createModule(name);
+
+            if (module instanceof AbstractCheck) {
+                ((AbstractCheck) module).setMessageDispatcher(getMessageDispatcher());
+            }
+            else if (module instanceof TreeWalkerFilter) {
+                ((TreeWalkerFilter) module).setMessageDispatcher(getMessageDispatcher());
+            }
+
             if (module instanceof AbstractAutomaticBean) {
                 final AbstractAutomaticBean bean = (AbstractAutomaticBean) module;
                 bean.contextualize(childContext);
@@ -161,7 +167,9 @@ public final class TreeWalker extends AbstractFileSetCheck implements ExternalRe
         }
         if (module instanceof AbstractCheck) {
             final AbstractCheck check = (AbstractCheck) module;
+            getMessageDispatcher().fireCheckStarted(check);
             check.init();
+            getMessageDispatcher().fireCheckFinished(check);
             registerCheck(check);
         }
         else if (module instanceof TreeWalkerFilter) {
@@ -244,7 +252,10 @@ public final class TreeWalker extends AbstractFileSetCheck implements ExternalRe
             final TreeWalkerAuditEvent event =
                     new TreeWalkerAuditEvent(fileContents, fileName, element, rootAST);
             for (TreeWalkerFilter filter : filters) {
-                if (!filter.accept(event)) {
+                getMessageDispatcher().fireFilterStarted(filter);
+                final boolean acceptance = filter.accept(event);
+                getMessageDispatcher().fireFilterFinished(filter);
+                if (acceptance) {
                     result.remove(element);
                     break;
                 }
@@ -381,8 +392,8 @@ public final class TreeWalker extends AbstractFileSetCheck implements ExternalRe
         for (AbstractCheck check : checks) {
             getMessageDispatcher().fireCheckStarted(check);
             check.finishTree(rootAST);
-            violations.addAll(check.getViolations());
             getMessageDispatcher().fireCheckFinished(check);
+            violations.addAll(check.getViolations());
         }
     }
 
@@ -416,7 +427,9 @@ public final class TreeWalker extends AbstractFileSetCheck implements ExternalRe
 
         if (visitors != null) {
             for (AbstractCheck check : visitors) {
+                getMessageDispatcher().fireCheckStarted(check);
                 check.leaveToken(ast);
+                getMessageDispatcher().fireCheckFinished(check);
             }
         }
     }
@@ -445,21 +458,69 @@ public final class TreeWalker extends AbstractFileSetCheck implements ExternalRe
 
     @Override
     public void destroy() {
-        ordinaryChecks.forEach(AbstractCheck::destroy);
-        commentChecks.forEach(AbstractCheck::destroy);
+        for (AbstractCheck check : ordinaryChecks) {
+            getMessageDispatcher().fireCheckStarted(check);
+            check.destroy();
+            getMessageDispatcher().fireCheckFinished(check);
+        }
+        for (AbstractCheck check : commentChecks) {
+            getMessageDispatcher().fireCheckStarted(check);
+            check.destroy();
+            getMessageDispatcher().fireCheckFinished(check);
+        }
         super.destroy();
     }
 
     @Override
     public Set<String> getExternalResourceLocations() {
-        return Stream.concat(filters.stream(),
-                Stream.concat(ordinaryChecks.stream(), commentChecks.stream()))
-            .filter(ExternalResourceHolder.class::isInstance)
-            .flatMap(resource -> {
-                return ((ExternalResourceHolder) resource)
-                        .getExternalResourceLocations().stream();
-            })
-            .collect(Collectors.toUnmodifiableSet());
+        final Set<String> ordinaryChecksResources =
+                getExternalResourceLocationsOfChecks(ordinaryChecks);
+        final Set<String> commentChecksResources =
+                getExternalResourceLocationsOfChecks(commentChecks);
+        final Set<String> filtersResources =
+                getExternalResourceLocationsOfFilters();
+        final int resultListSize = commentChecksResources.size()
+                + ordinaryChecksResources.size()
+                + filtersResources.size();
+        final Set<String> resourceLocations = new HashSet<>(resultListSize);
+        resourceLocations.addAll(ordinaryChecksResources);
+        resourceLocations.addAll(commentChecksResources);
+        resourceLocations.addAll(filtersResources);
+        return resourceLocations;
+    }
+
+    /**
+     * Returns a set of external configuration resource locations which are used by the filters set.
+     *
+     * @return a set of external configuration resource locations which are used by the filters set.
+     */
+    private Set<String> getExternalResourceLocationsOfFilters() {
+        final Set<String> externalConfigurationResources = new HashSet<>();
+        filters.stream().filter(filter -> filter instanceof ExternalResourceHolder)
+                .forEach(filter -> {
+                    final Set<String> checkExternalResources =
+                        ((ExternalResourceHolder) filter).getExternalResourceLocations();
+                    externalConfigurationResources.addAll(checkExternalResources);
+                });
+        return externalConfigurationResources;
+    }
+
+    /**
+     * Returns a set of external configuration resource locations which are used by the checks set.
+     *
+     * @param checks a set of checks.
+     * @return a set of external configuration resource locations which are used by the checks set.
+     */
+    private Set<String> getExternalResourceLocationsOfChecks(Set<AbstractCheck> checks) {
+        final Set<String> externalConfigurationResources = new HashSet<>();
+        checks.stream().filter(check -> check instanceof ExternalResourceHolder).forEach(check -> {
+            getMessageDispatcher().fireCheckStarted(check);
+            final Set<String> checkExternalResources =
+                ((ExternalResourceHolder) check).getExternalResourceLocations();
+            getMessageDispatcher().fireCheckFinished(check);
+            externalConfigurationResources.addAll(checkExternalResources);
+        });
+        return externalConfigurationResources;
     }
 
     /**

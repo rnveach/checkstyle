@@ -27,6 +27,7 @@ import java.util.stream.Collectors;
 
 import com.puppycrawl.tools.checkstyle.TreeWalkerAuditEvent;
 import com.puppycrawl.tools.checkstyle.TreeWalkerFilter;
+import com.puppycrawl.tools.checkstyle.api.MessageDispatcher;
 import com.puppycrawl.tools.checkstyle.utils.CommonUtil;
 import com.puppycrawl.tools.checkstyle.xpath.AbstractNode;
 import com.puppycrawl.tools.checkstyle.xpath.RootNode;
@@ -248,4 +249,9 @@ public class XpathFilterElement implements TreeWalkerFilter {
         }
         return result;
     }
+
+    @Override
+    public void setMessageDispatcher(MessageDispatcher dispatcher) {
+    }
+
 }

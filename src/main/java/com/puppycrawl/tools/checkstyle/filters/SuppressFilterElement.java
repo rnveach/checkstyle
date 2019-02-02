@@ -24,6 +24,7 @@ import java.util.regex.Pattern;
 
 import com.puppycrawl.tools.checkstyle.api.AuditEvent;
 import com.puppycrawl.tools.checkstyle.api.Filter;
+import com.puppycrawl.tools.checkstyle.api.MessageDispatcher;
 
 /**
  * This filter element is immutable and processes {@link AuditEvent}
@@ -229,4 +230,9 @@ public class SuppressFilterElement
         }
         return result;
     }
+
+    @Override
+    public void setMessageDispatcher(MessageDispatcher dispatcher) {
+    }
+
 }

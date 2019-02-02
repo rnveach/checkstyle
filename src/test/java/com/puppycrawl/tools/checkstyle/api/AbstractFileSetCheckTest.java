@@ -397,6 +397,36 @@ public class AbstractFileSetCheckTest extends AbstractModuleTestSupport {
             // no code needed
         }
 
+        @Override
+        public void fireFilterStarted(Object filter) {
+            // no code needed
+        }
+
+        @Override
+        public void fireFilterFinished(Object filter) {
+            // no code needed
+        }
+
+        @Override
+        public void fireBeforeExecutionFileFilterStarted(BeforeExecutionFileFilter filter) {
+            // no code needed
+        }
+
+        @Override
+        public void fireBeforeExecutionFileFilterFinished(BeforeExecutionFileFilter filter) {
+            // no code needed
+        }
+
+        @Override
+        public void fireFileSetStarted(FileSetCheck fsc, String fileName) {
+            // no code needed
+        }
+
+        @Override
+        public void fireFileSetFinished(FileSetCheck fsc, String fileName) {
+            // no code needed
+        }
+
     }
 
 }
