@@ -167,6 +167,14 @@ public class XMLLogger
     }
 
     @Override
+    public void treeWalkerFilterStarted(AuditEvent event) {
+    }
+
+    @Override
+    public void treeWalkerFilterFinished(AuditEvent event) {
+    }
+
+    @Override
     public void CustomStarted(AuditEvent event) {
     }
 
