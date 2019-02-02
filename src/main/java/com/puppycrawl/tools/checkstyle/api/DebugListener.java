@@ -39,6 +39,13 @@ public class DebugListener extends AutomaticBean implements AuditListener {
     private final Stack<Long> filterStartTimeMemory = new Stack<Long>();
     private final Stack<String> filterNamesMemory = new Stack<String>();
 
+    private final Map<String, AtomicLong> treeWalkerFilterTime = new TreeMap<String, AtomicLong>();
+    private final Map<String, AtomicLong> treeWalkerFilterUses = new HashMap<String, AtomicLong>();
+    private final Map<String, AtomicLong> treeWalkerFilterMin = new HashMap<String, AtomicLong>();
+    private final Map<String, AtomicLong> treeWalkerFilterMax = new HashMap<String, AtomicLong>();
+    private final Stack<Long> treeWalkerFilterStartTimeMemory = new Stack<Long>();
+    private final Stack<String> treeWalkerFilterNamesMemory = new Stack<String>();
+
     private final Map<String, AtomicLong> beforeExecutionFileFilterTime = new TreeMap<String, AtomicLong>();
     private final Map<String, AtomicLong> beforeExecutionFileFilterUses = new HashMap<String, AtomicLong>();
     private final Map<String, AtomicLong> beforeExecutionFileFilterMin = new HashMap<String, AtomicLong>();
@@ -71,6 +78,7 @@ public class DebugListener extends AutomaticBean implements AuditListener {
     private long startTime;
     private long fileStartTime;
     private long filterStartTime;
+    private long treeWalkerFilterStartTime;
     private long beforeExecutionFileFilterStartTime;
     private long fileSetStartTime;
     private long checkStartTime;
@@ -83,6 +91,7 @@ public class DebugListener extends AutomaticBean implements AuditListener {
         this.startTime = System.nanoTime();
         this.fileStartTime = 0;
         this.filterStartTime = 0;
+        this.treeWalkerFilterStartTime = 0;
         this.beforeExecutionFileFilterStartTime = 0;
         this.fileSetStartTime = 0;
         this.checkStartTime = 0;
@@ -98,6 +107,12 @@ public class DebugListener extends AutomaticBean implements AuditListener {
         this.filterMax.clear();
         this.filterStartTimeMemory.clear();
         this.filterNamesMemory.clear();
+        this.treeWalkerFilterTime.clear();
+        this.treeWalkerFilterUses.clear();
+        this.treeWalkerFilterMin.clear();
+        this.treeWalkerFilterMax.clear();
+        this.treeWalkerFilterStartTimeMemory.clear();
+        this.treeWalkerFilterNamesMemory.clear();
         this.beforeExecutionFileFilterTime.clear();
         this.beforeExecutionFileFilterUses.clear();
         this.beforeExecutionFileFilterMin.clear();
@@ -127,10 +142,14 @@ public class DebugListener extends AutomaticBean implements AuditListener {
     @Override
     public void auditFinished(AuditEvent event) {
         if (!filterStartTimeMemory.isEmpty()) {
-            System.err.println("Error: filter has left over times! " + filterNamesMemory);
+            System.err.println("Error: Filter has left over times! " + filterNamesMemory);
+        }
+        if (!treeWalkerFilterStartTimeMemory.isEmpty()) {
+            System.err
+                    .println("Error: TreeWalker Filter has left over times! " + filterNamesMemory);
         }
         if (!beforeExecutionFileFilterStartTimeMemory.isEmpty()) {
-            System.err.println("Error: before execution file filter has left over times! "
+            System.err.println("Error: BeforeExecutionFile Filter has left over times! "
                     + beforeExecutionFileFilterNamesMemory.toString());
         }
         if (!customStartTimeMemory.isEmpty()) {
@@ -146,10 +165,8 @@ public class DebugListener extends AutomaticBean implements AuditListener {
 
         for (String key : fileTime.keySet()) {
             System.out.println(key + "\t" + fileUses.get(key).get() + "\t"
-                    + format(fileTime.get(key).get(), 1)
-                    + "\t" //
-                    + format(fileMin.get(key).get(), 1)
-                    + "\t" //
+                    + format(fileTime.get(key).get(), 1) + "\t" //
+                    + format(fileMin.get(key).get(), 1) + "\t" //
                     + format(fileMax.get(key).get(), 1) + "\t"
                     + format(fileTime.get(key).get(), fileUses.get(key).get()));
         }
@@ -159,29 +176,33 @@ public class DebugListener extends AutomaticBean implements AuditListener {
 
         for (String key : filterTime.keySet()) {
             System.out.println(key + "\t" + filterUses.get(key).get() + "\t"
-                    + format(filterTime.get(key).get(), 1)
-                    + "\t" //
-                    + format(filterMin.get(key).get(), 1)
-                    + "\t" //
+                    + format(filterTime.get(key).get(), 1) + "\t" //
+                    + format(filterMin.get(key).get(), 1) + "\t" //
                     + format(filterMax.get(key).get(), 1) + "\t"
                     + format(filterTime.get(key).get(), filterUses.get(key).get()));
         }
 
         System.out.println();
-        System.out.println("Before Execution File Filters: ("
-                + beforeExecutionFileFilterTime.size() + ")");
+        System.out.println("TreeWalker Filters: (" + treeWalkerFilterTime.size() + ")");
+
+        for (String key : treeWalkerFilterTime.keySet()) {
+            System.out.println(key + "\t" + treeWalkerFilterUses.get(key).get() + "\t"
+                    + format(treeWalkerFilterTime.get(key).get(), 1) + "\t" //
+                    + format(treeWalkerFilterMin.get(key).get(), 1) + "\t" //
+                    + format(treeWalkerFilterMax.get(key).get(), 1) + "\t"
+                    + format(treeWalkerFilterTime.get(key).get(),
+                            treeWalkerFilterUses.get(key).get()));
+        }
+
+        System.out.println();
+        System.out.println(
+                "Before Execution File Filters: (" + beforeExecutionFileFilterTime.size() + ")");
 
         for (String key : beforeExecutionFileFilterTime.keySet()) {
-            System.out.println(key
-                    + "\t"
-                    + beforeExecutionFileFilterUses.get(key).get()
-                    + "\t"
-                    + format(beforeExecutionFileFilterTime.get(key).get(), 1)
-                    + "\t" //
-                    + format(beforeExecutionFileFilterMin.get(key).get(), 1)
-                    + "\t" //
-                    + format(beforeExecutionFileFilterMax.get(key).get(), 1)
-                    + "\t"
+            System.out.println(key + "\t" + beforeExecutionFileFilterUses.get(key).get() + "\t"
+                    + format(beforeExecutionFileFilterTime.get(key).get(), 1) + "\t" //
+                    + format(beforeExecutionFileFilterMin.get(key).get(), 1) + "\t" //
+                    + format(beforeExecutionFileFilterMax.get(key).get(), 1) + "\t"
                     + format(beforeExecutionFileFilterTime.get(key).get(),
                             beforeExecutionFileFilterUses.get(key).get()));
         }
@@ -191,10 +212,8 @@ public class DebugListener extends AutomaticBean implements AuditListener {
 
         for (String key : fileSetTime.keySet()) {
             System.out.println(key + "\t" + fileSetUses.get(key).get() + "\t"
-                    + format(fileSetTime.get(key).get(), 1)
-                    + "\t" //
-                    + format(fileSetMin.get(key).get(), 1)
-                    + "\t" //
+                    + format(fileSetTime.get(key).get(), 1) + "\t" //
+                    + format(fileSetMin.get(key).get(), 1) + "\t" //
                     + format(fileSetMax.get(key).get(), 1) + "\t"
                     + format(fileSetTime.get(key).get(), fileSetUses.get(key).get()));
         }
@@ -204,10 +223,8 @@ public class DebugListener extends AutomaticBean implements AuditListener {
 
         for (String key : checkTime.keySet()) {
             System.out.println(key + "\t" + checkUses.get(key).get() + "\t"
-                    + format(checkTime.get(key).get(), 1)
-                    + "\t" //
-                    + format(checkMin.get(key).get(), 1)
-                    + "\t" //
+                    + format(checkTime.get(key).get(), 1) + "\t" //
+                    + format(checkMin.get(key).get(), 1) + "\t" //
                     + format(checkMax.get(key).get(), 1) + "\t"
                     + format(checkTime.get(key).get(), checkUses.get(key).get()));
         }
@@ -217,10 +234,8 @@ public class DebugListener extends AutomaticBean implements AuditListener {
 
         for (String key : parseTime.keySet()) {
             System.out.println(key + "\t" + parseUses.get(key).get() + "\t"
-                    + format(parseTime.get(key).get(), 1)
-                    + "\t" //
-                    + format(parseMin.get(key).get(), 1)
-                    + "\t" //
+                    + format(parseTime.get(key).get(), 1) + "\t" //
+                    + format(parseMin.get(key).get(), 1) + "\t" //
                     + format(parseMax.get(key).get(), 1) + "\t"
                     + format(parseTime.get(key).get(), parseUses.get(key).get()));
         }
@@ -231,10 +246,8 @@ public class DebugListener extends AutomaticBean implements AuditListener {
 
         for (String key : customTime.keySet()) {
             System.out.println(key + "\t" + customUses.get(key).get() + "\t"
-                    + format(customTime.get(key).get(), 1)
-                    + "\t" //
-                    + format(customMin.get(key).get(), 1)
-                    + "\t" //
+                    + format(customTime.get(key).get(), 1) + "\t" //
+                    + format(customMin.get(key).get(), 1) + "\t" //
                     + format(customMax.get(key).get(), 1) + "\t"
                     + format(customTime.get(key).get(), customUses.get(key).get()));
         }
@@ -270,10 +283,20 @@ public class DebugListener extends AutomaticBean implements AuditListener {
     }
 
     @Override
+    public void treeWalkerFilterStarted(AuditEvent event) {
+        if (this.treeWalkerFilterStartTime != 0)
+            treeWalkerFilterStartTimeMemory.push(this.treeWalkerFilterStartTime);
+        this.treeWalkerFilterNamesMemory.push(event.getSource().getClass().getSimpleName());
+
+        this.treeWalkerFilterStartTime = System.nanoTime();
+    }
+
+    @Override
     public void beforeExecutionFileFilterStarted(AuditEvent event) {
         if (this.beforeExecutionFileFilterStartTime != 0)
             beforeExecutionFileFilterStartTimeMemory.push(this.beforeExecutionFileFilterStartTime);
-        this.beforeExecutionFileFilterNamesMemory.push(event.getSource().getClass().getSimpleName());
+        this.beforeExecutionFileFilterNamesMemory
+                .push(event.getSource().getClass().getSimpleName());
 
         this.beforeExecutionFileFilterStartTime = System.nanoTime();
     }
@@ -421,7 +444,7 @@ public class DebugListener extends AutomaticBean implements AuditListener {
         this.checkTime.get(src).addAndGet(d);
         this.checkUses.get(src).addAndGet(1);
 
-        // reduce time from check as this is part of its process
+        // reduce time from fileSet as this is part of its process
         if (this.fileSetStartTime != 0) {
             this.fileSetStartTime += d;
         }
@@ -473,8 +496,8 @@ public class DebugListener extends AutomaticBean implements AuditListener {
         final String startSrc = this.beforeExecutionFileFilterNamesMemory.pop();
 
         if (!startSrc.equals(src)) {
-            System.err.println("Error: BeforeExecutionFileFilter name mis-match: " + src + " vs "
-                    + startSrc);
+            System.err.println(
+                    "Error: BeforeExecutionFileFilter name mis-match: " + src + " vs " + startSrc);
         }
 
         final long d = System.nanoTime() - this.beforeExecutionFileFilterStartTime;
@@ -554,6 +577,57 @@ public class DebugListener extends AutomaticBean implements AuditListener {
 
         this.filterTime.get(src).addAndGet(d);
         this.filterUses.get(src).addAndGet(1);
+    }
+
+    @Override
+    public void treeWalkerFilterFinished(AuditEvent event) {
+        if (this.treeWalkerFilterStartTime == 0) {
+            System.err.println("Error: TreeWalker Filter has no start time!");
+            return;
+        }
+
+        final String src = event.getSource().getClass().getSimpleName();
+        final String startSrc = this.treeWalkerFilterNamesMemory.pop();
+
+        if (!startSrc.equals(src)) {
+            System.err
+                    .println("Error: TreeWalker Filter name mis-match: " + src + " vs " + startSrc);
+        }
+
+        final long d = System.nanoTime() - this.treeWalkerFilterStartTime;
+
+        if (this.treeWalkerFilterStartTimeMemory.size() > 0)
+            this.treeWalkerFilterStartTime = this.treeWalkerFilterStartTimeMemory.pop() + d;
+        else
+            this.treeWalkerFilterStartTime = 0;
+
+        if (d < 0) {
+            System.err.println("Error: TreeWalker Filter has a negative time!");
+            return;
+        }
+
+        if (this.treeWalkerFilterTime.get(src) == null) {
+            this.treeWalkerFilterTime.put(src, new AtomicLong());
+            this.treeWalkerFilterUses.put(src, new AtomicLong());
+            this.treeWalkerFilterMin.put(src, new AtomicLong(Long.MAX_VALUE));
+            this.treeWalkerFilterMax.put(src, new AtomicLong(Long.MIN_VALUE));
+        }
+
+        final AtomicLong min = this.treeWalkerFilterMin.get(src);
+        if (d < min.get())
+            min.set(d);
+
+        final AtomicLong max = this.treeWalkerFilterMax.get(src);
+        if (d > max.get())
+            max.set(d);
+
+        this.treeWalkerFilterTime.get(src).addAndGet(d);
+        this.treeWalkerFilterUses.get(src).addAndGet(1);
+
+        // reduce time from fileSet as this is part of its process
+        if (this.fileSetStartTime != 0) {
+            this.fileSetStartTime += d;
+        }
     }
 
     @Override

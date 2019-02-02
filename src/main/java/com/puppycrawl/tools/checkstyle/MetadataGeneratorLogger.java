@@ -153,6 +153,16 @@ public class MetadataGeneratorLogger extends AbstractAutomaticBean implements Au
     }
 
     @Override
+    public void treeWalkerFilterStarted(AuditEvent event) {
+        // no code
+    }
+
+    @Override
+    public void treeWalkerFilterFinished(AuditEvent event) {
+        // no code
+    }
+
+    @Override
     public void fileFinished(AuditEvent event) {
         errorWriter.flush();
     }

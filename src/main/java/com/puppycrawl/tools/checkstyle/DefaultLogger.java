@@ -253,6 +253,14 @@ public class DefaultLogger extends AbstractAutomaticBean implements AuditListene
     }
 
     @Override
+    public void treeWalkerFilterStarted(AuditEvent event) {
+    }
+
+    @Override
+    public void treeWalkerFilterFinished(AuditEvent event) {
+    }
+
+    @Override
     public void CustomStarted(AuditEvent event) {
     }
 

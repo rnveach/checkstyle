@@ -252,9 +252,9 @@ public final class TreeWalker extends AbstractFileSetCheck implements ExternalRe
             final TreeWalkerAuditEvent event =
                     new TreeWalkerAuditEvent(fileContents, fileName, element, rootAST);
             for (TreeWalkerFilter filter : filters) {
-                getMessageDispatcher().fireFilterStarted(filter);
+                getMessageDispatcher().fireTreeWalkerFilterStarted(filter);
                 final boolean acceptance = filter.accept(event);
-                getMessageDispatcher().fireFilterFinished(filter);
+                getMessageDispatcher().fireTreeWalkerFilterFinished(filter);
                 if (acceptance) {
                     result.remove(element);
                     break;

@@ -22,6 +22,7 @@ package com.puppycrawl.tools.checkstyle.api;
 import java.util.SortedSet;
 
 import com.puppycrawl.tools.checkstyle.TreeWalker;
+import com.puppycrawl.tools.checkstyle.TreeWalkerFilter;
 import com.puppycrawl.tools.checkstyle.checks.javadoc.AbstractJavadocCheck;
 
 /**
@@ -51,9 +52,13 @@ public interface MessageDispatcher {
      */
     void fireErrors(String fileName, SortedSet<Violation> errors);
 
-    void fireFilterStarted(Object filter);
+    void fireFilterStarted(Filter filter);
 
-    void fireFilterFinished(Object filter);
+    void fireFilterFinished(Filter filter);
+
+    void fireTreeWalkerFilterStarted(TreeWalkerFilter filter);
+
+    void fireTreeWalkerFilterFinished(TreeWalkerFilter filter);
 
     void fireBeforeExecutionFileFilterStarted(BeforeExecutionFileFilter filter);
 

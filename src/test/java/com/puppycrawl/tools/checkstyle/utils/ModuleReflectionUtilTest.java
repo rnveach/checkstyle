@@ -436,6 +436,14 @@ public class ModuleReflectionUtilTest {
         }
 
         @Override
+        public void treeWalkerFilterStarted(AuditEvent event) {
+        }
+
+        @Override
+        public void treeWalkerFilterFinished(AuditEvent event) {
+        }
+
+        @Override
         public void CustomStarted(AuditEvent event) {
             //dummy method
         }

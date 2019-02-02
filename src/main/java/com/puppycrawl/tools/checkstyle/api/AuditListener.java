@@ -80,6 +80,10 @@ public interface AuditListener
 
     void filterFinished(AuditEvent event);
 
+    void treeWalkerFilterStarted(AuditEvent event);
+
+    void treeWalkerFilterFinished(AuditEvent event);
+
     void CustomStarted(AuditEvent event);
 
     void CustomFinished(AuditEvent event);

@@ -258,9 +258,9 @@ public class SuppressionXpathFilter extends AbstractAutomaticBean implements
     public boolean accept(TreeWalkerAuditEvent treeWalkerAuditEvent) {
         boolean result = true;
         for (TreeWalkerFilter filter : filters) {
-            messageDispatcher.fireFilterStarted(filter);
+            messageDispatcher.fireTreeWalkerFilterStarted(filter);
             final boolean acceptance = filter.accept(treeWalkerAuditEvent);
-            messageDispatcher.fireFilterFinished(filter);
+            messageDispatcher.fireTreeWalkerFilterFinished(filter);
             if (!acceptance) {
                 result = false;
                 break;
