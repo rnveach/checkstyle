@@ -132,6 +132,8 @@ public class Checker extends AutomaticBean implements MessageDispatcher, RootMod
     /** The tab width for column reporting. */
     private int tabWidth = CommonUtil.DEFAULT_TAB_WIDTH;
 
+    public static Checker GLOBAL_DISPATCHER;
+
     /**
      * Creates a new {@code Checker} instance.
      * The instance needs to be contextualized and configured.
@@ -139,6 +141,7 @@ public class Checker extends AutomaticBean implements MessageDispatcher, RootMod
     public Checker() {
         addListener(counter);
         log = LogFactory.getLog(Checker.class);
+        GLOBAL_DISPATCHER = this;
     }
 
     /**
