@@ -116,6 +116,11 @@ public class FilterSetTest {
             return Boolean.compare(acceptValue, other.acceptValue) == 0;
         }
 
+        @Override
+        public void setMessageDispatcher(MessageDispatcher dispatcher) {
+            // no code needed
+        }
+
     }
 
 }

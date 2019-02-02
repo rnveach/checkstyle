@@ -56,6 +56,10 @@ public interface AuditListener
      */
     void fileStarted(AuditEvent event);
 
+    void filterStarted(AuditEvent event);
+
+    void beforeExecutionFileFilterStarted(AuditEvent event);
+
     void fileSetStarted(AuditEvent event);
 
     void checkStarted(AuditEvent event);
@@ -71,6 +75,10 @@ public interface AuditListener
     void JavaDocParseStarted(AuditEvent event);
 
     void JavaDocParseFinished(AuditEvent event);
+
+    void beforeExecutionFileFilterFinished(AuditEvent event);
+
+    void filterFinished(AuditEvent event);
 
     void CustomStarted(AuditEvent event);
 

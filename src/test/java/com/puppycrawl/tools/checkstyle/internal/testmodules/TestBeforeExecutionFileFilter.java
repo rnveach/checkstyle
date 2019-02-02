@@ -20,6 +20,7 @@
 package com.puppycrawl.tools.checkstyle.internal.testmodules;
 
 import com.puppycrawl.tools.checkstyle.api.BeforeExecutionFileFilter;
+import com.puppycrawl.tools.checkstyle.api.MessageDispatcher;
 
 public final class TestBeforeExecutionFileFilter implements BeforeExecutionFileFilter {
 
@@ -37,6 +38,10 @@ public final class TestBeforeExecutionFileFilter implements BeforeExecutionFileF
 
     public void resetFilter() {
         called = false;
+    }
+
+    @Override
+    public void setMessageDispatcher(MessageDispatcher dispatcher) {
     }
 
 }

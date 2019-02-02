@@ -34,6 +34,7 @@ import com.puppycrawl.tools.checkstyle.api.AuditEvent;
 import com.puppycrawl.tools.checkstyle.api.AutomaticBean;
 import com.puppycrawl.tools.checkstyle.api.FileText;
 import com.puppycrawl.tools.checkstyle.api.Filter;
+import com.puppycrawl.tools.checkstyle.api.MessageDispatcher;
 import com.puppycrawl.tools.checkstyle.utils.CommonUtil;
 
 /**
@@ -671,6 +672,10 @@ public class SuppressWithPlainTextCommentFilter extends AutomaticBean implements
             }
             return match;
         }
+    }
+
+    @Override
+    public void setMessageDispatcher(MessageDispatcher dispatcher) {
     }
 
 }
