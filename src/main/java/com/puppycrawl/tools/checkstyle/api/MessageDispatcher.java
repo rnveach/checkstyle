@@ -51,6 +51,18 @@ public interface MessageDispatcher {
      */
     void fireErrors(String fileName, SortedSet<Violation> errors);
 
+    void fireFilterStarted(Object filter);
+
+    void fireFilterFinished(Object filter);
+
+    void fireBeforeExecutionFileFilterStarted(BeforeExecutionFileFilter filter);
+
+    void fireBeforeExecutionFileFilterFinished(BeforeExecutionFileFilter filter);
+
+    void fireFileSetStarted(FileSetCheck fsc, String fileName);
+
+    void fireFileSetFinished(FileSetCheck fsc, String fileName);
+
     void fireCheckStarted(AbstractCheck check);
 
     void fireCheckFinished(AbstractCheck check);
@@ -66,4 +78,5 @@ public interface MessageDispatcher {
     void fireCustomStarted(String source);
 
     void fireCustomFinished(String source);
+
 }

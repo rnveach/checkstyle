@@ -233,6 +233,30 @@ public class SarifLogger extends AutomaticBean implements AuditListener {
     }
 
     @Override
+    public void filterStarted(AuditEvent event) {
+    }
+
+    @Override
+    public void filterFinished(AuditEvent event) {
+    }
+
+    @Override
+    public void beforeExecutionFileFilterStarted(AuditEvent event) {
+    }
+
+    @Override
+    public void beforeExecutionFileFilterFinished(AuditEvent event) {
+    }
+
+    @Override
+    public void CustomStarted(AuditEvent event) {
+    }
+
+    @Override
+    public void CustomFinished(AuditEvent event) {
+    }
+
+    @Override
     public void fileFinished(AuditEvent event) {
         // No need to implement this method in this class
     }

@@ -39,6 +39,7 @@ import com.puppycrawl.tools.checkstyle.api.AutomaticBean;
 import com.puppycrawl.tools.checkstyle.api.BeforeExecutionFileFilter;
 import com.puppycrawl.tools.checkstyle.api.FileText;
 import com.puppycrawl.tools.checkstyle.api.Filter;
+import com.puppycrawl.tools.checkstyle.api.MessageDispatcher;
 import com.puppycrawl.tools.checkstyle.api.RootModule;
 
 public class ModuleReflectionUtilTest {
@@ -248,6 +249,10 @@ public class ModuleReflectionUtilTest {
             return false;
         }
 
+        @Override
+        public void setMessageDispatcher(MessageDispatcher dispatcher) {
+        }
+
     }
 
     private static class FileFilterModuleClass extends AutomaticBean
@@ -261,6 +266,10 @@ public class ModuleReflectionUtilTest {
         @Override
         public boolean accept(String uri) {
             return false;
+        }
+
+        @Override
+        public void setMessageDispatcher(MessageDispatcher dispatcher) {
         }
 
     }
@@ -304,6 +313,10 @@ public class ModuleReflectionUtilTest {
         @Override
         public boolean accept(TreeWalkerAuditEvent treeWalkerAuditEvent) {
             return false;
+        }
+
+        @Override
+        public void setMessageDispatcher(MessageDispatcher dispatcher) {
         }
 
     }
@@ -383,6 +396,22 @@ public class ModuleReflectionUtilTest {
         @Override
         public void JavaDocParseFinished(AuditEvent event) {
             //dummy method
+        }
+
+        @Override
+        public void filterStarted(AuditEvent event) {
+        }
+
+        @Override
+        public void filterFinished(AuditEvent event) {
+        }
+
+        @Override
+        public void beforeExecutionFileFilterStarted(AuditEvent event) {
+        }
+
+        @Override
+        public void beforeExecutionFileFilterFinished(AuditEvent event) {
         }
 
         @Override

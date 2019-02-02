@@ -28,6 +28,7 @@ import com.puppycrawl.tools.checkstyle.api.CheckstyleException;
 import com.puppycrawl.tools.checkstyle.api.ExternalResourceHolder;
 import com.puppycrawl.tools.checkstyle.api.Filter;
 import com.puppycrawl.tools.checkstyle.api.FilterSet;
+import com.puppycrawl.tools.checkstyle.api.MessageDispatcher;
 import com.puppycrawl.tools.checkstyle.utils.FilterUtil;
 
 /**
@@ -233,6 +234,9 @@ public class SuppressionFilter extends AutomaticBean implements Filter, External
     /** Set of individual suppresses. */
     private FilterSet filters = new FilterSet();
 
+    /** The dispatcher errors are fired to. */
+    private MessageDispatcher messageDispatcher;
+
     /**
      * Setter to specify the location of the <em>suppressions XML document</em> file.
      *
@@ -265,13 +269,16 @@ public class SuppressionFilter extends AutomaticBean implements Filter, External
             if (optional) {
                 if (FilterUtil.isFileExists(file)) {
                     filters = SuppressionsLoader.loadSuppressions(file);
+                    filters.setMessageDispatcher(messageDispatcher);
                 }
                 else {
                     filters = new FilterSet();
+                    filters.setMessageDispatcher(messageDispatcher);
                 }
             }
             else {
                 filters = SuppressionsLoader.loadSuppressions(file);
+                filters.setMessageDispatcher(messageDispatcher);
             }
         }
     }
@@ -279,6 +286,13 @@ public class SuppressionFilter extends AutomaticBean implements Filter, External
     @Override
     public Set<String> getExternalResourceLocations() {
         return Collections.singleton(file);
+    }
+
+    @Override
+    public void setMessageDispatcher(MessageDispatcher messageDispatcher) {
+        this.messageDispatcher = messageDispatcher;
+
+        filters.setMessageDispatcher(messageDispatcher);
     }
 
 }

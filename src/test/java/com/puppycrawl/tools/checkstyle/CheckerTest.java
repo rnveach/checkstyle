@@ -1689,6 +1689,10 @@ public class CheckerTest extends AbstractModuleTestSupport {
             return false;
         }
 
+        @Override
+        public void setMessageDispatcher(MessageDispatcher dispatcher) {
+        }
+
     }
 
     public static class DummyFileSetViolationCheck extends AbstractFileSetCheck

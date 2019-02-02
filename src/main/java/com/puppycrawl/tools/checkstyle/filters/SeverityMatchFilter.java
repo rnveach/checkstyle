@@ -22,6 +22,7 @@ package com.puppycrawl.tools.checkstyle.filters;
 import com.puppycrawl.tools.checkstyle.api.AuditEvent;
 import com.puppycrawl.tools.checkstyle.api.AutomaticBean;
 import com.puppycrawl.tools.checkstyle.api.Filter;
+import com.puppycrawl.tools.checkstyle.api.MessageDispatcher;
 import com.puppycrawl.tools.checkstyle.api.SeverityLevel;
 
 /**
@@ -112,6 +113,10 @@ public class SeverityMatchFilter
     public boolean accept(AuditEvent event) {
         final boolean severityMatches = severity == event.getSeverityLevel();
         return acceptOnMatch == severityMatches;
+    }
+
+    @Override
+    public void setMessageDispatcher(MessageDispatcher dispatcher) {
     }
 
 }

@@ -184,7 +184,23 @@ public class XpathFileGeneratorAuditListener extends AutomaticBean implements Au
 
     @Override
     public void JavaDocParseFinished(AuditEvent event) {
-        //dummy method        
+        //dummy method
+    }
+
+    @Override
+    public void filterStarted(AuditEvent event) {
+    }
+
+    @Override
+    public void filterFinished(AuditEvent event) {
+    }
+
+    @Override
+    public void beforeExecutionFileFilterStarted(AuditEvent event) {
+    }
+
+    @Override
+    public void beforeExecutionFileFilterFinished(AuditEvent event) {
     }
 
     @Override
