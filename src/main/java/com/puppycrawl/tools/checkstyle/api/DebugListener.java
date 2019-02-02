@@ -408,6 +408,9 @@ public class DebugListener extends AutomaticBean implements AuditListener {
         if (this.checkStartTime != 0) {
             this.checkStartTime += d;
         }
+        if (this.fileSetStartTime != 0) {
+            this.fileSetStartTime += d;
+        }
     }
 
     @Override
