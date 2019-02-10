@@ -501,6 +501,8 @@ public class PackageObjectFactory implements ModuleFactory {
                 BASE_PACKAGE + ".checks.coding.IllegalThrowsCheck");
         NAME_TO_FULL_MODULE_NAME.put("IllegalTokenCheck",
                 BASE_PACKAGE + ".checks.coding.IllegalTokenCheck");
+        NAME_TO_FULL_MODULE_NAME.put("IllegalTokenParentCheck",
+                BASE_PACKAGE + ".checks.coding.IllegalTokenParentCheck");
         NAME_TO_FULL_MODULE_NAME.put("IllegalTokenTextCheck",
                 BASE_PACKAGE + ".checks.coding.IllegalTokenTextCheck");
         NAME_TO_FULL_MODULE_NAME.put("IllegalTypeCheck",
