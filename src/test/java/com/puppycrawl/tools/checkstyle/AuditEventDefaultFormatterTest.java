@@ -65,6 +65,10 @@ public class AuditEventDefaultFormatterTest {
         assertEquals("Invalid format", expected, formatter.format(event));
     }
 
+    /**
+     * PowerMock is needed because we must return a check name with no package
+     * and constructor only accepts real classes to cover code coverage.
+     */
     @Test
     public void testFormatModuleNameContainsCheckSuffix() {
         final AuditEvent mock = PowerMockito.mock(AuditEvent.class);
@@ -81,6 +85,10 @@ public class AuditEventDefaultFormatterTest {
         assertEquals("Invalid format", expected, formatter.format(mock));
     }
 
+    /**
+     * PowerMock is needed because we must return a check name with no package
+     * and constructor only accepts real classes to cover code coverage.
+     */
     @Test
     public void testFormatModuleNameDoesNotContainCheckSuffix() {
         final AuditEvent mock = PowerMockito.mock(AuditEvent.class);

@@ -745,6 +745,10 @@ public class CheckstyleAntTaskTest extends AbstractPathTestSupport {
         }
     }
 
+    /**
+     * PowerMock is needed because we have to modify execution time to analyze
+     * class messages.
+     */
     @Test
     public final void testExecuteLogOutput() throws Exception {
         final CheckstyleAntTaskLogStub antTask = new CheckstyleAntTaskLogStub();

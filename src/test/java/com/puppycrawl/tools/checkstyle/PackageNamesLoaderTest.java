@@ -28,16 +28,15 @@ import static org.powermock.api.mockito.PowerMockito.mock;
 import static org.powermock.api.mockito.PowerMockito.when;
 
 import java.io.ByteArrayInputStream;
+import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.net.URL;
 import java.net.URLConnection;
 import java.net.URLStreamHandler;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.Arrays;
-import java.util.Enumeration;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
@@ -45,7 +44,6 @@ import java.util.Set;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
-import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
@@ -56,7 +54,6 @@ import com.puppycrawl.tools.checkstyle.api.CheckstyleException;
  * Enter a description of class PackageNamesLoaderTest.java.
  */
 @RunWith(PowerMockRunner.class)
-@PrepareForTest(PackageNamesLoader.class)
 public class PackageNamesLoaderTest extends AbstractPathTestSupport {
 
     @Override
@@ -75,27 +72,19 @@ public class PackageNamesLoaderTest extends AbstractPathTestSupport {
     }
 
     /**
-     * Tests the loading of package names. This test needs mocking, because the package names would
-     * have to be placed in {@literal checkstyle_packages.xml}, but this will affect every test,
-     * which is undesired.
+     * PowerMock is needed because code is restricted only to the file
+     * {@literal checkstyle_packages.xml}, and placing test packages in this
+     * file will affect every test and production code, which is undesired.
      *
      * @throws Exception if error occurs
      */
     @Test
-    @SuppressWarnings("unchecked")
     public void testPackagesFile() throws Exception {
-        final URLConnection mockConnection = Mockito.mock(URLConnection.class);
-        when(mockConnection.getInputStream()).thenReturn(
-            Files.newInputStream(Paths.get(getPath("InputPackageNamesLoaderFile.xml"))));
-
-        final URL url = getMockUrl(mockConnection);
-
-        final Enumeration<URL> enumeration = mock(Enumeration.class);
-        when(enumeration.hasMoreElements()).thenReturn(true).thenReturn(false);
-        when(enumeration.nextElement()).thenReturn(url);
+        final URL url = new File(getPath("InputPackageNamesLoaderFile.xml")).toURI().toURL();
 
         final ClassLoader classLoader = mock(ClassLoader.class);
-        when(classLoader.getResources("checkstyle_packages.xml")).thenReturn(enumeration);
+        when(classLoader.getResources("checkstyle_packages.xml"))
+                .thenReturn(Collections.enumeration(Collections.singleton(url)));
 
         final Set<String> actualPackageNames = PackageNamesLoader.getPackageNames(classLoader);
         final String[] expectedPackageNames = {
@@ -134,9 +123,7 @@ public class PackageNamesLoaderTest extends AbstractPathTestSupport {
         constructor.setAccessible(true);
         final PackageNamesLoader loader = constructor.newInstance();
 
-        final Attributes attributes = mock(Attributes.class);
-        when(attributes.getValue("name")).thenReturn("coding.");
-        loader.startElement("", "", "package", attributes);
+        loader.startElement("", "", "package", new AttributesName("coding."));
         loader.endElement("", "", "package");
 
         final Field field = PackageNamesLoader.class.getDeclaredField("packageNames");
@@ -153,13 +140,8 @@ public class PackageNamesLoaderTest extends AbstractPathTestSupport {
         constructor.setAccessible(true);
         final PackageNamesLoader loader = constructor.newInstance();
 
-        final Attributes attributes1 = mock(Attributes.class);
-        when(attributes1.getValue("name")).thenReturn("coding.");
-        final Attributes attributes2 = mock(Attributes.class);
-        when(attributes2.getValue("name")).thenReturn("specific");
-
-        loader.startElement("", "", "package", attributes1);
-        loader.startElement("", "", "package", attributes2);
+        loader.startElement("", "", "package", new AttributesName("coding."));
+        loader.startElement("", "", "package", new AttributesName("specific"));
         loader.endElement("", "", "package");
         loader.endElement("", "", "package");
 
@@ -172,8 +154,14 @@ public class PackageNamesLoaderTest extends AbstractPathTestSupport {
         assertEquals("Invalid package name", "coding.", iterator.next());
     }
 
+    /**
+     * PowerMock is needed because code is restricted only to the file
+     * {@literal checkstyle_packages.xml}, and placing test packages in this
+     * file will affect every test and production code, which is undesired.
+     *
+     * @throws Exception if error occurs
+     */
     @Test
-    @SuppressWarnings("unchecked")
     public void testPackagesWithSaxException() throws Exception {
         final URLConnection mockConnection = Mockito.mock(URLConnection.class);
         when(mockConnection.getInputStream()).thenReturn(
@@ -181,12 +169,9 @@ public class PackageNamesLoaderTest extends AbstractPathTestSupport {
 
         final URL url = getMockUrl(mockConnection);
 
-        final Enumeration<URL> enumeration = mock(Enumeration.class);
-        when(enumeration.hasMoreElements()).thenReturn(true);
-        when(enumeration.nextElement()).thenReturn(url);
-
         final ClassLoader classLoader = mock(ClassLoader.class);
-        when(classLoader.getResources("checkstyle_packages.xml")).thenReturn(enumeration);
+        when(classLoader.getResources("checkstyle_packages.xml"))
+                .thenReturn(Collections.enumeration(Collections.singleton(url)));
 
         try {
             PackageNamesLoader.getPackageNames(classLoader);
@@ -197,20 +182,23 @@ public class PackageNamesLoaderTest extends AbstractPathTestSupport {
         }
     }
 
+    /**
+     * PowerMock is needed because code is restricted only to the file
+     * {@literal checkstyle_packages.xml}, and placing test packages in this
+     * file will affect every test and production code, which is undesired.
+     *
+     * @throws Exception if error occurs
+     */
     @Test
-    @SuppressWarnings("unchecked")
     public void testPackagesWithIoException() throws Exception {
         final URLConnection mockConnection = Mockito.mock(URLConnection.class);
         when(mockConnection.getInputStream()).thenReturn(null);
 
         final URL url = getMockUrl(mockConnection);
 
-        final Enumeration<URL> enumer = mock(Enumeration.class);
-        when(enumer.hasMoreElements()).thenReturn(true);
-        when(enumer.nextElement()).thenReturn(url);
-
         final ClassLoader classLoader = mock(ClassLoader.class);
-        when(classLoader.getResources("checkstyle_packages.xml")).thenReturn(enumer);
+        when(classLoader.getResources("checkstyle_packages.xml"))
+                .thenReturn(Collections.enumeration(Collections.singleton(url)));
 
         try {
             PackageNamesLoader.getPackageNames(classLoader);
@@ -223,6 +211,13 @@ public class PackageNamesLoaderTest extends AbstractPathTestSupport {
         }
     }
 
+    /**
+     * PowerMock is needed because code is restricted only to the file
+     * {@literal checkstyle_packages.xml}, and placing test packages in this
+     * file will affect every test and production code, which is undesired.
+     *
+     * @throws Exception if error occurs
+     */
     @Test
     public void testPackagesWithIoExceptionGetResources() throws Exception {
         final ClassLoader classLoader = mock(ClassLoader.class);
@@ -247,6 +242,74 @@ public class PackageNamesLoaderTest extends AbstractPathTestSupport {
             }
         };
         return new URL("http://foo.bar", "foo.bar", 80, "", handler);
+    }
+
+    private static final class AttributesName implements Attributes {
+        private final String name;
+
+        AttributesName(String name) {
+            this.name = name;
+        }
+
+        @Override
+        public int getLength() {
+            return 0;
+        }
+
+        @Override
+        public String getURI(int index) {
+            return null;
+        }
+
+        @Override
+        public String getLocalName(int index) {
+            return null;
+        }
+
+        @Override
+        public String getQName(int index) {
+            return null;
+        }
+
+        @Override
+        public String getType(int index) {
+            return null;
+        }
+
+        @Override
+        public String getType(String uri, String localName) {
+            return null;
+        }
+
+        @Override
+        public String getType(String qName) {
+            return null;
+        }
+
+        @Override
+        public String getValue(int index) {
+            return null;
+        }
+
+        @Override
+        public String getValue(String uri, String localName) {
+            return name;
+        }
+
+        @Override
+        public String getValue(String qName) {
+            return name;
+        }
+
+        @Override
+        public int getIndex(String uri, String localName) {
+            return 0;
+        }
+
+        @Override
+        public int getIndex(String qName) {
+            return 0;
+        }
     }
 
 }

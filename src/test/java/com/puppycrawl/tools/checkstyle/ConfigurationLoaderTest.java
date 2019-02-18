@@ -597,6 +597,11 @@ public class ConfigurationLoaderTest extends AbstractPathTestSupport {
             0, children[0].getChildren().length);
     }
 
+    /**
+     * PowerMock is needed because we must return the attribute name but throw
+     * an exception when we try to receive the attribute's value and there is no
+     * other way to hit this kind of area.
+     */
     @Test
     public void testConfigWithIgnoreExceptionalAttributes() throws Exception {
         // emulate exception from unrelated code, but that is same try-catch

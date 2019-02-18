@@ -353,6 +353,10 @@ public class TreeWalkerTest extends AbstractModuleTestSupport {
         assertTrue("No checks -> No parsing", checks.isEmpty());
     }
 
+    /**
+     * PowerMock is needed because code has extra empty checks which show up in
+     * pitest which are redundant but help cut down on execution time.
+     */
     @Test
     public void testBehaviourWithOnlyOrdinaryChecks() throws Exception {
         final TreeWalker treeWalkerSpy = spy(new TreeWalker());
@@ -373,6 +377,10 @@ public class TreeWalkerTest extends AbstractModuleTestSupport {
                 any(String.class), any(FileContents.class), any(DetailAST.class));
     }
 
+    /**
+     * PowerMock is needed because code has extra empty checks which show up in
+     * pitest which are redundant but help cut down on execution time.
+     */
     @Test
     public void testBehaviourWithOnlyCommentChecks() throws Exception {
         final TreeWalker treeWalkerSpy = spy(new TreeWalker());
