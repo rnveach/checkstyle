@@ -25,9 +25,8 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
-import java.lang.reflect.Method;
-
 import org.junit.Test;
+import org.powermock.reflect.Whitebox;
 
 import com.puppycrawl.tools.checkstyle.api.DetailAST;
 import com.puppycrawl.tools.checkstyle.api.TokenTypes;
@@ -91,7 +90,7 @@ public class JavadocTagInfoTest {
     }
 
     @Test
-    public void testOthers() throws ReflectiveOperationException {
+    public void testOthers() throws Exception {
         final JavadocTagInfo[] tags = {
             JavadocTagInfo.CODE,
             JavadocTagInfo.DOC_ROOT,
@@ -107,9 +106,7 @@ public class JavadocTagInfoTest {
             astParent.setType(TokenTypes.LITERAL_CATCH);
 
             final DetailAST ast = new DetailAST();
-            final Method setParent = ast.getClass().getDeclaredMethod("setParent", DetailAST.class);
-            setParent.setAccessible(true);
-            setParent.invoke(ast, astParent);
+            Whitebox.invokeMethod(ast, "setParent", astParent);
 
             final int[] validTypes = {
                 TokenTypes.PACKAGE_DEF,
@@ -139,13 +136,11 @@ public class JavadocTagInfoTest {
     }
 
     @Test
-    public void testDeprecated() throws ReflectiveOperationException {
+    public void testDeprecated() throws Exception {
         final DetailAST ast = new DetailAST();
         final DetailAST astParent = new DetailAST();
         astParent.setType(TokenTypes.LITERAL_CATCH);
-        final Method setParent = ast.getClass().getDeclaredMethod("setParent", DetailAST.class);
-        setParent.setAccessible(true);
-        setParent.invoke(ast, astParent);
+        Whitebox.invokeMethod(ast, "setParent", astParent);
 
         final int[] validTypes = {
             TokenTypes.CLASS_DEF,
@@ -175,13 +170,11 @@ public class JavadocTagInfoTest {
     }
 
     @Test
-    public void testSerial() throws ReflectiveOperationException {
+    public void testSerial() throws Exception {
         final DetailAST ast = new DetailAST();
         final DetailAST astParent = new DetailAST();
         astParent.setType(TokenTypes.LITERAL_CATCH);
-        final Method setParent = ast.getClass().getDeclaredMethod("setParent", DetailAST.class);
-        setParent.setAccessible(true);
-        setParent.invoke(ast, astParent);
+        Whitebox.invokeMethod(ast, "setParent", astParent);
 
         final int[] validTypes = {
             TokenTypes.VARIABLE_DEF,

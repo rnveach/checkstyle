@@ -32,9 +32,6 @@ import static org.powermock.api.mockito.PowerMockito.when;
 import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.IOException;
-import java.io.Serializable;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.nio.file.Files;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -48,6 +45,7 @@ import org.junit.rules.TemporaryFolder;
 import org.junit.runner.RunWith;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
+import org.powermock.reflect.Whitebox;
 
 import com.google.common.io.ByteStreams;
 import com.puppycrawl.tools.checkstyle.AbstractPathTestSupport;
@@ -117,20 +115,15 @@ public class PropertyCacheFilePowerTest extends AbstractPathTestSupport {
         when(MessageDigest.getInstance("SHA-1"))
                 .thenThrow(NoSuchAlgorithmException.class);
 
-        final Class<?>[] param = new Class<?>[1];
-        param[0] = Serializable.class;
-        final Method method =
-            PropertyCacheFile.class.getDeclaredMethod("getHashCodeBasedOnObjectContent", param);
-        method.setAccessible(true);
         try {
-            method.invoke(cache, config);
+            Whitebox.invokeMethod(cache, "getHashCodeBasedOnObjectContent", config);
             fail("InvocationTargetException is expected");
         }
-        catch (InvocationTargetException ex) {
+        catch (IllegalStateException ex) {
             assertTrue("Invalid exception cause",
-                    ex.getCause().getCause() instanceof NoSuchAlgorithmException);
+                    ex.getCause() instanceof NoSuchAlgorithmException);
             assertEquals("Invalid exception message",
-                    "Unable to calculate hashcode.", ex.getCause().getMessage());
+                    "Unable to calculate hashcode.", ex.getMessage());
         }
     }
 

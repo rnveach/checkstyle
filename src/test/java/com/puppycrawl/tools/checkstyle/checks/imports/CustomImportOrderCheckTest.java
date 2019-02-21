@@ -29,9 +29,9 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
 
 import java.io.File;
-import java.lang.reflect.Method;
 
 import org.junit.Test;
+import org.powermock.reflect.Whitebox;
 
 import com.puppycrawl.tools.checkstyle.AbstractModuleTestSupport;
 import com.puppycrawl.tools.checkstyle.Checker;
@@ -423,14 +423,10 @@ public class CustomImportOrderCheckTest extends AbstractModuleTestSupport {
     // UT uses Reflection to avoid removing null-validation from static method,
     // which is a candidate for utility method in the future
     public void testGetFullImportIdent() throws Exception {
-        final Class<?> clazz = CustomImportOrderCheck.class;
-        final Object t = clazz.getConstructor().newInstance();
-        final Method method = clazz.getDeclaredMethod("getFullImportIdent", DetailAST.class);
-        method.setAccessible(true);
-        final Object actual = method.invoke(t, new Object[] {null});
+        final Object check = new CustomImportOrderCheck();
+        final Object actual = Whitebox.invokeMethod(check, "getFullImportIdent", (DetailAST) null);
 
-        final String expected = "";
-        assertEquals("Invalid getFullImportIdent result", expected, actual);
+        assertEquals("Invalid getFullImportIdent result", "", actual);
     }
 
     @Test

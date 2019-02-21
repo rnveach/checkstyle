@@ -27,15 +27,15 @@ import static org.junit.Assert.assertTrue;
 import java.io.File;
 import java.io.InputStream;
 import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 
 import org.junit.Test;
+import org.powermock.reflect.Whitebox;
 
 import antlr.NoViableAltForCharException;
 import antlr.ParserSharedInputState;
+import antlr.RecognitionException;
 import antlr.SemanticException;
 import antlr.TokenBuffer;
 import com.puppycrawl.tools.checkstyle.AbstractTreeTestSupport;
@@ -272,20 +272,18 @@ public class AstRegressionTest extends AbstractTreeTestSupport {
             instance.laResults = laResults.clone();
             instance.inputState.guessing = guessing;
 
-            final Method method = GeneratedJavaLexer.class.getDeclaredMethod(methodName,
-                    boolean.class);
             boolean exception;
 
             try {
-                method.invoke(instance, true);
+                Whitebox.invokeMethod(instance, methodName, true);
                 exception = false;
             }
-            catch (InvocationTargetException ex) {
+            catch (RecognitionException ex) {
                 if (expectPass) {
                     throw ex;
                 }
 
-                final Class<?> clss = ex.getTargetException().getClass();
+                final Class<?> clss = ex.getClass();
                 if (clss != NoViableAltForCharException.class
                         && clss != SemanticException.class) {
                     throw ex;

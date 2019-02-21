@@ -27,7 +27,6 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Constructor;
-import java.lang.reflect.Method;
 import java.nio.file.Files;
 import java.nio.file.NoSuchFileException;
 import java.util.ArrayList;
@@ -39,6 +38,7 @@ import java.util.SortedSet;
 
 import org.junit.Assert;
 import org.junit.Test;
+import org.powermock.reflect.Whitebox;
 
 import com.puppycrawl.tools.checkstyle.AbstractModuleTestSupport;
 import com.puppycrawl.tools.checkstyle.DefaultConfiguration;
@@ -88,16 +88,12 @@ public class UniquePropertiesCheckTest extends AbstractModuleTestSupport {
     @Test
     public void testNotFoundKey() throws Exception {
         final List<String> testStrings = new ArrayList<>(3);
-        final Method getLineNumber = UniquePropertiesCheck.class.getDeclaredMethod(
-            "getLineNumber", FileText.class, String.class);
-        Assert.assertNotNull("Get line number method should be present", getLineNumber);
-        getLineNumber.setAccessible(true);
         testStrings.add("");
         testStrings.add("0 = 0");
         testStrings.add("445");
         final FileText fileText = new FileText(new File("some.properties"), testStrings);
-        final Object lineNumber = getLineNumber.invoke(UniquePropertiesCheck.class,
-                fileText, "some key");
+        final Object lineNumber = Whitebox.invokeMethod(UniquePropertiesCheck.class,
+                "getLineNumber", fileText, "some key");
         Assert.assertNotNull("Line number should not be null", lineNumber);
         assertEquals("Invalid line number", 1, lineNumber);
     }
@@ -152,14 +148,12 @@ public class UniquePropertiesCheckTest extends AbstractModuleTestSupport {
         final Constructor<?> constructor = uniquePropertiesClass.getDeclaredConstructor();
         constructor.setAccessible(true);
         final Object uniqueProperties = constructor.newInstance();
-        final Method method = uniqueProperties.getClass().getDeclaredMethod("put", Object.class,
-                Object.class);
-        final Object result = method.invoke(uniqueProperties, 1, "value");
+        final Object result = Whitebox.invokeMethod(uniqueProperties, "put", 1, "value");
         final Map<Object, Object> table = new HashMap<>();
         final Object expected = table.put(1, "value");
         assertEquals("Invalid result of put method", expected, result);
 
-        final Object result2 = method.invoke(uniqueProperties, 1, "value");
+        final Object result2 = Whitebox.invokeMethod(uniqueProperties, "put", 1, "value");
         final Object expected2 = table.put(1, "value");
         assertEquals("Value should be substituted", expected2, result2);
     }

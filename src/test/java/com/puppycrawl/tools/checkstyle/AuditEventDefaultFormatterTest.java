@@ -21,8 +21,6 @@ package com.puppycrawl.tools.checkstyle;
 
 import static org.junit.Assert.assertEquals;
 
-import java.lang.reflect.Method;
-
 import org.junit.Test;
 import org.powermock.reflect.Whitebox;
 
@@ -72,15 +70,12 @@ public class AuditEventDefaultFormatterTest {
 
     @Test
     public void testCalculateBufferLength() throws Exception {
-        final Method calculateBufferLengthMethod =
-                Whitebox.getMethod(AuditEventDefaultFormatter.class,
-                        "calculateBufferLength", AuditEvent.class, int.class);
         final LocalizedMessage localizedMessage = new LocalizedMessage(1, 1,
                 "messages.properties", "key", null, SeverityLevel.ERROR, null,
                 getClass(), null);
         final AuditEvent auditEvent = new AuditEvent(new Object(), "fileName", localizedMessage);
-        final int result = (int) calculateBufferLengthMethod.invoke(null,
-                auditEvent, SeverityLevel.ERROR.ordinal());
+        final int result = (int) Whitebox.invokeMethod(AuditEventDefaultFormatter.class,
+                "calculateBufferLength", auditEvent, SeverityLevel.ERROR.ordinal());
 
         assertEquals("Buffer length is not expected", 54, result);
     }

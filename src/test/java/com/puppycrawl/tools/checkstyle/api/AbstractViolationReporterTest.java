@@ -22,10 +22,10 @@ package com.puppycrawl.tools.checkstyle.api;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
 
-import java.lang.reflect.Method;
 import java.util.SortedSet;
 
 import org.junit.Test;
+import org.powermock.reflect.Whitebox;
 
 import com.puppycrawl.tools.checkstyle.DefaultConfiguration;
 import com.puppycrawl.tools.checkstyle.utils.CommonUtil;
@@ -38,13 +38,9 @@ public class AbstractViolationReporterTest {
 
     private final AbstractCheck emptyCheck = new EmptyCheck();
 
-    private static Method getGetMessageBundleMethod() throws Exception {
-        final Class<AbstractViolationReporter> abstractViolationReporterClass =
-            AbstractViolationReporter.class;
-        final Method getMessageBundleMethod =
-            abstractViolationReporterClass.getDeclaredMethod("getMessageBundle", String.class);
-        getMessageBundleMethod.setAccessible(true);
-        return getMessageBundleMethod;
+    private static String invokeGetMessageBundleMethod(String className) throws Exception {
+        return Whitebox.invokeMethod(AbstractViolationReporter.class, "getMessageBundle",
+                className);
     }
 
     protected static DefaultConfiguration createModuleConfig(Class<?> clazz) {
@@ -55,14 +51,14 @@ public class AbstractViolationReporterTest {
     public void testGetMessageBundleWithPackage() throws Exception {
         assertEquals("Message bundle differs from expected",
                 "com.mycompany.checks.messages",
-            getGetMessageBundleMethod().invoke(null, "com.mycompany.checks.MyCoolCheck"));
+            invokeGetMessageBundleMethod("com.mycompany.checks.MyCoolCheck"));
     }
 
     @Test
     public void testGetMessageBundleWithoutPackage() throws Exception {
         assertEquals("Message bundle differs from expected",
                 "messages",
-            getGetMessageBundleMethod().invoke(null, "MyCoolCheck"));
+            invokeGetMessageBundleMethod("MyCoolCheck"));
     }
 
     @Test

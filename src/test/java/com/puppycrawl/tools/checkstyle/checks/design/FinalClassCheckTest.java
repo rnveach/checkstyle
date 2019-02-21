@@ -22,8 +22,6 @@ package com.puppycrawl.tools.checkstyle.checks.design;
 import static com.puppycrawl.tools.checkstyle.checks.design.FinalClassCheck.MSG_KEY;
 import static org.junit.Assert.assertArrayEquals;
 
-import java.lang.reflect.Method;
-
 import org.junit.Assert;
 import org.junit.Test;
 import org.powermock.reflect.Whitebox;
@@ -113,10 +111,9 @@ public class FinalClassCheckTest
 
     @Test
     public void testQualifiedClassName() throws Exception {
-        final Method method = Whitebox.getMethod(FinalClassCheck.class, "getQualifiedClassName",
-                String.class, String.class, String.class);
         Assert.assertEquals("unexpected result", "ClassName",
-                method.invoke(null, "", null, "ClassName"));
+            Whitebox.invokeMethod(FinalClassCheck.class,
+                "getQualifiedClassName", "", null, "ClassName"));
     }
 
 }

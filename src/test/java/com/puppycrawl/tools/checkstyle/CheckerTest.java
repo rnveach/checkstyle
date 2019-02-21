@@ -42,8 +42,6 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.LineNumberReader;
 import java.io.UnsupportedEncodingException;
-import java.lang.reflect.Field;
-import java.lang.reflect.Method;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.util.ArrayList;
@@ -94,20 +92,6 @@ public class CheckerTest extends AbstractModuleTestSupport {
     @Rule
     public final TemporaryFolder temporaryFolder = new TemporaryFolder();
 
-    private static Method getFireAuditFinished() throws NoSuchMethodException {
-        final Class<Checker> checkerClass = Checker.class;
-        final Method fireAuditFinished = checkerClass.getDeclaredMethod("fireAuditFinished");
-        fireAuditFinished.setAccessible(true);
-        return fireAuditFinished;
-    }
-
-    private static Method getFireAuditStartedMethod() throws NoSuchMethodException {
-        final Class<Checker> checkerClass = Checker.class;
-        final Method fireAuditStarted = checkerClass.getDeclaredMethod("fireAuditStarted");
-        fireAuditStarted.setAccessible(true);
-        return fireAuditStarted;
-    }
-
     @Override
     protected String getPackageLocation() {
         return "com/puppycrawl/tools/checkstyle/checker";
@@ -147,12 +131,12 @@ public class CheckerTest extends AbstractModuleTestSupport {
         checker.addListener(auditAdapter);
 
         // Let's try fire some events
-        getFireAuditStartedMethod().invoke(checker);
+        Whitebox.invokeMethod(checker, "fireAuditStarted");
         assertTrue("Checker.fireAuditStarted() doesn't call listener", auditAdapter.wasCalled());
         assertTrue("Checker.fireAuditStarted() doesn't pass event", auditAdapter.wasEventPassed());
 
         auditAdapter.resetListener();
-        getFireAuditFinished().invoke(checker);
+        Whitebox.invokeMethod(checker, "fireAuditFinished");
         assertTrue("Checker.fireAuditFinished() doesn't call listener", auditAdapter.wasCalled());
         assertTrue("Checker.fireAuditFinished() doesn't pass event", auditAdapter.wasEventPassed());
 
@@ -185,13 +169,13 @@ public class CheckerTest extends AbstractModuleTestSupport {
         checker.removeListener(auditAdapter);
 
         // Let's try fire some events
-        getFireAuditStartedMethod().invoke(checker);
+        Whitebox.invokeMethod(checker, "fireAuditStarted");
         assertTrue("Checker.fireAuditStarted() doesn't call listener", aa2.wasCalled());
         assertFalse("Checker.fireAuditStarted() does call removed listener",
                 auditAdapter.wasCalled());
 
         aa2.resetListener();
-        getFireAuditFinished().invoke(checker);
+        Whitebox.invokeMethod(checker, "fireAuditFinished");
         assertTrue("Checker.fireAuditFinished() doesn't call listener", aa2.wasCalled());
         assertFalse("Checker.fireAuditFinished() does call removed listener",
                 auditAdapter.wasCalled());
@@ -422,9 +406,7 @@ public class CheckerTest extends AbstractModuleTestSupport {
         assertEquals("Basedir is set to unexpected value",
                 "testBaseDir", context.get("basedir"));
 
-        final Field sLocale = LocalizedMessage.class.getDeclaredField("sLocale");
-        sLocale.setAccessible(true);
-        final Locale locale = (Locale) sLocale.get(null);
+        final Locale locale = (Locale) Whitebox.getInternalState(LocalizedMessage.class, "sLocale");
         assertEquals("Locale is set to unexpected value", Locale.ITALY, locale);
     }
 

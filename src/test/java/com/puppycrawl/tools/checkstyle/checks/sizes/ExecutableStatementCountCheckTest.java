@@ -47,7 +47,7 @@ public class ExecutableStatementCountCheckTest
 
     @Test
     @SuppressWarnings("unchecked")
-    public void testStatefulFieldsClearedOnBeginTree() throws Exception {
+    public void testStatefulFieldsClearedOnBeginTree() {
         final DetailAST ast = new DetailAST();
         ast.setType(TokenTypes.STATIC_INIT);
         final ExecutableStatementCountCheck check = new ExecutableStatementCountCheck();

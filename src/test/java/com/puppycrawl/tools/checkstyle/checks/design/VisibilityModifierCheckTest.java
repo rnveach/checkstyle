@@ -26,7 +26,6 @@ import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 import java.io.File;
-import java.lang.reflect.Method;
 
 import org.junit.Test;
 import org.powermock.reflect.Whitebox;
@@ -490,11 +489,9 @@ public class VisibilityModifierCheckTest
             new File(getPath("InputVisibilityModifierIsStarImport.java")),
             JavaParser.Options.WITHOUT_COMMENTS).getNextSibling();
         final VisibilityModifierCheck check = new VisibilityModifierCheck();
-        final Method method = Whitebox.getMethod(VisibilityModifierCheck.class,
-            "isStarImport", DetailAST.class);
 
         assertTrue("Should return true when star import is passed",
-            (boolean) method.invoke(check, importAst));
+            Whitebox.invokeMethod(check, "isStarImport", importAst));
     }
 
     @Test

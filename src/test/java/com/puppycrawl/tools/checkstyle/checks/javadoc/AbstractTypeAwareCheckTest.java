@@ -28,9 +28,9 @@ import static org.junit.Assert.fail;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 
 import org.junit.Test;
+import org.powermock.reflect.Whitebox;
 
 import com.puppycrawl.tools.checkstyle.AbstractModuleTestSupport;
 import com.puppycrawl.tools.checkstyle.DefaultConfiguration;
@@ -47,11 +47,9 @@ public class AbstractTypeAwareCheckTest extends AbstractModuleTestSupport {
     @Test
     public void testIsSubclassWithNulls() throws Exception {
         final JavadocMethodCheck check = new JavadocMethodCheck();
-        final Method method = check.getClass().getSuperclass()
-                .getDeclaredMethod("isSubclass", Class.class, Class.class);
-        method.setAccessible(true);
         assertFalse("Should return false if at least one of the params is null",
-            (boolean) method.invoke(check, null, null));
+            (boolean) Whitebox.invokeMethod(check, "isSubclass", (Class<?>) null,
+                (Class<?>) null));
     }
 
     @Test
@@ -61,8 +59,7 @@ public class AbstractTypeAwareCheckTest extends AbstractModuleTestSupport {
         final Constructor<?> tokenConstructor = tokenType.getDeclaredConstructor(String.class,
                 int.class, int.class);
         final Object token = tokenConstructor.newInstance("blablabla", 1, 1);
-        final Method toString = token.getClass().getDeclaredMethod("toString");
-        final String result = (String) toString.invoke(token);
+        final String result = (String) Whitebox.invokeMethod(token, "toString");
         assertEquals("Invalid toString result", "Token[blablabla(1x1)]", result);
     }
 
@@ -97,22 +94,15 @@ public class AbstractTypeAwareCheckTest extends AbstractModuleTestSupport {
         final Object regularClass = regularClassConstructor.newInstance(token, "sur",
                 methodCheck);
 
-        final Method toString = regularClass.getClass().getDeclaredMethod("toString");
-        toString.setAccessible(true);
-        final String result = (String) toString.invoke(regularClass);
+        final String result = (String) Whitebox.invokeMethod(regularClass, "toString");
         final String expected = "RegularClass[name=Token[blablabla(1x1)], in class='sur', check="
                 + methodCheck.hashCode() + "," + " loadable=true, class=null]";
 
         assertEquals("Invalid toString result", expected, result);
 
-        final Method setClazz = regularClass.getClass().getDeclaredMethod("setClazz", Class.class);
-        setClazz.setAccessible(true);
-        final Class<?> arg = null;
-        setClazz.invoke(regularClass, arg);
+        Whitebox.invokeMethod(regularClass, "setClazz", (Class<?>) null);
 
-        final Method getClazz = regularClass.getClass().getDeclaredMethod("getClazz");
-        getClazz.setAccessible(true);
-        assertNull("Expected null", getClazz.invoke(regularClass));
+        assertNull("Expected null", Whitebox.invokeMethod(regularClass, "getClazz"));
     }
 
     @Test
@@ -145,9 +135,7 @@ public class AbstractTypeAwareCheckTest extends AbstractModuleTestSupport {
         classAliasConstructor.setAccessible(true);
 
         final Object classAlias = classAliasConstructor.newInstance(token, regularClass);
-        final Method toString = classAlias.getClass().getDeclaredMethod("toString");
-        toString.setAccessible(true);
-        final String result = (String) toString.invoke(classAlias);
+        final String result = (String) Whitebox.invokeMethod(classAlias, "toString");
         assertEquals("Invalid toString result",
             "ClassAlias[alias Token[blablabla(1x1)] for Token[blablabla(1x1)]]", result);
     }

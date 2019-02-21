@@ -26,8 +26,6 @@ import static org.junit.Assert.fail;
 
 import java.io.File;
 import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
@@ -61,25 +59,6 @@ public class ConfigurationLoaderTest extends AbstractPathTestSupport {
         final String fName = getPath(name);
 
         return ConfigurationLoader.loadConfiguration(fName, new PropertiesExpander(props));
-    }
-
-    /**
-     * Non meaningful javadoc just to contain "noinspection" tag.
-     * Till https://youtrack.jetbrains.com/issue/IDEA-187209
-     * @return method class
-     * @throws Exception if smth wrong
-     * @noinspection JavaReflectionMemberAccess
-     */
-    private static Method getReplacePropertiesMethod() throws Exception {
-        final Class<?>[] params = new Class<?>[3];
-        params[0] = String.class;
-        params[1] = PropertyResolver.class;
-        params[2] = String.class;
-        final Class<ConfigurationLoader> configurationLoaderClass = ConfigurationLoader.class;
-        final Method replacePropertiesMethod =
-            configurationLoaderClass.getDeclaredMethod("replaceProperties", params);
-        replacePropertiesMethod.setAccessible(true);
-        return replacePropertiesMethod;
     }
 
     @Test
@@ -336,8 +315,8 @@ public class ConfigurationLoaderTest extends AbstractPathTestSupport {
                                      "{a}", "a}", "$a}", "$", "a$b", };
         final Properties props = initProperties();
         for (String testValue : testValues) {
-            final String value = (String) getReplacePropertiesMethod().invoke(
-                null, testValue, new PropertiesExpander(props), null);
+            final String value = (String) Whitebox.invokeMethod(ConfigurationLoader.class,
+                "replaceProperties", testValue, new PropertiesExpander(props), null);
             assertEquals("\"" + testValue + "\"", value, testValue);
         }
     }
@@ -346,13 +325,13 @@ public class ConfigurationLoaderTest extends AbstractPathTestSupport {
     public void testReplacePropertiesSyntaxError() throws Exception {
         final Properties props = initProperties();
         try {
-            final String value = (String) getReplacePropertiesMethod().invoke(
-                null, "${a", new PropertiesExpander(props), null);
+            final String value = (String) Whitebox.invokeMethod(ConfigurationLoader.class,
+                "replaceProperties", "${a", new PropertiesExpander(props), null);
             fail("expected to fail, instead got: " + value);
         }
-        catch (InvocationTargetException ex) {
+        catch (CheckstyleException ex) {
             assertEquals("Invalid exception cause message",
-                "Syntax error in property: ${a", ex.getCause().getMessage());
+                "Syntax error in property: ${a", ex.getMessage());
         }
     }
 
@@ -360,13 +339,13 @@ public class ConfigurationLoaderTest extends AbstractPathTestSupport {
     public void testReplacePropertiesMissingProperty() throws Exception {
         final Properties props = initProperties();
         try {
-            final String value = (String) getReplacePropertiesMethod().invoke(
-                null, "${c}", new PropertiesExpander(props), null);
+            final String value = (String) Whitebox.invokeMethod(ConfigurationLoader.class,
+                "replaceProperties", "${c}", new PropertiesExpander(props), null);
             fail("expected to fail, instead got: " + value);
         }
-        catch (InvocationTargetException ex) {
+        catch (CheckstyleException ex) {
             assertEquals("Invalid exception cause message",
-                "Property ${c} has not been set", ex.getCause().getMessage());
+                "Property ${c} has not been set", ex.getMessage());
         }
     }
 
@@ -388,8 +367,8 @@ public class ConfigurationLoaderTest extends AbstractPathTestSupport {
         };
         final Properties props = initProperties();
         for (String[] testValue : testValues) {
-            final String value = (String) getReplacePropertiesMethod().invoke(
-                null, testValue[0], new PropertiesExpander(props), null);
+            final String value = (String) Whitebox.invokeMethod(ConfigurationLoader.class,
+                "replaceProperties", testValue[0], new PropertiesExpander(props), null);
             assertEquals("\"" + testValue[0] + "\"",
                 testValue[1], value);
         }
@@ -574,8 +553,9 @@ public class ConfigurationLoaderTest extends AbstractPathTestSupport {
         final Properties props = new Properties();
         final String defaultValue = "defaultValue";
 
-        final String value = (String) getReplacePropertiesMethod().invoke(
-            null, "${checkstyle.basedir}", new PropertiesExpander(props), defaultValue);
+        final String value = (String) Whitebox.invokeMethod(ConfigurationLoader.class,
+            "replaceProperties", "${checkstyle.basedir}", new PropertiesExpander(props),
+            defaultValue);
 
         assertEquals("Invalid property value", defaultValue, value);
     }

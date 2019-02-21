@@ -33,8 +33,6 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.fail;
 
 import java.io.File;
-import java.lang.reflect.Field;
-import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
@@ -45,6 +43,7 @@ import java.util.Optional;
 import java.util.Set;
 
 import org.junit.Test;
+import org.powermock.reflect.Whitebox;
 
 import com.puppycrawl.tools.checkstyle.api.AbstractFileSetCheck;
 import com.puppycrawl.tools.checkstyle.api.CheckstyleException;
@@ -288,24 +287,19 @@ public class PackageObjectFactoryTest {
     @Test
     public void testCreateObjectByBruteForce() throws Exception {
         final String className = "Checker";
-        final Method createModuleByBruteForce = PackageObjectFactory.class.getDeclaredMethod(
-                "createModuleByTryInEachPackage", String.class);
-        createModuleByBruteForce.setAccessible(true);
-        final Checker checker = (Checker) createModuleByBruteForce.invoke(factory, className);
+        final Checker checker = (Checker) Whitebox.invokeMethod(factory,
+                "createModuleByTryInEachPackage", className);
         assertNotNull("Checker should not be null when creating module from name", checker);
     }
 
     @Test
     public void testCreateCheckByBruteForce() throws Exception {
         final String checkName = "AnnotationLocation";
-        final Method createModuleByBruteForce = PackageObjectFactory.class.getDeclaredMethod(
-                "createModuleByTryInEachPackage", String.class);
         final PackageObjectFactory packageObjectFactory = new PackageObjectFactory(
             new HashSet<>(Arrays.asList(BASE_PACKAGE, BASE_PACKAGE + ".checks.annotation")),
             Thread.currentThread().getContextClassLoader(), TRY_IN_ALL_REGISTERED_PACKAGES);
-        createModuleByBruteForce.setAccessible(true);
-        final AnnotationLocationCheck check = (AnnotationLocationCheck) createModuleByBruteForce
-                .invoke(packageObjectFactory, checkName);
+        final AnnotationLocationCheck check = (AnnotationLocationCheck) Whitebox
+                .invokeMethod(packageObjectFactory, "createModuleByTryInEachPackage", checkName);
         assertNotNull("Check should not be null when creating module from name", check);
     }
 
@@ -322,14 +316,10 @@ public class PackageObjectFactoryTest {
 
     @Test
     public void testJoinPackageNamesWithClassName() throws Exception {
-        final Class<PackageObjectFactory> clazz = PackageObjectFactory.class;
-        final Method method =
-            clazz.getDeclaredMethod("joinPackageNamesWithClassName", String.class, Set.class);
-        method.setAccessible(true);
         final Set<String> packages = Collections.singleton("test");
         final String className = "SomeClass";
-        final String actual =
-            String.valueOf(method.invoke(PackageObjectFactory.class, className, packages));
+        final String actual = (String) Whitebox.invokeMethod(PackageObjectFactory.class,
+                "joinPackageNamesWithClassName", className, packages);
         assertEquals("Invalid class name", "test." + className, actual);
     }
 
@@ -337,10 +327,9 @@ public class PackageObjectFactoryTest {
     @SuppressWarnings("unchecked")
     public void testNameToFullModuleNameMap() throws Exception {
         final Set<Class<?>> classes = CheckUtil.getCheckstyleModules();
-        final Class<PackageObjectFactory> packageObjectFactoryClass = PackageObjectFactory.class;
-        final Field field = packageObjectFactoryClass.getDeclaredField("NAME_TO_FULL_MODULE_NAME");
-        field.setAccessible(true);
-        final Collection<String> canonicalNames = ((Map<String, String>) field.get(null)).values();
+        final Collection<String> canonicalNames = ((Map<String, String>) Whitebox
+                .getInternalState(PackageObjectFactory.class, "NAME_TO_FULL_MODULE_NAME"))
+                .values();
 
         final Optional<Class<?>> optional1 = classes.stream()
                 .filter(clazz -> !canonicalNames.contains(clazz.getCanonicalName())).findFirst();

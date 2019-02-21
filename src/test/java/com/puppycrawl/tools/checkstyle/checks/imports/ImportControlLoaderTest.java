@@ -26,13 +26,11 @@ import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 import java.io.File;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.net.MalformedURLException;
 import java.net.URI;
 
 import org.junit.Test;
-import org.xml.sax.Attributes;
+import org.powermock.reflect.Whitebox;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.AttributesImpl;
@@ -87,17 +85,13 @@ public class ImportControlLoaderTest {
                 }
             };
         try {
-            final Class<?> clazz = ImportControlLoader.class;
-            final Method privateMethod = clazz.getDeclaredMethod("safeGet",
-                Attributes.class, String.class);
-            privateMethod.setAccessible(true);
-            privateMethod.invoke(null, attr, "you_cannot_find_me");
+            Whitebox.invokeMethod(ImportControlLoader.class, "safeGet", attr,
+                    "you_cannot_find_me");
             fail("exception expected");
         }
-        catch (InvocationTargetException ex) {
-            assertSame("Invalid exception class", SAXException.class, ex.getCause().getClass());
+        catch (SAXException ex) {
             assertEquals("Invalid exception message",
-                    "missing attribute you_cannot_find_me", ex.getCause().getMessage());
+                    "missing attribute you_cannot_find_me", ex.getMessage());
         }
     }
 
@@ -108,19 +102,13 @@ public class ImportControlLoaderTest {
     public void testLoadThrowsException() throws Exception {
         final InputSource source = new InputSource();
         try {
-            final Class<?> clazz = ImportControlLoader.class;
-            final Method privateMethod = clazz.getDeclaredMethod("load", InputSource.class,
-                URI.class);
-            privateMethod.setAccessible(true);
-            privateMethod.invoke(null, source,
+            Whitebox.invokeMethod(ImportControlLoader.class, "load", source,
                     new File(getPath("InputImportControlLoaderComplete.xml")).toURI());
             fail("exception expected");
         }
-        catch (InvocationTargetException ex) {
-            assertSame("Invalid exception class",
-                    CheckstyleException.class, ex.getCause().getClass());
+        catch (CheckstyleException ex) {
             assertTrue("Invalid exception message: " + ex.getCause().getMessage(),
-                    ex.getCause().getMessage().startsWith("unable to read"));
+                    ex.getMessage().startsWith("unable to read"));
         }
     }
 

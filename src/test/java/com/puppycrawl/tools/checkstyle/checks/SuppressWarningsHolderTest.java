@@ -27,8 +27,6 @@ import static org.junit.Assert.fail;
 
 import java.io.File;
 import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -269,11 +267,8 @@ public class SuppressWarningsHolderTest extends AbstractModuleTestSupport {
     }
 
     @Test
-    public void testGetAllAnnotationValuesWrongArg() throws ReflectiveOperationException {
+    public void testGetAllAnnotationValuesWrongArg() throws Exception {
         final SuppressWarningsHolder holder = new SuppressWarningsHolder();
-        final Method getAllAnnotationValues = holder.getClass()
-                .getDeclaredMethod("getAllAnnotationValues", DetailAST.class);
-        getAllAnnotationValues.setAccessible(true);
 
         final DetailAST methodDef = new DetailAST();
         methodDef.setType(TokenTypes.METHOD_DEF);
@@ -289,23 +284,18 @@ public class SuppressWarningsHolderTest extends AbstractModuleTestSupport {
         parent.addChild(methodDef);
 
         try {
-            getAllAnnotationValues.invoke(holder, parent);
+            Whitebox.invokeMethod(holder, "getAllAnnotationValues", parent);
             fail("Exception expected");
         }
-        catch (InvocationTargetException ex) {
-            assertTrue("Error type is unexpected",
-                    ex.getCause() instanceof IllegalArgumentException);
+        catch (IllegalArgumentException ex) {
             assertEquals("Error message is unexpected",
-                    "Unexpected AST: Method Def[0x0]", ex.getCause().getMessage());
+                    "Unexpected AST: Method Def[0x0]", ex.getMessage());
         }
     }
 
     @Test
-    public void testGetAnnotationValuesWrongArg() throws ReflectiveOperationException {
+    public void testGetAnnotationValuesWrongArg() throws Exception {
         final SuppressWarningsHolder holder = new SuppressWarningsHolder();
-        final Method getAllAnnotationValues = holder.getClass()
-                .getDeclaredMethod("getAnnotationValues", DetailAST.class);
-        getAllAnnotationValues.setAccessible(true);
 
         final DetailAST methodDef = new DetailAST();
         methodDef.setType(TokenTypes.METHOD_DEF);
@@ -314,24 +304,19 @@ public class SuppressWarningsHolderTest extends AbstractModuleTestSupport {
         methodDef.setColumnNo(0);
 
         try {
-            getAllAnnotationValues.invoke(holder, methodDef);
+            Whitebox.invokeMethod(holder, "getAnnotationValues", methodDef);
             fail("Exception expected");
         }
-        catch (InvocationTargetException ex) {
-            assertTrue("Error type is unexpected",
-                    ex.getCause() instanceof IllegalArgumentException);
+        catch (IllegalArgumentException ex) {
             assertEquals("Error message is unexpected",
                     "Expression or annotation array"
-                    + " initializer AST expected: Method Def[0x0]", ex.getCause().getMessage());
+                    + " initializer AST expected: Method Def[0x0]", ex.getMessage());
         }
     }
 
     @Test
-    public void testGetAnnotationTargetWrongArg() throws ReflectiveOperationException {
+    public void testGetAnnotationTargetWrongArg() throws Exception {
         final SuppressWarningsHolder holder = new SuppressWarningsHolder();
-        final Method getAnnotationTarget = holder.getClass()
-                .getDeclaredMethod("getAnnotationTarget", DetailAST.class);
-        getAnnotationTarget.setAccessible(true);
 
         final DetailAST methodDef = new DetailAST();
         methodDef.setType(TokenTypes.METHOD_DEF);
@@ -345,14 +330,12 @@ public class SuppressWarningsHolderTest extends AbstractModuleTestSupport {
         parent.setColumnNo(0);
 
         try {
-            getAnnotationTarget.invoke(holder, methodDef);
+            Whitebox.invokeMethod(holder, "getAnnotationTarget", methodDef);
             fail("Exception expected");
         }
-        catch (InvocationTargetException ex) {
-            assertTrue("Error type is unexpected",
-                    ex.getCause() instanceof IllegalArgumentException);
+        catch (IllegalArgumentException ex) {
             assertEquals("Error message is unexpected",
-                    "Unexpected container AST: Parent ast[0x0]", ex.getCause().getMessage());
+                    "Unexpected container AST: Parent ast[0x0]", ex.getMessage());
         }
     }
 
@@ -394,7 +377,7 @@ public class SuppressWarningsHolderTest extends AbstractModuleTestSupport {
 
         assertTrue("Ast should contain ANNOTATION", annotationDef.isPresent());
         assertTrue("State is not cleared on beginTree",
-            TestUtil.isStatefulFieldClearedDuringBeginTree(check, annotationDef.get(),
+            TestUtil.isStatefulStaticFieldClearedDuringBeginTree(check, annotationDef.get(),
                 "ENTRIES",
                 entries -> ((ThreadLocal<List<Object>>) entries).get().isEmpty()));
     }

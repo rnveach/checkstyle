@@ -25,7 +25,6 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
-import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.net.URI;
 import java.util.Arrays;
@@ -95,13 +94,12 @@ public class AutomaticBeanTest {
     }
 
     @Test
-    public void testSetupInvalidChildFromBaseClass() throws Exception {
+    public void testSetupInvalidChildFromBaseClass() {
         final TestBean testBean = new TestBean();
         final DefaultConfiguration parentConf = new DefaultConfiguration("parentConf");
         final DefaultConfiguration childConf = new DefaultConfiguration("childConf");
-        final Field field = AutomaticBean.class.getDeclaredField("configuration");
-        field.setAccessible(true);
-        field.set(testBean, parentConf);
+
+        Whitebox.setInternalState(testBean, "configuration", parentConf);
 
         try {
             testBean.setupChild(childConf);

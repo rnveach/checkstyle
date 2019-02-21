@@ -23,9 +23,8 @@ import static com.puppycrawl.tools.checkstyle.internal.utils.TestUtil.isUtilsCla
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
-import java.lang.reflect.Field;
-
 import org.junit.Test;
+import org.powermock.reflect.Whitebox;
 
 public class JavadocTokenTypesTest {
 
@@ -224,12 +223,11 @@ public class JavadocTokenTypesTest {
     }
 
     @Test
-    public void testRuleOffsetValue() throws Exception {
-        final Field ruleTypesOffset = JavadocTokenTypes.class.getDeclaredField("RULE_TYPES_OFFSET");
-        ruleTypesOffset.setAccessible(true);
+    public void testRuleOffsetValue() {
         assertEquals("Please ensure that the field `RULE_TYPES_OFFSET` in"
                 + " `JavadocTokenTypes.java` has a value of 10000",
-                10000, ruleTypesOffset.getInt(null));
+                10000,
+                (int) Whitebox.getInternalState(JavadocTokenTypes.class, "RULE_TYPES_OFFSET"));
     }
 
 }

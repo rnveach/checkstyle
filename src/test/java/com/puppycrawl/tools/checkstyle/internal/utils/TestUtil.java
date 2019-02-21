@@ -20,13 +20,12 @@
 package com.puppycrawl.tools.checkstyle.internal.utils;
 
 import java.lang.reflect.Constructor;
-import java.lang.reflect.Field;
-import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
-import java.util.Arrays;
 import java.util.Optional;
 import java.util.Set;
 import java.util.function.Predicate;
+
+import org.powermock.reflect.Whitebox;
 
 import com.puppycrawl.tools.checkstyle.PackageNamesLoader;
 import com.puppycrawl.tools.checkstyle.PackageObjectFactory;
@@ -68,52 +67,6 @@ public final class TestUtil {
     }
 
     /**
-     * Retrieves the specified field by it's name in the class or it's direct super.
-     *
-     * @param clss The class to retrieve the field for.
-     * @param fieldName The name of the field to retrieve.
-     * @return The class' field.
-     * @throws NoSuchFieldException if the requested field cannot be found in the class.
-     */
-    public static Field getClassDeclaredField(Class<?> clss, String fieldName)
-            throws NoSuchFieldException {
-        final Optional<Field> classField = Arrays.stream(clss.getDeclaredFields())
-                .filter(field -> fieldName.equals(field.getName())).findFirst();
-        final Field resultField;
-        if (classField.isPresent()) {
-            resultField = classField.get();
-        }
-        else {
-            resultField = clss.getSuperclass().getDeclaredField(fieldName);
-        }
-        resultField.setAccessible(true);
-        return resultField;
-    }
-
-    /**
-     * Retrieves the specified method by it's name in the class or it's direct super.
-     *
-     * @param clss The class to retrieve the field for.
-     * @param methodName The name of the method to retrieve.
-     * @return The class' field.
-     * @throws NoSuchMethodException if the requested method cannot be found in the class.
-     */
-    public static Method getClassDeclaredMethod(Class<?> clss, String methodName)
-            throws NoSuchMethodException {
-        final Optional<Method> classMethod = Arrays.stream(clss.getDeclaredMethods())
-                .filter(method -> methodName.equals(method.getName())).findFirst();
-        final Method resultMethod;
-        if (classMethod.isPresent()) {
-            resultMethod = classMethod.get();
-        }
-        else {
-            resultMethod = clss.getSuperclass().getDeclaredMethod(methodName);
-        }
-        resultMethod.setAccessible(true);
-        return resultMethod;
-    }
-
-    /**
      * Checks if stateful field is cleared during {@link AbstractCheck#beginTree} in check.
      *
      * @param check      check object which field is to be verified
@@ -121,20 +74,34 @@ public final class TestUtil {
      * @param fieldName  name of the field to be checked
      * @param isClear    function for checking field state
      * @return {@code true} if state of the field is cleared
-     * @throws NoSuchFieldException   if there is no field with the
-     *                                {@code fieldName} in the {@code check}
-     * @throws IllegalAccessException if the field is inaccessible
      */
     public static boolean isStatefulFieldClearedDuringBeginTree(AbstractCheck check,
                                                                 DetailAST astToVisit,
                                                                 String fieldName,
-                                                                Predicate<Object> isClear)
-            throws NoSuchFieldException, IllegalAccessException {
+                                                                Predicate<Object> isClear) {
         check.beginTree(astToVisit);
         check.visitToken(astToVisit);
         check.beginTree(null);
-        final Field resultField = getClassDeclaredField(check.getClass(), fieldName);
-        return isClear.test(resultField.get(check));
+        return isClear.test(Whitebox.getInternalState(check, fieldName));
+    }
+
+    /**
+     * Checks if stateful static field is cleared during {@link AbstractCheck#beginTree} in check.
+     *
+     * @param check      check object which field is to be verified
+     * @param astToVisit ast to pass into check methods
+     * @param fieldName  name of the field to be checked
+     * @param isClear    function for checking field state
+     * @return {@code true} if state of the field is cleared
+     */
+    public static boolean isStatefulStaticFieldClearedDuringBeginTree(AbstractCheck check,
+                                                                DetailAST astToVisit,
+                                                                String fieldName,
+                                                                Predicate<Object> isClear) {
+        check.beginTree(astToVisit);
+        check.visitToken(astToVisit);
+        check.beginTree(null);
+        return isClear.test(Whitebox.getInternalState(check.getClass(), fieldName));
     }
 
     /**
@@ -151,9 +118,26 @@ public final class TestUtil {
             TreeWalkerFilter filter, TreeWalkerAuditEvent event,
             String fieldName, Predicate<Object> isClear) throws Exception {
         filter.accept(event);
-        getClassDeclaredMethod(filter.getClass(), "finishLocalSetup").invoke(filter);
-        final Field resultField = getClassDeclaredField(filter.getClass(), fieldName);
-        return isClear.test(resultField.get(filter));
+        Whitebox.invokeMethod(filter, "finishLocalSetup");
+        return isClear.test(Whitebox.getInternalState(filter, fieldName));
+    }
+
+    /**
+     * Checks if stateful static field is cleared during {@link AutomaticBean}'s finishLocalSetup.
+     *
+     * @param filter filter object which field is to be verified
+     * @param event event to pass into filter methods
+     * @param fieldName name of the field to be checked
+     * @param isClear function for checking field state
+     * @return {@code true} if state of the field is cleared
+     * @throws Exception if there was an error.
+     */
+    public static boolean isStatefulStaticFieldClearedDuringLocalSetup(
+            TreeWalkerFilter filter, TreeWalkerAuditEvent event,
+            String fieldName, Predicate<Object> isClear) throws Exception {
+        filter.accept(event);
+        Whitebox.invokeMethod(filter, "finishLocalSetup");
+        return isClear.test(Whitebox.getInternalState(filter.getClass(), fieldName));
     }
 
     /**

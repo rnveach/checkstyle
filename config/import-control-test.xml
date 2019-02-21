@@ -7,6 +7,11 @@
 
   <disallow pkg="junit.framework" />
 
+  <disallow class="java.lang.reflect.Method" />
+  <disallow class="java.lang.reflect.Field" />
+  <!-- TODO constructor -->
+  <!-- TODO remove reflection toString calls -->
+
   <!-- Conflicts with normal tests and pitest.
        See examples in https://github.com/checkstyle/checkstyle/issues/6439 -->
   <allow class="org.powermock.reflect.Whitebox" />

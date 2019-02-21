@@ -27,8 +27,6 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
-import java.lang.reflect.Method;
-
 import org.junit.Test;
 import org.powermock.reflect.Whitebox;
 
@@ -478,8 +476,6 @@ public class ParenPadCheckTest
     @Test
     public void testIsAcceptableToken() throws Exception {
         final ParenPadCheck check = new ParenPadCheck();
-        final Method method = Whitebox.getMethod(ParenPadCheck.class,
-            "isAcceptableToken", DetailAST.class);
         final DetailAST ast = new DetailAST();
         final String message = "Expected that all acceptable tokens will pass isAcceptableToken "
             + "method, but some token don't: ";
@@ -487,7 +483,7 @@ public class ParenPadCheckTest
         for (int token : check.getAcceptableTokens()) {
             ast.setType(token);
             assertTrue(message + TokenUtil.getTokenName(token),
-                    (boolean) method.invoke(check, ast));
+                    (boolean) Whitebox.invokeMethod(check, "isAcceptableToken", ast));
         }
     }
 

@@ -27,6 +27,7 @@ import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 import org.junit.Test;
+import org.powermock.reflect.Whitebox;
 
 import antlr.CommonHiddenStreamToken;
 import com.puppycrawl.tools.checkstyle.AbstractModuleTestSupport;
@@ -34,7 +35,6 @@ import com.puppycrawl.tools.checkstyle.DefaultConfiguration;
 import com.puppycrawl.tools.checkstyle.api.CheckstyleException;
 import com.puppycrawl.tools.checkstyle.api.DetailAST;
 import com.puppycrawl.tools.checkstyle.api.TokenTypes;
-import com.puppycrawl.tools.checkstyle.internal.utils.TestUtil;
 import com.puppycrawl.tools.checkstyle.utils.CommonUtil;
 
 public class ImportOrderCheckTest extends AbstractModuleTestSupport {
@@ -651,11 +651,9 @@ public class ImportOrderCheckTest extends AbstractModuleTestSupport {
      * exception that gets thrown when a unsupported option is used. The field has a value by
      * default and the setter for the property will throw it's own exception when an unsupported
      * option is given, so there is no other way to cover this code.
-     *
-     * @throws Exception if there is an error.
      */
     @Test
-    public void testVisitTokenSwitchReflection() throws Exception {
+    public void testVisitTokenSwitchReflection() {
         // Create mock ast
         final DetailAST astImport = mockAST(TokenTypes.IMPORT, "import", "mockfile", 0, 0);
         final DetailAST astIdent = mockAST(TokenTypes.IDENT, "myTestImport", "mockfile", 0, 0);
@@ -665,7 +663,7 @@ public class ImportOrderCheckTest extends AbstractModuleTestSupport {
 
         // Set unsupported option
         final ImportOrderCheck mock = new ImportOrderCheck();
-        TestUtil.getClassDeclaredField(ImportOrderCheck.class, "option").set(mock, null);
+        Whitebox.setInternalState(mock, "option", (Object) null);
 
         // expecting IllegalStateException
         try {

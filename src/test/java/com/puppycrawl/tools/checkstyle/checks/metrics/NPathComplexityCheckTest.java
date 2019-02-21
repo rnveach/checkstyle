@@ -28,6 +28,7 @@ import java.util.SortedSet;
 
 import org.junit.Assert;
 import org.junit.Test;
+import org.powermock.reflect.Whitebox;
 
 import antlr.CommonHiddenStreamToken;
 import com.puppycrawl.tools.checkstyle.AbstractModuleTestSupport;
@@ -131,7 +132,7 @@ public class NPathComplexityCheckTest extends AbstractModuleTestSupport {
 
     @Test
     @SuppressWarnings("unchecked")
-    public void testStatefulFieldsClearedOnBeginTree1() throws Exception {
+    public void testStatefulFieldsClearedOnBeginTree1() {
         final DetailAST ast = new DetailAST();
         ast.setType(TokenTypes.LITERAL_ELSE);
 
@@ -146,7 +147,7 @@ public class NPathComplexityCheckTest extends AbstractModuleTestSupport {
 
     @Test
     @SuppressWarnings("unchecked")
-    public void testStatefulFieldsClearedOnBeginTree2() throws Exception {
+    public void testStatefulFieldsClearedOnBeginTree2() {
         final DetailAST ast = new DetailAST();
         ast.setType(TokenTypes.LITERAL_RETURN);
         ast.setLineNo(5);
@@ -176,17 +177,10 @@ public class NPathComplexityCheckTest extends AbstractModuleTestSupport {
                 question.get(),
                 "processingTokenEnd",
                 processingTokenEnd -> {
-                    try {
-                        return (Integer) TestUtil.getClassDeclaredField(
-                            processingTokenEnd.getClass(), "endLineNo").get(
-                            processingTokenEnd) == 0
-                            && (Integer) TestUtil.getClassDeclaredField(
-                                processingTokenEnd.getClass(), "endColumnNo").get(
-                                processingTokenEnd) == 0;
-                    }
-                    catch (IllegalAccessException | NoSuchFieldException ex) {
-                        throw new IllegalStateException(ex);
-                    }
+                    return (Integer) Whitebox.getInternalState(
+                        processingTokenEnd, "endLineNo") == 0
+                        && (Integer) Whitebox.getInternalState(
+                            processingTokenEnd, "endColumnNo") == 0;
                 }));
     }
 
@@ -283,15 +277,13 @@ public class NPathComplexityCheckTest extends AbstractModuleTestSupport {
     @Test
     public void testTokenEndIsAfterSameLineColumn() throws Exception {
         final NPathComplexityCheck check = new NPathComplexityCheck();
-        final Object tokenEnd = TestUtil.getClassDeclaredField(NPathComplexityCheck.class,
-                "processingTokenEnd").get(check);
+        final Object tokenEnd = Whitebox.getInternalState(check, "processingTokenEnd");
         final DetailAST token = new DetailAST();
         token.setLineNo(0);
         token.setColumnNo(0);
 
         Assert.assertTrue("isAfter must be true for same line/column",
-                (Boolean) TestUtil.getClassDeclaredMethod(tokenEnd.getClass(), "isAfter")
-                    .invoke(tokenEnd, token));
+                (Boolean) Whitebox.invokeMethod(tokenEnd, "isAfter", token));
     }
 
     @Test

@@ -28,6 +28,7 @@ import java.util.function.Predicate;
 
 import org.junit.Assert;
 import org.junit.Test;
+import org.powermock.reflect.Whitebox;
 
 import com.puppycrawl.tools.checkstyle.AbstractModuleTestSupport;
 import com.puppycrawl.tools.checkstyle.DefaultConfiguration;
@@ -441,20 +442,10 @@ public class HiddenFieldCheckTest
 
             // verify object is cleared
             if (result) {
-                final Class<?> frameClass = frame.getClass();
-
-                try {
-                    if (TestUtil.getClassDeclaredField(frameClass, "parent").get(frame) != null
-                            || !((Boolean) TestUtil.getClassDeclaredField(frameClass, "staticType")
-                                    .get(frame))
-                            || TestUtil.getClassDeclaredField(frameClass, "frameName")
-                                    .get(frame) != null) {
-                        result = false;
-                    }
-                }
-                catch (NoSuchFieldException | IllegalArgumentException
-                        | IllegalAccessException ex) {
-                    throw new IllegalStateException(ex);
+                if (Whitebox.getInternalState(frame, "parent") != null
+                        || !((Boolean) Whitebox.getInternalState(frame, "staticType"))
+                        || Whitebox.getInternalState(frame, "frameName") != null) {
+                    result = false;
                 }
             }
 

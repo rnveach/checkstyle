@@ -27,11 +27,11 @@ import java.util.regex.Pattern;
 
 import org.junit.Assert;
 import org.junit.Test;
+import org.powermock.reflect.Whitebox;
 
 import com.puppycrawl.tools.checkstyle.AbstractModuleTestSupport;
 import com.puppycrawl.tools.checkstyle.DefaultConfiguration;
 import com.puppycrawl.tools.checkstyle.api.TokenTypes;
-import com.puppycrawl.tools.checkstyle.internal.utils.TestUtil;
 import com.puppycrawl.tools.checkstyle.utils.TokenUtil;
 
 public class IllegalTokenTextCheckTest
@@ -126,14 +126,13 @@ public class IllegalTokenTextCheckTest
     }
 
     @Test
-    public void testOrderOfProperties() throws Exception {
+    public void testOrderOfProperties() {
         // pure class must be used as configuration doesn't guarantee order of
         // attributes
         final IllegalTokenTextCheck check = new IllegalTokenTextCheck();
         check.setFormat("test");
         check.setIgnoreCase(true);
-        final Pattern actual = (Pattern) TestUtil.getClassDeclaredField(
-                IllegalTokenTextCheck.class, "format").get(check);
+        final Pattern actual = (Pattern) Whitebox.getInternalState(check, "format");
         Assert.assertEquals("should match", Pattern.CASE_INSENSITIVE, actual.flags());
         Assert.assertEquals("should match", "test", actual.pattern());
     }

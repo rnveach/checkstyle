@@ -30,6 +30,7 @@ import java.util.SortedSet;
 
 import org.junit.Assert;
 import org.junit.Test;
+import org.powermock.reflect.Whitebox;
 
 import antlr.CommonHiddenStreamToken;
 import com.puppycrawl.tools.checkstyle.AbstractModuleTestSupport;
@@ -373,9 +374,9 @@ public class RequireThisCheckTest extends AbstractModuleTestSupport {
         final Object o = constructor.newInstance(null, ident);
 
         Assert.assertEquals("expected ident token", ident,
-                TestUtil.getClassDeclaredMethod(cls, "getFrameNameIdent").invoke(o));
+                Whitebox.invokeMethod(o, "getFrameNameIdent"));
         Assert.assertEquals("expected catch frame type", "CATCH_FRAME",
-                TestUtil.getClassDeclaredMethod(cls, "getType").invoke(o).toString());
+                Whitebox.invokeMethod(o, "getType").toString());
     }
 
     /**

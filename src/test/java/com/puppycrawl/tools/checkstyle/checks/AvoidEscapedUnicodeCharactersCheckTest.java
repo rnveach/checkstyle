@@ -24,8 +24,6 @@ import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
-import java.lang.reflect.Field;
-import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -37,7 +35,6 @@ import org.powermock.reflect.Whitebox;
 import com.puppycrawl.tools.checkstyle.AbstractModuleTestSupport;
 import com.puppycrawl.tools.checkstyle.DefaultConfiguration;
 import com.puppycrawl.tools.checkstyle.api.TokenTypes;
-import com.puppycrawl.tools.checkstyle.internal.utils.TestUtil;
 
 public class AvoidEscapedUnicodeCharactersCheckTest extends AbstractModuleTestSupport {
 
@@ -374,10 +371,8 @@ public class AvoidEscapedUnicodeCharactersCheckTest extends AbstractModuleTestSu
      */
     @Test
     public void testCountMatches() throws Exception {
-        final Method countMatches = Whitebox.getMethod(AvoidEscapedUnicodeCharactersCheck.class,
-                "countMatches", Pattern.class, String.class);
         final AvoidEscapedUnicodeCharactersCheck check = new AvoidEscapedUnicodeCharactersCheck();
-        final int actual = (int) countMatches.invoke(check,
+        final int actual = Whitebox.invokeMethod(check, "countMatches",
                 Pattern.compile("\\\\u[a-fA-F0-9]{4}"), "\\u1234");
         assertEquals("Unexpected matches count", 1, actual);
     }
@@ -389,12 +384,11 @@ public class AvoidEscapedUnicodeCharactersCheckTest extends AbstractModuleTestSu
      * @throws Exception when code tested throws some exception
      */
     @Test
-    public void testNonPrintableCharsAreSorted() throws Exception {
+    public void testNonPrintableCharsAreSorted() {
         // Getting Field Value via Reflection, because the field is private
-        final Field field = TestUtil.getClassDeclaredField(
-                AvoidEscapedUnicodeCharactersCheck.class, "NON_PRINTABLE_CHARS");
-        field.setAccessible(true);
-        String expression = ((Pattern) field.get(null)).pattern();
+        final Pattern pattern = Whitebox.getInternalState(AvoidEscapedUnicodeCharactersCheck.class,
+                "NON_PRINTABLE_CHARS");
+        String expression = pattern.pattern();
 
         // Replacing expressions like "\\u000[bB]" with "\\u000B"
         final String[] charExpressions = {"Aa", "Bb", "Cc", "Dd", "Ee", "Ff"};

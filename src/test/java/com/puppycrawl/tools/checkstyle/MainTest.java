@@ -29,8 +29,6 @@ import static org.junit.Assert.fail;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -552,25 +550,18 @@ public class MainTest {
 
     @Test
     public void testLoadPropertiesIoException() throws Exception {
-        final Class<?>[] param = new Class<?>[1];
-        param[0] = File.class;
-        final Class<?> cliOptionsClass = Class.forName(Main.class.getName());
-        final Method method = cliOptionsClass.getDeclaredMethod("loadProperties", param);
-        method.setAccessible(true);
         try {
-            method.invoke(null, new File("."));
+            Whitebox.invokeMethod(Main.class, "loadProperties", new File("."));
             fail("Exception was expected");
         }
-        catch (InvocationTargetException ex) {
-            assertTrue("Invalid error cause",
-                    ex.getCause() instanceof CheckstyleException);
+        catch (CheckstyleException ex) {
             // We do separate validation for message as in Windows
             // disk drive letter appear in message,
             // so we skip that drive letter for compatibility issues
             final LocalizedMessage loadPropertiesMessage = new LocalizedMessage(1,
                     Definitions.CHECKSTYLE_BUNDLE, Main.LOAD_PROPERTIES_EXCEPTION,
                     new String[] {""}, null, getClass(), null);
-            final String causeMessage = ex.getCause().getLocalizedMessage();
+            final String causeMessage = ex.getLocalizedMessage();
             final String localizedMessage = loadPropertiesMessage.getMessage();
             final boolean samePrefix = causeMessage.substring(0, causeMessage.indexOf(' '))
                     .equals(localizedMessage
@@ -1248,14 +1239,11 @@ public class MainTest {
     @Test
     @SuppressWarnings("unchecked")
     public void testExcludeDirectoryNotMatch() throws Exception {
-        final Class<?> optionsClass = Class.forName(Main.class.getName());
-        final Method method = optionsClass.getDeclaredMethod("listFiles", File.class, List.class);
-        method.setAccessible(true);
         final List<Pattern> list = new ArrayList<>();
         list.add(Pattern.compile("BAD_PATH"));
 
-        final List<File> result = (List<File>) method.invoke(null, new File(getFilePath("")),
-                list);
+        final List<File> result = (List<File>) Whitebox.invokeMethod(Main.class, "listFiles",
+                new File(getFilePath("")), list);
         assertNotEquals("Invalid result size", 0, result.size());
     }
 
