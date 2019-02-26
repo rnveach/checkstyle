@@ -45,6 +45,7 @@ import org.powermock.reflect.Whitebox;
 import com.puppycrawl.tools.checkstyle.AbstractModuleTestSupport;
 import com.puppycrawl.tools.checkstyle.DefaultConfiguration;
 import com.puppycrawl.tools.checkstyle.JavaParser;
+import com.puppycrawl.tools.checkstyle.JavaParser.ParseStatus;
 import com.puppycrawl.tools.checkstyle.checks.TodoCommentCheck;
 import com.puppycrawl.tools.checkstyle.utils.CommonUtil;
 
@@ -332,8 +333,12 @@ public class DetailASTTest extends AbstractModuleTestSupport {
     }
 
     private static void checkFile(String filename) throws Exception {
-        final DetailAST rootAST =
+        final ParseStatus status =
             JavaParser.parseFile(new File(filename), JavaParser.Options.WITHOUT_COMMENTS);
+
+        assertNull("unexpected parse error", status.getParseErrorMessage());
+
+        final DetailAST rootAST = status.getTree();
         if (rootAST != null) {
             checkTree(filename, rootAST);
         }

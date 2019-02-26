@@ -20,6 +20,7 @@
 package org.checkstyle.suppressionxpathfilter;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 
 import java.io.File;
 import java.io.Writer;
@@ -37,6 +38,7 @@ import org.junit.rules.TemporaryFolder;
 import com.google.checkstyle.test.base.AbstractModuleTestSupport;
 import com.puppycrawl.tools.checkstyle.DefaultConfiguration;
 import com.puppycrawl.tools.checkstyle.JavaParser;
+import com.puppycrawl.tools.checkstyle.JavaParser.ParseStatus;
 import com.puppycrawl.tools.checkstyle.TreeWalker;
 import com.puppycrawl.tools.checkstyle.api.DetailAST;
 import com.puppycrawl.tools.checkstyle.api.FileText;
@@ -70,8 +72,12 @@ public abstract class AbstractXpathTestSupport extends AbstractModuleTestSupport
             throws Exception {
         final FileText fileText = new FileText(fileToProcess,
                 StandardCharsets.UTF_8.name());
-        final DetailAST rootAst = JavaParser.parseFile(fileToProcess,
+        final ParseStatus status = JavaParser.parseFileText(fileText,
                 JavaParser.Options.WITH_COMMENTS);
+
+        assertNull("unexpected parse error", status.getParseErrorMessage());
+
+        final DetailAST rootAst = status.getTree();
         final XpathQueryGenerator queryGenerator = new XpathQueryGenerator(rootAst,
                 position.violationLineNumber, position.violationColumnNumber,
                 fileText, DEFAULT_TAB_WIDTH);

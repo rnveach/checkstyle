@@ -23,6 +23,7 @@ import static com.puppycrawl.tools.checkstyle.internal.utils.TestUtil.findTokenI
 import static com.puppycrawl.tools.checkstyle.internal.utils.TestUtil.isUtilsClassHasPrivateConstructor;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
@@ -37,6 +38,7 @@ import org.junit.Test;
 
 import com.puppycrawl.tools.checkstyle.AbstractPathTestSupport;
 import com.puppycrawl.tools.checkstyle.JavaParser;
+import com.puppycrawl.tools.checkstyle.JavaParser.ParseStatus;
 import com.puppycrawl.tools.checkstyle.api.DetailAST;
 import com.puppycrawl.tools.checkstyle.api.TokenTypes;
 import com.puppycrawl.tools.checkstyle.checks.naming.AccessModifier;
@@ -394,8 +396,13 @@ public class CheckUtilTest extends AbstractPathTestSupport {
     }
 
     private DetailAST getNodeFromFile(int type) throws Exception {
-        return getNode(JavaParser.parseFile(new File(getPath("InputCheckUtilTest.java")),
-            JavaParser.Options.WITH_COMMENTS), type);
+        final ParseStatus status = JavaParser.parseFile(new File(getPath("InputCheckUtilTest.java")),
+            JavaParser.Options.WITH_COMMENTS);
+
+        assertNull("unexpected parse error", status.getParseErrorMessage());
+
+        final DetailAST node = status.getTree();
+        return getNode(node, type);
     }
 
     private static DetailAST getNode(DetailAST root, int type) {

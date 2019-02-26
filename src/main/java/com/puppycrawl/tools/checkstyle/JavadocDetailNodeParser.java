@@ -99,7 +99,7 @@ public class JavadocDetailNodeParser {
      * Parses Javadoc comment as DetailNode tree.
      * @param javadocCommentAst
      *        DetailAST of Javadoc comment
-     * @return DetailNode tree of Javadoc comment
+     * @return Parse status of Javadoc comment
      */
     public ParseStatus parseJavadocAsDetailNode(DetailAST javadocCommentAst) {
         blockCommentLineNumber = javadocCommentAst.getLineNo();

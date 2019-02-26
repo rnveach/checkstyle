@@ -24,14 +24,12 @@ import java.io.IOException;
 import java.io.Reader;
 import java.io.StringReader;
 import java.nio.charset.StandardCharsets;
-import java.util.Locale;
 
 import antlr.CommonHiddenStreamToken;
 import antlr.RecognitionException;
 import antlr.Token;
 import antlr.TokenStreamException;
 import antlr.TokenStreamHiddenTokenFilter;
-import com.puppycrawl.tools.checkstyle.api.CheckstyleException;
 import com.puppycrawl.tools.checkstyle.api.DetailAST;
 import com.puppycrawl.tools.checkstyle.api.FileContents;
 import com.puppycrawl.tools.checkstyle.api.FileText;
@@ -45,6 +43,11 @@ import com.puppycrawl.tools.checkstyle.utils.CommonUtil;
  *
  */
 public final class JavaParser {
+
+    /**
+     * Parse error.
+     */
+    public static final String MSG_JAVA_PARSE_ERROR = "java.parse.error";
 
     /**
      * Enum to be used for test if comments should be used.
@@ -70,11 +73,9 @@ public final class JavaParser {
     /**
      * Static helper method to parses a Java source file.
      * @param contents contains the contents of the file
-     * @return the root of the AST
-     * @throws CheckstyleException if the contents is not a valid Java source
+     * @return Parse status of Java file
      */
-    public static DetailAST parse(FileContents contents)
-            throws CheckstyleException {
+    public static ParseStatus parse(FileContents contents) {
         final String fullText = contents.getText().getFullText().toString();
         final Reader reader = new StringReader(fullText);
         final GeneratedJavaLexer lexer = new GeneratedJavaLexer(reader);
@@ -85,37 +86,39 @@ public final class JavaParser {
         filter.hide(TokenTypes.SINGLE_LINE_COMMENT);
         filter.hide(TokenTypes.BLOCK_COMMENT_BEGIN);
 
+        final ParseStatus result = new ParseStatus();
+
         final GeneratedJavaRecognizer parser = new GeneratedJavaRecognizer(filter);
         parser.setFilename(contents.getFileName());
         parser.setASTNodeClass(DetailAST.class.getName());
         try {
             parser.compilationUnit();
+
+            result.setTree((DetailAST) parser.getAST());
         }
         catch (RecognitionException | TokenStreamException ex) {
-            final String exceptionMsg = String.format(Locale.ROOT,
-                "%s occurred while parsing file %s.",
-                ex.getClass().getSimpleName(), contents.getFileName());
-            throw new CheckstyleException(exceptionMsg, ex);
+            final ParseErrorMessage parseErrorMessage = new ParseErrorMessage(MSG_JAVA_PARSE_ERROR,
+                    ex.getClass().getSimpleName());
+
+            result.setParseErrorMessage(parseErrorMessage);
         }
 
-        return (DetailAST) parser.getAST();
+        return result;
     }
 
     /**
      * Parse a text and return the parse tree.
      * @param text the text to parse
      * @param options {@link Options} to control inclusion of comment nodes
-     * @return the root node of the parse tree
-     * @throws CheckstyleException if the text is not a valid Java source
+     * @return Parse status of Java file
      */
-    public static DetailAST parseFileText(FileText text, Options options)
-            throws CheckstyleException {
+    public static ParseStatus parseFileText(FileText text, Options options) {
         final FileContents contents = new FileContents(text);
-        DetailAST ast = parse(contents);
+        final ParseStatus result = parse(contents);
         if (options == Options.WITH_COMMENTS) {
-            ast = appendHiddenCommentNodes(ast);
+            result.setTree(appendHiddenCommentNodes(result.getTree()));
         }
-        return ast;
+        return result;
     }
 
     /**
@@ -124,10 +127,9 @@ public final class JavaParser {
      * @param options {@link Options} to control inclusion of comment nodes
      * @return DetailAST tree
      * @throws IOException if the file could not be read
-     * @throws CheckstyleException if the file is not a valid Java source file
      */
-    public static DetailAST parseFile(File file, Options options)
-            throws IOException, CheckstyleException {
+    public static ParseStatus parseFile(File file, Options options)
+            throws IOException {
         final FileText text = new FileText(file.getAbsoluteFile(),
             System.getProperty("file.encoding", StandardCharsets.UTF_8.name()));
         return parseFileText(text, options);
@@ -229,6 +231,102 @@ public final class JavaParser {
 
         slComment.addChild(slCommentContent);
         return slComment;
+    }
+
+
+
+    /**
+     * Contains result of parsing java: DetailAST tree and parse
+     * error message.
+     */
+    public static class ParseStatus {
+
+        /**
+         * DetailAST tree (is null if parsing fails).
+         */
+        private DetailAST tree;
+
+        /**
+         * Parse error message (is null if parsing is successful).
+         */
+        private ParseErrorMessage parseErrorMessage;
+
+        /**
+         * Getter for DetailAST tree.
+         * @return DetailAST tree if parsing was successful, null otherwise.
+         */
+        public DetailAST getTree() {
+            return tree;
+        }
+
+        /**
+         * Sets DetailAST tree.
+         * @param tree DetailNode tree.
+         */
+        public void setTree(DetailAST tree) {
+            this.tree = tree;
+        }
+
+        /**
+         * Getter for error message during parsing.
+         * @return Error message if parsing was unsuccessful, null otherwise.
+         */
+        public ParseErrorMessage getParseErrorMessage() {
+            return parseErrorMessage;
+        }
+
+        /**
+         * Sets parse error message.
+         * @param parseErrorMessage Parse error message.
+         */
+        public void setParseErrorMessage(ParseErrorMessage parseErrorMessage) {
+            this.parseErrorMessage = parseErrorMessage;
+        }
+
+    }
+
+    /**
+     * Contains information about parse error message.
+     */
+    public static class ParseErrorMessage {
+
+        /**
+         * Key for error message.
+         */
+        private final String messageKey;
+
+        /**
+         * Error message arguments.
+         */
+        private final Object[] messageArguments;
+
+        /**
+         * Initializes parse error message.
+         *
+         * @param messageKey message key
+         * @param messageArguments message arguments
+         */
+        ParseErrorMessage(String messageKey, Object... messageArguments) {
+            this.messageKey = messageKey;
+            this.messageArguments = messageArguments.clone();
+        }
+
+        /**
+         * Getter for key for error message.
+         * @return Key for error message.
+         */
+        public String getMessageKey() {
+            return messageKey;
+        }
+
+        /**
+         * Getter for error message arguments.
+         * @return Array of error message arguments.
+         */
+        public Object[] getMessageArguments() {
+            return messageArguments.clone();
+        }
+
     }
 
 }

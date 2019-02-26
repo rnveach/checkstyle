@@ -30,6 +30,8 @@ import java.util.Set;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
+import com.puppycrawl.tools.checkstyle.JavaParser.ParseErrorMessage;
+import com.puppycrawl.tools.checkstyle.JavaParser.ParseStatus;
 import com.puppycrawl.tools.checkstyle.api.AbstractCheck;
 import com.puppycrawl.tools.checkstyle.api.AbstractFileSetCheck;
 import com.puppycrawl.tools.checkstyle.api.AutomaticBean;
@@ -184,21 +186,32 @@ public final class TreeWalker extends AbstractFileSetCheck implements ExternalRe
         // check if already checked and passed the file
         if (!ordinaryChecks.isEmpty() || !commentChecks.isEmpty()) {
             final FileContents contents = new FileContents(fileText);
-            final DetailAST rootAST = JavaParser.parse(contents);
-            if (!ordinaryChecks.isEmpty()) {
-                walk(rootAST, contents, AstState.ORDINARY);
-            }
-            if (!commentChecks.isEmpty()) {
-                final DetailAST astWithComments = JavaParser.appendHiddenCommentNodes(rootAST);
-                walk(astWithComments, contents, AstState.WITH_COMMENTS);
-            }
-            if (filters.isEmpty()) {
-                addMessages(messages);
+            final ParseStatus result = JavaParser.parse(contents);
+
+            if (result.getParseErrorMessage() == null) {
+                final DetailAST rootAST = result.getTree();
+
+                if (!ordinaryChecks.isEmpty()) {
+                    walk(rootAST, contents, AstState.ORDINARY);
+                }
+                if (!commentChecks.isEmpty()) {
+                    final DetailAST astWithComments = JavaParser.appendHiddenCommentNodes(rootAST);
+                    walk(astWithComments, contents, AstState.WITH_COMMENTS);
+                }
+                if (filters.isEmpty()) {
+                    addMessages(messages);
+                }
+                else {
+                    final SortedSet<LocalizedMessage> filteredMessages =
+                        getFilteredMessages(file.getAbsolutePath(), contents, rootAST);
+                    addMessages(filteredMessages);
+                }
             }
             else {
-                final SortedSet<LocalizedMessage> filteredMessages =
-                    getFilteredMessages(file.getAbsolutePath(), contents, rootAST);
-                addMessages(filteredMessages);
+                final ParseErrorMessage parseErrorMessage = result.getParseErrorMessage();
+                logFor(JavadocDetailNodeParser.class, 1, 1,
+                        parseErrorMessage.getMessageKey(),
+                        parseErrorMessage.getMessageArguments());
             }
             messages.clear();
         }

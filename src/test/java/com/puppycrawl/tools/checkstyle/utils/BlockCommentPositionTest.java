@@ -20,6 +20,7 @@
 package com.puppycrawl.tools.checkstyle.utils;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 import java.io.File;
@@ -31,6 +32,7 @@ import org.junit.Test;
 
 import com.puppycrawl.tools.checkstyle.AbstractPathTestSupport;
 import com.puppycrawl.tools.checkstyle.JavaParser;
+import com.puppycrawl.tools.checkstyle.JavaParser.ParseStatus;
 import com.puppycrawl.tools.checkstyle.api.DetailAST;
 import com.puppycrawl.tools.checkstyle.api.TokenTypes;
 import com.puppycrawl.tools.checkstyle.internal.utils.TestUtil;
@@ -68,8 +70,12 @@ public class BlockCommentPositionTest extends AbstractPathTestSupport {
         );
 
         for (BlockCommentPositionTestMetadata metadata : metadataList) {
-            final DetailAST ast = JavaParser.parseFile(new File(getPath(metadata.getFileName())),
+            final ParseStatus status = JavaParser.parseFile(new File(getPath(metadata.getFileName())),
                 JavaParser.Options.WITH_COMMENTS);
+
+            assertNull("unexpected parse error", status.getParseErrorMessage());
+
+            final DetailAST ast = status.getTree();
             final int matches = getJavadocsCount(ast, metadata.getAssertion());
             assertEquals("Invalid javadoc count", metadata.getMatchesNum(), matches);
         }
