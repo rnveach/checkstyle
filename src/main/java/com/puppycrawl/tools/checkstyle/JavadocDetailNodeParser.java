@@ -141,6 +141,7 @@ public class JavadocDetailNodeParser {
                     final Token htmlTagNameStart = getMissedHtmlTag(recognitionEx);
                     parseErrorMessage = new ParseErrorMessage(
                             errorListener.offset + htmlTagNameStart.getLine(),
+                            htmlTagNameStart.getCharPositionInLine(),
                             MSG_JAVADOC_MISSED_HTML_CLOSE,
                             htmlTagNameStart.getCharPositionInLine(),
                             htmlTagNameStart.getText());
@@ -581,7 +582,7 @@ public class JavadocDetailNodeParser {
             final int lineNumber = offset + line;
 
             if (MSG_JAVADOC_WRONG_SINGLETON_TAG.equals(msg)) {
-                errorMessage = new ParseErrorMessage(lineNumber,
+                errorMessage = new ParseErrorMessage(lineNumber, charPositionInLine,
                         MSG_JAVADOC_WRONG_SINGLETON_TAG, charPositionInLine,
                         ((Token) offendingSymbol).getText());
 
@@ -593,7 +594,7 @@ public class JavadocDetailNodeParser {
                 final String upperCaseRuleName = CaseFormat.UPPER_CAMEL.to(
                         CaseFormat.UPPER_UNDERSCORE, ruleName);
 
-                errorMessage = new ParseErrorMessage(lineNumber,
+                errorMessage = new ParseErrorMessage(lineNumber, charPositionInLine,
                         MSG_JAVADOC_PARSE_RULE_ERROR, charPositionInLine, msg, upperCaseRuleName);
             }
         }
@@ -692,6 +693,11 @@ public class JavadocDetailNodeParser {
         private final int lineNumber;
 
         /**
+         * Column number where parse error occurred.
+         */
+        private final int columnNumber;
+
+        /**
          * Key for error message.
          */
         private final String messageKey;
@@ -705,11 +711,14 @@ public class JavadocDetailNodeParser {
          * Initializes parse error message.
          *
          * @param lineNumber line number
+         * @param columnNumber column number
          * @param messageKey message key
          * @param messageArguments message arguments
          */
-        ParseErrorMessage(int lineNumber, String messageKey, Object... messageArguments) {
+        ParseErrorMessage(int lineNumber, int columnNumber, String messageKey,
+                Object... messageArguments) {
             this.lineNumber = lineNumber;
+            this.columnNumber = columnNumber;
             this.messageKey = messageKey;
             this.messageArguments = messageArguments.clone();
         }
@@ -720,6 +729,14 @@ public class JavadocDetailNodeParser {
          */
         public int getLineNumber() {
             return lineNumber;
+        }
+
+        /**
+         * Getter for column number where parse error occurred.
+         * @return Column number where parse error occurred.
+         */
+        public int getColumnNumber() {
+            return columnNumber;
         }
 
         /**

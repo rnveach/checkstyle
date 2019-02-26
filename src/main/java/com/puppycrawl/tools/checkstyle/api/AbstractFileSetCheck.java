@@ -147,6 +147,21 @@ public abstract class AbstractFileSetCheck
     }
 
     @Override
+    public void logFor(Class<?> sourceClass, int lineNo, int colNo, String key, Object... args) {
+        MESSAGE_COLLECTOR.get().add(
+            new LocalizedMessage(
+                lineNo,
+                colNo,
+                getMessageBundle(sourceClass.getName()),
+                key,
+                args,
+                getSeverityLevel(),
+                null,
+                sourceClass,
+                null));
+    }
+
+    @Override
     public final void log(int line, String key, Object... args) {
         log(line, 0, key, args);
     }

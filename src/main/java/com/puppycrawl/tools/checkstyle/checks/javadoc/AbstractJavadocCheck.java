@@ -44,28 +44,6 @@ import com.puppycrawl.tools.checkstyle.utils.JavadocUtil;
 public abstract class AbstractJavadocCheck extends AbstractCheck {
 
     /**
-     * Message key of error message. Missed close HTML tag breaks structure
-     * of parse tree, so parser stops parsing and generates such error
-     * message. This case is special because parser prints error like
-     * {@code "no viable alternative at input 'b \n *\n'"} and it is not
-     * clear that error is about missed close HTML tag.
-     */
-    public static final String MSG_JAVADOC_MISSED_HTML_CLOSE =
-            JavadocDetailNodeParser.MSG_JAVADOC_MISSED_HTML_CLOSE;
-
-    /**
-     * Message key of error message.
-     */
-    public static final String MSG_JAVADOC_WRONG_SINGLETON_TAG =
-            JavadocDetailNodeParser.MSG_JAVADOC_WRONG_SINGLETON_TAG;
-
-    /**
-     * Parse error while rule recognition.
-     */
-    public static final String MSG_JAVADOC_PARSE_RULE_ERROR =
-            JavadocDetailNodeParser.MSG_JAVADOC_PARSE_RULE_ERROR;
-
-    /**
      * Key is "line:column". Value is {@link DetailNode} tree. Map is stored in {@link ThreadLocal}
      * to guarantee basic thread safety and avoid shared, mutable state when not necessary.
      */
@@ -303,14 +281,17 @@ public abstract class AbstractJavadocCheck extends AbstractCheck {
                 }
 
                 if (violateExecutionOnNonTightHtml && result.isNonTight()) {
-                    log(result.getFirstNonTightHtmlTag().getLine(),
+                    logFor(JavadocDetailNodeParser.class,
+                            result.getFirstNonTightHtmlTag().getLine(),
+                            result.getFirstNonTightHtmlTag().getCharPositionInLine(),
                             JavadocDetailNodeParser.MSG_UNCLOSED_HTML_TAG,
                             result.getFirstNonTightHtmlTag().getText());
                 }
             }
             else {
                 final ParseErrorMessage parseErrorMessage = result.getParseErrorMessage();
-                log(parseErrorMessage.getLineNumber(),
+                logFor(JavadocDetailNodeParser.class,
+                        parseErrorMessage.getLineNumber(), parseErrorMessage.getColumnNumber(),
                         parseErrorMessage.getMessageKey(),
                         parseErrorMessage.getMessageArguments());
             }

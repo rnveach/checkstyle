@@ -88,7 +88,7 @@ public final class DetailNodeTreeStringPrinter {
     private static String getParseErrorMessage(ParseErrorMessage parseErrorMessage) {
         final LocalizedMessage lmessage = new LocalizedMessage(
                 parseErrorMessage.getLineNumber(),
-                "com.puppycrawl.tools.checkstyle.checks.javadoc.messages",
+                "com.puppycrawl.tools.checkstyle.messages",
                 parseErrorMessage.getMessageKey(),
                 parseErrorMessage.getMessageArguments(),
                 "",

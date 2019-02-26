@@ -237,6 +237,23 @@ public abstract class AbstractCheck extends AbstractViolationReporter {
         this.tabWidth = tabWidth;
     }
 
+    @Override
+    public void logFor(Class<?> sourceClass, int lineNo, int colNo, String key, Object... args) {
+        final int col = CommonUtil.lengthExpandedTabs(
+                getLines()[lineNo - 1], colNo, tabWidth);
+        context.get().messages.add(
+            new LocalizedMessage(
+                lineNo,
+                col,
+                getMessageBundle(sourceClass.getName()),
+                key,
+                args,
+                getSeverityLevel(),
+                null,
+                sourceClass,
+                null));
+    }
+
     /**
      * Helper method to log a LocalizedMessage.
      *

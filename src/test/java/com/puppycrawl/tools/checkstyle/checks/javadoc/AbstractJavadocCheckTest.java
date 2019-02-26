@@ -19,10 +19,10 @@
 
 package com.puppycrawl.tools.checkstyle.checks.javadoc;
 
+import static com.puppycrawl.tools.checkstyle.JavadocDetailNodeParser.MSG_JAVADOC_MISSED_HTML_CLOSE;
 import static com.puppycrawl.tools.checkstyle.JavadocDetailNodeParser.MSG_JAVADOC_PARSE_RULE_ERROR;
+import static com.puppycrawl.tools.checkstyle.JavadocDetailNodeParser.MSG_JAVADOC_WRONG_SINGLETON_TAG;
 import static com.puppycrawl.tools.checkstyle.JavadocDetailNodeParser.MSG_UNCLOSED_HTML_TAG;
-import static com.puppycrawl.tools.checkstyle.checks.javadoc.AbstractJavadocCheck.MSG_JAVADOC_MISSED_HTML_CLOSE;
-import static com.puppycrawl.tools.checkstyle.checks.javadoc.AbstractJavadocCheck.MSG_JAVADOC_WRONG_SINGLETON_TAG;
 import static com.puppycrawl.tools.checkstyle.checks.javadoc.SummaryJavadocCheck.MSG_SUMMARY_FIRST_SENTENCE;
 import static java.util.Arrays.asList;
 import static java.util.Collections.singletonList;
@@ -41,6 +41,7 @@ import org.junit.rules.TemporaryFolder;
 
 import com.puppycrawl.tools.checkstyle.AbstractModuleTestSupport;
 import com.puppycrawl.tools.checkstyle.DefaultConfiguration;
+import com.puppycrawl.tools.checkstyle.JavadocDetailNodeParser;
 import com.puppycrawl.tools.checkstyle.TreeWalker;
 import com.puppycrawl.tools.checkstyle.api.DetailNode;
 import com.puppycrawl.tools.checkstyle.api.JavadocTokenTypes;
@@ -64,27 +65,27 @@ public class AbstractJavadocCheckTest extends AbstractModuleTestSupport {
     public void testJavadocTagsWithoutArgs() throws Exception {
         final DefaultConfiguration checkconfig = createModuleConfig(TempCheck.class);
         final String[] expected = {
-            "5: " + getCheckMessage(MSG_JAVADOC_PARSE_RULE_ERROR, 7,
-                    "mismatched input '<EOF>' expecting {WS, NEWLINE}", "JAVADOC_TAG"),
-            "10: " + getCheckMessage(MSG_JAVADOC_PARSE_RULE_ERROR, 4,
-                    "no viable alternative at input '<EOF>'", "JAVADOC_TAG"),
-            "13: " + getCheckMessage(MSG_JAVADOC_PARSE_RULE_ERROR, 6,
-                    "mismatched input '<EOF>' expecting {WS, NEWLINE}", "JAVADOC_TAG"),
-            "16: " + getCheckMessage(MSG_JAVADOC_PARSE_RULE_ERROR, 8,
-                    "mismatched input '<EOF>' expecting {WS, NEWLINE}", "JAVADOC_TAG"),
-            "22: " + getCheckMessage(MSG_JAVADOC_PARSE_RULE_ERROR, 10,
-                    "no viable alternative at input '<EOF>'", "JAVADOC_TAG"),
-            "27: " + getCheckMessage(MSG_JAVADOC_PARSE_RULE_ERROR, 7,
-                    "no viable alternative at input '<EOF>'", "JAVADOC_TAG"),
-            "32: " + getCheckMessage(MSG_JAVADOC_PARSE_RULE_ERROR, 7,
-                    "mismatched input '<EOF>' expecting {WS, NEWLINE}", "JAVADOC_TAG"),
-            "37: " + getCheckMessage(MSG_JAVADOC_PARSE_RULE_ERROR, 6,
-                    "no viable alternative at input '<EOF>'", "JAVADOC_TAG"),
-            "58: " + getCheckMessage(MSG_JAVADOC_PARSE_RULE_ERROR, 13,
-                    "mismatched input '}' expecting {LEADING_ASTERISK, WS, NEWLINE}",
+            "5:7: " + getCheckMessage(JavadocDetailNodeParser.class, MSG_JAVADOC_PARSE_RULE_ERROR,
+                    7, "mismatched input '<EOF>' expecting {WS, NEWLINE}", "JAVADOC_TAG"),
+            "10:4: " + getCheckMessage(JavadocDetailNodeParser.class, MSG_JAVADOC_PARSE_RULE_ERROR,
+                    4, "no viable alternative at input '<EOF>'", "JAVADOC_TAG"),
+            "13:6: " + getCheckMessage(JavadocDetailNodeParser.class, MSG_JAVADOC_PARSE_RULE_ERROR,
+                    6, "mismatched input '<EOF>' expecting {WS, NEWLINE}", "JAVADOC_TAG"),
+            "16:8: " + getCheckMessage(JavadocDetailNodeParser.class, MSG_JAVADOC_PARSE_RULE_ERROR,
+                    8, "mismatched input '<EOF>' expecting {WS, NEWLINE}", "JAVADOC_TAG"),
+            "22:10: " + getCheckMessage(JavadocDetailNodeParser.class, MSG_JAVADOC_PARSE_RULE_ERROR,
+                    10, "no viable alternative at input '<EOF>'", "JAVADOC_TAG"),
+            "27:7: " + getCheckMessage(JavadocDetailNodeParser.class, MSG_JAVADOC_PARSE_RULE_ERROR,
+                    7, "no viable alternative at input '<EOF>'", "JAVADOC_TAG"),
+            "32:7: " + getCheckMessage(JavadocDetailNodeParser.class, MSG_JAVADOC_PARSE_RULE_ERROR,
+                    7, "mismatched input '<EOF>' expecting {WS, NEWLINE}", "JAVADOC_TAG"),
+            "37:6: " + getCheckMessage(JavadocDetailNodeParser.class, MSG_JAVADOC_PARSE_RULE_ERROR,
+                    6, "no viable alternative at input '<EOF>'", "JAVADOC_TAG"),
+            "58:13: " + getCheckMessage(JavadocDetailNodeParser.class, MSG_JAVADOC_PARSE_RULE_ERROR,
+                    13, "mismatched input '}' expecting {LEADING_ASTERISK, WS, NEWLINE}",
                     "JAVADOC_INLINE_TAG"),
-            "65: " + getCheckMessage(MSG_JAVADOC_PARSE_RULE_ERROR, 19,
-                    "no viable alternative at input '}'", "REFERENCE"),
+            "65:19: " + getCheckMessage(JavadocDetailNodeParser.class, MSG_JAVADOC_PARSE_RULE_ERROR,
+                    19, "no viable alternative at input '}'", "REFERENCE"),
         };
         verify(checkconfig, getPath("InputAbstractJavadocJavadocTagsWithoutArgs.java"), expected);
     }
@@ -93,8 +94,8 @@ public class AbstractJavadocCheckTest extends AbstractModuleTestSupport {
     public void testNumberFormatException() throws Exception {
         final DefaultConfiguration checkConfig = createModuleConfig(TempCheck.class);
         final String[] expected = {
-            "3: " + getCheckMessage(MSG_JAVADOC_PARSE_RULE_ERROR, 52,
-                    "mismatched input ';' expecting MEMBER", "REFERENCE"),
+            "3:52: " + getCheckMessage(JavadocDetailNodeParser.class, MSG_JAVADOC_PARSE_RULE_ERROR,
+                    52, "mismatched input ';' expecting MEMBER", "REFERENCE"),
         };
         verify(checkConfig, getPath("InputAbstractJavadocNumberFormatException.java"), expected);
     }
@@ -110,8 +111,10 @@ public class AbstractJavadocCheckTest extends AbstractModuleTestSupport {
     public void testParsingErrors() throws Exception {
         final DefaultConfiguration checkConfig = createModuleConfig(TempCheck.class);
         final String[] expected = {
-            "4: " + getCheckMessage(MSG_JAVADOC_MISSED_HTML_CLOSE, 4, "unclosedTag"),
-            "8: " + getCheckMessage(MSG_JAVADOC_WRONG_SINGLETON_TAG, 35, "img"),
+            "4:4: " + getCheckMessage(JavadocDetailNodeParser.class, MSG_JAVADOC_MISSED_HTML_CLOSE,
+                    4, "unclosedTag"),
+            "8:35: " + getCheckMessage(JavadocDetailNodeParser.class,
+                    MSG_JAVADOC_WRONG_SINGLETON_TAG, 35, "img"),
         };
         verify(checkConfig, getPath("InputAbstractJavadocParsingErrors.java"), expected);
         assertEquals("Error is unexpected", "", systemErr.getLog());
@@ -132,8 +135,8 @@ public class AbstractJavadocCheckTest extends AbstractModuleTestSupport {
     public void testAntlrError() throws Exception {
         final DefaultConfiguration checkConfig = createModuleConfig(TempCheck.class);
         final String[] expected = {
-            "4: " + getCheckMessage(MSG_JAVADOC_PARSE_RULE_ERROR, 78,
-                    "mismatched input '(' expecting <EOF>", "JAVADOC"),
+            "4:78: " + getCheckMessage(JavadocDetailNodeParser.class, MSG_JAVADOC_PARSE_RULE_ERROR,
+                    78, "mismatched input '(' expecting <EOF>", "JAVADOC"),
         };
         verify(checkConfig, getPath("InputAbstractJavadocInvalidAtSeeReference.java"), expected);
         assertEquals("Error is unexpected", "", systemErr.getLog());
@@ -144,11 +147,14 @@ public class AbstractJavadocCheckTest extends AbstractModuleTestSupport {
         final DefaultConfiguration checkConfig = createModuleConfig(TempCheck.class);
         final Map<String, List<String>> expectedMessages = new LinkedHashMap<>(2);
         expectedMessages.put(getPath("InputAbstractJavadocParsingErrors.java"), asList(
-            "4: " + getCheckMessage(MSG_JAVADOC_MISSED_HTML_CLOSE, 4, "unclosedTag"),
-            "8: " + getCheckMessage(MSG_JAVADOC_WRONG_SINGLETON_TAG, 35, "img")
+            "4:4: " + getCheckMessage(JavadocDetailNodeParser.class, MSG_JAVADOC_MISSED_HTML_CLOSE,
+                    4, "unclosedTag"),
+            "8:35: " + getCheckMessage(JavadocDetailNodeParser.class,
+                    MSG_JAVADOC_WRONG_SINGLETON_TAG, 35, "img")
         ));
         expectedMessages.put(getPath("InputAbstractJavadocInvalidAtSeeReference.java"),
-            singletonList("4: " + getCheckMessage(MSG_JAVADOC_PARSE_RULE_ERROR, 78,
+            singletonList("4:78: " + getCheckMessage(JavadocDetailNodeParser.class,
+                    MSG_JAVADOC_PARSE_RULE_ERROR, 78,
                     "mismatched input '(' expecting <EOF>", "JAVADOC")
         ));
         verify(createChecker(checkConfig), new File[] {
@@ -163,9 +169,10 @@ public class AbstractJavadocCheckTest extends AbstractModuleTestSupport {
             throws Exception {
         final DefaultConfiguration checkConfig = createModuleConfig(TempCheck.class);
         final String[] expected = {
-            "4: " + getCheckMessage(MSG_JAVADOC_MISSED_HTML_CLOSE, 4, "unclosedTag"),
-            "8: " + getCheckMessage(MSG_JAVADOC_PARSE_RULE_ERROR, 82,
-                    "mismatched input '(' expecting <EOF>", "JAVADOC"),
+            "4:4: " + getCheckMessage(JavadocDetailNodeParser.class, MSG_JAVADOC_MISSED_HTML_CLOSE,
+                    4, "unclosedTag"),
+            "8:82: " + getCheckMessage(JavadocDetailNodeParser.class, MSG_JAVADOC_PARSE_RULE_ERROR,
+                    82, "mismatched input '(' expecting <EOF>", "JAVADOC"),
         };
         verify(checkConfig,
             getPath("InputAbstractJavadocUnclosedTagAndInvalidAtSeeReference.java"), expected);
@@ -301,27 +308,27 @@ public class AbstractJavadocCheckTest extends AbstractModuleTestSupport {
     public void testNoWsBeforeDescriptionInJavadocTags() throws Exception {
         final DefaultConfiguration checkConfig = createModuleConfig(TempCheck.class);
         final String[] expected = {
-            "13: " + getCheckMessage(MSG_JAVADOC_PARSE_RULE_ERROR,
+            "13:23: " + getCheckMessage(JavadocDetailNodeParser.class, MSG_JAVADOC_PARSE_RULE_ERROR,
                     23, "mismatched input 'd' expecting <EOF>", "JAVADOC"),
-            "22: " + getCheckMessage(MSG_JAVADOC_PARSE_RULE_ERROR,
+            "22:30: " + getCheckMessage(JavadocDetailNodeParser.class, MSG_JAVADOC_PARSE_RULE_ERROR,
                     30, "mismatched input '-' expecting <EOF>", "JAVADOC"),
-            "28: " + getCheckMessage(MSG_JAVADOC_PARSE_RULE_ERROR,
+            "28:39: " + getCheckMessage(JavadocDetailNodeParser.class, MSG_JAVADOC_PARSE_RULE_ERROR,
                     39, "mismatched input '-' expecting <EOF>", "JAVADOC"),
-            "40: " + getCheckMessage(MSG_JAVADOC_PARSE_RULE_ERROR,
+            "40:34: " + getCheckMessage(JavadocDetailNodeParser.class, MSG_JAVADOC_PARSE_RULE_ERROR,
                     34, "mismatched input '-' expecting <EOF>", "JAVADOC"),
-            "48: " + getCheckMessage(MSG_JAVADOC_PARSE_RULE_ERROR,
+            "48:31: " + getCheckMessage(JavadocDetailNodeParser.class, MSG_JAVADOC_PARSE_RULE_ERROR,
                     31, "mismatched input '-' expecting <EOF>", "JAVADOC"),
-            "57: " + getCheckMessage(MSG_JAVADOC_PARSE_RULE_ERROR,
+            "57:15: " + getCheckMessage(JavadocDetailNodeParser.class, MSG_JAVADOC_PARSE_RULE_ERROR,
                     15, "mismatched input '-' expecting <EOF>", "JAVADOC"),
-            "64: " + getCheckMessage(MSG_JAVADOC_PARSE_RULE_ERROR,
+            "64:32: " + getCheckMessage(JavadocDetailNodeParser.class, MSG_JAVADOC_PARSE_RULE_ERROR,
                     32, "mismatched input '-' expecting <EOF>", "JAVADOC"),
-            "71: " + getCheckMessage(MSG_JAVADOC_PARSE_RULE_ERROR,
+            "71:17: " + getCheckMessage(JavadocDetailNodeParser.class, MSG_JAVADOC_PARSE_RULE_ERROR,
                     17, "mismatched input '<' expecting <EOF>", "JAVADOC"),
-            "78: " + getCheckMessage(MSG_JAVADOC_PARSE_RULE_ERROR,
+            "78:34: " + getCheckMessage(JavadocDetailNodeParser.class, MSG_JAVADOC_PARSE_RULE_ERROR,
                     34, "no viable alternative at input '-'", "JAVADOC_INLINE_TAG"),
-            "85: " + getCheckMessage(MSG_JAVADOC_PARSE_RULE_ERROR,
+            "85:39: " + getCheckMessage(JavadocDetailNodeParser.class, MSG_JAVADOC_PARSE_RULE_ERROR,
                     39, "no viable alternative at input '-'", "JAVADOC_INLINE_TAG"),
-            "92: " + getCheckMessage(MSG_JAVADOC_PARSE_RULE_ERROR,
+            "92:19: " + getCheckMessage(JavadocDetailNodeParser.class, MSG_JAVADOC_PARSE_RULE_ERROR,
                     19, "no viable alternative at input '<'", "JAVADOC_INLINE_TAG"),
         };
         verify(checkConfig, getPath("InputAbstractJavadocNoWsBeforeDescriptionInJavadocTags.java"),
@@ -332,11 +339,16 @@ public class AbstractJavadocCheckTest extends AbstractModuleTestSupport {
     public void testWrongSingletonTagInJavadoc() throws Exception {
         final DefaultConfiguration checkConfig = createModuleConfig(TempCheck.class);
         final String[] expected = {
-            "5: " + getCheckMessage(MSG_JAVADOC_WRONG_SINGLETON_TAG, 9, "embed"),
-            "10: " + getCheckMessage(MSG_JAVADOC_WRONG_SINGLETON_TAG, 9, "keygen"),
-            "15: " + getCheckMessage(MSG_JAVADOC_WRONG_SINGLETON_TAG, 9, "SOURCE"),
-            "20: " + getCheckMessage(MSG_JAVADOC_WRONG_SINGLETON_TAG, 9, "TRACK"),
-            "25: " + getCheckMessage(MSG_JAVADOC_WRONG_SINGLETON_TAG, 9, "WBR"),
+            "5:9: " + getCheckMessage(JavadocDetailNodeParser.class,
+                    MSG_JAVADOC_WRONG_SINGLETON_TAG, 9, "embed"),
+            "10:9: " + getCheckMessage(JavadocDetailNodeParser.class,
+                    MSG_JAVADOC_WRONG_SINGLETON_TAG, 9, "keygen"),
+            "15:9: " + getCheckMessage(JavadocDetailNodeParser.class,
+                    MSG_JAVADOC_WRONG_SINGLETON_TAG, 9, "SOURCE"),
+            "20:9: " + getCheckMessage(JavadocDetailNodeParser.class,
+                    MSG_JAVADOC_WRONG_SINGLETON_TAG, 9, "TRACK"),
+            "25:9: " + getCheckMessage(JavadocDetailNodeParser.class,
+                    MSG_JAVADOC_WRONG_SINGLETON_TAG, 9, "WBR"),
         };
         verify(checkConfig, getPath("InputAbstractJavadocWrongSingletonTagInJavadoc.java"),
                 expected);
@@ -348,16 +360,16 @@ public class AbstractJavadocCheckTest extends AbstractModuleTestSupport {
                 createModuleConfig(NonTightHtmlTagIntolerantCheck.class);
         checkConfig.addAttribute("violateExecutionOnNonTightHtml", "true");
         final String[] expected = {
-            "6: " + getCheckMessage(MSG_UNCLOSED_HTML_TAG, "p"),
-            "13: " + getCheckMessage(MSG_UNCLOSED_HTML_TAG, "p"),
-            "16: " + getCheckMessage(MSG_UNCLOSED_HTML_TAG, "li"),
-            "21: " + getCheckMessage(MSG_UNCLOSED_HTML_TAG, "p"),
-            "27: " + getCheckMessage(MSG_UNCLOSED_HTML_TAG, "tr"),
-            "34: " + getCheckMessage(MSG_UNCLOSED_HTML_TAG, "li"),
-            "54: " + getCheckMessage(MSG_UNCLOSED_HTML_TAG, "li"),
-            "71: " + getCheckMessage(MSG_UNCLOSED_HTML_TAG, "p"),
-            "80: " + getCheckMessage(MSG_UNCLOSED_HTML_TAG, "tr"),
-            "124: " + getCheckMessage(MSG_UNCLOSED_HTML_TAG, "p"),
+            "6:4: " + getCheckMessage(JavadocDetailNodeParser.class, MSG_UNCLOSED_HTML_TAG, "p"),
+            "13:2: " + getCheckMessage(JavadocDetailNodeParser.class, MSG_UNCLOSED_HTML_TAG, "p"),
+            "16:1: " + getCheckMessage(JavadocDetailNodeParser.class, MSG_UNCLOSED_HTML_TAG, "li"),
+            "21:30: " + getCheckMessage(JavadocDetailNodeParser.class, MSG_UNCLOSED_HTML_TAG, "p"),
+            "27:8: " + getCheckMessage(JavadocDetailNodeParser.class, MSG_UNCLOSED_HTML_TAG, "tr"),
+            "34:8: " + getCheckMessage(JavadocDetailNodeParser.class, MSG_UNCLOSED_HTML_TAG, "li"),
+            "54:16: " + getCheckMessage(JavadocDetailNodeParser.class, MSG_UNCLOSED_HTML_TAG, "li"),
+            "71:22: " + getCheckMessage(JavadocDetailNodeParser.class, MSG_UNCLOSED_HTML_TAG, "p"),
+            "80:12: " + getCheckMessage(JavadocDetailNodeParser.class, MSG_UNCLOSED_HTML_TAG, "tr"),
+            "124:9: " + getCheckMessage(JavadocDetailNodeParser.class, MSG_UNCLOSED_HTML_TAG, "p"),
         };
         verify(checkConfig, getPath("InputAbstractJavadocNonTightHtmlTags.java"), expected);
     }
@@ -378,21 +390,21 @@ public class AbstractJavadocCheckTest extends AbstractModuleTestSupport {
         checkConfig.addAttribute("violateExecutionOnNonTightHtml", "true");
         checkConfig.addAttribute("reportVisitJavadocToken", "true");
         final String[] expected = {
-            "6: " + getCheckMessage(MSG_UNCLOSED_HTML_TAG, "p"),
-            "13: " + getCheckMessage(MSG_UNCLOSED_HTML_TAG, "p"),
-            "16: " + getCheckMessage(MSG_UNCLOSED_HTML_TAG, "li"),
-            "21: " + getCheckMessage(MSG_UNCLOSED_HTML_TAG, "p"),
-            "27: " + getCheckMessage(MSG_UNCLOSED_HTML_TAG, "tr"),
-            "34: " + getCheckMessage(MSG_UNCLOSED_HTML_TAG, "li"),
+            "6:4: " + getCheckMessage(JavadocDetailNodeParser.class, MSG_UNCLOSED_HTML_TAG, "p"),
+            "13:2: " + getCheckMessage(JavadocDetailNodeParser.class, MSG_UNCLOSED_HTML_TAG, "p"),
+            "16:1: " + getCheckMessage(JavadocDetailNodeParser.class, MSG_UNCLOSED_HTML_TAG, "li"),
+            "21:30: " + getCheckMessage(JavadocDetailNodeParser.class, MSG_UNCLOSED_HTML_TAG, "p"),
+            "27:8: " + getCheckMessage(JavadocDetailNodeParser.class, MSG_UNCLOSED_HTML_TAG, "tr"),
+            "34:8: " + getCheckMessage(JavadocDetailNodeParser.class, MSG_UNCLOSED_HTML_TAG, "li"),
             "41:8: " + getCheckMessage(MSG_SUMMARY_FIRST_SENTENCE),
-            "54: " + getCheckMessage(MSG_UNCLOSED_HTML_TAG, "li"),
+            "54:16: " + getCheckMessage(JavadocDetailNodeParser.class, MSG_UNCLOSED_HTML_TAG, "li"),
             "62:13: " + getCheckMessage(MSG_SUMMARY_FIRST_SENTENCE),
-            "71: " + getCheckMessage(MSG_UNCLOSED_HTML_TAG, "p"),
-            "80: " + getCheckMessage(MSG_UNCLOSED_HTML_TAG, "tr"),
+            "71:22: " + getCheckMessage(JavadocDetailNodeParser.class, MSG_UNCLOSED_HTML_TAG, "p"),
+            "80:12: " + getCheckMessage(JavadocDetailNodeParser.class, MSG_UNCLOSED_HTML_TAG, "tr"),
             "99:8: " + getCheckMessage(MSG_SUMMARY_FIRST_SENTENCE),
             "105:8: " + getCheckMessage(MSG_SUMMARY_FIRST_SENTENCE),
             "109:8: " + getCheckMessage(MSG_SUMMARY_FIRST_SENTENCE),
-            "124: " + getCheckMessage(MSG_UNCLOSED_HTML_TAG, "p"),
+            "124:9: " + getCheckMessage(JavadocDetailNodeParser.class, MSG_UNCLOSED_HTML_TAG, "p"),
         };
         verify(checkConfig, getPath("InputAbstractJavadocNonTightHtmlTags.java"), expected);
     }
@@ -407,41 +419,41 @@ public class AbstractJavadocCheckTest extends AbstractModuleTestSupport {
         final String[] expected = {
             "4:4: " + getCheckMessage(MSG_SUMMARY_FIRST_SENTENCE),
             "5:4: " + getCheckMessage(MSG_SUMMARY_FIRST_SENTENCE),
-            "6: " + getCheckMessage(MSG_UNCLOSED_HTML_TAG, "p"),
+            "6:4: " + getCheckMessage(JavadocDetailNodeParser.class, MSG_UNCLOSED_HTML_TAG, "p"),
             "6:4: " + getCheckMessage(MSG_SUMMARY_FIRST_SENTENCE),
             "7:4: " + getCheckMessage(MSG_SUMMARY_FIRST_SENTENCE),
             "7:39: " + getCheckMessage(MSG_SUMMARY_FIRST_SENTENCE),
-            "13: " + getCheckMessage(MSG_UNCLOSED_HTML_TAG, "p"),
+            "13:2: " + getCheckMessage(JavadocDetailNodeParser.class, MSG_UNCLOSED_HTML_TAG, "p"),
             "13:9: " + getCheckMessage(MSG_SUMMARY_FIRST_SENTENCE),
             "13:13: " + getCheckMessage(MSG_SUMMARY_FIRST_SENTENCE),
-            "16: " + getCheckMessage(MSG_UNCLOSED_HTML_TAG, "li"),
+            "16:1: " + getCheckMessage(JavadocDetailNodeParser.class, MSG_UNCLOSED_HTML_TAG, "li"),
             "16:8: " + getCheckMessage(MSG_SUMMARY_FIRST_SENTENCE),
             "20:8: " + getCheckMessage(MSG_SUMMARY_FIRST_SENTENCE),
-            "21: " + getCheckMessage(MSG_UNCLOSED_HTML_TAG, "p"),
+            "21:30: " + getCheckMessage(JavadocDetailNodeParser.class, MSG_UNCLOSED_HTML_TAG, "p"),
             "21:8: " + getCheckMessage(MSG_SUMMARY_FIRST_SENTENCE),
             "21:30: " + getCheckMessage(MSG_SUMMARY_FIRST_SENTENCE),
             "26:8: " + getCheckMessage(MSG_SUMMARY_FIRST_SENTENCE),
             "26:22: " + getCheckMessage(MSG_SUMMARY_FIRST_SENTENCE),
-            "27: " + getCheckMessage(MSG_UNCLOSED_HTML_TAG, "tr"),
+            "27:8: " + getCheckMessage(JavadocDetailNodeParser.class, MSG_UNCLOSED_HTML_TAG, "tr"),
             "32:8: " + getCheckMessage(MSG_SUMMARY_FIRST_SENTENCE),
             "33:8: " + getCheckMessage(MSG_SUMMARY_FIRST_SENTENCE),
-            "34: " + getCheckMessage(MSG_UNCLOSED_HTML_TAG, "li"),
+            "34:8: " + getCheckMessage(JavadocDetailNodeParser.class, MSG_UNCLOSED_HTML_TAG, "li"),
             "34:8: " + getCheckMessage(MSG_SUMMARY_FIRST_SENTENCE),
             "34:23: " + getCheckMessage(MSG_SUMMARY_FIRST_SENTENCE),
             "39:8: " + getCheckMessage(MSG_SUMMARY_FIRST_SENTENCE),
             "39:20: " + getCheckMessage(MSG_SUMMARY_FIRST_SENTENCE),
             "39:34: " + getCheckMessage(MSG_SUMMARY_FIRST_SENTENCE),
-            "41: " + getCheckMessage(MSG_UNCLOSED_HTML_TAG, "li"),
+            "41:16: " + getCheckMessage(JavadocDetailNodeParser.class, MSG_UNCLOSED_HTML_TAG, "li"),
             "41:16: " + getCheckMessage(MSG_SUMMARY_FIRST_SENTENCE),
             "41:21: " + getCheckMessage(MSG_SUMMARY_FIRST_SENTENCE),
             "49:8: " + getCheckMessage(MSG_SUMMARY_FIRST_SENTENCE),
-            "51: " + getCheckMessage(MSG_UNCLOSED_HTML_TAG, "p"),
+            "51:22: " + getCheckMessage(JavadocDetailNodeParser.class, MSG_UNCLOSED_HTML_TAG, "p"),
             "51:22: " + getCheckMessage(MSG_SUMMARY_FIRST_SENTENCE),
             "56:8: " + getCheckMessage(MSG_SUMMARY_FIRST_SENTENCE),
             "57:8: " + getCheckMessage(MSG_SUMMARY_FIRST_SENTENCE),
-            "60: " + getCheckMessage(MSG_UNCLOSED_HTML_TAG, "tr"),
+            "60:12: " + getCheckMessage(JavadocDetailNodeParser.class, MSG_UNCLOSED_HTML_TAG, "tr"),
             "79:8: " + getCheckMessage(MSG_SUMMARY_FIRST_SENTENCE),
-            "85: " + getCheckMessage(MSG_UNCLOSED_HTML_TAG, "p"),
+            "85:9: " + getCheckMessage(JavadocDetailNodeParser.class, MSG_UNCLOSED_HTML_TAG, "p"),
             "85:9: " + getCheckMessage(MSG_SUMMARY_FIRST_SENTENCE),
             "85:13: " + getCheckMessage(MSG_SUMMARY_FIRST_SENTENCE),
             "85:33: " + getCheckMessage(MSG_SUMMARY_FIRST_SENTENCE),

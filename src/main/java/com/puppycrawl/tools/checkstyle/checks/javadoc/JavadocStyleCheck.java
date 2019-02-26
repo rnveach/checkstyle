@@ -62,9 +62,6 @@ public class JavadocStyleCheck
     /** Message property key for the Unclosed HTML message. */
     public static final String MSG_INCOMPLETE_TAG = "javadoc.incompleteTag";
 
-    /** Message property key for the Unclosed HTML message. */
-    public static final String MSG_UNCLOSED_HTML = JavadocDetailNodeParser.MSG_UNCLOSED_HTML_TAG;
-
     /** Message property key for the Extra HTML message. */
     public static final String MSG_EXTRA_HTML = "javadoc.extraHtml";
 
@@ -396,7 +393,7 @@ public class JavadocStyleCheck
                 && !htmlTag.getId().equals(lastFound)
                 && !typeParameters.contains(htmlTag.getId())) {
                 log(htmlTag.getLineNo(), htmlTag.getPosition(),
-                        MSG_UNCLOSED_HTML, htmlTag.getText());
+                        JavadocDetailNodeParser.MSG_UNCLOSED_HTML_TAG, htmlTag.getText());
                 lastFound = htmlTag.getId();
             }
         }
@@ -437,7 +434,7 @@ public class JavadocStyleCheck
             lastFound = lastOpenTag.getId();
             log(lastOpenTag.getLineNo(),
                 lastOpenTag.getPosition(),
-                MSG_UNCLOSED_HTML,
+                JavadocDetailNodeParser.MSG_UNCLOSED_HTML_TAG,
                 lastOpenTag.getText());
         }
     }

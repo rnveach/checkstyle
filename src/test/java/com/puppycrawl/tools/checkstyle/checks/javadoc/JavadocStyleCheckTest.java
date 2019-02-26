@@ -19,12 +19,12 @@
 
 package com.puppycrawl.tools.checkstyle.checks.javadoc;
 
+import static com.puppycrawl.tools.checkstyle.JavadocDetailNodeParser.MSG_UNCLOSED_HTML_TAG;
 import static com.puppycrawl.tools.checkstyle.checks.javadoc.JavadocStyleCheck.MSG_EMPTY;
 import static com.puppycrawl.tools.checkstyle.checks.javadoc.JavadocStyleCheck.MSG_EXTRA_HTML;
 import static com.puppycrawl.tools.checkstyle.checks.javadoc.JavadocStyleCheck.MSG_INCOMPLETE_TAG;
 import static com.puppycrawl.tools.checkstyle.checks.javadoc.JavadocStyleCheck.MSG_JAVADOC_MISSING;
 import static com.puppycrawl.tools.checkstyle.checks.javadoc.JavadocStyleCheck.MSG_NO_PERIOD;
-import static com.puppycrawl.tools.checkstyle.checks.javadoc.JavadocStyleCheck.MSG_UNCLOSED_HTML;
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 
@@ -34,6 +34,7 @@ import org.junit.Test;
 
 import com.puppycrawl.tools.checkstyle.AbstractModuleTestSupport;
 import com.puppycrawl.tools.checkstyle.DefaultConfiguration;
+import com.puppycrawl.tools.checkstyle.JavadocDetailNodeParser;
 import com.puppycrawl.tools.checkstyle.api.TokenTypes;
 import com.puppycrawl.tools.checkstyle.utils.CommonUtil;
 
@@ -74,25 +75,30 @@ public class JavadocStyleCheckTest
         final String[] expected = {
             "20: " + getCheckMessage(MSG_NO_PERIOD),
             "53: " + getCheckMessage(MSG_NO_PERIOD),
-            "63:11: " + getCheckMessage(MSG_UNCLOSED_HTML,
+            "63:11: " + getCheckMessage(JavadocDetailNodeParser.class, MSG_UNCLOSED_HTML_TAG,
                 "<b>This guy is missing end of bold tag"),
             "66:7: " + getCheckMessage(MSG_EXTRA_HTML, "</td>Extra tag shouldn't be here"),
-            "68:19: " + getCheckMessage(MSG_UNCLOSED_HTML, "<code>dummy."),
+            "68:19: " + getCheckMessage(JavadocDetailNodeParser.class, MSG_UNCLOSED_HTML_TAG,
+                "<code>dummy."),
             "74: " + getCheckMessage(MSG_NO_PERIOD),
-            "75:23: " + getCheckMessage(MSG_UNCLOSED_HTML, "<b>should fail"),
+            "75:23: " + getCheckMessage(JavadocDetailNodeParser.class, MSG_UNCLOSED_HTML_TAG,
+                "<b>should fail"),
             "81: " + getCheckMessage(MSG_NO_PERIOD),
-            "82:31: " + getCheckMessage(MSG_UNCLOSED_HTML, "<b>should fail"),
+            "82:31: " + getCheckMessage(JavadocDetailNodeParser.class, MSG_UNCLOSED_HTML_TAG,
+                "<b>should fail"),
             "88: " + getCheckMessage(MSG_NO_PERIOD),
             "89:31: " + getCheckMessage(MSG_EXTRA_HTML, "</code>"),
             "90: " + getCheckMessage(MSG_INCOMPLETE_TAG, "    * should fail <"),
             "109:39: " + getCheckMessage(MSG_EXTRA_HTML, "</img>"),
-            "186:8: " + getCheckMessage(MSG_UNCLOSED_HTML, "<blockquote>"),
+            "186:8: " + getCheckMessage(JavadocDetailNodeParser.class, MSG_UNCLOSED_HTML_TAG,
+                "<blockquote>"),
             "193: " + getCheckMessage(MSG_NO_PERIOD),
             "238: " + getCheckMessage(MSG_NO_PERIOD),
             "335:33: " + getCheckMessage(MSG_EXTRA_HTML, "</string>"),
-            "361:37: " + getCheckMessage(MSG_UNCLOSED_HTML, "<code>"),
+            "361:37: " + getCheckMessage(JavadocDetailNodeParser.class, MSG_UNCLOSED_HTML_TAG,
+                "<code>"),
             "372: " + getCheckMessage(MSG_NO_PERIOD),
-            "378:15: " + getCheckMessage(MSG_UNCLOSED_HTML,
+            "378:15: " + getCheckMessage(JavadocDetailNodeParser.class, MSG_UNCLOSED_HTML_TAG,
                 "<b>Note:<b> it's unterminated tag.</p>"),
             "382: " + getCheckMessage(MSG_NO_PERIOD),
             "386: " + getCheckMessage(MSG_NO_PERIOD),
@@ -164,19 +170,24 @@ public class JavadocStyleCheckTest
         checkConfig.addAttribute("checkFirstSentence", "false");
         checkConfig.addAttribute("checkHtml", "true");
         final String[] expected = {
-            "63:11: " + getCheckMessage(MSG_UNCLOSED_HTML,
+            "63:11: " + getCheckMessage(JavadocDetailNodeParser.class, MSG_UNCLOSED_HTML_TAG,
                 "<b>This guy is missing end of bold tag"),
             "66:7: " + getCheckMessage(MSG_EXTRA_HTML, "</td>Extra tag shouldn't be here"),
-            "68:19: " + getCheckMessage(MSG_UNCLOSED_HTML, "<code>dummy."),
-            "75:23: " + getCheckMessage(MSG_UNCLOSED_HTML, "<b>should fail"),
-            "82:31: " + getCheckMessage(MSG_UNCLOSED_HTML, "<b>should fail"),
+            "68:19: " + getCheckMessage(JavadocDetailNodeParser.class, MSG_UNCLOSED_HTML_TAG,
+                "<code>dummy."),
+            "75:23: " + getCheckMessage(JavadocDetailNodeParser.class, MSG_UNCLOSED_HTML_TAG,
+                "<b>should fail"),
+            "82:31: " + getCheckMessage(JavadocDetailNodeParser.class, MSG_UNCLOSED_HTML_TAG,
+                "<b>should fail"),
             "89:31: " + getCheckMessage(MSG_EXTRA_HTML, "</code>"),
             "90: " + getCheckMessage(MSG_INCOMPLETE_TAG, "    * should fail <"),
             "109:39: " + getCheckMessage(MSG_EXTRA_HTML, "</img>"),
-            "186:8: " + getCheckMessage(MSG_UNCLOSED_HTML, "<blockquote>"),
+            "186:8: " + getCheckMessage(JavadocDetailNodeParser.class, MSG_UNCLOSED_HTML_TAG,
+                "<blockquote>"),
             "335:33: " + getCheckMessage(MSG_EXTRA_HTML, "</string>"),
-            "361:37: " + getCheckMessage(MSG_UNCLOSED_HTML, "<code>"),
-            "378:15: " + getCheckMessage(MSG_UNCLOSED_HTML,
+            "361:37: " + getCheckMessage(JavadocDetailNodeParser.class, MSG_UNCLOSED_HTML_TAG,
+                "<code>"),
+            "378:15: " + getCheckMessage(JavadocDetailNodeParser.class, MSG_UNCLOSED_HTML_TAG,
                 "<b>Note:<b> it's unterminated tag.</p>"),
         };
 
@@ -237,7 +248,8 @@ public class JavadocStyleCheckTest
         checkConfig.addAttribute("scope", "protected");
         final String[] expected = {
             "74: " + getCheckMessage(MSG_NO_PERIOD),
-            "75:23: " + getCheckMessage(MSG_UNCLOSED_HTML, "<b>should fail"),
+            "75:23: " + getCheckMessage(JavadocDetailNodeParser.class, MSG_UNCLOSED_HTML_TAG,
+                "<b>should fail"),
             "88: " + getCheckMessage(MSG_NO_PERIOD),
             "89:31: " + getCheckMessage(MSG_EXTRA_HTML, "</code>"),
             "90: " + getCheckMessage(MSG_INCOMPLETE_TAG, "    * should fail <"),
@@ -265,9 +277,11 @@ public class JavadocStyleCheckTest
         checkConfig.addAttribute("scope", "package");
         final String[] expected = {
             "74: " + getCheckMessage(MSG_NO_PERIOD),
-            "75:23: " + getCheckMessage(MSG_UNCLOSED_HTML, "<b>should fail"),
+            "75:23: " + getCheckMessage(JavadocDetailNodeParser.class, MSG_UNCLOSED_HTML_TAG,
+                "<b>should fail"),
             "81: " + getCheckMessage(MSG_NO_PERIOD),
-            "82:31: " + getCheckMessage(MSG_UNCLOSED_HTML, "<b>should fail"),
+            "82:31: " + getCheckMessage(JavadocDetailNodeParser.class, MSG_UNCLOSED_HTML_TAG,
+                "<b>should fail"),
             "88: " + getCheckMessage(MSG_NO_PERIOD),
             "89:31: " + getCheckMessage(MSG_EXTRA_HTML, "</code>"),
             "90: " + getCheckMessage(MSG_INCOMPLETE_TAG, "    * should fail <"),
@@ -314,18 +328,22 @@ public class JavadocStyleCheckTest
         final String[] expected = {
             "20: " + getCheckMessage(MSG_NO_PERIOD),
             "53: " + getCheckMessage(MSG_NO_PERIOD),
-            "63:11: " + getCheckMessage(MSG_UNCLOSED_HTML,
+            "63:11: " + getCheckMessage(JavadocDetailNodeParser.class, MSG_UNCLOSED_HTML_TAG,
                 "<b>This guy is missing end of bold tag"),
             "66:7: " + getCheckMessage(MSG_EXTRA_HTML, "</td>Extra tag shouldn't be here"),
-            "68:19: " + getCheckMessage(MSG_UNCLOSED_HTML, "<code>dummy."),
+            "68:19: " + getCheckMessage(JavadocDetailNodeParser.class, MSG_UNCLOSED_HTML_TAG,
+                "<code>dummy."),
             "81: " + getCheckMessage(MSG_NO_PERIOD),
-            "82:31: " + getCheckMessage(MSG_UNCLOSED_HTML, "<b>should fail"),
+            "82:31: " + getCheckMessage(JavadocDetailNodeParser.class, MSG_UNCLOSED_HTML_TAG,
+                "<b>should fail"),
             "109:39: " + getCheckMessage(MSG_EXTRA_HTML, "</img>"),
-            "186:8: " + getCheckMessage(MSG_UNCLOSED_HTML, "<blockquote>"),
+            "186:8: " + getCheckMessage(JavadocDetailNodeParser.class, MSG_UNCLOSED_HTML_TAG,
+                "<blockquote>"),
             "193: " + getCheckMessage(MSG_NO_PERIOD),
-            "361:37: " + getCheckMessage(MSG_UNCLOSED_HTML, "<code>"),
+            "361:37: " + getCheckMessage(JavadocDetailNodeParser.class, MSG_UNCLOSED_HTML_TAG,
+                "<code>"),
             "372: " + getCheckMessage(MSG_NO_PERIOD),
-            "378:15: " + getCheckMessage(MSG_UNCLOSED_HTML,
+            "378:15: " + getCheckMessage(JavadocDetailNodeParser.class, MSG_UNCLOSED_HTML_TAG,
                 "<b>Note:<b> it's unterminated tag.</p>"),
             "393: " + getCheckMessage(MSG_NO_PERIOD),
             "405: " + getCheckMessage(MSG_NO_PERIOD),

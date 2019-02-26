@@ -121,7 +121,7 @@ public abstract class AbstractViolationReporter
      * @return name of a resource bundle that contains the messages
      *     used by the module.
      */
-    private static String getMessageBundle(final String className) {
+    protected static String getMessageBundle(final String className) {
         final String messageBundle;
         final int endIndex = className.lastIndexOf('.');
         final String messages = "messages";
@@ -139,6 +139,22 @@ public abstract class AbstractViolationReporter
     protected void finishLocalSetup() throws CheckstyleException {
         // No code by default
     }
+
+    /**
+     * Log a message for another class.
+     *
+     * @param sourceClass the source class for the message
+     * @param line the line number where the error was found
+     * @param col the column number where the error was found
+     * @param key the message that describes the error
+     * @param args the details of the message
+     *
+     * @see java.text.MessageFormat
+     */
+    // -@cs[CustomDeclarationOrder] CustomDeclarationOrder does not treat groups of
+    // overloaded methods. See https://github.com/sevntu-checkstyle/sevntu.checkstyle/issues/414
+    public abstract void logFor(Class<?> sourceClass, int line, int col, String key,
+            Object... args);
 
     /**
      * Log a message that has no column information.
