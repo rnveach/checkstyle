@@ -31,6 +31,8 @@
     files="customimportorder[\\/]InputCustomImportOrderSamePackage\.java"/>
   <suppress checks="PackageDeclarationCheck"
     files="customimportorder[\\/]InputCustomImportOrderSamePackageDepth25\.java"/>
+  <suppress checks="PackageDeclarationCheck"
+    files="customimportorder[\\/]InputCustomImportOrderMultipleSeparators\.java"/>
 
   <!-- intentional problem for testing -->
   <suppress checks="PackageDeclarationCheck"

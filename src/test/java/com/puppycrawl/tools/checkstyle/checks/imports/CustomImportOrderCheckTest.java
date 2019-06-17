@@ -315,9 +315,7 @@ public class CustomImportOrderCheckTest extends AbstractModuleTestSupport {
         checkConfig.addAttribute("separateLineBetweenGroups", "true");
         checkConfig.addAttribute("customImportOrderRules",
                 "SAME_PACKAGE(3)###THIRD_PARTY_PACKAGE###STANDARD_JAVA_PACKAGE###STATIC");
-        final String[] expected = {
-            "5: " + getCheckMessage(MSG_LINE_SEPARATOR, "org.junit.*"),
-        };
+        final String[] expected = CommonUtil.EMPTY_STRING_ARRAY;
 
         verify(checkConfig,
             getNonCompilablePath("InputCustomImportOrderThirdPartyPackage.java"), expected);
@@ -723,9 +721,7 @@ public class CustomImportOrderCheckTest extends AbstractModuleTestSupport {
         checkConfig.addAttribute("separateLineBetweenGroups", "true");
 
         createChecker(checkConfig);
-        final String[] expected = {
-            "5: " + getCheckMessage(MSG_LINE_SEPARATOR, "java.util.*"),
-        };
+        final String[] expected = CommonUtil.EMPTY_STRING_ARRAY;
         verify(checkConfig, getNonCompilablePath("InputCustomImportOrderNoPackage.java"),
             expected);
     }
@@ -741,16 +737,52 @@ public class CustomImportOrderCheckTest extends AbstractModuleTestSupport {
 
         createChecker(checkConfig);
         final String[] expected = {
-            "3: " + getCheckMessage(MSG_LINE_SEPARATOR,
-                "com.puppycrawl.tools.checkstyle.utils.AnnotationUtil.containsAnnotation"),
             "7: " + getCheckMessage(MSG_LINE_SEPARATOR,
                 "com.sun.accessibility.internal.resources.*"),
-            "11: " + getCheckMessage(MSG_LINE_SEPARATOR, "java.util.Arrays"),
-            "19: " + getCheckMessage(MSG_LINE_SEPARATOR,
-                "org.apache.commons.beanutils.converters.ArrayConverter"),
         };
         verify(checkConfig, getNonCompilablePath("InputCustomImportOrderNoPackage2.java"),
             expected);
     }
 
+    @Test
+    public void testInputCustomImportOrderMultipleSeparators() throws Exception {
+        final DefaultConfiguration checkConfig =
+                createModuleConfig(CustomImportOrderCheck.class);
+        checkConfig.addAttribute("customImportOrderRules",
+                "STATIC###STANDARD_JAVA_PACKAGE###THIRD_PARTY_PACKAGE");
+        checkConfig.addAttribute("separateLineBetweenGroups", "true");
+
+        createChecker(checkConfig);
+        final String[] expected = {
+            "8: " + getCheckMessage(MSG_LINE_SEPARATOR,
+                "java.util.Map"),
+            "14: " + getCheckMessage(MSG_LINE_SEPARATOR,
+                "com.google.common.annotations.Beta"),
+        };
+        verify(checkConfig, getNonCompilablePath("InputCustomImportOrderMultipleSeparators.java"),
+            expected);
+    }
+
+    @Test
+    // UT uses Reflection to reach 100% branch coverage.
+    // An edge case that CustomImportOrderCheck#getCountOfEmptyLinesBefore(1, ...)
+    // would not be covered by inputs.
+    public void testGetCountOfEmptyLinesBefore() throws Exception {
+        final Class<?> clazz = CustomImportOrderCheck.class;
+        final Method method = clazz.getDeclaredMethod("getCountOfEmptyLinesBefore",
+                int.class, String[].class);
+        method.setAccessible(true);
+
+        final String[] lines = {"foo", "", "", "bar", "", "another"};
+
+        // need this case to reach 100% branch coverage.
+        assertEquals("Invalid result", 0, method.invoke(null, 1, lines));
+
+        // the following ones actually overlap with inputs.
+        assertEquals("Invalid result", 0, method.invoke(null, 2, lines));
+        assertEquals("Invalid result", 1, method.invoke(null, 3, lines));
+        assertEquals("Invalid result", 2, method.invoke(null, 4, lines));
+        assertEquals("Invalid result", 0, method.invoke(null, 5, lines));
+        assertEquals("Invalid result", 1, method.invoke(null, 6, lines));
+    }
 }

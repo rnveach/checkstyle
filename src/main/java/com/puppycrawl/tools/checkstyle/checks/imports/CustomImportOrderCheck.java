@@ -553,9 +553,6 @@ public class CustomImportOrderCheck extends AbstractCheck {
             final String importGroup = importObject.getImportGroup();
             final String fullImportIdent = importObject.getImportFullPath();
 
-            if (getCountOfEmptyLinesBefore(importObject.getLineNumber()) > 1) {
-                log(importObject.getLineNumber(), MSG_LINE_SEPARATOR, fullImportIdent);
-            }
             if (importGroup.equals(currentGroup)) {
                 if (sortImportsInGroupAlphabetically
                         && previousImportFromCurrentGroup != null
@@ -573,7 +570,8 @@ public class CustomImportOrderCheck extends AbstractCheck {
                     final String nextGroup = getNextImportGroup(currentGroupNumber + 1);
                     if (importGroup.equals(nextGroup)) {
                         if (separateLineBetweenGroups
-                                && getCountOfEmptyLinesBefore(importObject.getLineNumber()) == 0) {
+                                && getCountOfEmptyLinesBefore(
+                                    importObject.getLineNumber(), getLines()) != 1) {
                             log(importObject.getLineNumber(), MSG_LINE_SEPARATOR, fullImportIdent);
                         }
                         currentGroup = nextGroup;
@@ -757,11 +755,12 @@ public class CustomImportOrderCheck extends AbstractCheck {
      * Counts empty lines before given.
      * @param lineNo
      *        Line number of current import.
+     * @param lines
+     *        The given lines.
      * @return count of empty lines before given.
      */
-    private int getCountOfEmptyLinesBefore(int lineNo) {
+    private static int getCountOfEmptyLinesBefore(int lineNo, final String... lines) {
         int result = 0;
-        final String[] lines = getLines();
         //  [lineNo - 2] is the number of the previous line
         //  because the numbering starts from zero.
         int lineBeforeIndex = lineNo - 2;
