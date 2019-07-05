@@ -24,7 +24,6 @@ import java.util.Arrays;
 import java.util.List;
 
 import com.puppycrawl.tools.checkstyle.StatelessCheck;
-import com.puppycrawl.tools.checkstyle.api.DetailAST;
 import com.puppycrawl.tools.checkstyle.api.DetailNode;
 import com.puppycrawl.tools.checkstyle.api.JavadocTokenTypes;
 import com.puppycrawl.tools.checkstyle.api.TokenTypes;
@@ -153,7 +152,7 @@ public class AtclauseOrderCheck extends AbstractJavadocCheck {
 
     @Override
     public void visitJavadocToken(DetailNode ast) {
-        final int parentType = getParentType(getBlockCommentAst());
+        final int parentType = JavadocUtil.getTarget(getBlockCommentAst()).getType();
 
         if (target.contains(parentType)) {
             checkOrderInTagSection(ast);
@@ -182,23 +181,6 @@ public class AtclauseOrderCheck extends AbstractJavadocCheck {
                 }
             }
         }
-    }
-
-    /**
-     * Returns type of parent node.
-     * @param commentBlock child node.
-     * @return parent type.
-     */
-    private static int getParentType(DetailAST commentBlock) {
-        final DetailAST parentNode = commentBlock.getParent();
-        int result = 0;
-        if (parentNode != null) {
-            result = parentNode.getType();
-            if (result == TokenTypes.TYPE || result == TokenTypes.MODIFIERS) {
-                result = parentNode.getParent().getType();
-            }
-        }
-        return result;
     }
 
 }

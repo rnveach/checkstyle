@@ -29,8 +29,8 @@ import org.junit.Test;
 
 import com.puppycrawl.tools.checkstyle.AbstractModuleTestSupport;
 import com.puppycrawl.tools.checkstyle.DefaultConfiguration;
+import com.puppycrawl.tools.checkstyle.api.JavadocTokenTypes;
 import com.puppycrawl.tools.checkstyle.api.Scope;
-import com.puppycrawl.tools.checkstyle.api.TokenTypes;
 import com.puppycrawl.tools.checkstyle.utils.CommonUtil;
 
 public class JavadocTypeCheckTest extends AbstractModuleTestSupport {
@@ -41,26 +41,14 @@ public class JavadocTypeCheckTest extends AbstractModuleTestSupport {
     }
 
     @Test
-    public void testGetRequiredTokens() {
+    public void testGetJavadocTokens() {
         final JavadocTypeCheck javadocTypeCheck = new JavadocTypeCheck();
-        assertArrayEquals(
-            "JavadocTypeCheck#getRequiredTokens should return empty array by default",
-            CommonUtil.EMPTY_INT_ARRAY, javadocTypeCheck.getRequiredTokens());
-    }
+        final int[] expected = {JavadocTokenTypes.JAVADOC};
 
-    @Test
-    public void testGetAcceptableTokens() {
-        final JavadocTypeCheck javadocTypeCheck = new JavadocTypeCheck();
-
-        final int[] actual = javadocTypeCheck.getAcceptableTokens();
-        final int[] expected = {
-            TokenTypes.INTERFACE_DEF,
-            TokenTypes.CLASS_DEF,
-            TokenTypes.ENUM_DEF,
-            TokenTypes.ANNOTATION_DEF,
-        };
-
-        assertArrayEquals("Default acceptable tokens are invalid", expected, actual);
+        assertArrayEquals("expected array", expected, javadocTypeCheck.getRequiredJavadocTokens());
+        assertArrayEquals("expected array", expected,
+                javadocTypeCheck.getAcceptableJavadocTokens());
+        assertArrayEquals("expected array", expected, javadocTypeCheck.getDefaultJavadocTokens());
     }
 
     @Test
@@ -160,8 +148,11 @@ public class JavadocTypeCheckTest extends AbstractModuleTestSupport {
             createModuleConfig(JavadocTypeCheck.class);
         checkConfig.addAttribute("authorFormat", "0*");
         final String[] expected = {
+            "13: " + getCheckMessage(MSG_MISSING_TAG, "@author"),
             "22: " + getCheckMessage(MSG_MISSING_TAG, "@author"),
+            "49: " + getCheckMessage(MSG_MISSING_TAG, "@author"),
             "58: " + getCheckMessage(MSG_MISSING_TAG, "@author"),
+            "85: " + getCheckMessage(MSG_MISSING_TAG, "@author"),
             "94: " + getCheckMessage(MSG_MISSING_TAG, "@author"),
         };
         verify(checkConfig, getPath("InputJavadocTypeJavadoc.java"), expected);
@@ -174,13 +165,13 @@ public class JavadocTypeCheckTest extends AbstractModuleTestSupport {
             createModuleConfig(JavadocTypeCheck.class);
         checkConfig.addAttribute("authorFormat", "ABC");
         final String[] expected = {
-            "13: " + getCheckMessage(MSG_TAG_FORMAT, "@author", "ABC"),
+            "13: " + getCheckMessage(MSG_MISSING_TAG, "@author"),
             "22: " + getCheckMessage(MSG_MISSING_TAG, "@author"),
             "31: " + getCheckMessage(MSG_TAG_FORMAT, "@author", "ABC"),
-            "49: " + getCheckMessage(MSG_TAG_FORMAT, "@author", "ABC"),
+            "49: " + getCheckMessage(MSG_MISSING_TAG, "@author"),
             "58: " + getCheckMessage(MSG_MISSING_TAG, "@author"),
             "67: " + getCheckMessage(MSG_TAG_FORMAT, "@author", "ABC"),
-            "85: " + getCheckMessage(MSG_TAG_FORMAT, "@author", "ABC"),
+            "85: " + getCheckMessage(MSG_MISSING_TAG, "@author"),
             "94: " + getCheckMessage(MSG_MISSING_TAG, "@author"),
             "103: " + getCheckMessage(MSG_TAG_FORMAT, "@author", "ABC"),
         };
@@ -204,7 +195,7 @@ public class JavadocTypeCheckTest extends AbstractModuleTestSupport {
             throws Exception {
         final DefaultConfiguration checkConfig =
             createModuleConfig(JavadocTypeCheck.class);
-        checkConfig.addAttribute("versionFormat", "^\\p{Digit}+\\.\\p{Digit}+$");
+        checkConfig.addAttribute("versionFormat", "^\\p{Digit}+\\.\\p{Digit}+\\s*$");
         final String[] expected = {
             "22: " + getCheckMessage(MSG_MISSING_TAG, "@version"),
             "58: " + getCheckMessage(MSG_MISSING_TAG, "@version"),
@@ -253,7 +244,7 @@ public class JavadocTypeCheckTest extends AbstractModuleTestSupport {
     public void testLimitViolationsBySpecifyingTokens() throws Exception {
         final DefaultConfiguration checkConfig =
             createModuleConfig(JavadocTypeCheck.class);
-        checkConfig.addAttribute("tokens", "INTERFACE_DEF");
+        checkConfig.addAttribute("targets", "INTERFACE_DEF");
         final String[] expected = CommonUtil.EMPTY_STRING_ARRAY;
         verify(checkConfig,
                getPath("InputJavadocTypeNoJavadocOnInterface.java"),
@@ -321,6 +312,7 @@ public class JavadocTypeCheckTest extends AbstractModuleTestSupport {
         final String[] expected = {
             "6:4: " + getCheckMessage(MSG_UNUSED_TAG, "@param", "<BAD>"),
             "7:4: " + getCheckMessage(MSG_UNUSED_TAG, "@param", "<BAD>"),
+            "8:4: " + getCheckMessage(MSG_UNUSED_TAG, "@param", "<BAD>"),
         };
         verify(checkConfig,
                 getPath("InputJavadocTypeUnusedParamInJavadocForClass.java"),

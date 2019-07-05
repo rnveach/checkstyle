@@ -85,6 +85,34 @@ public final class JavadocUtil {
     }
 
     /**
+     * Returns the AST that is the target of the comment.
+     * @param commentBlock comment node.
+     * @return The target node.
+     */
+    public static DetailAST getTarget(DetailAST commentBlock) {
+        DetailAST result = commentBlock.getParent();
+
+        if (result == null) {
+            result = commentBlock.getNextSibling();
+        }
+
+        while (true) {
+            final int type = result.getType();
+            if (type == TokenTypes.TYPE || type == TokenTypes.MODIFIERS
+                    || type == TokenTypes.ANNOTATION || type == TokenTypes.ANNOTATIONS
+                    || type == TokenTypes.ARRAY_DECLARATOR || type == TokenTypes.TYPE_PARAMETERS
+                    || type == TokenTypes.DOT) {
+                result = result.getParent();
+            }
+            else {
+                break;
+            }
+        }
+
+        return result;
+    }
+
+    /**
      * Gets validTags from a given piece of Javadoc.
      * @param textBlock
      *        the Javadoc comment to process.

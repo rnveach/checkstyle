@@ -1183,6 +1183,7 @@ public class XdocsPagesTest {
      */
     private static boolean isPropertyTokenType(String sectionName, String propertyName) {
         return "AtclauseOrder".equals(sectionName) && "target".equals(propertyName)
+            || "JavadocType".equals(sectionName) && "target".equals(propertyName)
             || "IllegalType".equals(sectionName) && "memberModifiers".equals(propertyName)
             || "MagicNumber".equals(sectionName)
                     && "constantWaiverParentToken".equals(propertyName)

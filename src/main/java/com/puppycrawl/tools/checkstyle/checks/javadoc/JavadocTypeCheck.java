@@ -19,24 +19,23 @@
 
 package com.puppycrawl.tools.checkstyle.checks.javadoc;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import com.puppycrawl.tools.checkstyle.StatelessCheck;
-import com.puppycrawl.tools.checkstyle.api.AbstractCheck;
 import com.puppycrawl.tools.checkstyle.api.DetailAST;
-import com.puppycrawl.tools.checkstyle.api.FileContents;
+import com.puppycrawl.tools.checkstyle.api.DetailNode;
+import com.puppycrawl.tools.checkstyle.api.JavadocTokenTypes;
 import com.puppycrawl.tools.checkstyle.api.Scope;
-import com.puppycrawl.tools.checkstyle.api.TextBlock;
 import com.puppycrawl.tools.checkstyle.api.TokenTypes;
 import com.puppycrawl.tools.checkstyle.utils.AnnotationUtil;
 import com.puppycrawl.tools.checkstyle.utils.CheckUtil;
-import com.puppycrawl.tools.checkstyle.utils.CommonUtil;
 import com.puppycrawl.tools.checkstyle.utils.JavadocUtil;
 import com.puppycrawl.tools.checkstyle.utils.ScopeUtil;
+import com.puppycrawl.tools.checkstyle.utils.TokenUtil;
 
 /**
  * Checks the Javadoc of a type.
@@ -47,7 +46,7 @@ import com.puppycrawl.tools.checkstyle.utils.ScopeUtil;
  */
 @StatelessCheck
 public class JavadocTypeCheck
-    extends AbstractCheck {
+    extends AbstractJavadocCheck {
 
     /**
      * A key is pointing to the warning message text in "messages.properties"
@@ -85,13 +84,11 @@ public class JavadocTypeCheck
     /** Close angle bracket literal. */
     private static final String CLOSE_ANGLE_BRACKET = ">";
 
-    /** Pattern to match type name within angle brackets in javadoc param tag. */
-    private static final Pattern TYPE_NAME_IN_JAVADOC_TAG =
-            Pattern.compile("\\s*<([^>]+)>.*");
+    /** Author tag literal. */
+    private static final String AUTHOR_TAG = "@author";
 
-    /** Pattern to split type name field in javadoc param tag. */
-    private static final Pattern TYPE_NAME_IN_JAVADOC_TAG_SPLITTER =
-            Pattern.compile("\\s+");
+    /** Version tag literal. */
+    private static final String VERSION_TAG = "@version";
 
     /** The scope to check for. */
     private Scope scope = Scope.PRIVATE;
@@ -111,6 +108,14 @@ public class JavadocTypeCheck
 
     /** List of annotations that allow missed documentation. */
     private List<String> allowedAnnotations = Collections.singletonList("Generated");
+
+    /** List of AST targets of this check. */
+    private List<Integer> target = Arrays.asList(
+        TokenTypes.INTERFACE_DEF,
+        TokenTypes.CLASS_DEF,
+        TokenTypes.ENUM_DEF,
+        TokenTypes.ANNOTATION_DEF
+    );
 
     /**
      * Sets the scope to check.
@@ -170,56 +175,123 @@ public class JavadocTypeCheck
         allowedAnnotations = Arrays.asList(userAnnotations);
     }
 
-    @Override
-    public int[] getDefaultTokens() {
-        return getAcceptableTokens();
+    /**
+     * Sets list of targets.
+     * @param targets user's value.
+     */
+    public void setTarget(String... targets) {
+        target = new ArrayList<>();
+        for (String temp : targets) {
+            target.add(TokenUtil.getTokenId(temp));
+        }
     }
 
     @Override
-    public int[] getAcceptableTokens() {
+    public int[] getDefaultJavadocTokens() {
+        return getRequiredJavadocTokens();
+    }
+
+    @Override
+    public int[] getAcceptableJavadocTokens() {
+        return getRequiredJavadocTokens();
+    }
+
+    @Override
+    public int[] getRequiredJavadocTokens() {
         return new int[] {
-            TokenTypes.INTERFACE_DEF,
-            TokenTypes.CLASS_DEF,
-            TokenTypes.ENUM_DEF,
-            TokenTypes.ANNOTATION_DEF,
+            JavadocTokenTypes.JAVADOC,
         };
     }
 
     @Override
-    public int[] getRequiredTokens() {
-        return CommonUtil.EMPTY_INT_ARRAY;
+    public void visitJavadocToken(DetailNode ast) {
+        final DetailAST targetAst = JavadocUtil.getTarget(getBlockCommentAst());
+
+        if (isAllowedTarget(targetAst) && shouldCheck(targetAst)) {
+            validateJavadoc(targetAst, ast);
+        }
     }
 
-    @Override
-    public void visitToken(DetailAST ast) {
-        if (shouldCheck(ast)) {
-            final FileContents contents = getFileContents();
-            final int lineNo = ast.getLineNo();
-            final TextBlock textBlock = contents.getJavadocBefore(lineNo);
-            if (textBlock != null) {
-                final List<JavadocTag> tags = getJavadocTags(textBlock);
-                if (ScopeUtil.isOuterMostType(ast)) {
-                    // don't check author/version for inner classes
-                    checkTag(lineNo, tags, JavadocTagInfo.AUTHOR.getName(),
-                            authorFormat);
-                    checkTag(lineNo, tags, JavadocTagInfo.VERSION.getName(),
-                            versionFormat);
+    private void validateJavadoc(DetailAST targetAst, DetailNode ast) {
+        final boolean isOuterMostType = ScopeUtil.isOuterMostType(targetAst);
+        final List<String> typeParamNames =
+                CheckUtil.getTypeParameterNames(targetAst);
+        boolean hasAuthor = false;
+        boolean hasVersion = false;
+
+        for (DetailNode child : ast.getChildren()) {
+            if (child.getType() == JavadocTokenTypes.JAVADOC_TAG) {
+                switch (JavadocUtil.getFirstChild(child).getType()) {
+                    case JavadocTokenTypes.PARAM_LITERAL:
+                        validateParameter(child, typeParamNames);
+                        break;
+                    case JavadocTokenTypes.AUTHOR_LITERAL:
+                        if (isOuterMostType) {
+                            hasAuthor = true;
+
+                            checkFormat(targetAst.getLineNo(), AUTHOR_TAG, authorFormat,
+                                    getTagDescription(JavadocUtil.findFirstToken(child,
+                                            JavadocTokenTypes.DESCRIPTION)));
+                        }
+                        break;
+                    case JavadocTokenTypes.VERSION_LITERAL:
+                        if (isOuterMostType) {
+                            hasVersion = true;
+
+                            checkFormat(targetAst.getLineNo(), VERSION_TAG, versionFormat,
+                                    getTagDescription(JavadocUtil.findFirstToken(child,
+                                            JavadocTokenTypes.DESCRIPTION)));
+                        }
+                        break;
+                    default:
+                        if (!allowUnknownTags) {
+                            log(child.getLineNumber(), child.getColumnNumber(), MSG_UNKNOWN_TAG,
+                                JavadocUtil.findFirstToken(child, JavadocTokenTypes.CUSTOM_NAME)
+                                    .getText().substring(1));
+                        }
+                        break;
                 }
-
-                final List<String> typeParamNames =
-                    CheckUtil.getTypeParameterNames(ast);
-
-                if (!allowMissingParamTags) {
-                    //Check type parameters that should exist, do
-                    for (final String typeParamName : typeParamNames) {
-                        checkTypeParamTag(
-                            lineNo, tags, typeParamName);
-                    }
-                }
-
-                checkUnusedTypeParamTags(tags, typeParamNames);
             }
         }
+
+        finalizeValidation(targetAst.getLineNo(), isOuterMostType, hasAuthor, hasVersion,
+                typeParamNames);
+    }
+
+    private void validateParameter(DetailNode child, List<String> typeParamNames) {
+        String name = JavadocUtil.findFirstToken(child, JavadocTokenTypes.PARAMETER_NAME).getText();
+
+        if (name.startsWith(OPEN_ANGLE_BRACKET) && name.endsWith(CLOSE_ANGLE_BRACKET)) {
+            name = name.substring(1, name.length() - 1);
+        }
+
+        if (!typeParamNames.remove(name)) {
+            log(child.getLineNumber(), child.getColumnNumber(), MSG_UNUSED_TAG, "@param",
+                    OPEN_ANGLE_BRACKET + name + CLOSE_ANGLE_BRACKET);
+        }
+    }
+
+    private void finalizeValidation(int lineNo, boolean isOuterMostType, boolean hasAuthor,
+            boolean hasVersion, List<String> typeParamNames) {
+        if (isOuterMostType) {
+            if (!hasAuthor && authorFormat != null) {
+                log(lineNo, MSG_MISSING_TAG, AUTHOR_TAG);
+            }
+            if (!hasVersion && versionFormat != null) {
+                log(lineNo, MSG_MISSING_TAG, VERSION_TAG);
+            }
+        }
+
+        for (String typeParamName : typeParamNames) {
+            if (!allowMissingParamTags) {
+                log(lineNo, MSG_MISSING_TAG,
+                        "@param " + OPEN_ANGLE_BRACKET + typeParamName + CLOSE_ANGLE_BRACKET);
+            }
+        }
+    }
+
+    private boolean isAllowedTarget(DetailAST ast) {
+        return target.contains(ast.getType());
     }
 
     /**
@@ -248,114 +320,25 @@ public class JavadocTypeCheck
             && !AnnotationUtil.containsAnnotation(ast, allowedAnnotations);
     }
 
-    /**
-     * Gets all standalone tags from a given javadoc.
-     * @param textBlock the Javadoc comment to process.
-     * @return all standalone tags from the given javadoc.
-     */
-    private List<JavadocTag> getJavadocTags(TextBlock textBlock) {
-        final JavadocTags tags = JavadocUtil.getJavadocTags(textBlock,
-            JavadocUtil.JavadocTagType.BLOCK);
-        if (!allowUnknownTags) {
-            for (final InvalidJavadocTag tag : tags.getInvalidTags()) {
-                log(tag.getLine(), tag.getCol(), MSG_UNKNOWN_TAG,
-                    tag.getName());
-            }
-        }
-        return tags.getValidTags();
-    }
+    private String getTagDescription(DetailNode ast) {
+        final StringBuilder result = new StringBuilder();
 
-    /**
-     * Verifies that a type definition has a required tag.
-     * @param lineNo the line number for the type definition.
-     * @param tags tags from the Javadoc comment for the type definition.
-     * @param tagName the required tag name.
-     * @param formatPattern regexp for the tag value.
-     */
-    private void checkTag(int lineNo, List<JavadocTag> tags, String tagName,
-                          Pattern formatPattern) {
-        if (formatPattern != null) {
-            boolean hasTag = false;
-            final String tagPrefix = "@";
-            for (int i = tags.size() - 1; i >= 0; i--) {
-                final JavadocTag tag = tags.get(i);
-                if (tag.getTagName().equals(tagName)) {
-                    hasTag = true;
-                    if (!formatPattern.matcher(tag.getFirstArg()).find()) {
-                        log(lineNo, MSG_TAG_FORMAT, tagPrefix + tagName, formatPattern.pattern());
-                    }
-                }
-            }
-            if (!hasTag) {
-                log(lineNo, MSG_MISSING_TAG, tagPrefix + tagName);
-            }
-        }
-    }
-
-    /**
-     * Verifies that a type definition has the specified param tag for
-     * the specified type parameter name.
-     * @param lineNo the line number for the type definition.
-     * @param tags tags from the Javadoc comment for the type definition.
-     * @param typeParamName the name of the type parameter
-     */
-    private void checkTypeParamTag(final int lineNo,
-            final List<JavadocTag> tags, final String typeParamName) {
-        boolean found = false;
-        for (int i = tags.size() - 1; i >= 0; i--) {
-            final JavadocTag tag = tags.get(i);
-            if (tag.isParamTag()
-                && tag.getFirstArg().indexOf(OPEN_ANGLE_BRACKET
-                        + typeParamName + CLOSE_ANGLE_BRACKET) == 0) {
-                found = true;
-                break;
-            }
-        }
-        if (!found) {
-            log(lineNo, MSG_MISSING_TAG, JavadocTagInfo.PARAM.getText()
-                + " " + OPEN_ANGLE_BRACKET + typeParamName + CLOSE_ANGLE_BRACKET);
-        }
-    }
-
-    /**
-     * Checks for unused param tags for type parameters.
-     * @param tags tags from the Javadoc comment for the type definition.
-     * @param typeParamNames names of type parameters
-     */
-    private void checkUnusedTypeParamTags(
-        final List<JavadocTag> tags,
-        final List<String> typeParamNames) {
-        for (int i = tags.size() - 1; i >= 0; i--) {
-            final JavadocTag tag = tags.get(i);
-            if (tag.isParamTag()) {
-                final String typeParamName = extractTypeParamNameFromTag(tag);
-
-                if (!typeParamNames.contains(typeParamName)) {
-                    log(tag.getLineNo(), tag.getColumnNo(),
-                            MSG_UNUSED_TAG,
-                            JavadocTagInfo.PARAM.getText(),
-                            OPEN_ANGLE_BRACKET + typeParamName + CLOSE_ANGLE_BRACKET);
-                }
-            }
-        }
-    }
-
-    /**
-     * Extracts type parameter name from tag.
-     * @param tag javadoc tag to extract parameter name
-     * @return extracts type parameter name from tag
-     */
-    private static String extractTypeParamNameFromTag(JavadocTag tag) {
-        final String typeParamName;
-        final Matcher matchInAngleBrackets =
-                TYPE_NAME_IN_JAVADOC_TAG.matcher(tag.getFirstArg());
-        if (matchInAngleBrackets.find()) {
-            typeParamName = matchInAngleBrackets.group(1).trim();
+        if (ast.getChildren().length == 0) {
+            result.append(ast.getText());
         }
         else {
-            typeParamName = TYPE_NAME_IN_JAVADOC_TAG_SPLITTER.split(tag.getFirstArg())[0];
+            for (DetailNode child : ast.getChildren()) {
+                result.append(getTagDescription(child));
+            }
         }
-        return typeParamName;
+
+        return result.toString();
+    }
+
+    private void checkFormat(int lineNumber, String tagName, Pattern formatPattern, String text) {
+        if (formatPattern != null && !formatPattern.matcher(text).find()) {
+            log(lineNumber, MSG_TAG_FORMAT, tagName, formatPattern.pattern());
+        }
     }
 
 }
