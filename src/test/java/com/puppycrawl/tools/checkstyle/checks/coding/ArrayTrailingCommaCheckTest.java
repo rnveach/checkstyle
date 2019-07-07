@@ -20,8 +20,8 @@
 package com.puppycrawl.tools.checkstyle.checks.coding;
 
 import static com.puppycrawl.tools.checkstyle.checks.coding.ArrayTrailingCommaCheck.MSG_KEY;
+import static org.junit.Assert.assertNotNull;
 
-import org.junit.Assert;
 import org.junit.Test;
 
 import com.puppycrawl.tools.checkstyle.AbstractModuleTestSupport;
@@ -50,9 +50,9 @@ public class ArrayTrailingCommaCheckTest
     @Test
     public void testTokensNotNull() {
         final ArrayTrailingCommaCheck check = new ArrayTrailingCommaCheck();
-        Assert.assertNotNull("Invalid acceptable tokens", check.getAcceptableTokens());
-        Assert.assertNotNull("Invalid default tokens", check.getDefaultTokens());
-        Assert.assertNotNull("Invalid required tokens", check.getRequiredTokens());
+        assertNotNull("Invalid acceptable tokens", check.getAcceptableTokens());
+        assertNotNull("Invalid default tokens", check.getDefaultTokens());
+        assertNotNull("Invalid required tokens", check.getRequiredTokens());
     }
 
 }

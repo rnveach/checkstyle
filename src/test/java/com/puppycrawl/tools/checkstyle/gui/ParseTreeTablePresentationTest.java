@@ -19,9 +19,16 @@
 
 package com.puppycrawl.tools.checkstyle.gui;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+
 import java.io.File;
 
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -54,13 +61,13 @@ public class ParseTreeTablePresentationTest extends AbstractPathTestSupport {
     public void testRoot() {
         final Object root = new ParseTreeTablePresentation(tree).getRoot();
         final int childCount = new ParseTreeTablePresentation(null).getChildCount(root);
-        Assert.assertEquals("Invalid child count", 1, childCount);
+        assertEquals("Invalid child count", 1, childCount);
     }
 
     @Test
     public void testChildCount() {
         final int childCount = new ParseTreeTablePresentation(null).getChildCount(tree);
-        Assert.assertEquals("Invalid child count", 5, childCount);
+        assertEquals("Invalid child count", 5, childCount);
     }
 
     @Test
@@ -68,14 +75,14 @@ public class ParseTreeTablePresentationTest extends AbstractPathTestSupport {
         final ParseTreeTablePresentation parseTree = new ParseTreeTablePresentation(null);
         parseTree.setParseMode(ParseMode.JAVA_WITH_JAVADOC_AND_COMMENTS);
         final int childCount = parseTree.getChildCount(tree);
-        Assert.assertEquals("Invalid child count", 5, childCount);
+        assertEquals("Invalid child count", 5, childCount);
     }
 
     @Test
     public void testChild() {
         final Object child = new ParseTreeTablePresentation(null).getChild(tree, 1);
-        Assert.assertTrue("Invalid child type", child instanceof DetailAST);
-        Assert.assertEquals("Invalid child token type",
+        assertTrue("Invalid child type", child instanceof DetailAST);
+        assertEquals("Invalid child token type",
                 TokenTypes.BLOCK_COMMENT_BEGIN, ((DetailAST) child).getType());
     }
 
@@ -84,8 +91,8 @@ public class ParseTreeTablePresentationTest extends AbstractPathTestSupport {
         final ParseTreeTablePresentation parseTree = new ParseTreeTablePresentation(null);
         parseTree.setParseMode(ParseMode.JAVA_WITH_JAVADOC_AND_COMMENTS);
         final Object child = parseTree.getChild(tree, 1);
-        Assert.assertTrue("Invalid child type", child instanceof DetailAST);
-        Assert.assertEquals("Invalid child token type",
+        assertTrue("Invalid child type", child instanceof DetailAST);
+        assertEquals("Invalid child token type",
                 TokenTypes.BLOCK_COMMENT_BEGIN, ((DetailAST) child).getType());
     }
 
@@ -95,7 +102,7 @@ public class ParseTreeTablePresentationTest extends AbstractPathTestSupport {
         final ParseTreeTablePresentation parseTree = new ParseTreeTablePresentation(null);
         parseTree.setParseMode(ParseMode.JAVA_WITH_COMMENTS);
         final int javadocCommentChildCount = parseTree.getChildCount(commentContentNode);
-        Assert.assertEquals("Invalid child count", 0, javadocCommentChildCount);
+        assertEquals("Invalid child count", 0, javadocCommentChildCount);
     }
 
     @Test
@@ -105,7 +112,7 @@ public class ParseTreeTablePresentationTest extends AbstractPathTestSupport {
         final DetailAST commentContentNode = tree.getLastChild().getLastChild()
                 .getPreviousSibling().getLastChild().getFirstChild().getFirstChild();
         final int commentChildCount = parseTree.getChildCount(commentContentNode);
-        Assert.assertEquals("Invalid child count", 0, commentChildCount);
+        assertEquals("Invalid child count", 0, commentChildCount);
     }
 
     @Test
@@ -115,7 +122,7 @@ public class ParseTreeTablePresentationTest extends AbstractPathTestSupport {
         final DetailAST commentContentNode = tree.getLastChild().getLastChild()
                 .getPreviousSibling().getLastChild().getFirstChild().getFirstChild();
         final Object commentChild = parseTree.getChild(commentContentNode, 0);
-        Assert.assertNull("Child must be null", commentChild);
+        assertNull("Child must be null", commentChild);
     }
 
     @Test
@@ -123,10 +130,10 @@ public class ParseTreeTablePresentationTest extends AbstractPathTestSupport {
         final DetailAST commentContentNode = tree.getFirstChild().getNextSibling().getFirstChild();
         final ParseTreeTablePresentation parseTree = new ParseTreeTablePresentation(null);
         final int commentChildCount = parseTree.getChildCount(commentContentNode);
-        Assert.assertEquals("Invalid child count", 0, commentChildCount);
+        assertEquals("Invalid child count", 0, commentChildCount);
         parseTree.setParseMode(ParseMode.JAVA_WITH_JAVADOC_AND_COMMENTS);
         final int javadocCommentChildCount = parseTree.getChildCount(commentContentNode);
-        Assert.assertEquals("Invalid child count", 1, javadocCommentChildCount);
+        assertEquals("Invalid child count", 1, javadocCommentChildCount);
     }
 
     @Test
@@ -135,13 +142,13 @@ public class ParseTreeTablePresentationTest extends AbstractPathTestSupport {
         final ParseTreeTablePresentation parseTree = new ParseTreeTablePresentation(null);
         parseTree.setParseMode(ParseMode.JAVA_WITH_JAVADOC_AND_COMMENTS);
         final Object child = parseTree.getChild(commentContentNode, 0);
-        Assert.assertTrue("Invalid child type", child instanceof DetailNode);
-        Assert.assertEquals("Invalid child token type",
+        assertTrue("Invalid child type", child instanceof DetailNode);
+        assertEquals("Invalid child token type",
                 JavadocTokenTypes.JAVADOC, ((DetailNode) child).getType());
         // get Child one more time to test cache of PModel
         final Object childSame = parseTree.getChild(commentContentNode, 0);
-        Assert.assertTrue("Invalid child type", childSame instanceof DetailNode);
-        Assert.assertEquals("Invalid child token type",
+        assertTrue("Invalid child type", childSame instanceof DetailNode);
+        assertEquals("Invalid child token type",
                 JavadocTokenTypes.JAVADOC, ((DetailNode) childSame).getType());
     }
 
@@ -151,11 +158,11 @@ public class ParseTreeTablePresentationTest extends AbstractPathTestSupport {
         final ParseTreeTablePresentation parseTree = new ParseTreeTablePresentation(null);
         parseTree.setParseMode(ParseMode.JAVA_WITH_JAVADOC_AND_COMMENTS);
         final Object javadoc = parseTree.getChild(commentContentNode, 0);
-        Assert.assertTrue("Invalid child type", javadoc instanceof DetailNode);
-        Assert.assertEquals("Invalid child token type",
+        assertTrue("Invalid child type", javadoc instanceof DetailNode);
+        assertEquals("Invalid child token type",
                 JavadocTokenTypes.JAVADOC, ((DetailNode) javadoc).getType());
         final int javadocChildCount = parseTree.getChildCount(javadoc);
-        Assert.assertEquals("Invalid child count", 5, javadocChildCount);
+        assertEquals("Invalid child count", 5, javadocChildCount);
     }
 
     @Test
@@ -164,29 +171,29 @@ public class ParseTreeTablePresentationTest extends AbstractPathTestSupport {
         final ParseTreeTablePresentation parseTree = new ParseTreeTablePresentation(null);
         parseTree.setParseMode(ParseMode.JAVA_WITH_JAVADOC_AND_COMMENTS);
         final Object javadoc = parseTree.getChild(commentContentNode, 0);
-        Assert.assertTrue("Invalid child type", javadoc instanceof DetailNode);
-        Assert.assertEquals("Invalid child token type",
+        assertTrue("Invalid child type", javadoc instanceof DetailNode);
+        assertEquals("Invalid child token type",
                 JavadocTokenTypes.JAVADOC, ((DetailNode) javadoc).getType());
         final Object javadocChild = parseTree.getChild(javadoc, 2);
-        Assert.assertTrue("Invalid child type", javadocChild instanceof DetailNode);
-        Assert.assertEquals("Invalid child token type",
+        assertTrue("Invalid child type", javadocChild instanceof DetailNode);
+        assertEquals("Invalid child token type",
                 JavadocTokenTypes.TEXT, ((DetailNode) javadocChild).getType());
     }
 
     @Test
     public void testGetIndexOfChild() {
         DetailAST ithChild = tree.getFirstChild();
-        Assert.assertNotNull("Child must not be null", ithChild);
+        assertNotNull("Child must not be null", ithChild);
         final ParseTreeTablePresentation parseTree = new ParseTreeTablePresentation(null);
         int index = 0;
         while (ithChild != null) {
-            Assert.assertEquals("Invalid child index",
+            assertEquals("Invalid child index",
                     index, parseTree.getIndexOfChild(tree, ithChild));
             ithChild = ithChild.getNextSibling();
             index++;
         }
 
-        Assert.assertEquals("Invalid child index",
+        assertEquals("Invalid child index",
                 -1, parseTree.getIndexOfChild(tree, new DetailAstImpl()));
     }
 
@@ -209,8 +216,8 @@ public class ParseTreeTablePresentationTest extends AbstractPathTestSupport {
             .getNextSibling()
             .getNextSibling();
 
-        Assert.assertNotNull("Expected a non-null identifier node here", node);
-        Assert.assertEquals("Expected identifier token",
+        assertNotNull("Expected a non-null identifier node here", node);
+        assertEquals("Expected identifier token",
             TokenTypes.IDENT, node.getType());
 
         final ParseTreeTablePresentation parseTree = new ParseTreeTablePresentation(null);
@@ -220,36 +227,36 @@ public class ParseTreeTablePresentationTest extends AbstractPathTestSupport {
         final int column = (int) parseTree.getValueAt(node, 3);
         final String text = (String) parseTree.getValueAt(node, 4);
 
-        Assert.assertEquals("Node should be an Identifier", "IDENT", type);
-        Assert.assertEquals("Class identifier should start on line 6", 6, line);
-        Assert.assertEquals("Class name should start from column 6", 6, column);
-        Assert.assertEquals("Wrong class name", "InputParseTreeTablePresentation", text);
-        Assert.assertNull("Root node should have null value", treeModel);
+        assertEquals("Node should be an Identifier", "IDENT", type);
+        assertEquals("Class identifier should start on line 6", 6, line);
+        assertEquals("Class name should start from column 6", 6, column);
+        assertEquals("Wrong class name", "InputParseTreeTablePresentation", text);
+        assertNull("Root node should have null value", treeModel);
 
         try {
             parseTree.getValueAt(node, parseTree.getColumnCount());
-            Assert.fail("IllegalStateException expected");
+            fail("IllegalStateException expected");
         }
         catch (IllegalStateException ex) {
-            Assert.assertEquals("Invalid error message", "Unknown column", ex.getMessage());
+            assertEquals("Invalid error message", "Unknown column", ex.getMessage());
         }
     }
 
     @Test
     public void testGetValueAtDetailNode() {
         final DetailAST commentContentNode = tree.getFirstChild().getNextSibling().getFirstChild();
-        Assert.assertNotNull("Comment node cannot be null", commentContentNode);
+        assertNotNull("Comment node cannot be null", commentContentNode);
         final int nodeType = commentContentNode.getType();
-        Assert.assertTrue("Comment node should be a comment type",
+        assertTrue("Comment node should be a comment type",
             TokenUtil.isCommentType(nodeType));
-        Assert.assertEquals("This should be a javadoc comment",
+        assertEquals("This should be a javadoc comment",
             "/*", commentContentNode.getParent().getText());
         final ParseTreeTablePresentation parseTree = new ParseTreeTablePresentation(null);
         parseTree.setParseMode(ParseMode.JAVA_WITH_JAVADOC_AND_COMMENTS);
         final Object child = parseTree.getChild(commentContentNode, 0);
 
-        Assert.assertFalse("Child has not to be leaf", parseTree.isLeaf(child));
-        Assert.assertTrue("Child has to be leaf", parseTree.isLeaf(tree.getFirstChild()));
+        assertFalse("Child has not to be leaf", parseTree.isLeaf(child));
+        assertTrue("Child has to be leaf", parseTree.isLeaf(tree.getFirstChild()));
 
         final Object treeModel = parseTree.getValueAt(child, 0);
         final String type = (String) parseTree.getValueAt(child, 1);
@@ -258,46 +265,46 @@ public class ParseTreeTablePresentationTest extends AbstractPathTestSupport {
         final String text = (String) parseTree.getValueAt(child, 4);
         final String expectedText = "JAVADOC";
 
-        Assert.assertNull("Tree model must be null", treeModel);
-        Assert.assertEquals("Invalid type", "JAVADOC", type);
-        Assert.assertEquals("Invalid line", 3, line);
-        Assert.assertEquals("Invalid column", 3, column);
-        Assert.assertEquals("Invalid text", expectedText, text);
+        assertNull("Tree model must be null", treeModel);
+        assertEquals("Invalid type", "JAVADOC", type);
+        assertEquals("Invalid line", 3, line);
+        assertEquals("Invalid column", 3, column);
+        assertEquals("Invalid text", expectedText, text);
 
         try {
             parseTree.getValueAt(child, parseTree.getColumnCount());
-            Assert.fail("IllegalStateException expected");
+            fail("IllegalStateException expected");
         }
         catch (IllegalStateException ex) {
-            Assert.assertEquals("Invalid error message", "Unknown column", ex.getMessage());
+            assertEquals("Invalid error message", "Unknown column", ex.getMessage());
         }
     }
 
     @Test
     public void testColumnMethods() {
         final ParseTreeTablePresentation parseTree = new ParseTreeTablePresentation(null);
-        Assert.assertSame("Invalid type", ParseTreeTableModel.class, parseTree.getColumnClass(0));
-        Assert.assertSame("Invalid type", String.class, parseTree.getColumnClass(1));
-        Assert.assertSame("Invalid type", Integer.class, parseTree.getColumnClass(2));
-        Assert.assertSame("Invalid type", Integer.class, parseTree.getColumnClass(3));
-        Assert.assertSame("Invalid type", String.class, parseTree.getColumnClass(4));
+        assertSame("Invalid type", ParseTreeTableModel.class, parseTree.getColumnClass(0));
+        assertSame("Invalid type", String.class, parseTree.getColumnClass(1));
+        assertSame("Invalid type", Integer.class, parseTree.getColumnClass(2));
+        assertSame("Invalid type", Integer.class, parseTree.getColumnClass(3));
+        assertSame("Invalid type", String.class, parseTree.getColumnClass(4));
 
         try {
             parseTree.getColumnClass(parseTree.getColumnCount());
-            Assert.fail("IllegalStateException expected");
+            fail("IllegalStateException expected");
         }
         catch (IllegalStateException ex) {
-            Assert.assertEquals("Invalid error message", "Unknown column", ex.getMessage());
+            assertEquals("Invalid error message", "Unknown column", ex.getMessage());
         }
 
-        Assert.assertFalse("Invalid cell editable status", parseTree.isCellEditable(1));
+        assertFalse("Invalid cell editable status", parseTree.isCellEditable(1));
 
-        Assert.assertEquals("Invalid column count", 5, parseTree.getColumnCount());
-        Assert.assertEquals("Invalid column name", "Tree", parseTree.getColumnName(0));
-        Assert.assertEquals("Invalid column name", "Type", parseTree.getColumnName(1));
-        Assert.assertEquals("Invalid column name", "Line", parseTree.getColumnName(2));
-        Assert.assertEquals("Invalid column name", "Column", parseTree.getColumnName(3));
-        Assert.assertEquals("Invalid column name", "Text", parseTree.getColumnName(4));
+        assertEquals("Invalid column count", 5, parseTree.getColumnCount());
+        assertEquals("Invalid column name", "Tree", parseTree.getColumnName(0));
+        assertEquals("Invalid column name", "Type", parseTree.getColumnName(1));
+        assertEquals("Invalid column name", "Line", parseTree.getColumnName(2));
+        assertEquals("Invalid column name", "Column", parseTree.getColumnName(3));
+        assertEquals("Invalid column name", "Text", parseTree.getColumnName(4));
     }
 
 }

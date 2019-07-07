@@ -20,8 +20,8 @@
 package com.puppycrawl.tools.checkstyle.checks.coding;
 
 import static com.puppycrawl.tools.checkstyle.checks.coding.OverloadMethodsDeclarationOrderCheck.MSG_KEY;
+import static org.junit.Assert.assertNotNull;
 
-import org.junit.Assert;
 import org.junit.Test;
 
 import com.puppycrawl.tools.checkstyle.AbstractModuleTestSupport;
@@ -53,9 +53,9 @@ public class OverloadMethodsDeclarationOrderCheckTest
     public void testTokensNotNull() {
         final OverloadMethodsDeclarationOrderCheck check =
             new OverloadMethodsDeclarationOrderCheck();
-        Assert.assertNotNull("Acceptable tokens should not be null", check.getAcceptableTokens());
-        Assert.assertNotNull("Default tokens should not be null", check.getDefaultTokens());
-        Assert.assertNotNull("Required tokens should not be null", check.getRequiredTokens());
+        assertNotNull("Acceptable tokens should not be null", check.getAcceptableTokens());
+        assertNotNull("Default tokens should not be null", check.getDefaultTokens());
+        assertNotNull("Required tokens should not be null", check.getRequiredTokens());
     }
 
 }

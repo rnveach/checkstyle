@@ -19,11 +19,14 @@
 
 package com.puppycrawl.tools.checkstyle;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
+
 import java.io.File;
 import java.nio.charset.StandardCharsets;
 import java.util.Map;
 
-import org.junit.Assert;
 import org.junit.Test;
 
 import com.puppycrawl.tools.checkstyle.api.AuditEvent;
@@ -45,11 +48,11 @@ public class XpathFileGeneratorAstFilterTest {
         final TreeWalkerAuditEvent event = new TreeWalkerAuditEvent(null, null, message, null);
         final XpathFileGeneratorAstFilter filter = new XpathFileGeneratorAstFilter();
 
-        Assert.assertTrue("filter accepted", filter.accept(event));
+        assertTrue("filter accepted", filter.accept(event));
 
         final AuditEvent auditEvent = new AuditEvent(this, "Test.java", message);
 
-        Assert.assertNull("filter has no queries",
+        assertNull("filter has no queries",
                 XpathFileGeneratorAstFilter.findCorrespondingXpathQuery(auditEvent));
     }
 
@@ -62,12 +65,12 @@ public class XpathFileGeneratorAstFilterTest {
                 "InputXpathFileGeneratorAstFilter.java", message);
         final XpathFileGeneratorAstFilter filter = new XpathFileGeneratorAstFilter();
 
-        Assert.assertTrue("filter accepted", filter.accept(event));
+        assertTrue("filter accepted", filter.accept(event));
 
         final AuditEvent auditEvent = new AuditEvent(this,
                 getPath("InputXpathFileGeneratorAstFilter.java"), message);
 
-        Assert.assertEquals("expected xpath",
+        assertEquals("expected xpath",
                 "/CLASS_DEF[./IDENT[@text='InputXpathFileGeneratorAstFilter']]/OBJBLOCK/LCURLY",
                 XpathFileGeneratorAstFilter.findCorrespondingXpathQuery(auditEvent));
     }
@@ -81,12 +84,12 @@ public class XpathFileGeneratorAstFilterTest {
                 "InputXpathFileGeneratorAstFilter.java", message);
         final XpathFileGeneratorAstFilter filter = new XpathFileGeneratorAstFilter();
 
-        Assert.assertTrue("filter accepted", filter.accept(event));
+        assertTrue("filter accepted", filter.accept(event));
 
         final AuditEvent auditEvent = new AuditEvent(this,
                 getPath("InputXpathFileGeneratorAstFilter.java"), message);
 
-        Assert.assertNull("expected null",
+        assertNull("expected null",
                 XpathFileGeneratorAstFilter.findCorrespondingXpathQuery(auditEvent));
     }
 
@@ -100,12 +103,12 @@ public class XpathFileGeneratorAstFilterTest {
         final XpathFileGeneratorAstFilter filter = new XpathFileGeneratorAstFilter();
         filter.setTabWidth(6);
 
-        Assert.assertTrue("filter accepted", filter.accept(event));
+        assertTrue("filter accepted", filter.accept(event));
 
         final AuditEvent auditEvent = new AuditEvent(this,
                 getPath("InputXpathFileGeneratorAstFilter.java"), message);
 
-        Assert.assertEquals("expected xpath",
+        assertEquals("expected xpath",
                 "/CLASS_DEF[./IDENT[@text='InputXpathFileGeneratorAstFilter']]/OBJBLOCK"
                         + "/METHOD_DEF[./IDENT[@text='tabMethod']]/SLIST/LITERAL_RETURN",
                 XpathFileGeneratorAstFilter.findCorrespondingXpathQuery(auditEvent));
@@ -129,7 +132,7 @@ public class XpathFileGeneratorAstFilterTest {
 
         final XpathFileGeneratorAstFilter filter = new XpathFileGeneratorAstFilter();
 
-        Assert.assertTrue("State is not cleared on finishLocalSetup", TestUtil
+        assertTrue("State is not cleared on finishLocalSetup", TestUtil
                 .isStatefulFieldClearedDuringLocalSetup(filter, event, "MESSAGE_QUERY_MAP",
                     variableStack -> ((Map<LocalizedMessage, String>) variableStack).isEmpty()));
     }

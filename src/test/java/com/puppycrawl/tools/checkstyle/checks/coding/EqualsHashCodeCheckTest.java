@@ -21,13 +21,13 @@ package com.puppycrawl.tools.checkstyle.checks.coding;
 
 import static com.puppycrawl.tools.checkstyle.checks.coding.EqualsHashCodeCheck.MSG_KEY_EQUALS;
 import static com.puppycrawl.tools.checkstyle.checks.coding.EqualsHashCodeCheck.MSG_KEY_HASHCODE;
+import static org.junit.Assert.assertNotNull;
 
 import java.io.File;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-import org.junit.Assert;
 import org.junit.Test;
 
 import com.google.common.collect.ImmutableMap;
@@ -123,9 +123,9 @@ public class EqualsHashCodeCheckTest
     @Test
     public void testTokensNotNull() {
         final EqualsHashCodeCheck check = new EqualsHashCodeCheck();
-        Assert.assertNotNull("Acceptable tokens should not be null", check.getAcceptableTokens());
-        Assert.assertNotNull("Default tokens should not be null", check.getDefaultTokens());
-        Assert.assertNotNull("Required tokens should not be null", check.getRequiredTokens());
+        assertNotNull("Acceptable tokens should not be null", check.getAcceptableTokens());
+        assertNotNull("Default tokens should not be null", check.getDefaultTokens());
+        assertNotNull("Required tokens should not be null", check.getRequiredTokens());
     }
 
 }

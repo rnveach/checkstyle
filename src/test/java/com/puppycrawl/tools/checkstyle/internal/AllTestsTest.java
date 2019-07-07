@@ -19,6 +19,8 @@
 
 package com.puppycrawl.tools.checkstyle.internal;
 
+import static org.junit.Assert.assertTrue;
+
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -32,7 +34,6 @@ import java.util.Map;
 import java.util.function.Consumer;
 import java.util.stream.Stream;
 
-import org.junit.Assert;
 import org.junit.Test;
 
 /**
@@ -49,7 +50,7 @@ public class AllTestsTest {
             grabAllTests(allTests, filePath.toFile());
         });
 
-        Assert.assertTrue("found tests", !allTests.keySet().isEmpty());
+        assertTrue("found tests", !allTests.keySet().isEmpty());
 
         walk(Paths.get("src/test/resources/com/puppycrawl"), filePath -> {
             verifyInputFile(allTests, filePath.toFile());
@@ -67,7 +68,7 @@ public class AllTestsTest {
             grabAllFiles(allTests, filePath.toFile());
         });
 
-        Assert.assertTrue("found tests", !allTests.keySet().isEmpty());
+        assertTrue("found tests", !allTests.keySet().isEmpty());
 
         walk(Paths.get("src/test/java"), filePath -> {
             verifyHasProductionFile(allTests, filePath.toFile());
@@ -157,7 +158,7 @@ public class AllTestsTest {
                 final boolean skipFileNaming = shouldSkipInputFileNameCheck(path, fileName);
 
                 if (!skipFileNaming) {
-                    Assert.assertTrue("Resource must start with 'Input' or 'Expected': " + path,
+                    assertTrue("Resource must start with 'Input' or 'Expected': " + path,
                             fileName.startsWith("Input") || fileName.startsWith("Expected"));
 
                     if (fileName.startsWith("Input")) {
@@ -202,7 +203,7 @@ public class AllTestsTest {
             }
         }
 
-        Assert.assertTrue("Resource must be named after a Test like 'InputMyCustomCase.java' "
+        assertTrue("Resource must be named after a Test like 'InputMyCustomCase.java' "
                 + "and be in the sub-package of the test like 'mycustom' "
                 + "for test 'MyCustomCheckTest': " + path, found);
     }
@@ -229,7 +230,7 @@ public class AllTestsTest {
                     final String packge = path.substring(0, slash);
                     final List<String> classes = allTests.get(packge);
 
-                    Assert.assertTrue("Test must be named after a production class "
+                    assertTrue("Test must be named after a production class "
                             + "and must be in the same package of the production class: " + path,
                             classes != null && classes.contains(fileName));
                 }

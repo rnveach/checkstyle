@@ -20,11 +20,13 @@
 package com.puppycrawl.tools.checkstyle;
 
 import static com.puppycrawl.tools.checkstyle.internal.utils.TestUtil.isUtilsClassHasPrivateConstructor;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 import java.io.File;
 
-import org.junit.Assert;
 import org.junit.Test;
 
 import antlr.NoViableAltException;
@@ -58,7 +60,7 @@ public class SuppressionsStringPrinterTest extends AbstractTreeTestSupport {
         final String result = SuppressionsStringPrinter.printSuppressions(input,
                 lineAndColumnNumber, tabWidth);
 
-        Assert.assertEquals("Invalid xpath queries",
+        assertEquals("Invalid xpath queries",
                 expected, result);
     }
 
@@ -77,7 +79,7 @@ public class SuppressionsStringPrinterTest extends AbstractTreeTestSupport {
         final String result = SuppressionsStringPrinter.printSuppressions(input,
                 lineAndColumnNumber, tabWidth);
 
-        Assert.assertEquals("Invalid xpath queries",
+        assertEquals("Invalid xpath queries",
                 expected, result);
     }
 
@@ -88,7 +90,7 @@ public class SuppressionsStringPrinterTest extends AbstractTreeTestSupport {
         final int tabWidth = 6;
         final String result = SuppressionsStringPrinter.printSuppressions(input,
                 lineAndColumnNumber, tabWidth);
-        Assert.assertEquals("Invalid xpath queries",
+        assertEquals("Invalid xpath queries",
                 EOL, result);
     }
 
@@ -100,10 +102,10 @@ public class SuppressionsStringPrinterTest extends AbstractTreeTestSupport {
         try {
             SuppressionsStringPrinter.printSuppressions(input,
                     invalidLineAndColumnNumber, tabWidth);
-            Assert.fail("exception expected");
+            fail("exception expected");
         }
         catch (IllegalStateException ex) {
-            Assert.assertEquals("Invalid exception message",
+            assertEquals("Invalid exception message",
                     "abc-432 does not match valid format 'line:column'.",
                     ex.getMessage());
         }
@@ -117,12 +119,12 @@ public class SuppressionsStringPrinterTest extends AbstractTreeTestSupport {
         try {
             SuppressionsStringPrinter.printSuppressions(input,
                     lineAndColumnNumber, tabWidth);
-            Assert.fail("exception expected");
+            fail("exception expected");
         }
         catch (CheckstyleException ex) {
-            Assert.assertSame("Invalid class",
+            assertSame("Invalid class",
                     NoViableAltException.class, ex.getCause().getClass());
-            Assert.assertEquals("Invalid exception message",
+            assertEquals("Invalid exception message",
                     input.getAbsolutePath() + ":2:1: unexpected token: classD",
                     ex.getCause().toString());
         }

@@ -19,10 +19,11 @@
 
 package com.puppycrawl.tools.checkstyle.api;
 
+import static org.junit.Assert.assertEquals;
+
 import java.io.File;
 import java.nio.charset.StandardCharsets;
 
-import org.junit.Assert;
 import org.junit.Test;
 
 import com.puppycrawl.tools.checkstyle.AbstractModuleTestSupport;
@@ -45,10 +46,10 @@ public class FullIdentTest extends AbstractModuleTestSupport {
         ast.setText("MyTest");
 
         final FullIdent indent = FullIdent.createFullIdent(ast);
-        Assert.assertEquals("Invalid full indent", "MyTest[15x14]", indent.toString());
-        Assert.assertEquals("Invalid text", "MyTest", indent.getText());
-        Assert.assertEquals("Invalid line", 15, indent.getLineNo());
-        Assert.assertEquals("Invalid column", 14, indent.getColumnNo());
+        assertEquals("Invalid full indent", "MyTest[15x14]", indent.toString());
+        assertEquals("Invalid text", "MyTest", indent.getText());
+        assertEquals("Invalid line", 15, indent.getLineNo());
+        assertEquals("Invalid column", 14, indent.getColumnNo());
     }
 
     @Test
@@ -56,7 +57,7 @@ public class FullIdentTest extends AbstractModuleTestSupport {
         final DetailAST ast = new DetailAstImpl();
 
         final FullIdent indent = FullIdent.createFullIdentBelow(ast);
-        Assert.assertEquals("Invalid full indent", "", indent.getText());
+        assertEquals("Invalid full indent", "", indent.getText());
     }
 
     @Test
@@ -67,19 +68,19 @@ public class FullIdentTest extends AbstractModuleTestSupport {
         final DetailAST packageDefinitionNode = JavaParser.parse(new FileContents(testFileText));
         final DetailAST packageName = packageDefinitionNode.getFirstChild().getNextSibling();
         final FullIdent ident = FullIdent.createFullIdent(packageName);
-        Assert.assertEquals("Invalid full indent", "com[1x8]", ident.getDetailAst().toString());
+        assertEquals("Invalid full indent", "com[1x8]", ident.getDetailAst().toString());
     }
 
     @Test
     public void testNonValidCoordinatesWithNegative() {
         final FullIdent fullIdent = prepareFullIdentWithCoordinates(14, 15);
-        Assert.assertEquals("Invalid full indent", "MyTest.MyTestik[15x14]", fullIdent.toString());
+        assertEquals("Invalid full indent", "MyTest.MyTestik[15x14]", fullIdent.toString());
     }
 
     @Test
     public void testNonValidCoordinatesWithZero() {
         final FullIdent fullIdent = prepareFullIdentWithCoordinates(0, 0);
-        Assert.assertEquals("Invalid full indent", "MyTest.MyTestik[15x14]", fullIdent.toString());
+        assertEquals("Invalid full indent", "MyTest.MyTestik[15x14]", fullIdent.toString());
     }
 
     @Test
@@ -94,7 +95,7 @@ public class FullIdentTest extends AbstractModuleTestSupport {
                 .findFirstToken(TokenTypes.TYPE)
                 .getFirstChild();
         final FullIdent ident = FullIdent.createFullIdent(arrayDeclarator);
-        Assert.assertEquals("Invalid full indent", "int[][][5x12]", ident.toString());
+        assertEquals("Invalid full indent", "int[][][5x12]", ident.toString());
     }
 
     private static FullIdent prepareFullIdentWithCoordinates(int columnNo, int lineNo) {

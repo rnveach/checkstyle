@@ -22,6 +22,7 @@ package com.puppycrawl.tools.checkstyle.filters;
 import static com.puppycrawl.tools.checkstyle.checks.whitespace.FileTabCharacterCheck.MSG_CONTAINS_TAB;
 import static com.puppycrawl.tools.checkstyle.checks.whitespace.FileTabCharacterCheck.MSG_FILE_CONTAINS_TAB;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
@@ -31,7 +32,6 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.stream.Collectors;
 
-import org.junit.Assert;
 import org.junit.Test;
 
 import com.puppycrawl.tools.checkstyle.AbstractModuleTestSupport;
@@ -294,7 +294,7 @@ public class SuppressWithPlainTextCommentFilterTest extends AbstractModuleTestSu
         final SuppressWithPlainTextCommentFilter filter = new SuppressWithPlainTextCommentFilter();
         final AuditEvent auditEvent = new AuditEvent(this);
         assertTrue("Filter should accept audit event", filter.accept(auditEvent));
-        Assert.assertNull("File name should not be null", auditEvent.getFileName());
+        assertNull("File name should not be null", auditEvent.getFileName());
     }
 
     @Test

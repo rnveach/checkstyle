@@ -21,6 +21,9 @@ package com.puppycrawl.tools.checkstyle.checks.coding;
 
 import static com.puppycrawl.tools.checkstyle.checks.coding.RequireThisCheck.MSG_METHOD;
 import static com.puppycrawl.tools.checkstyle.checks.coding.RequireThisCheck.MSG_VARIABLE;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 import java.io.File;
 import java.lang.reflect.Constructor;
@@ -28,7 +31,6 @@ import java.util.Collection;
 import java.util.Optional;
 import java.util.SortedSet;
 
-import org.junit.Assert;
 import org.junit.Test;
 
 import antlr.CommonHiddenStreamToken;
@@ -145,9 +147,9 @@ public class RequireThisCheckTest extends AbstractModuleTestSupport {
     @Test
     public void testTokensNotNull() {
         final RequireThisCheck check = new RequireThisCheck();
-        Assert.assertNotNull("Acceptable tokens should not be null", check.getAcceptableTokens());
-        Assert.assertNotNull("Acceptable tokens should not be null", check.getDefaultTokens());
-        Assert.assertNotNull("Acceptable tokens should not be null", check.getRequiredTokens());
+        assertNotNull("Acceptable tokens should not be null", check.getAcceptableTokens());
+        assertNotNull("Acceptable tokens should not be null", check.getDefaultTokens());
+        assertNotNull("Acceptable tokens should not be null", check.getRequiredTokens());
     }
 
     @Test
@@ -174,7 +176,7 @@ public class RequireThisCheckTest extends AbstractModuleTestSupport {
         check.visitToken(ast);
         final SortedSet<LocalizedMessage> messages = check.getMessages();
 
-        Assert.assertEquals("No exception messages expected", 0, messages.size());
+        assertEquals("No exception messages expected", 0, messages.size());
     }
 
     @Test
@@ -373,9 +375,9 @@ public class RequireThisCheckTest extends AbstractModuleTestSupport {
         constructor.setAccessible(true);
         final Object o = constructor.newInstance(null, ident);
 
-        Assert.assertEquals("expected ident token", ident,
+        assertEquals("expected ident token", ident,
                 TestUtil.getClassDeclaredMethod(cls, "getFrameNameIdent").invoke(o));
-        Assert.assertEquals("expected catch frame type", "CATCH_FRAME",
+        assertEquals("expected catch frame type", "CATCH_FRAME",
                 TestUtil.getClassDeclaredMethod(cls, "getType").invoke(o).toString());
     }
 
@@ -395,8 +397,8 @@ public class RequireThisCheckTest extends AbstractModuleTestSupport {
         final Optional<DetailAST> classDef = TestUtil.findTokenInAstByPredicate(root,
             ast -> ast.getType() == TokenTypes.CLASS_DEF);
 
-        Assert.assertTrue("Ast should contain CLASS_DEF", classDef.isPresent());
-        Assert.assertTrue("State is not cleared on beginTree",
+        assertTrue("Ast should contain CLASS_DEF", classDef.isPresent());
+        assertTrue("State is not cleared on beginTree",
                 TestUtil.isStatefulFieldClearedDuringBeginTree(check, classDef.get(), "current",
                     current -> ((Collection<?>) current).isEmpty()));
     }

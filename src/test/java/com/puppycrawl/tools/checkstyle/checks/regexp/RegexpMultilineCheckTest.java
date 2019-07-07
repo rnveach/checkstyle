@@ -23,12 +23,12 @@ import static com.puppycrawl.tools.checkstyle.checks.regexp.MultilineDetector.MS
 import static com.puppycrawl.tools.checkstyle.checks.regexp.MultilineDetector.MSG_REGEXP_EXCEEDED;
 import static com.puppycrawl.tools.checkstyle.checks.regexp.MultilineDetector.MSG_REGEXP_MINIMUM;
 import static com.puppycrawl.tools.checkstyle.checks.regexp.MultilineDetector.MSG_STACKOVERFLOW;
+import static org.junit.Assert.assertEquals;
 
 import java.io.File;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 
-import org.junit.Assert;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
@@ -157,7 +157,7 @@ public class RegexpMultilineCheckTest extends AbstractModuleTestSupport {
 
         detector.processLines(new FileText(file, StandardCharsets.UTF_8.name()));
         detector.processLines(new FileText(file, StandardCharsets.UTF_8.name()));
-        Assert.assertEquals("Logged unexpected amount of issues",
+        assertEquals("Logged unexpected amount of issues",
                 2, reporter.getLogCount());
     }
 

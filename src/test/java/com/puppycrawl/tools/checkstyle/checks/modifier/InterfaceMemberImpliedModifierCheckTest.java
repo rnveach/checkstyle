@@ -21,8 +21,8 @@ package com.puppycrawl.tools.checkstyle.checks.modifier;
 
 import static com.puppycrawl.tools.checkstyle.checks.modifier.InterfaceMemberImpliedModifierCheck.MSG_KEY;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
 
-import org.junit.Assert;
 import org.junit.Test;
 
 import com.puppycrawl.tools.checkstyle.AbstractModuleTestSupport;
@@ -403,7 +403,7 @@ public class InterfaceMemberImpliedModifierCheckTest
             new InterfaceMemberImpliedModifierCheck();
         try {
             check.visitToken(init);
-            Assert.fail("IllegalStateException is expected");
+            fail("IllegalStateException is expected");
         }
         catch (IllegalStateException ex) {
             assertEquals("Error message is unexpected", init.toString(), ex.getMessage());

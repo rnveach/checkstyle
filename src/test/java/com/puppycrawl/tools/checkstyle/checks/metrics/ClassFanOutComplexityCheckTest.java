@@ -20,7 +20,10 @@
 package com.puppycrawl.tools.checkstyle.checks.metrics;
 
 import static com.puppycrawl.tools.checkstyle.checks.metrics.ClassFanOutComplexityCheck.MSG_KEY;
+import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 import java.io.File;
@@ -28,7 +31,6 @@ import java.util.Collection;
 import java.util.Map;
 import java.util.Optional;
 
-import org.junit.Assert;
 import org.junit.Test;
 
 import com.puppycrawl.tools.checkstyle.AbstractModuleTestSupport;
@@ -187,8 +189,8 @@ public class ClassFanOutComplexityCheckTest extends AbstractModuleTestSupport {
             TokenTypes.LITERAL_THROWS,
             TokenTypes.ANNOTATION_DEF,
         };
-        Assert.assertNotNull("Acceptable tokens should not be null", actual);
-        Assert.assertArrayEquals("Invalid acceptable tokens", expected, actual);
+        assertNotNull("Acceptable tokens should not be null", actual);
+        assertArrayEquals("Invalid acceptable tokens", expected, actual);
     }
 
     @Test
@@ -304,8 +306,8 @@ public class ClassFanOutComplexityCheckTest extends AbstractModuleTestSupport {
         final Optional<DetailAST> importAst = TestUtil.findTokenInAstByPredicate(root,
             ast -> ast.getType() == TokenTypes.IMPORT);
 
-        Assert.assertTrue("Ast should contain IMPORT", importAst.isPresent());
-        Assert.assertTrue("State is not cleared on beginTree",
+        assertTrue("Ast should contain IMPORT", importAst.isPresent());
+        assertTrue("State is not cleared on beginTree",
                 TestUtil.isStatefulFieldClearedDuringBeginTree(check, importAst.get(),
                     "importedClassPackages",
                     importedClssPackage -> ((Map<String, String>) importedClssPackage).isEmpty()));
@@ -327,8 +329,8 @@ public class ClassFanOutComplexityCheckTest extends AbstractModuleTestSupport {
         final Optional<DetailAST> classDef = TestUtil.findTokenInAstByPredicate(root,
             ast -> ast.getType() == TokenTypes.CLASS_DEF);
 
-        Assert.assertTrue("Ast should contain CLASS_DEF", classDef.isPresent());
-        Assert.assertTrue("State is not cleared on beginTree",
+        assertTrue("Ast should contain CLASS_DEF", classDef.isPresent());
+        assertTrue("State is not cleared on beginTree",
                 TestUtil.isStatefulFieldClearedDuringBeginTree(check, classDef.get(),
                     "classesContexts",
                     classContexts -> ((Collection<?>) classContexts).size() == 1));

@@ -26,7 +26,6 @@ import java.io.File;
 import java.util.Optional;
 import java.util.function.Predicate;
 
-import org.junit.Assert;
 import org.junit.Test;
 
 import com.puppycrawl.tools.checkstyle.AbstractModuleTestSupport;
@@ -165,7 +164,7 @@ public class HiddenFieldCheckTest
         final DefaultConfiguration checkConfig =
             createModuleConfig(HiddenFieldCheck.class);
         checkConfig.addAttribute("ignoreFormat", "^i.*$");
-        Assert.assertNotNull("Ignore format should not be null",
+        assertNotNull("Ignore format should not be null",
                 checkConfig.getAttribute("ignoreFormat"));
         final String[] expected = {
             "18:13: " + getCheckMessage(MSG_KEY, "hidden"),

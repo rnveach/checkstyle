@@ -22,6 +22,7 @@ package com.puppycrawl.tools.checkstyle.checks;
 import static com.puppycrawl.tools.checkstyle.checks.UniquePropertiesCheck.MSG_IO_EXCEPTION_KEY;
 import static com.puppycrawl.tools.checkstyle.checks.UniquePropertiesCheck.MSG_KEY;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 import java.io.File;
 import java.io.IOException;
@@ -37,7 +38,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.SortedSet;
 
-import org.junit.Assert;
 import org.junit.Test;
 
 import com.puppycrawl.tools.checkstyle.AbstractModuleTestSupport;
@@ -90,7 +90,7 @@ public class UniquePropertiesCheckTest extends AbstractModuleTestSupport {
         final List<String> testStrings = new ArrayList<>(3);
         final Method getLineNumber = UniquePropertiesCheck.class.getDeclaredMethod(
             "getLineNumber", FileText.class, String.class);
-        Assert.assertNotNull("Get line number method should be present", getLineNumber);
+        assertNotNull("Get line number method should be present", getLineNumber);
         getLineNumber.setAccessible(true);
         testStrings.add("");
         testStrings.add("0 = 0");
@@ -98,7 +98,7 @@ public class UniquePropertiesCheckTest extends AbstractModuleTestSupport {
         final FileText fileText = new FileText(new File("some.properties"), testStrings);
         final Object lineNumber = getLineNumber.invoke(UniquePropertiesCheck.class,
                 fileText, "some key");
-        Assert.assertNotNull("Line number should not be null", lineNumber);
+        assertNotNull("Line number should not be null", lineNumber);
         assertEquals("Invalid line number", 1, lineNumber);
     }
 

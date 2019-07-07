@@ -19,11 +19,13 @@
 
 package com.puppycrawl.tools.checkstyle.grammar.comments;
 
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+
 import java.util.Arrays;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
-import org.junit.Assert;
 import org.junit.Test;
 
 import com.puppycrawl.tools.checkstyle.AbstractModuleTestSupport;
@@ -50,7 +52,7 @@ public class AllBlockCommentsTest extends AbstractModuleTestSupport {
                 createModuleConfig(BlockCommentListenerCheck.class);
         final String[] expected = CommonUtil.EMPTY_STRING_ARRAY;
         verify(checkConfig, getPath("InputFullOfBlockComments.java"), expected);
-        Assert.assertTrue("All comments should be empty", ALL_COMMENTS.isEmpty());
+        assertTrue("All comments should be empty", ALL_COMMENTS.isEmpty());
     }
 
     private static class BlockCommentListenerCheck extends AbstractCheck {
@@ -92,7 +94,7 @@ public class AllBlockCommentsTest extends AbstractModuleTestSupport {
         public void visitToken(DetailAST ast) {
             final String commentContent = ast.getFirstChild().getText();
             if (!ALL_COMMENTS.remove(commentContent)) {
-                Assert.fail("Unexpected comment: " + commentContent);
+                fail("Unexpected comment: " + commentContent);
             }
         }
 

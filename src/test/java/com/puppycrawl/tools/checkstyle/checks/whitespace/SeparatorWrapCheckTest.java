@@ -21,10 +21,10 @@ package com.puppycrawl.tools.checkstyle.checks.whitespace;
 
 import static com.puppycrawl.tools.checkstyle.checks.whitespace.SeparatorWrapCheck.MSG_LINE_NEW;
 import static com.puppycrawl.tools.checkstyle.checks.whitespace.SeparatorWrapCheck.MSG_LINE_PREVIOUS;
+import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
 
-import org.junit.Assert;
 import org.junit.Test;
 
 import com.puppycrawl.tools.checkstyle.AbstractModuleTestSupport;
@@ -83,7 +83,7 @@ public class SeparatorWrapCheckTest
             TokenTypes.DOT,
             TokenTypes.COMMA,
         };
-        Assert.assertArrayEquals("Invalid default tokens", expected, actual);
+        assertArrayEquals("Invalid default tokens", expected, actual);
     }
 
     @Test

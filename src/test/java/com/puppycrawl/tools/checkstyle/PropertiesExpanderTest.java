@@ -19,9 +19,11 @@
 
 package com.puppycrawl.tools.checkstyle;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
+
 import java.util.Properties;
 
-import org.junit.Assert;
 import org.junit.Test;
 
 public class PropertiesExpanderTest {
@@ -30,10 +32,10 @@ public class PropertiesExpanderTest {
     public void testCtorException() {
         try {
             final Object test = new PropertiesExpander(null);
-            Assert.fail("exception expected but got " + test);
+            fail("exception expected but got " + test);
         }
         catch (IllegalArgumentException ex) {
-            Assert.assertEquals("Invalid exception message", "cannot pass null", ex.getMessage());
+            assertEquals("Invalid exception message", "cannot pass null", ex.getMessage());
         }
     }
 
@@ -41,15 +43,15 @@ public class PropertiesExpanderTest {
     public void testDefaultProperties() {
         final Properties properties = new Properties(System.getProperties());
         properties.setProperty("test", "checkstyle");
-        Assert.assertEquals("Invalid user.home property",
+        assertEquals("Invalid user.home property",
                 System.getProperty("user.home"), properties.getProperty("user.home"));
-        Assert.assertEquals("Invalid checkstyle property",
+        assertEquals("Invalid checkstyle property",
                 "checkstyle", properties.getProperty("test"));
 
         final PropertiesExpander expander = new PropertiesExpander(properties);
-        Assert.assertEquals("Invalid user.home property",
+        assertEquals("Invalid user.home property",
                 System.getProperty("user.home"), expander.resolve("user.home"));
-        Assert.assertEquals("Invalid checkstyle property",
+        assertEquals("Invalid checkstyle property",
                 "checkstyle", expander.resolve("test"));
     }
 

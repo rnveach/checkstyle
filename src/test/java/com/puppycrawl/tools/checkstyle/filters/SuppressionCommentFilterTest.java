@@ -22,6 +22,8 @@ package com.puppycrawl.tools.checkstyle.filters;
 import static com.puppycrawl.tools.checkstyle.checks.naming.AbstractNameCheck.MSG_INVALID_PATTERN;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 import java.util.Arrays;
@@ -29,7 +31,6 @@ import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import org.junit.Assert;
 import org.junit.Test;
 import org.powermock.reflect.Whitebox;
 
@@ -358,8 +359,8 @@ public class SuppressionCommentFilterTest
     public void testAcceptNullLocalizedMessage() {
         final SuppressionCommentFilter filter = new SuppressionCommentFilter();
         final TreeWalkerAuditEvent auditEvent = new TreeWalkerAuditEvent(null, null, null, null);
-        Assert.assertTrue("Filter should accept audit event", filter.accept(auditEvent));
-        Assert.assertNull("File name should not be null", auditEvent.getFileName());
+        assertTrue("Filter should accept audit event", filter.accept(auditEvent));
+        assertNull("File name should not be null", auditEvent.getFileName());
     }
 
     @Test

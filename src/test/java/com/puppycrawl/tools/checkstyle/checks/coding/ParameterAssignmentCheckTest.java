@@ -20,14 +20,15 @@
 package com.puppycrawl.tools.checkstyle.checks.coding;
 
 import static com.puppycrawl.tools.checkstyle.checks.coding.ParameterAssignmentCheck.MSG_KEY;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 import java.io.File;
 import java.util.Collection;
 import java.util.Optional;
 import java.util.Set;
 
-import org.junit.Assert;
 import org.junit.Test;
 
 import com.puppycrawl.tools.checkstyle.AbstractModuleTestSupport;
@@ -71,9 +72,9 @@ public class ParameterAssignmentCheckTest extends AbstractModuleTestSupport {
     @Test
     public void testTokensNotNull() {
         final ParameterAssignmentCheck check = new ParameterAssignmentCheck();
-        Assert.assertNotNull("Acceptable tokens should not be null", check.getAcceptableTokens());
-        Assert.assertNotNull("Default tokens should not be null", check.getDefaultTokens());
-        Assert.assertNotNull("Required tokens should not be null", check.getRequiredTokens());
+        assertNotNull("Acceptable tokens should not be null", check.getAcceptableTokens());
+        assertNotNull("Default tokens should not be null", check.getDefaultTokens());
+        assertNotNull("Required tokens should not be null", check.getRequiredTokens());
     }
 
     @Test
@@ -85,7 +86,7 @@ public class ParameterAssignmentCheckTest extends AbstractModuleTestSupport {
 
         try {
             check.visitToken(classDefAst);
-            Assert.fail("IllegalStateException is expected");
+            fail("IllegalStateException is expected");
         }
         catch (IllegalStateException ex) {
             // it is OK
@@ -93,7 +94,7 @@ public class ParameterAssignmentCheckTest extends AbstractModuleTestSupport {
 
         try {
             check.leaveToken(classDefAst);
-            Assert.fail("IllegalStateException is expected");
+            fail("IllegalStateException is expected");
         }
         catch (IllegalStateException ex) {
             // it is OK

@@ -21,10 +21,11 @@ package com.puppycrawl.tools.checkstyle.checks.design;
 
 import static com.puppycrawl.tools.checkstyle.checks.design.FinalClassCheck.MSG_KEY;
 import static org.junit.Assert.assertArrayEquals;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
 
 import java.lang.reflect.Method;
 
-import org.junit.Assert;
 import org.junit.Test;
 import org.powermock.reflect.Whitebox;
 
@@ -97,7 +98,7 @@ public class FinalClassCheckTest
         badAst.setType(unsupportedTokenByCheck);
         try {
             finalClassCheck.visitToken(badAst);
-            Assert.fail("IllegalStateException is expected");
+            fail("IllegalStateException is expected");
         }
         catch (IllegalStateException ex) {
             // it is OK
@@ -116,7 +117,7 @@ public class FinalClassCheckTest
     public void testQualifiedClassName() throws Exception {
         final Method method = Whitebox.getMethod(FinalClassCheck.class, "getQualifiedClassName",
                 String.class, String.class, String.class);
-        Assert.assertEquals("unexpected result", "ClassName",
+        assertEquals("unexpected result", "ClassName",
                 method.invoke(null, "", null, "ClassName"));
     }
 

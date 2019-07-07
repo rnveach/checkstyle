@@ -20,12 +20,14 @@
 package com.puppycrawl.tools.checkstyle.checks.coding;
 
 import static com.puppycrawl.tools.checkstyle.checks.coding.IllegalTokenTextCheck.MSG_KEY;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 import java.util.Arrays;
 import java.util.List;
 import java.util.regex.Pattern;
 
-import org.junit.Assert;
 import org.junit.Test;
 
 import com.puppycrawl.tools.checkstyle.AbstractModuleTestSupport;
@@ -104,10 +106,10 @@ public class IllegalTokenTextCheckTest
     @Test
     public void testTokensNotNull() {
         final IllegalTokenTextCheck check = new IllegalTokenTextCheck();
-        Assert.assertNotNull("Acceptable tokens should not be null", check.getAcceptableTokens());
-        Assert.assertNotNull("Default tokens should not be null", check.getDefaultTokens());
-        Assert.assertNotNull("Required tokens should not be null", check.getRequiredTokens());
-        Assert.assertTrue("Comments are also TokenType token", check.isCommentNodesRequired());
+        assertNotNull("Acceptable tokens should not be null", check.getAcceptableTokens());
+        assertNotNull("Default tokens should not be null", check.getDefaultTokens());
+        assertNotNull("Required tokens should not be null", check.getRequiredTokens());
+        assertTrue("Comments are also TokenType token", check.isCommentNodesRequired());
     }
 
     @Test
@@ -134,14 +136,14 @@ public class IllegalTokenTextCheckTest
         check.setIgnoreCase(true);
         final Pattern actual = (Pattern) TestUtil.getClassDeclaredField(
                 IllegalTokenTextCheck.class, "format").get(check);
-        Assert.assertEquals("should match", Pattern.CASE_INSENSITIVE, actual.flags());
-        Assert.assertEquals("should match", "test", actual.pattern());
+        assertEquals("should match", Pattern.CASE_INSENSITIVE, actual.flags());
+        assertEquals("should match", "test", actual.pattern());
     }
 
     @Test
     public void testAcceptableTokensMakeSense() {
         final int expectedTokenTypesTotalNumber = 169;
-        Assert.assertEquals("Total number of TokenTypes has changed, acceptable tokens in"
+        assertEquals("Total number of TokenTypes has changed, acceptable tokens in"
                 + " IllegalTokenTextCheck need to be reconsidered.",
             expectedTokenTypesTotalNumber, TokenUtil.getTokenTypesTotalNumber());
 
@@ -158,7 +160,7 @@ public class IllegalTokenTextCheckTest
             TokenTypes.CHAR_LITERAL
         );
         for (int tokenType : allowedTokens) {
-            Assert.assertTrue(TokenUtil.getTokenName(tokenType) + " should not be allowed"
+            assertTrue(TokenUtil.getTokenName(tokenType) + " should not be allowed"
                 + " in this check as its text is a constant (IllegalTokenCheck should be used for"
                 + " such cases).", tokenTypesWithMutableText.contains(tokenType));
         }

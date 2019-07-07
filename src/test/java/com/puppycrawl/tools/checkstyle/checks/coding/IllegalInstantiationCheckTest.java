@@ -20,12 +20,14 @@
 package com.puppycrawl.tools.checkstyle.checks.coding;
 
 import static com.puppycrawl.tools.checkstyle.checks.coding.IllegalInstantiationCheck.MSG_KEY;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 import java.io.File;
 import java.util.Collection;
 import java.util.Optional;
 
-import org.junit.Assert;
 import org.junit.Test;
 
 import com.puppycrawl.tools.checkstyle.AbstractModuleTestSupport;
@@ -144,9 +146,9 @@ public class IllegalInstantiationCheckTest
     @Test
     public void testTokensNotNull() {
         final IllegalInstantiationCheck check = new IllegalInstantiationCheck();
-        Assert.assertNotNull("Acceptable tokens should not be null", check.getAcceptableTokens());
-        Assert.assertNotNull("Default tokens should not be null", check.getDefaultTokens());
-        Assert.assertNotNull("Required tokens should not be null", check.getRequiredTokens());
+        assertNotNull("Acceptable tokens should not be null", check.getAcceptableTokens());
+        assertNotNull("Default tokens should not be null", check.getDefaultTokens());
+        assertNotNull("Required tokens should not be null", check.getRequiredTokens());
     }
 
     @Test
@@ -158,7 +160,7 @@ public class IllegalInstantiationCheckTest
 
         try {
             check.visitToken(lambdaAst);
-            Assert.fail("IllegalArgumentException is expected");
+            fail("IllegalArgumentException is expected");
         }
         catch (IllegalArgumentException ex) {
             // it is OK
@@ -182,8 +184,8 @@ public class IllegalInstantiationCheckTest
         final Optional<DetailAST> classDef = TestUtil.findTokenInAstByPredicate(root,
             ast -> ast.getType() == TokenTypes.CLASS_DEF);
 
-        Assert.assertTrue("Ast should contain CLASS_DEF", classDef.isPresent());
-        Assert.assertTrue("State is not cleared on beginTree",
+        assertTrue("Ast should contain CLASS_DEF", classDef.isPresent());
+        assertTrue("State is not cleared on beginTree",
                 TestUtil.isStatefulFieldClearedDuringBeginTree(check, classDef.get(), "classNames",
                     classNames -> ((Collection<String>) classNames).isEmpty()));
     }
@@ -204,8 +206,8 @@ public class IllegalInstantiationCheckTest
         final Optional<DetailAST> importDef = TestUtil.findTokenInAstByPredicate(root,
             ast -> ast.getType() == TokenTypes.IMPORT);
 
-        Assert.assertTrue("Ast should contain IMPORT_DEF", importDef.isPresent());
-        Assert.assertTrue("State is not cleared on beginTree",
+        assertTrue("Ast should contain IMPORT_DEF", importDef.isPresent());
+        assertTrue("State is not cleared on beginTree",
                 TestUtil.isStatefulFieldClearedDuringBeginTree(check, importDef.get(), "imports",
                     imports -> ((Collection<?>) imports).isEmpty()));
     }
@@ -227,8 +229,8 @@ public class IllegalInstantiationCheckTest
         final Optional<DetailAST> literalNew = TestUtil.findTokenInAstByPredicate(root,
             ast -> ast.getType() == TokenTypes.LITERAL_NEW);
 
-        Assert.assertTrue("Ast should contain LITERAL_NEW", literalNew.isPresent());
-        Assert.assertTrue("State is not cleared on beginTree",
+        assertTrue("Ast should contain LITERAL_NEW", literalNew.isPresent());
+        assertTrue("State is not cleared on beginTree",
                 TestUtil.isStatefulFieldClearedDuringBeginTree(check, literalNew.get(),
                     "instantiations",
                     instantiations -> ((Collection<DetailAST>) instantiations).isEmpty()));

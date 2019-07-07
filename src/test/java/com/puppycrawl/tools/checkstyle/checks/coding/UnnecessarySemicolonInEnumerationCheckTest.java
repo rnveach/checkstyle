@@ -20,8 +20,8 @@
 package com.puppycrawl.tools.checkstyle.checks.coding;
 
 import static com.puppycrawl.tools.checkstyle.checks.coding.UnnecessarySemicolonInEnumerationCheck.MSG_SEMI;
+import static org.junit.Assert.assertArrayEquals;
 
-import org.junit.Assert;
 import org.junit.Test;
 
 import com.puppycrawl.tools.checkstyle.AbstractModuleTestSupport;
@@ -68,11 +68,11 @@ public class UnnecessarySemicolonInEnumerationCheckTest extends AbstractModuleTe
         final int[] expected = {
             TokenTypes.ENUM_DEF,
         };
-        Assert.assertArrayEquals("Acceptable required tokens are invalid",
+        assertArrayEquals("Acceptable required tokens are invalid",
             expected, check.getAcceptableTokens());
-        Assert.assertArrayEquals("Default required tokens are invalid",
+        assertArrayEquals("Default required tokens are invalid",
             expected, check.getDefaultTokens());
-        Assert.assertArrayEquals("Required required tokens are invalid",
+        assertArrayEquals("Required required tokens are invalid",
             expected, check.getRequiredTokens());
     }
 }

@@ -22,8 +22,9 @@ package com.puppycrawl.tools.checkstyle.checks.modifier;
 import static com.puppycrawl.tools.checkstyle.checks.modifier.ModifierOrderCheck.MSG_ANNOTATION_ORDER;
 import static com.puppycrawl.tools.checkstyle.checks.modifier.ModifierOrderCheck.MSG_MODIFIER_ORDER;
 import static org.junit.Assert.assertArrayEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNotSame;
 
-import org.junit.Assert;
 import org.junit.Test;
 
 import com.puppycrawl.tools.checkstyle.AbstractModuleTestSupport;
@@ -83,10 +84,10 @@ public class ModifierOrderCheckTest
         };
         assertArrayEquals("Default tokens are invalid", expected, actual);
         final int[] unexpectedEmptyArray = CommonUtil.EMPTY_INT_ARRAY;
-        Assert.assertNotSame("Default tokens should not be empty array",
+        assertNotSame("Default tokens should not be empty array",
                 unexpectedEmptyArray, actual);
-        Assert.assertNotSame("Invalid default tokens", unexpectedArray, actual);
-        Assert.assertNotNull("Default tokens should not be null", actual);
+        assertNotSame("Invalid default tokens", unexpectedArray, actual);
+        assertNotNull("Default tokens should not be null", actual);
     }
 
     @Test
@@ -100,10 +101,10 @@ public class ModifierOrderCheckTest
         };
         assertArrayEquals("Default acceptable tokens are invalid", expected, actual);
         final int[] unexpectedEmptyArray = CommonUtil.EMPTY_INT_ARRAY;
-        Assert.assertNotSame("Default tokens should not be empty array",
+        assertNotSame("Default tokens should not be empty array",
                 unexpectedEmptyArray, actual);
-        Assert.assertNotSame("Invalid acceptable tokens", unexpectedArray, actual);
-        Assert.assertNotNull("Acceptable tokens should not be null", actual);
+        assertNotSame("Invalid acceptable tokens", unexpectedArray, actual);
+        assertNotNull("Acceptable tokens should not be null", actual);
     }
 
     @Test

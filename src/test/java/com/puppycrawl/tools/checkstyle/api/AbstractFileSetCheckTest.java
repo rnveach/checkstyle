@@ -19,6 +19,7 @@
 
 package com.puppycrawl.tools.checkstyle.api;
 
+import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
@@ -32,7 +33,6 @@ import java.util.List;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
-import org.junit.Assert;
 import org.junit.Test;
 
 import com.puppycrawl.tools.checkstyle.AbstractModuleTestSupport;
@@ -141,7 +141,7 @@ public class AbstractFileSetCheckTest extends AbstractModuleTestSupport {
         check.setFileExtensions("tmp", ".java");
         final String[] expectedExtensions = {".tmp", ".java"};
 
-        Assert.assertArrayEquals("Invalid extensions",
+        assertArrayEquals("Invalid extensions",
                 expectedExtensions, check.getFileExtensions());
     }
 

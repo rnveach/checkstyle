@@ -20,9 +20,11 @@
 package com.puppycrawl.tools.checkstyle.checks;
 
 import static com.puppycrawl.tools.checkstyle.checks.UncommentedMainCheck.MSG_KEY;
+import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.fail;
 
-import org.junit.Assert;
 import org.junit.Test;
 
 import antlr.CommonHiddenStreamToken;
@@ -71,11 +73,11 @@ public class UncommentedMainCheckTest
     @Test
     public void testTokens() {
         final UncommentedMainCheck check = new UncommentedMainCheck();
-        Assert.assertNotNull("Required tokens should not be null", check.getRequiredTokens());
-        Assert.assertNotNull("Acceptable tokens should not be null", check.getAcceptableTokens());
-        Assert.assertArrayEquals("Invalid default tokens", check.getDefaultTokens(),
+        assertNotNull("Required tokens should not be null", check.getRequiredTokens());
+        assertNotNull("Acceptable tokens should not be null", check.getAcceptableTokens());
+        assertArrayEquals("Invalid default tokens", check.getDefaultTokens(),
                 check.getAcceptableTokens());
-        Assert.assertArrayEquals("Invalid acceptable tokens", check.getDefaultTokens(),
+        assertArrayEquals("Invalid acceptable tokens", check.getDefaultTokens(),
                 check.getRequiredTokens());
     }
 
@@ -117,7 +119,7 @@ public class UncommentedMainCheckTest
         ast.initialize(new CommonHiddenStreamToken(TokenTypes.CTOR_DEF, "ctor"));
         try {
             check.visitToken(ast);
-            Assert.fail("IllegalStateException is expected");
+            fail("IllegalStateException is expected");
         }
         catch (IllegalStateException ex) {
             assertEquals("Error message is unexpected",

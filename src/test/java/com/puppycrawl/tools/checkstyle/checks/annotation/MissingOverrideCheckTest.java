@@ -21,9 +21,9 @@ package com.puppycrawl.tools.checkstyle.checks.annotation;
 
 import static com.puppycrawl.tools.checkstyle.checks.annotation.MissingOverrideCheck.MSG_KEY_ANNOTATION_MISSING_OVERRIDE;
 import static com.puppycrawl.tools.checkstyle.checks.annotation.MissingOverrideCheck.MSG_KEY_TAG_NOT_VALID_ON;
+import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 
-import org.junit.Assert;
 import org.junit.Test;
 
 import com.puppycrawl.tools.checkstyle.AbstractModuleTestSupport;
@@ -239,7 +239,7 @@ public class MissingOverrideCheckTest extends AbstractModuleTestSupport {
         final MissingOverrideCheck check = new MissingOverrideCheck();
         final int[] actual = check.getAcceptableTokens();
         assertEquals("Invalid acceptable token size", 1, actual.length);
-        Assert.assertArrayEquals("Default required tokens are invalid", expectedTokens, actual);
+        assertArrayEquals("Default required tokens are invalid", expectedTokens, actual);
     }
 
 }

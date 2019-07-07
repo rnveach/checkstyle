@@ -20,8 +20,8 @@
 package com.puppycrawl.tools.checkstyle.checks.coding;
 
 import static com.puppycrawl.tools.checkstyle.checks.coding.UnnecessarySemicolonInTryWithResourcesCheck.MSG_SEMI;
+import static org.junit.Assert.assertArrayEquals;
 
-import org.junit.Assert;
 import org.junit.Test;
 
 import com.puppycrawl.tools.checkstyle.AbstractModuleTestSupport;
@@ -73,11 +73,11 @@ public class UnnecessarySemicolonInTryWithResourcesCheckTest extends AbstractMod
         final int[] expected = {
             TokenTypes.RESOURCE_SPECIFICATION,
         };
-        Assert.assertArrayEquals("Acceptable required tokens are invalid",
+        assertArrayEquals("Acceptable required tokens are invalid",
             expected, check.getAcceptableTokens());
-        Assert.assertArrayEquals("Default required tokens are invalid",
+        assertArrayEquals("Default required tokens are invalid",
             expected, check.getDefaultTokens());
-        Assert.assertArrayEquals("Required required tokens are invalid",
+        assertArrayEquals("Required required tokens are invalid",
             expected, check.getRequiredTokens());
     }
 }

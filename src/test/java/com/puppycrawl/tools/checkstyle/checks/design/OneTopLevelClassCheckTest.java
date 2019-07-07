@@ -21,13 +21,13 @@ package com.puppycrawl.tools.checkstyle.checks.design;
 
 import static com.puppycrawl.tools.checkstyle.checks.design.OneTopLevelClassCheck.MSG_KEY;
 import static org.junit.Assert.assertArrayEquals;
+import static org.junit.Assert.assertEquals;
 
 import java.io.File;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-import org.junit.Assert;
 import org.junit.Test;
 
 import com.google.common.collect.ImmutableMap;
@@ -78,7 +78,7 @@ public class OneTopLevelClassCheckTest extends AbstractModuleTestSupport {
         check.getAcceptableTokens();
         // ZERO tokens as Check do Traverse of Tree himself, he does not need to subscribed to
         // Tokens
-        Assert.assertEquals("Acceptable tokens array size larger than 0",
+        assertEquals("Acceptable tokens array size larger than 0",
                 0, check.getAcceptableTokens().length);
     }
 

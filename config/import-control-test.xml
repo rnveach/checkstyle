@@ -7,6 +7,9 @@
 
   <disallow pkg="junit.framework" />
 
+  <!-- use static import instead -->
+  <disallow class="org.junit.Assert" />
+
   <!-- Conflicts with normal tests and pitest.
        See examples in https://github.com/checkstyle/checkstyle/issues/6439 -->
   <allow class="org.powermock.reflect.Whitebox" />

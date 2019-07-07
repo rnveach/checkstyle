@@ -21,11 +21,11 @@ package com.puppycrawl.tools.checkstyle.checks.sizes;
 
 import static com.puppycrawl.tools.checkstyle.checks.sizes.ExecutableStatementCountCheck.MSG_KEY;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 import java.util.Collection;
 
-import org.junit.Assert;
 import org.junit.Test;
 
 import antlr.CommonHiddenStreamToken;
@@ -52,7 +52,7 @@ public class ExecutableStatementCountCheckTest
         final DetailAST ast = new DetailAstImpl();
         ast.setType(TokenTypes.STATIC_INIT);
         final ExecutableStatementCountCheck check = new ExecutableStatementCountCheck();
-        Assert.assertTrue("Stateful field is not cleared after beginTree",
+        assertTrue("Stateful field is not cleared after beginTree",
                 TestUtil.isStatefulFieldClearedDuringBeginTree(check, ast, "contextStack",
                     contextStack -> ((Collection<Context>) contextStack).isEmpty()));
     }

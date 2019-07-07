@@ -23,7 +23,9 @@ import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -31,7 +33,6 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
-import org.junit.Assert;
 import org.junit.Test;
 
 import antlr.NoViableAltException;
@@ -150,7 +151,7 @@ public class JavaParserTest extends AbstractModuleTestSupport {
         final File input = new File(getNonCompilablePath("InputJavaParser.java"));
         try {
             JavaParser.parseFile(input, JavaParser.Options.WITH_COMMENTS);
-            Assert.fail("exception expected");
+            fail("exception expected");
         }
         catch (CheckstyleException ex) {
             assertEquals("Invalid exception message",
@@ -158,7 +159,7 @@ public class JavaParserTest extends AbstractModuleTestSupport {
                             + ": NoViableAltException occurred while parsing file "
                             + input.getAbsolutePath() + ".",
                     ex.toString());
-            Assert.assertSame("Invalid class",
+            assertSame("Invalid class",
                     NoViableAltException.class, ex.getCause().getClass());
             assertEquals("Invalid exception message",
                     input.getAbsolutePath() + ":2:1: unexpected token: classD",

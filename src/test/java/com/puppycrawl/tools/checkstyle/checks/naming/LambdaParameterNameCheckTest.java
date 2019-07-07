@@ -20,8 +20,8 @@
 package com.puppycrawl.tools.checkstyle.checks.naming;
 
 import static com.puppycrawl.tools.checkstyle.checks.naming.AbstractNameCheck.MSG_INVALID_PATTERN;
+import static org.junit.Assert.assertArrayEquals;
 
-import org.junit.Assert;
 import org.junit.Test;
 
 import com.puppycrawl.tools.checkstyle.AbstractModuleTestSupport;
@@ -43,7 +43,7 @@ public class LambdaParameterNameCheckTest extends AbstractModuleTestSupport {
 
         final LambdaParameterNameCheck check = new LambdaParameterNameCheck();
         final int[] requiredTokens = check.getRequiredTokens();
-        Assert.assertArrayEquals("Invalid required tokens", expected, requiredTokens);
+        assertArrayEquals("Invalid required tokens", expected, requiredTokens);
     }
 
     @Test
@@ -54,7 +54,7 @@ public class LambdaParameterNameCheckTest extends AbstractModuleTestSupport {
 
         final LambdaParameterNameCheck check = new LambdaParameterNameCheck();
         final int[] acceptableTokens = check.getAcceptableTokens();
-        Assert.assertArrayEquals("Invalid acceptable tokens", expected, acceptableTokens);
+        assertArrayEquals("Invalid acceptable tokens", expected, acceptableTokens);
     }
 
     @Test

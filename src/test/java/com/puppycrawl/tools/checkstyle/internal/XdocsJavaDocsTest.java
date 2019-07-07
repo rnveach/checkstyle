@@ -20,6 +20,8 @@
 package com.puppycrawl.tools.checkstyle.internal;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
 
 import java.io.File;
 import java.nio.file.Files;
@@ -33,7 +35,6 @@ import java.util.regex.Pattern;
 
 import javax.xml.parsers.ParserConfigurationException;
 
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.w3c.dom.Document;
@@ -495,7 +496,7 @@ public class XdocsJavaDocsTest extends AbstractModuleTestSupport {
                         final String propertyDoc = CHECK_PROPERTY_DOC.get(propertyName);
 
                         if (propertyDoc != null) {
-                            Assert.assertEquals(checkName + "'s class field-level JavaDoc for "
+                            assertEquals(checkName + "'s class field-level JavaDoc for "
                                     + propertyName, makeFirstUpper(propertyDoc),
                                     getJavaDocText(ast));
                         }
@@ -506,7 +507,7 @@ public class XdocsJavaDocsTest extends AbstractModuleTestSupport {
                         // ignore
                         break;
                     default:
-                        Assert.fail("Unknown token '" + TokenUtil.getTokenName(node.getType())
+                        fail("Unknown token '" + TokenUtil.getTokenName(node.getType())
                                 + "': " + ast.getLineNo());
                         break;
                 }
@@ -527,7 +528,7 @@ public class XdocsJavaDocsTest extends AbstractModuleTestSupport {
 
         private static void visitClass(DetailAST ast) {
             if (ScopeUtil.isInScope(ast, Scope.PUBLIC)) {
-                Assert.assertEquals(
+                assertEquals(
                         checkName + "'s class-level JavaDoc",
                         CHECK_TEXT.get("Description")
                                 + CHECK_TEXT.computeIfAbsent("Rule Description", unused -> "")
@@ -548,7 +549,7 @@ public class XdocsJavaDocsTest extends AbstractModuleTestSupport {
                 if (propertyDoc != null) {
                     final String javaDoc = getJavaDocText(ast);
 
-                    Assert.assertEquals(checkName + "'s class method-level JavaDoc for "
+                    assertEquals(checkName + "'s class method-level JavaDoc for "
                             + propertyName,
                             "Setter to " + makeFirstLower(propertyDoc),
                             javaDoc.substring(0, javaDoc.indexOf(" @param")));
@@ -596,7 +597,7 @@ public class XdocsJavaDocsTest extends AbstractModuleTestSupport {
                         false).replace("\r", "");
             }
             catch (ParserConfigurationException ex) {
-                Assert.fail("Exception: " + ex.getClass() + " - " + ex.getMessage());
+                fail("Exception: " + ex.getClass() + " - " + ex.getMessage());
             }
 
             return result;
