@@ -41,7 +41,7 @@ public class XpathRegressionGenericWhitespaceTest extends AbstractXpathTestSuppo
     @Test
     public void testProcessEnd() throws Exception {
         final File fileToProcess =
-                new File(getPath("SuppressionXpathRegressionProcessEnd.java"));
+                new File(getPath("InputXpathRegressionProcessEnd.java"));
 
         final DefaultConfiguration moduleConfig =
                 createModuleConfig(GenericWhitespaceCheck.class);
@@ -52,7 +52,7 @@ public class XpathRegressionGenericWhitespaceTest extends AbstractXpathTestSuppo
         };
 
         final List<String> expectedXpathQueries = Collections.singletonList(
-            "/CLASS_DEF[./IDENT[@text='SuppressionXpathRegressionProcessEnd']]/OBJBLOCK"
+            "/CLASS_DEF[./IDENT[@text='InputXpathRegressionProcessEnd']]/OBJBLOCK"
                 + "/METHOD_DEF[./IDENT[@text='bad']]/PARAMETERS/PARAMETER_DEF[./IDENT[@text='cls']]"
                 + "/TYPE[./IDENT[@text='Class']]/TYPE_ARGUMENTS/GENERIC_END"
         );
@@ -64,7 +64,7 @@ public class XpathRegressionGenericWhitespaceTest extends AbstractXpathTestSuppo
     @Test
     public void testProcessNestedGenericsOne() throws Exception {
         final File fileToProcess =
-                new File(getPath("SuppressionXpathRegressionProcessNestedGenericsOne.java"));
+                new File(getPath("InputXpathRegressionProcessNestedGenericsOne.java"));
 
         final DefaultConfiguration moduleConfig =
                 createModuleConfig(GenericWhitespaceCheck.class);
@@ -76,7 +76,7 @@ public class XpathRegressionGenericWhitespaceTest extends AbstractXpathTestSuppo
 
         final List<String> expectedXpathQueries = Collections.singletonList(
             "/CLASS_DEF[./IDENT["
-                + "@text='SuppressionXpathRegressionProcessNestedGenericsOne']]/OBJBLOCK"
+                + "@text='InputXpathRegressionProcessNestedGenericsOne']]/OBJBLOCK"
                 + "/METHOD_DEF[./IDENT[@text='bad']]/TYPE_PARAMETERS"
                 + "/TYPE_PARAMETER[./IDENT[@text='E']]"
                 + "/TYPE_UPPER_BOUNDS[./IDENT[@text='Enum']]/TYPE_ARGUMENTS/GENERIC_END"
@@ -89,7 +89,7 @@ public class XpathRegressionGenericWhitespaceTest extends AbstractXpathTestSuppo
     @Test
     public void testProcessNestedGenericsTwo() throws Exception {
         final File fileToProcess =
-                new File(getPath("SuppressionXpathRegressionProcessNestedGenericsTwo.java"));
+                new File(getPath("InputXpathRegressionProcessNestedGenericsTwo.java"));
 
         final DefaultConfiguration moduleConfig =
                 createModuleConfig(GenericWhitespaceCheck.class);
@@ -101,7 +101,7 @@ public class XpathRegressionGenericWhitespaceTest extends AbstractXpathTestSuppo
 
         final List<String> expectedXpathQueries = Collections.singletonList(
             "/CLASS_DEF[./IDENT["
-                + "@text='SuppressionXpathRegressionProcessNestedGenericsTwo']]/OBJBLOCK"
+                + "@text='InputXpathRegressionProcessNestedGenericsTwo']]/OBJBLOCK"
                 + "/METHOD_DEF[./IDENT[@text='bad']]/TYPE_PARAMETERS"
                 + "/TYPE_PARAMETER[./IDENT[@text='E']]"
                 + "/TYPE_UPPER_BOUNDS[./IDENT[@text='Enum']]/TYPE_ARGUMENTS/GENERIC_END"
@@ -114,7 +114,7 @@ public class XpathRegressionGenericWhitespaceTest extends AbstractXpathTestSuppo
     @Test
     public void testProcessNestedGenericsThree() throws Exception {
         final File fileToProcess =
-                new File(getPath("SuppressionXpathRegressionProcessNestedGenericsThree.java"));
+                new File(getPath("InputXpathRegressionProcessNestedGenericsThree.java"));
 
         final DefaultConfiguration moduleConfig =
                 createModuleConfig(GenericWhitespaceCheck.class);
@@ -126,7 +126,7 @@ public class XpathRegressionGenericWhitespaceTest extends AbstractXpathTestSuppo
 
         final List<String> expectedXpathQueries = Collections.singletonList(
             "/CLASS_DEF[./IDENT["
-                + "@text='SuppressionXpathRegressionProcessNestedGenericsThree']]/OBJBLOCK"
+                + "@text='InputXpathRegressionProcessNestedGenericsThree']]/OBJBLOCK"
                 + "/METHOD_DEF[./IDENT[@text='bad']]/TYPE_PARAMETERS"
                 + "/TYPE_PARAMETER[./IDENT[@text='E']]"
                 + "/TYPE_UPPER_BOUNDS[./IDENT[@text='Enum']]/TYPE_ARGUMENTS/GENERIC_END"
@@ -139,7 +139,7 @@ public class XpathRegressionGenericWhitespaceTest extends AbstractXpathTestSuppo
     @Test
     public void testProcessSingleGenericOne() throws Exception {
         final File fileToProcess =
-                new File(getPath("SuppressionXpathRegressionProcessSingleGenericOne.java"));
+                new File(getPath("InputXpathRegressionProcessSingleGenericOne.java"));
 
         final DefaultConfiguration moduleConfig =
                 createModuleConfig(GenericWhitespaceCheck.class);
@@ -151,7 +151,7 @@ public class XpathRegressionGenericWhitespaceTest extends AbstractXpathTestSuppo
 
         final List<String> expectedXpathQueries = Collections.singletonList(
             "/CLASS_DEF[./IDENT["
-                + "@text='SuppressionXpathRegressionProcessSingleGenericOne']]/OBJBLOCK"
+                + "@text='InputXpathRegressionProcessSingleGenericOne']]/OBJBLOCK"
                 + "/VARIABLE_DEF[./IDENT[@text='bad']]/ASSIGN/EXPR/METHOD_CALL"
                 + "/DOT[./IDENT[@text='Collections']]"
                 + "/TYPE_ARGUMENTS/GENERIC_END"
@@ -164,7 +164,7 @@ public class XpathRegressionGenericWhitespaceTest extends AbstractXpathTestSuppo
     @Test
     public void testProcessSingleGenericTwo() throws Exception {
         final File fileToProcess =
-                new File(getPath("SuppressionXpathRegressionProcessSingleGenericTwo.java"));
+                new File(getPath("InputXpathRegressionProcessSingleGenericTwo.java"));
 
         final DefaultConfiguration moduleConfig =
                 createModuleConfig(GenericWhitespaceCheck.class);
@@ -176,7 +176,7 @@ public class XpathRegressionGenericWhitespaceTest extends AbstractXpathTestSuppo
 
         final List<String> expectedXpathQueries = Collections.singletonList(
             "/CLASS_DEF[./IDENT["
-                + "@text='SuppressionXpathRegressionProcessSingleGenericTwo']]/OBJBLOCK"
+                + "@text='InputXpathRegressionProcessSingleGenericTwo']]/OBJBLOCK"
                 + "/METHOD_DEF[./IDENT[@text='bad']]/TYPE_PARAMETERS/GENERIC_END"
         );
 
@@ -187,7 +187,7 @@ public class XpathRegressionGenericWhitespaceTest extends AbstractXpathTestSuppo
     @Test
     public void testProcessStartOne() throws Exception {
         final File fileToProcess =
-                new File(getPath("SuppressionXpathRegressionProcessStartOne.java"));
+                new File(getPath("InputXpathRegressionProcessStartOne.java"));
 
         final DefaultConfiguration moduleConfig =
                 createModuleConfig(GenericWhitespaceCheck.class);
@@ -198,9 +198,9 @@ public class XpathRegressionGenericWhitespaceTest extends AbstractXpathTestSuppo
         };
 
         final List<String> expectedXpathQueries = Arrays.asList(
-            "/CLASS_DEF[./IDENT[@text='SuppressionXpathRegressionProcessStartOne']]/OBJBLOCK"
+            "/CLASS_DEF[./IDENT[@text='InputXpathRegressionProcessStartOne']]/OBJBLOCK"
                 + "/METHOD_DEF[./IDENT[@text='bad']]/TYPE_PARAMETERS",
-            "/CLASS_DEF[./IDENT[@text='SuppressionXpathRegressionProcessStartOne']]/OBJBLOCK"
+            "/CLASS_DEF[./IDENT[@text='InputXpathRegressionProcessStartOne']]/OBJBLOCK"
                 + "/METHOD_DEF[./IDENT[@text='bad']]/TYPE_PARAMETERS/GENERIC_START"
         );
 
@@ -211,7 +211,7 @@ public class XpathRegressionGenericWhitespaceTest extends AbstractXpathTestSuppo
     @Test
     public void testProcessStartTwo() throws Exception {
         final File fileToProcess =
-                new File(getPath("SuppressionXpathRegressionProcessStartTwo.java"));
+                new File(getPath("InputXpathRegressionProcessStartTwo.java"));
 
         final DefaultConfiguration moduleConfig =
                 createModuleConfig(GenericWhitespaceCheck.class);
@@ -222,11 +222,11 @@ public class XpathRegressionGenericWhitespaceTest extends AbstractXpathTestSuppo
         };
 
         final List<String> expectedXpathQueries = Arrays.asList(
-            "/CLASS_DEF[./IDENT[@text='SuppressionXpathRegressionProcessStartTwo']]/OBJBLOCK"
+            "/CLASS_DEF[./IDENT[@text='InputXpathRegressionProcessStartTwo']]/OBJBLOCK"
                 + "/METHOD_DEF[./IDENT[@text='bad']]/PARAMETERS"
                 + "/PARAMETER_DEF[./IDENT[@text='consumer']]"
                 + "/TYPE[./IDENT[@text='Consumer']]/TYPE_ARGUMENTS",
-            "/CLASS_DEF[./IDENT[@text='SuppressionXpathRegressionProcessStartTwo']]/OBJBLOCK"
+            "/CLASS_DEF[./IDENT[@text='InputXpathRegressionProcessStartTwo']]/OBJBLOCK"
                 + "/METHOD_DEF[./IDENT[@text='bad']]/PARAMETERS"
                 + "/PARAMETER_DEF[./IDENT[@text='consumer']]"
                 + "/TYPE[./IDENT[@text='Consumer']]/TYPE_ARGUMENTS/GENERIC_START"
@@ -239,7 +239,7 @@ public class XpathRegressionGenericWhitespaceTest extends AbstractXpathTestSuppo
     @Test
     public void testProcessStartThree() throws Exception {
         final File fileToProcess =
-                new File(getPath("SuppressionXpathRegressionProcessStartThree.java"));
+                new File(getPath("InputXpathRegressionProcessStartThree.java"));
 
         final DefaultConfiguration moduleConfig =
                 createModuleConfig(GenericWhitespaceCheck.class);
@@ -250,13 +250,13 @@ public class XpathRegressionGenericWhitespaceTest extends AbstractXpathTestSuppo
         };
 
         final List<String> expectedXpathQueries = Arrays.asList(
-            "/CLASS_DEF[./IDENT[@text='SuppressionXpathRegressionProcessStartThree']]/OBJBLOCK/"
+            "/CLASS_DEF[./IDENT[@text='InputXpathRegressionProcessStartThree']]/OBJBLOCK/"
                 + "METHOD_DEF[./IDENT[@text='bad']]",
-            "/CLASS_DEF[./IDENT[@text='SuppressionXpathRegressionProcessStartThree']]/OBJBLOCK/"
+            "/CLASS_DEF[./IDENT[@text='InputXpathRegressionProcessStartThree']]/OBJBLOCK/"
                 + "METHOD_DEF[./IDENT[@text='bad']]/MODIFIERS",
-            "/CLASS_DEF[./IDENT[@text='SuppressionXpathRegressionProcessStartThree']]/OBJBLOCK/"
+            "/CLASS_DEF[./IDENT[@text='InputXpathRegressionProcessStartThree']]/OBJBLOCK/"
                 + "METHOD_DEF[./IDENT[@text='bad']]/TYPE_PARAMETERS",
-            "/CLASS_DEF[./IDENT[@text='SuppressionXpathRegressionProcessStartThree']]/OBJBLOCK/"
+            "/CLASS_DEF[./IDENT[@text='InputXpathRegressionProcessStartThree']]/OBJBLOCK/"
                 + "METHOD_DEF[./IDENT[@text='bad']]/TYPE_PARAMETERS/GENERIC_START"
         );
 

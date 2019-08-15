@@ -41,7 +41,7 @@ public class XpathRegressionRightCurlyTest extends AbstractXpathTestSupport {
     @Test
     public void testOne() throws Exception {
         final File fileToProcess =
-                new File(getPath("SuppressionXpathRegressionRightCurlyOne.java"));
+                new File(getPath("InputXpathRegressionRightCurlyOne.java"));
 
         final DefaultConfiguration moduleConfig =
                 createModuleConfig(RightCurlyCheck.class);
@@ -52,7 +52,7 @@ public class XpathRegressionRightCurlyTest extends AbstractXpathTestSupport {
         };
 
         final List<String> expectedXpathQueries = Collections.singletonList(
-            "/CLASS_DEF[./IDENT[@text='SuppressionXpathRegressionRightCurlyOne']]/OBJBLOCK"
+            "/CLASS_DEF[./IDENT[@text='InputXpathRegressionRightCurlyOne']]/OBJBLOCK"
                 + "/METHOD_DEF[./IDENT[@text='test']]/SLIST/LITERAL_IF/SLIST/RCURLY"
         );
 
@@ -63,7 +63,7 @@ public class XpathRegressionRightCurlyTest extends AbstractXpathTestSupport {
     @Test
     public void testTwo() throws Exception {
         final File fileToProcess =
-                new File(getPath("SuppressionXpathRegressionRightCurlyTwo.java"));
+                new File(getPath("InputXpathRegressionRightCurlyTwo.java"));
 
         final DefaultConfiguration moduleConfig =
                 createModuleConfig(RightCurlyCheck.class);
@@ -75,7 +75,7 @@ public class XpathRegressionRightCurlyTest extends AbstractXpathTestSupport {
         };
 
         final List<String> expectedXpathQueries = Collections.singletonList(
-            "/CLASS_DEF[./IDENT[@text='SuppressionXpathRegressionRightCurlyTwo']]/OBJBLOCK"
+            "/CLASS_DEF[./IDENT[@text='InputXpathRegressionRightCurlyTwo']]/OBJBLOCK"
                 + "/METHOD_DEF[./IDENT[@text='fooMethod']]/SLIST/LITERAL_TRY/SLIST/RCURLY"
         );
 
@@ -86,7 +86,7 @@ public class XpathRegressionRightCurlyTest extends AbstractXpathTestSupport {
     @Test
     public void testThree() throws Exception {
         final File fileToProcess =
-                new File(getPath("SuppressionXpathRegressionRightCurlyThree.java"));
+                new File(getPath("InputXpathRegressionRightCurlyThree.java"));
 
         final DefaultConfiguration moduleConfig =
                 createModuleConfig(RightCurlyCheck.class);
@@ -98,7 +98,7 @@ public class XpathRegressionRightCurlyTest extends AbstractXpathTestSupport {
         };
 
         final List<String> expectedXpathQueries = Collections.singletonList(
-            "/CLASS_DEF[./IDENT[@text='SuppressionXpathRegressionRightCurlyThree']]/OBJBLOCK"
+            "/CLASS_DEF[./IDENT[@text='InputXpathRegressionRightCurlyThree']]/OBJBLOCK"
                 + "/METHOD_DEF[./IDENT[@text='sample']]/SLIST/LITERAL_IF/SLIST/RCURLY"
         );
 
@@ -109,7 +109,7 @@ public class XpathRegressionRightCurlyTest extends AbstractXpathTestSupport {
     @Test
     public void testFour() throws Exception {
         final File fileToProcess =
-                new File(getPath("SuppressionXpathRegressionRightCurlyFour.java"));
+                new File(getPath("InputXpathRegressionRightCurlyFour.java"));
 
         final DefaultConfiguration moduleConfig =
                 createModuleConfig(RightCurlyCheck.class);
@@ -121,7 +121,7 @@ public class XpathRegressionRightCurlyTest extends AbstractXpathTestSupport {
         };
 
         final List<String> expectedXpathQueries = Collections.singletonList(
-            "/CLASS_DEF[./IDENT[@text='SuppressionXpathRegressionRightCurlyFour']]/OBJBLOCK"
+            "/CLASS_DEF[./IDENT[@text='InputXpathRegressionRightCurlyFour']]/OBJBLOCK"
                 + "/METHOD_DEF[./IDENT[@text='sample']]/SLIST/LITERAL_IF/SLIST/RCURLY"
         );
 

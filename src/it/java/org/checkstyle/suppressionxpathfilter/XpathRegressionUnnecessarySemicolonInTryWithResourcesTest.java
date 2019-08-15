@@ -42,7 +42,7 @@ public class XpathRegressionUnnecessarySemicolonInTryWithResourcesTest
     @Test
     public void testOne() throws Exception {
         final File fileToProcess = new File(
-                getPath("SuppressionXpathRegressionUnnecessarySemicolonInTryWithResources.java"));
+                getPath("InputXpathRegressionUnnecessarySemicolonInTryWithResources.java"));
         final DefaultConfiguration moduleConfig =
                 createModuleConfig(UnnecessarySemicolonInTryWithResourcesCheck.class);
         final String[] expectedViolation = {
@@ -53,7 +53,7 @@ public class XpathRegressionUnnecessarySemicolonInTryWithResourcesTest
         };
         final List<String> expectedXpathQueries = Collections.singletonList(
                 "/CLASS_DEF[./IDENT[@text="
-                        + "'SuppressionXpathRegressionUnnecessarySemicolonInTryWithResources']]"
+                        + "'InputXpathRegressionUnnecessarySemicolonInTryWithResources']]"
                         + "/OBJBLOCK/METHOD_DEF[./IDENT[@text='m']]/SLIST/LITERAL_TRY"
                         + "/RESOURCE_SPECIFICATION/SEMI"
         );

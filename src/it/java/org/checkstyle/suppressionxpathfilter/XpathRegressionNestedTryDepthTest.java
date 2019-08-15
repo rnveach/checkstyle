@@ -40,7 +40,7 @@ public class XpathRegressionNestedTryDepthTest extends AbstractXpathTestSupport 
     @Test
     public void testCorrect() throws Exception {
         final File fileToProcess =
-                new File(getPath("SuppressionXpathRegressionNestedTryDepth.java"));
+                new File(getPath("InputXpathRegressionNestedTryDepth.java"));
 
         final DefaultConfiguration moduleConfig =
                 createModuleConfig(NestedTryDepthCheck.class);
@@ -51,7 +51,7 @@ public class XpathRegressionNestedTryDepthTest extends AbstractXpathTestSupport 
         };
 
         final List<String> expectedXpathQueries = Collections.singletonList(
-            "/CLASS_DEF[./IDENT[@text='SuppressionXpathRegressionNestedTryDepth']]/OBJBLOCK"
+            "/CLASS_DEF[./IDENT[@text='InputXpathRegressionNestedTryDepth']]/OBJBLOCK"
                 + "/METHOD_DEF[./IDENT[@text='test']]/SLIST/LITERAL_TRY/SLIST"
                 + "/LITERAL_TRY/SLIST/LITERAL_TRY"
         );

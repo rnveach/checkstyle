@@ -40,7 +40,7 @@ public class XpathRegressionUpperEllTest extends AbstractXpathTestSupport {
     @Test
     public void testUpperEll() throws Exception {
         final File fileToProcess =
-                new File(getPath("SuppressionXpathRegressionUpperEll.java"));
+                new File(getPath("InputXpathRegressionUpperEll.java"));
 
         final DefaultConfiguration moduleConfig =
                 createModuleConfig(UpperEllCheck.class);
@@ -51,9 +51,9 @@ public class XpathRegressionUpperEllTest extends AbstractXpathTestSupport {
         };
 
         final List<String> expectedXpathQueries = Arrays.asList(
-            "/CLASS_DEF[./IDENT[@text='SuppressionXpathRegressionUpperEll']]/OBJBLOCK"
+            "/CLASS_DEF[./IDENT[@text='InputXpathRegressionUpperEll']]/OBJBLOCK"
                 + "/VARIABLE_DEF[./IDENT[@text='bad']]/ASSIGN/EXPR[./NUM_LONG[@text='0l']]",
-            "/CLASS_DEF[./IDENT[@text='SuppressionXpathRegressionUpperEll']]/OBJBLOCK"
+            "/CLASS_DEF[./IDENT[@text='InputXpathRegressionUpperEll']]/OBJBLOCK"
                 + "/VARIABLE_DEF[./IDENT[@text='bad']]/ASSIGN/EXPR"
                 + "/NUM_LONG[@text='0l']"
         );

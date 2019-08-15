@@ -41,7 +41,7 @@ public class XpathRegressionCyclomaticComplexityTest extends AbstractXpathTestSu
     public void testOne() throws Exception {
 
         final File fileToProcess =
-                new File(getPath("SuppressionXpathRegressionCyclomaticOne.java"));
+                new File(getPath("InputXpathRegressionCyclomaticOne.java"));
 
         final DefaultConfiguration moduleConfig =
                 createModuleConfig(CyclomaticComplexityCheck.class);
@@ -53,11 +53,11 @@ public class XpathRegressionCyclomaticComplexityTest extends AbstractXpathTestSu
         };
 
         final List<String> expectedXpathQueries = Arrays.asList(
-            "/CLASS_DEF[./IDENT[@text='SuppressionXpathRegressionCyclomaticOne']]/OBJBLOCK"
+            "/CLASS_DEF[./IDENT[@text='InputXpathRegressionCyclomaticOne']]/OBJBLOCK"
                 + "/METHOD_DEF[./IDENT[@text='test']]",
-            "/CLASS_DEF[./IDENT[@text='SuppressionXpathRegressionCyclomaticOne']]/OBJBLOCK"
+            "/CLASS_DEF[./IDENT[@text='InputXpathRegressionCyclomaticOne']]/OBJBLOCK"
                 + "/METHOD_DEF[./IDENT[@text='test']]/MODIFIERS",
-            "/CLASS_DEF[./IDENT[@text='SuppressionXpathRegressionCyclomaticOne']]/OBJBLOCK"
+            "/CLASS_DEF[./IDENT[@text='InputXpathRegressionCyclomaticOne']]/OBJBLOCK"
                 + "/METHOD_DEF[./IDENT[@text='test']]/MODIFIERS/LITERAL_PUBLIC"
                 );
 
@@ -68,7 +68,7 @@ public class XpathRegressionCyclomaticComplexityTest extends AbstractXpathTestSu
     @Test
     public void testTwo() throws Exception {
         final File fileToProcess =
-                new File(getPath("SuppressionXpathRegressionCyclomaticTwo.java"));
+                new File(getPath("InputXpathRegressionCyclomaticTwo.java"));
 
         final DefaultConfiguration moduleConfig =
                 createModuleConfig(CyclomaticComplexityCheck.class);
@@ -80,11 +80,11 @@ public class XpathRegressionCyclomaticComplexityTest extends AbstractXpathTestSu
         };
 
         final List<String> expectedXpathQueries = Arrays.asList(
-            "/CLASS_DEF[./IDENT[@text='SuppressionXpathRegressionCyclomaticTwo']]/OBJBLOCK"
+            "/CLASS_DEF[./IDENT[@text='InputXpathRegressionCyclomaticTwo']]/OBJBLOCK"
                     + "/METHOD_DEF[./IDENT[@text='foo2']]",
-            "/CLASS_DEF[./IDENT[@text='SuppressionXpathRegressionCyclomaticTwo']]/OBJBLOCK"
+            "/CLASS_DEF[./IDENT[@text='InputXpathRegressionCyclomaticTwo']]/OBJBLOCK"
                     + "/METHOD_DEF[./IDENT[@text='foo2']]/MODIFIERS",
-            "/CLASS_DEF[./IDENT[@text='SuppressionXpathRegressionCyclomaticTwo']]/OBJBLOCK"
+            "/CLASS_DEF[./IDENT[@text='InputXpathRegressionCyclomaticTwo']]/OBJBLOCK"
                     + "/METHOD_DEF[./IDENT[@text='foo2']]/MODIFIERS/LITERAL_PUBLIC"
         );
 

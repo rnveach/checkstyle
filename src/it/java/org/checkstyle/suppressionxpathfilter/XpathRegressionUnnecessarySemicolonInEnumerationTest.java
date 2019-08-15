@@ -42,7 +42,7 @@ public class XpathRegressionUnnecessarySemicolonInEnumerationTest
     @Test
     public void testOne() throws Exception {
         final File fileToProcess = new File(
-                getPath("SuppressionXpathRegressionUnnecessarySemicolonInEnumeration.java"));
+                getPath("InputXpathRegressionUnnecessarySemicolonInEnumeration.java"));
 
         final DefaultConfiguration moduleConfig =
                 createModuleConfig(UnnecessarySemicolonInEnumerationCheck.class);

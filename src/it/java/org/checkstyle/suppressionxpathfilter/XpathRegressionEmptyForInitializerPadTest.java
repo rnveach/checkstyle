@@ -41,7 +41,7 @@ public class XpathRegressionEmptyForInitializerPadTest extends AbstractXpathTest
     @Test
     public void testPreceded() throws Exception {
         final File fileToProcess = new File(
-                getPath("SuppressionXpathRegressionEmptyForInitializerPadPreceded.java"));
+                getPath("InputXpathRegressionEmptyForInitializerPadPreceded.java"));
 
         final DefaultConfiguration moduleConfig =
                 createModuleConfig(EmptyForInitializerPadCheck.class);
@@ -52,9 +52,9 @@ public class XpathRegressionEmptyForInitializerPadTest extends AbstractXpathTest
         };
 
         final List<String> expectedXpathQueries = Arrays.asList(
-            "/CLASS_DEF[./IDENT[@text='SuppressionXpathRegressionEmptyForInitializerPadPreceded']]"
+            "/CLASS_DEF[./IDENT[@text='InputXpathRegressionEmptyForInitializerPadPreceded']]"
                 + "/OBJBLOCK/METHOD_DEF[./IDENT[@text='method']]/SLIST/LITERAL_FOR/FOR_INIT",
-            "/CLASS_DEF[./IDENT[@text='SuppressionXpathRegressionEmptyForInitializerPadPreceded']]"
+            "/CLASS_DEF[./IDENT[@text='InputXpathRegressionEmptyForInitializerPadPreceded']]"
                 + "/OBJBLOCK/METHOD_DEF[./IDENT[@text='method']]/SLIST/LITERAL_FOR/SEMI[1]"
         );
 
@@ -65,7 +65,7 @@ public class XpathRegressionEmptyForInitializerPadTest extends AbstractXpathTest
     @Test
     public void testNotPreceded() throws Exception {
         final File fileToProcess = new File(
-            getPath("SuppressionXpathRegressionEmptyForInitializerPadNotPreceded.java"));
+            getPath("InputXpathRegressionEmptyForInitializerPadNotPreceded.java"));
 
         final DefaultConfiguration moduleConfig =
                 createModuleConfig(EmptyForInitializerPadCheck.class);
@@ -78,10 +78,10 @@ public class XpathRegressionEmptyForInitializerPadTest extends AbstractXpathTest
 
         final List<String> expectedXpathQueries = Arrays.asList(
             "/CLASS_DEF[./IDENT["
-                + "@text='SuppressionXpathRegressionEmptyForInitializerPadNotPreceded']]"
+                + "@text='InputXpathRegressionEmptyForInitializerPadNotPreceded']]"
                 + "/OBJBLOCK/METHOD_DEF[./IDENT[@text='method']]/SLIST/LITERAL_FOR/FOR_INIT",
             "/CLASS_DEF[./IDENT["
-                + "@text='SuppressionXpathRegressionEmptyForInitializerPadNotPreceded']]"
+                + "@text='InputXpathRegressionEmptyForInitializerPadNotPreceded']]"
                 + "/OBJBLOCK/METHOD_DEF[./IDENT[@text='method']]/SLIST/LITERAL_FOR/SEMI[1]"
         );
 

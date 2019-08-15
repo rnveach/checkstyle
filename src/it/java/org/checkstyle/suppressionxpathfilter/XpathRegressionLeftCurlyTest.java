@@ -42,7 +42,7 @@ public class XpathRegressionLeftCurlyTest extends AbstractXpathTestSupport {
     @Test
     public void testOne() throws Exception {
         final File fileToProcess =
-                new File(getPath("SuppressionXpathRegressionLeftCurlyOne.java"));
+                new File(getPath("InputXpathRegressionLeftCurlyOne.java"));
 
         final DefaultConfiguration moduleConfig =
                 createModuleConfig(LeftCurlyCheck.class);
@@ -53,8 +53,8 @@ public class XpathRegressionLeftCurlyTest extends AbstractXpathTestSupport {
         };
 
         final List<String> expectedXpathQueries = Arrays.asList(
-            "/CLASS_DEF[./IDENT[@text='SuppressionXpathRegressionLeftCurlyOne']]/OBJBLOCK",
-            "/CLASS_DEF[./IDENT[@text='SuppressionXpathRegressionLeftCurlyOne']]/OBJBLOCK/LCURLY"
+            "/CLASS_DEF[./IDENT[@text='InputXpathRegressionLeftCurlyOne']]/OBJBLOCK",
+            "/CLASS_DEF[./IDENT[@text='InputXpathRegressionLeftCurlyOne']]/OBJBLOCK/LCURLY"
         );
 
         runVerifications(moduleConfig, fileToProcess, expectedViolation,
@@ -64,7 +64,7 @@ public class XpathRegressionLeftCurlyTest extends AbstractXpathTestSupport {
     @Test
     public void testTwo() throws Exception {
         final File fileToProcess =
-                new File(getPath("SuppressionXpathRegressionLeftCurlyTwo.java"));
+                new File(getPath("InputXpathRegressionLeftCurlyTwo.java"));
 
         final DefaultConfiguration moduleConfig =
                 createModuleConfig(LeftCurlyCheck.class);
@@ -76,8 +76,8 @@ public class XpathRegressionLeftCurlyTest extends AbstractXpathTestSupport {
         };
 
         final List<String> expectedXpathQueries = Arrays.asList(
-            "/CLASS_DEF[./IDENT[@text='SuppressionXpathRegressionLeftCurlyTwo']]/OBJBLOCK",
-            "/CLASS_DEF[./IDENT[@text='SuppressionXpathRegressionLeftCurlyTwo']]/OBJBLOCK/LCURLY"
+            "/CLASS_DEF[./IDENT[@text='InputXpathRegressionLeftCurlyTwo']]/OBJBLOCK",
+            "/CLASS_DEF[./IDENT[@text='InputXpathRegressionLeftCurlyTwo']]/OBJBLOCK/LCURLY"
         );
 
         runVerifications(moduleConfig, fileToProcess, expectedViolation,
@@ -87,7 +87,7 @@ public class XpathRegressionLeftCurlyTest extends AbstractXpathTestSupport {
     @Test
     public void testThree() throws Exception {
         final File fileToProcess =
-                new File(getPath("SuppressionXpathRegressionLeftCurlyThree.java"));
+                new File(getPath("InputXpathRegressionLeftCurlyThree.java"));
 
         final DefaultConfiguration moduleConfig =
                 createModuleConfig(LeftCurlyCheck.class);
@@ -98,7 +98,7 @@ public class XpathRegressionLeftCurlyTest extends AbstractXpathTestSupport {
         };
 
         final List<String> expectedXpathQueries = Collections.singletonList(
-            "/CLASS_DEF[./IDENT[@text='SuppressionXpathRegressionLeftCurlyThree']]/OBJBLOCK"
+            "/CLASS_DEF[./IDENT[@text='InputXpathRegressionLeftCurlyThree']]/OBJBLOCK"
                 + "/METHOD_DEF[./IDENT[@text='sample']]/SLIST/LITERAL_IF/SLIST"
         );
 

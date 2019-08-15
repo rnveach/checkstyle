@@ -40,7 +40,7 @@ public class XpathRegressionOneStatementPerLineTest extends AbstractXpathTestSup
     @Test
     public void testOne() throws Exception {
         final File fileToProcess =
-                new File(getPath("SuppressionXpathRegressionOneStatementPerLineOne.java"));
+                new File(getPath("InputXpathRegressionOneStatementPerLineOne.java"));
 
         final DefaultConfiguration moduleConfig =
                 createModuleConfig(OneStatementPerLineCheck.class);
@@ -51,7 +51,7 @@ public class XpathRegressionOneStatementPerLineTest extends AbstractXpathTestSup
         };
 
         final List<String> expectedXpathQueries = Collections.singletonList(
-            "/CLASS_DEF[./IDENT[@text='SuppressionXpathRegressionOneStatementPerLineOne']]/OBJBLOCK"
+            "/CLASS_DEF[./IDENT[@text='InputXpathRegressionOneStatementPerLineOne']]/OBJBLOCK"
                 + "/VARIABLE_DEF[./IDENT[@text='j']]/SEMI"
         );
 
@@ -62,7 +62,7 @@ public class XpathRegressionOneStatementPerLineTest extends AbstractXpathTestSup
     @Test
     public void testTwo() throws Exception {
         final File fileToProcess =
-                new File(getPath("SuppressionXpathRegressionOneStatementPerLineTwo.java"));
+                new File(getPath("InputXpathRegressionOneStatementPerLineTwo.java"));
 
         final DefaultConfiguration moduleConfig =
                 createModuleConfig(OneStatementPerLineCheck.class);
@@ -73,7 +73,7 @@ public class XpathRegressionOneStatementPerLineTest extends AbstractXpathTestSup
         };
 
         final List<String> expectedXpathQueries = Collections.singletonList(
-            "/CLASS_DEF[./IDENT[@text='SuppressionXpathRegressionOneStatementPerLineTwo']]/OBJBLOCK"
+            "/CLASS_DEF[./IDENT[@text='InputXpathRegressionOneStatementPerLineTwo']]/OBJBLOCK"
                 + "/METHOD_DEF[./IDENT[@text='foo5']]/SLIST/LITERAL_FOR/SLIST/SEMI[2]"
         );
 

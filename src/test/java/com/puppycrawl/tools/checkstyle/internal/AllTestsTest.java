@@ -57,6 +57,19 @@ public class AllTestsTest {
         walk(Paths.get("src/test/resources-noncompilable/com/puppycrawl"), filePath -> {
             verifyInputFile(allTests, filePath.toFile());
         });
+
+        final Map<String, List<String>> allItTests = new HashMap<>();
+
+        walk(Paths.get("src/it/java/org/checkstyle"), filePath -> {
+            grabAllTests(allItTests, filePath.toFile());
+        });
+
+        walk(Paths.get("src/it/resources/org/checkstyle"), filePath -> {
+            verifyInputFile(allItTests, filePath.toFile());
+        });
+        walk(Paths.get("src/it/resources-noncompilable/org/checkstyle"), filePath -> {
+            verifyInputFile(allItTests, filePath.toFile());
+        });
     }
 
     @Test
@@ -191,6 +204,11 @@ public class AllTestsTest {
             // moved
             final String folderPath = packge;
             slash = packge.lastIndexOf(File.separatorChar);
+
+            if (slash == -1) {
+                break;
+            }
+
             packge = path.substring(0, slash);
             classes = allTests.get(packge);
 
@@ -262,7 +280,12 @@ public class AllTestsTest {
     }
 
     private static String getSimplePath(String path) {
-        return path.substring(path.lastIndexOf("com" + File.separator + "puppycrawl"));
+        int index = path.lastIndexOf("com" + File.separator + "puppycrawl");
+
+        if (index == -1)
+            index = path.lastIndexOf("org" + File.separator + "checkstyle");
+
+        return path.substring(index);
     }
 
 }

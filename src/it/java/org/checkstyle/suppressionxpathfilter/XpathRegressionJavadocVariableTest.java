@@ -40,7 +40,7 @@ public class XpathRegressionJavadocVariableTest extends AbstractXpathTestSupport
     @Test
     public void testOne() throws Exception {
         final File fileToProcess =
-                new File(getPath("SuppressionXpathRegressionJavadocVariableOne.java"));
+                new File(getPath("InputXpathRegressionJavadocVariableOne.java"));
 
         final DefaultConfiguration moduleConfig =
                 createModuleConfig(JavadocVariableCheck.class);
@@ -51,11 +51,11 @@ public class XpathRegressionJavadocVariableTest extends AbstractXpathTestSupport
         };
 
         final List<String> expectedXpathQueries = Arrays.asList(
-            "/CLASS_DEF[./IDENT[@text='SuppressionXpathRegressionJavadocVariableOne']]/OBJBLOCK"
+            "/CLASS_DEF[./IDENT[@text='InputXpathRegressionJavadocVariableOne']]/OBJBLOCK"
                 + "/VARIABLE_DEF[./IDENT[@text='age']]",
-            "/CLASS_DEF[./IDENT[@text='SuppressionXpathRegressionJavadocVariableOne']]/OBJBLOCK"
+            "/CLASS_DEF[./IDENT[@text='InputXpathRegressionJavadocVariableOne']]/OBJBLOCK"
                 + "/VARIABLE_DEF[./IDENT[@text='age']]/MODIFIERS",
-            "/CLASS_DEF[./IDENT[@text='SuppressionXpathRegressionJavadocVariableOne']]/OBJBLOCK"
+            "/CLASS_DEF[./IDENT[@text='InputXpathRegressionJavadocVariableOne']]/OBJBLOCK"
                 + "/VARIABLE_DEF[./IDENT[@text='age']]/MODIFIERS/LITERAL_PRIVATE"
         );
 
@@ -66,7 +66,7 @@ public class XpathRegressionJavadocVariableTest extends AbstractXpathTestSupport
     @Test
     public void testTwo() throws Exception {
         final File fileToProcess =
-                new File(getPath("SuppressionXpathRegressionJavadocVariableTwo.java"));
+                new File(getPath("InputXpathRegressionJavadocVariableTwo.java"));
 
         final DefaultConfiguration moduleConfig =
                 createModuleConfig(JavadocVariableCheck.class);
@@ -77,13 +77,13 @@ public class XpathRegressionJavadocVariableTest extends AbstractXpathTestSupport
         };
 
         final List<String> expectedXpathQueries = Arrays.asList(
-            "/CLASS_DEF[./IDENT[@text='SuppressionXpathRegressionJavadocVariableTwo']]/OBJBLOCK"
+            "/CLASS_DEF[./IDENT[@text='InputXpathRegressionJavadocVariableTwo']]/OBJBLOCK"
                 + "/CLASS_DEF[./IDENT[@text='InnerInner2']]/OBJBLOCK"
                 + "/VARIABLE_DEF[./IDENT[@text='fData']]",
-            "/CLASS_DEF[./IDENT[@text='SuppressionXpathRegressionJavadocVariableTwo']]/OBJBLOCK"
+            "/CLASS_DEF[./IDENT[@text='InputXpathRegressionJavadocVariableTwo']]/OBJBLOCK"
                 + "/CLASS_DEF[./IDENT[@text='InnerInner2']]/OBJBLOCK"
                 + "/VARIABLE_DEF[./IDENT[@text='fData']]/MODIFIERS",
-            "/CLASS_DEF[./IDENT[@text='SuppressionXpathRegressionJavadocVariableTwo']]/OBJBLOCK"
+            "/CLASS_DEF[./IDENT[@text='InputXpathRegressionJavadocVariableTwo']]/OBJBLOCK"
                 + "/CLASS_DEF[./IDENT[@text='InnerInner2']]/OBJBLOCK"
                 + "/VARIABLE_DEF[./IDENT[@text='fData']]/MODIFIERS"
                 + "/LITERAL_PUBLIC"

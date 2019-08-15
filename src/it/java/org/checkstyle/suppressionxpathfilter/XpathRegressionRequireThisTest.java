@@ -40,7 +40,7 @@ public class XpathRegressionRequireThisTest extends AbstractXpathTestSupport {
     @Test
     public void testOne() throws Exception {
         final File fileToProcess =
-                new File(getPath("SuppressionXpathRegressionRequireThisOne.java"));
+                new File(getPath("InputXpathRegressionRequireThisOne.java"));
 
         final DefaultConfiguration moduleConfig =
                 createModuleConfig(RequireThisCheck.class);
@@ -52,7 +52,7 @@ public class XpathRegressionRequireThisTest extends AbstractXpathTestSupport {
         };
 
         final List<String> expectedXpathQueries = Collections.singletonList(
-            "/CLASS_DEF[./IDENT[@text='SuppressionXpathRegressionRequireThisOne']]/OBJBLOCK"
+            "/CLASS_DEF[./IDENT[@text='InputXpathRegressionRequireThisOne']]/OBJBLOCK"
                 + "/METHOD_DEF[./IDENT[@text='changeAge']]/SLIST/EXPR/ASSIGN"
                 + "/IDENT[@text='age']"
         );
@@ -64,7 +64,7 @@ public class XpathRegressionRequireThisTest extends AbstractXpathTestSupport {
     @Test
     public void testTwo() throws Exception {
         final File fileToProcess =
-                new File(getPath("SuppressionXpathRegressionRequireThisTwo.java"));
+                new File(getPath("InputXpathRegressionRequireThisTwo.java"));
 
         final DefaultConfiguration moduleConfig =
                 createModuleConfig(RequireThisCheck.class);
@@ -76,7 +76,7 @@ public class XpathRegressionRequireThisTest extends AbstractXpathTestSupport {
         };
 
         final List<String> expectedXpathQueries = Collections.singletonList(
-            "/CLASS_DEF[./IDENT[@text='SuppressionXpathRegressionRequireThisTwo']]/OBJBLOCK"
+            "/CLASS_DEF[./IDENT[@text='InputXpathRegressionRequireThisTwo']]/OBJBLOCK"
                 + "/METHOD_DEF[./IDENT[@text='method2']]/SLIST/EXPR"
                 + "/METHOD_CALL/IDENT[@text='method1']"
         );

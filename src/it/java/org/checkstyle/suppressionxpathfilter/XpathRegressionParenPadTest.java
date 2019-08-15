@@ -42,7 +42,7 @@ public class XpathRegressionParenPadTest extends AbstractXpathTestSupport {
     @Test
     public void testLeftFollowed() throws Exception {
         final File fileToProcess =
-                new File(getPath("SuppressionXpathRegressionParenPadLeftFollowed.java"));
+                new File(getPath("InputXpathRegressionParenPadLeftFollowed.java"));
 
         final DefaultConfiguration moduleConfig =
                 createModuleConfig(ParenPadCheck.class);
@@ -53,7 +53,7 @@ public class XpathRegressionParenPadTest extends AbstractXpathTestSupport {
         };
 
         final List<String> expectedXpathQueries = Collections.singletonList(
-            "/CLASS_DEF[./IDENT[@text='SuppressionXpathRegressionParenPadLeftFollowed']]"
+            "/CLASS_DEF[./IDENT[@text='InputXpathRegressionParenPadLeftFollowed']]"
                 + "/OBJBLOCK/METHOD_DEF[./IDENT[@text='method']]/SLIST/LITERAL_IF/LPAREN"
         );
 
@@ -64,7 +64,7 @@ public class XpathRegressionParenPadTest extends AbstractXpathTestSupport {
     @Test
     public void testLeftNotFollowed() throws Exception {
         final File fileToProcess =
-                new File(getPath("SuppressionXpathRegressionParenPadLeftNotFollowed.java"));
+                new File(getPath("InputXpathRegressionParenPadLeftNotFollowed.java"));
 
         final DefaultConfiguration moduleConfig =
                 createModuleConfig(ParenPadCheck.class);
@@ -76,7 +76,7 @@ public class XpathRegressionParenPadTest extends AbstractXpathTestSupport {
         };
 
         final List<String> expectedXpathQueries = Collections.singletonList(
-            "/CLASS_DEF[./IDENT[@text='SuppressionXpathRegressionParenPadLeftNotFollowed']]"
+            "/CLASS_DEF[./IDENT[@text='InputXpathRegressionParenPadLeftNotFollowed']]"
                 + "/OBJBLOCK/METHOD_DEF[./IDENT[@text='method']]/SLIST/LITERAL_IF/LPAREN"
         );
 
@@ -87,7 +87,7 @@ public class XpathRegressionParenPadTest extends AbstractXpathTestSupport {
     @Test
     public void testRightPreceded() throws Exception {
         final File fileToProcess =
-                new File(getPath("SuppressionXpathRegressionParenPadRightPreceded.java"));
+                new File(getPath("InputXpathRegressionParenPadRightPreceded.java"));
 
         final DefaultConfiguration moduleConfig =
                 createModuleConfig(ParenPadCheck.class);
@@ -98,7 +98,7 @@ public class XpathRegressionParenPadTest extends AbstractXpathTestSupport {
         };
 
         final List<String> expectedXpathQueries = Collections.singletonList(
-            "/CLASS_DEF[./IDENT[@text='SuppressionXpathRegressionParenPadRightPreceded']]"
+            "/CLASS_DEF[./IDENT[@text='InputXpathRegressionParenPadRightPreceded']]"
                 + "/OBJBLOCK/METHOD_DEF[./IDENT[@text='method']]/SLIST/LITERAL_IF/RPAREN"
         );
 
@@ -109,7 +109,7 @@ public class XpathRegressionParenPadTest extends AbstractXpathTestSupport {
     @Test
     public void testRightNotPreceded() throws Exception {
         final File fileToProcess =
-                new File(getPath("SuppressionXpathRegressionParenPadRightNotPreceded.java"));
+                new File(getPath("InputXpathRegressionParenPadRightNotPreceded.java"));
 
         final DefaultConfiguration moduleConfig =
                 createModuleConfig(ParenPadCheck.class);
@@ -121,7 +121,7 @@ public class XpathRegressionParenPadTest extends AbstractXpathTestSupport {
         };
 
         final List<String> expectedXpathQueries = Collections.singletonList(
-            "/CLASS_DEF[./IDENT[@text='SuppressionXpathRegressionParenPadRightNotPreceded']]"
+            "/CLASS_DEF[./IDENT[@text='InputXpathRegressionParenPadRightNotPreceded']]"
                 + "/OBJBLOCK/METHOD_DEF[./IDENT[@text='method']]/SLIST/LITERAL_IF/RPAREN"
         );
 

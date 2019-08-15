@@ -40,7 +40,7 @@ public class XpathRegressionOuterTypeNumberTest extends AbstractXpathTestSupport
     @Test
     public void testOne() throws Exception {
         final File fileToProcess =
-                new File(getPath("SuppressionXpathRegressionOuterTypeNumber.java"));
+                new File(getPath("InputXpathRegressionOuterTypeNumber.java"));
 
         final DefaultConfiguration moduleConfig =
                 createModuleConfig(OuterTypeNumberCheck.class);

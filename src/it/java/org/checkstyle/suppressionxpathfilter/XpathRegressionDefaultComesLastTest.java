@@ -41,7 +41,7 @@ public class XpathRegressionDefaultComesLastTest extends AbstractXpathTestSuppor
     @Test
     public void testOne() throws Exception {
         final File fileToProcess =
-                new File(getPath("SuppressionXpathRegressionDefaultComesLastOne.java"));
+                new File(getPath("InputXpathRegressionDefaultComesLastOne.java"));
 
         final DefaultConfiguration moduleConfig =
                 createModuleConfig(DefaultComesLastCheck.class);
@@ -52,10 +52,10 @@ public class XpathRegressionDefaultComesLastTest extends AbstractXpathTestSuppor
         };
 
         final List<String> expectedXpathQueries = Arrays.asList(
-            "/CLASS_DEF[./IDENT[@text='SuppressionXpathRegressionDefaultComesLastOne']]/OBJBLOCK"
+            "/CLASS_DEF[./IDENT[@text='InputXpathRegressionDefaultComesLastOne']]/OBJBLOCK"
                 + "/METHOD_DEF[./IDENT[@text='test']]/SLIST/LITERAL_SWITCH/CASE_GROUP["
                 + "./SLIST/EXPR/ASSIGN/IDENT[@text='id']]",
-            "/CLASS_DEF[./IDENT[@text='SuppressionXpathRegressionDefaultComesLastOne']]/OBJBLOCK"
+            "/CLASS_DEF[./IDENT[@text='InputXpathRegressionDefaultComesLastOne']]/OBJBLOCK"
                 + "/METHOD_DEF[./IDENT[@text='test']]/SLIST/LITERAL_SWITCH/CASE_GROUP"
                 + "/LITERAL_DEFAULT"
         );
@@ -67,7 +67,7 @@ public class XpathRegressionDefaultComesLastTest extends AbstractXpathTestSuppor
     @Test
     public void testTwo() throws Exception {
         final File fileToProcess =
-                new File(getPath("SuppressionXpathRegressionDefaultComesLastTwo.java"));
+                new File(getPath("InputXpathRegressionDefaultComesLastTwo.java"));
 
         final DefaultConfiguration moduleConfig =
                 createModuleConfig(DefaultComesLastCheck.class);
@@ -79,7 +79,7 @@ public class XpathRegressionDefaultComesLastTest extends AbstractXpathTestSuppor
         };
 
         final List<String> expectedXpathQueries = Collections.singletonList(
-            "/CLASS_DEF[./IDENT[@text='SuppressionXpathRegressionDefaultComesLastTwo']]/OBJBLOCK"
+            "/CLASS_DEF[./IDENT[@text='InputXpathRegressionDefaultComesLastTwo']]/OBJBLOCK"
                 + "/METHOD_DEF[./IDENT[@text='test']]/SLIST/LITERAL_SWITCH/CASE_GROUP"
                 + "/LITERAL_DEFAULT"
         );

@@ -42,7 +42,7 @@ public class XpathRegressionUnnecessarySemicolonAfterTypeMemberDeclarationTest
     @Test
     public void testOne() throws Exception {
         final File fileToProcess = new File(getPath(
-            "SuppressionXpathRegressionUnnecessarySemicolonAfterTypeMemberDeclaration.java"));
+            "InputXpathRegressionUnnecessarySemicolonAfterTypeMemberDeclaration.java"));
         final DefaultConfiguration moduleConfig = createModuleConfig(CLASS);
         final String[] expectedViolation = {
             "4:20: " + getCheckMessage(CLASS,
@@ -50,7 +50,7 @@ public class XpathRegressionUnnecessarySemicolonAfterTypeMemberDeclarationTest
         };
 
         final List<String> expectedXpathQueries = Collections.singletonList("/CLASS_DEF[./IDENT"
-            + "[@text='SuppressionXpathRegressionUnnecessarySemicolonAfterTypeMemberDeclaration']]"
+            + "[@text='InputXpathRegressionUnnecessarySemicolonAfterTypeMemberDeclaration']]"
             + "/OBJBLOCK/SEMI"
         );
 

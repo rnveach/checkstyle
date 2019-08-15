@@ -42,7 +42,7 @@ public class XpathRegressionNPathComplexityTest extends AbstractXpathTestSupport
     @Test
     public void testOne() throws Exception {
         final File fileToProcess =
-                new File(getPath("SuppressionXpathRegressionNPathComplexityOne.java"));
+                new File(getPath("InputXpathRegressionNPathComplexityOne.java"));
 
         final DefaultConfiguration moduleConfig =
                 createModuleConfig(NPathComplexityCheck.class);
@@ -54,11 +54,11 @@ public class XpathRegressionNPathComplexityTest extends AbstractXpathTestSupport
         };
 
         final List<String> expectedXpathQueries = Arrays.asList(
-            "/CLASS_DEF[./IDENT[@text='SuppressionXpathRegressionNPathComplexityOne']]/OBJBLOCK"
+            "/CLASS_DEF[./IDENT[@text='InputXpathRegressionNPathComplexityOne']]/OBJBLOCK"
                 + "/METHOD_DEF[./IDENT[@text='test']]",
-            "/CLASS_DEF[./IDENT[@text='SuppressionXpathRegressionNPathComplexityOne']]/OBJBLOCK"
+            "/CLASS_DEF[./IDENT[@text='InputXpathRegressionNPathComplexityOne']]/OBJBLOCK"
                 + "/METHOD_DEF[./IDENT[@text='test']]/MODIFIERS",
-            "/CLASS_DEF[./IDENT[@text='SuppressionXpathRegressionNPathComplexityOne']]/OBJBLOCK"
+            "/CLASS_DEF[./IDENT[@text='InputXpathRegressionNPathComplexityOne']]/OBJBLOCK"
                 + "/METHOD_DEF[./IDENT[@text='test']]/MODIFIERS/LITERAL_PUBLIC"
         );
 
@@ -69,7 +69,7 @@ public class XpathRegressionNPathComplexityTest extends AbstractXpathTestSupport
     @Test
     public void testTwo() throws Exception {
         final File fileToProcess =
-                new File(getPath("SuppressionXpathRegressionNPathComplexityTwo.java"));
+                new File(getPath("InputXpathRegressionNPathComplexityTwo.java"));
 
         final DefaultConfiguration moduleConfig =
                 createModuleConfig(NPathComplexityCheck.class);
@@ -81,7 +81,7 @@ public class XpathRegressionNPathComplexityTest extends AbstractXpathTestSupport
         };
 
         final List<String> expectedXpathQueries = Collections.singletonList(
-            "/CLASS_DEF[./IDENT[@text='SuppressionXpathRegressionNPathComplexityTwo']]"
+            "/CLASS_DEF[./IDENT[@text='InputXpathRegressionNPathComplexityTwo']]"
                 + "/OBJBLOCK/STATIC_INIT"
         );
 

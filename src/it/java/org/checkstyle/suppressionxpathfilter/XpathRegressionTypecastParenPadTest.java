@@ -43,7 +43,7 @@ public class XpathRegressionTypecastParenPadTest extends AbstractXpathTestSuppor
     @Test
     public void testLeftFollowed() throws Exception {
         final File fileToProcess =
-                new File(getPath("SuppressionXpathRegressionTypecastParenPadLeftFollowed.java"));
+                new File(getPath("InputXpathRegressionTypecastParenPadLeftFollowed.java"));
 
         final DefaultConfiguration moduleConfig =
                 createModuleConfig(TypecastParenPadCheck.class);
@@ -54,9 +54,9 @@ public class XpathRegressionTypecastParenPadTest extends AbstractXpathTestSuppor
         };
 
         final List<String> expectedXpathQueries = Arrays.asList(
-            "/CLASS_DEF[./IDENT[@text='SuppressionXpathRegressionTypecastParenPadLeftFollowed']]"
+            "/CLASS_DEF[./IDENT[@text='InputXpathRegressionTypecastParenPadLeftFollowed']]"
                 + "/OBJBLOCK/VARIABLE_DEF[./IDENT[@text='bad']]/ASSIGN/EXPR",
-            "/CLASS_DEF[./IDENT[@text='SuppressionXpathRegressionTypecastParenPadLeftFollowed']]"
+            "/CLASS_DEF[./IDENT[@text='InputXpathRegressionTypecastParenPadLeftFollowed']]"
                 + "/OBJBLOCK/VARIABLE_DEF[./IDENT[@text='bad']]/ASSIGN/EXPR/TYPECAST"
         );
 
@@ -67,7 +67,7 @@ public class XpathRegressionTypecastParenPadTest extends AbstractXpathTestSuppor
     @Test
     public void testLeftNotFollowed() throws Exception {
         final File fileToProcess =
-                new File(getPath("SuppressionXpathRegressionTypecastParenPadLeftNotFollowed.java"));
+                new File(getPath("InputXpathRegressionTypecastParenPadLeftNotFollowed.java"));
 
         final DefaultConfiguration moduleConfig =
                 createModuleConfig(TypecastParenPadCheck.class);
@@ -79,9 +79,9 @@ public class XpathRegressionTypecastParenPadTest extends AbstractXpathTestSuppor
         };
 
         final List<String> expectedXpathQueries = Arrays.asList(
-            "/CLASS_DEF[./IDENT[@text='SuppressionXpathRegressionTypecastParenPadLeftNotFollowed']]"
+            "/CLASS_DEF[./IDENT[@text='InputXpathRegressionTypecastParenPadLeftNotFollowed']]"
                 + "/OBJBLOCK/VARIABLE_DEF[./IDENT[@text='bad']]/ASSIGN/EXPR",
-            "/CLASS_DEF[./IDENT[@text='SuppressionXpathRegressionTypecastParenPadLeftNotFollowed']]"
+            "/CLASS_DEF[./IDENT[@text='InputXpathRegressionTypecastParenPadLeftNotFollowed']]"
                 + "/OBJBLOCK/VARIABLE_DEF[./IDENT[@text='bad']]/ASSIGN/EXPR/TYPECAST"
         );
 
@@ -92,7 +92,7 @@ public class XpathRegressionTypecastParenPadTest extends AbstractXpathTestSuppor
     @Test
     public void testRightPreceded() throws Exception {
         final File fileToProcess =
-                new File(getPath("SuppressionXpathRegressionTypecastParenPadRightPreceded.java"));
+                new File(getPath("InputXpathRegressionTypecastParenPadRightPreceded.java"));
 
         final DefaultConfiguration moduleConfig =
                 createModuleConfig(TypecastParenPadCheck.class);
@@ -103,7 +103,7 @@ public class XpathRegressionTypecastParenPadTest extends AbstractXpathTestSuppor
         };
 
         final List<String> expectedXpathQueries = Collections.singletonList(
-            "/CLASS_DEF[./IDENT[@text='SuppressionXpathRegressionTypecastParenPadRightPreceded']]"
+            "/CLASS_DEF[./IDENT[@text='InputXpathRegressionTypecastParenPadRightPreceded']]"
                 + "/OBJBLOCK/VARIABLE_DEF[./IDENT[@text='bad']]/ASSIGN/EXPR/TYPECAST/RPAREN"
         );
 
@@ -114,7 +114,7 @@ public class XpathRegressionTypecastParenPadTest extends AbstractXpathTestSuppor
     @Test
     public void testRightNotPreceded() throws Exception {
         final File fileToProcess = new File(
-                getPath("SuppressionXpathRegressionTypecastParenPadRightNotPreceded.java"));
+                getPath("InputXpathRegressionTypecastParenPadRightNotPreceded.java"));
 
         final DefaultConfiguration moduleConfig =
                 createModuleConfig(TypecastParenPadCheck.class);
@@ -127,7 +127,7 @@ public class XpathRegressionTypecastParenPadTest extends AbstractXpathTestSuppor
 
         final List<String> expectedXpathQueries = Collections.singletonList(
             "/CLASS_DEF[./IDENT["
-                + "@text='SuppressionXpathRegressionTypecastParenPadRightNotPreceded']]"
+                + "@text='InputXpathRegressionTypecastParenPadRightNotPreceded']]"
                 + "/OBJBLOCK/VARIABLE_DEF[./IDENT[@text='bad']]/ASSIGN/EXPR/TYPECAST/RPAREN"
         );
 
