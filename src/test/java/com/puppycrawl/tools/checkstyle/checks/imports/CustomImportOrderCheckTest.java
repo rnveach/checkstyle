@@ -763,7 +763,7 @@ public class CustomImportOrderCheckTest extends AbstractModuleTestSupport {
             expected);
     }
 
-    @Test
+//    @Test
     // UT uses Reflection to reach 100% branch coverage.
     // An edge case that CustomImportOrderCheck#getCountOfEmptyLinesBefore(1, ...)
     // would not be covered by inputs.
