@@ -34,7 +34,6 @@ import java.nio.charset.UnsupportedCharsetException;
 import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -154,29 +153,6 @@ public final class FileText {
         else {
             lineBreaks = fileText.lineBreaks.clone();
         }
-    }
-
-    /**
-     * Compatibility constructor.
-     *
-     * <p>This constructor reconstructs the text of the file by joining
-     * lines with linefeed characters. This process does not restore
-     * the original line terminators and should therefore be avoided.
-     *
-     * @param file the name of the file
-     * @param lines the lines of the text, without terminators
-     * @throws NullPointerException if the lines array is null
-     */
-    public FileText(File file, List<String> lines) {
-        final StringBuilder buf = new StringBuilder(1024);
-        for (final String line : lines) {
-            buf.append(line).append('\n');
-        }
-
-        this.file = file;
-        charset = null;
-        fullText = buf.toString();
-        this.lines = lines.toArray(CommonUtil.EMPTY_STRING_ARRAY);
     }
 
     /**
