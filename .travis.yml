@@ -11,10 +11,6 @@ addons:
       - xsltproc
       - xmlstarlet
 
-branches:
-  only:
-    - master
-
 install:
   - ""
 
