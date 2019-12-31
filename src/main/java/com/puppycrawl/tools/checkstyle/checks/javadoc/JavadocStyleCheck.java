@@ -34,12 +34,12 @@ import com.puppycrawl.tools.checkstyle.JavadocDetailNodeParser;
 import com.puppycrawl.tools.checkstyle.StatelessCheck;
 import com.puppycrawl.tools.checkstyle.api.AbstractCheck;
 import com.puppycrawl.tools.checkstyle.api.DetailAST;
-import com.puppycrawl.tools.checkstyle.api.FileContents;
 import com.puppycrawl.tools.checkstyle.api.Scope;
 import com.puppycrawl.tools.checkstyle.api.TextBlock;
 import com.puppycrawl.tools.checkstyle.api.TokenTypes;
 import com.puppycrawl.tools.checkstyle.utils.CheckUtil;
 import com.puppycrawl.tools.checkstyle.utils.CommonUtil;
+import com.puppycrawl.tools.checkstyle.utils.JavadocUtil;
 import com.puppycrawl.tools.checkstyle.utils.ScopeUtil;
 
 /**
@@ -268,14 +268,15 @@ public class JavadocStyleCheck
     }
 
     @Override
+    public boolean isCommentNodesRequired() {
+        return true;
+    }
+
+    @Override
     public void visitToken(DetailAST ast) {
         if (shouldCheck(ast)) {
-            final FileContents contents = getFileContents();
-            // Need to start searching for the comment before the annotations
-            // that may exist. Even if annotations are not defined on the
-            // package, the ANNOTATIONS AST is defined.
-            final TextBlock textBlock =
-                contents.getJavadocBefore(ast.getFirstChild().getLineNo());
+            final DetailAST textBlock =
+                    JavadocUtil.findJavadocFrom(ast);
 
             checkComment(ast, textBlock);
         }
@@ -323,7 +324,7 @@ public class JavadocStyleCheck
      * @see #checkFirstSentenceEnding(DetailAST, TextBlock)
      * @see #checkHtmlTags(DetailAST, TextBlock)
      */
-    private void checkComment(final DetailAST ast, final TextBlock comment) {
+    private void checkComment(final DetailAST ast, final DetailAST comment) {
         if (comment == null) {
             // checking for missing docs in JavadocStyleCheck is not consistent
             // with the rest of CheckStyle...  Even though, I didn't think it
@@ -358,14 +359,14 @@ public class JavadocStyleCheck
      * @param ast the current node
      * @param comment the source lines that make up the Javadoc comment.
      */
-    private void checkFirstSentenceEnding(final DetailAST ast, TextBlock comment) {
-        final String commentText = getCommentText(comment.getText());
+    private void checkFirstSentenceEnding(final DetailAST ast, DetailAST comment) {
+        final String commentText = getCommentText(comment.getFirstChild().getText());
 
         if (!commentText.isEmpty()
             && !endOfSentenceFormat.matcher(commentText).find()
             && !(commentText.startsWith("{@inheritDoc}")
             && JavadocTagInfo.INHERIT_DOC.isValidOn(ast))) {
-            log(comment.getStartLineNo(), MSG_NO_PERIOD);
+            log(comment.getLineNo(), MSG_NO_PERIOD);
         }
     }
 
@@ -374,22 +375,22 @@ public class JavadocStyleCheck
      *
      * @param comment the source lines that make up the Javadoc comment.
      */
-    private void checkJavadocIsNotEmpty(TextBlock comment) {
-        final String commentText = getCommentText(comment.getText());
+    private void checkJavadocIsNotEmpty(DetailAST comment) {
+        final String commentText = getCommentText(comment.getFirstChild().getText());
 
         if (commentText.isEmpty()) {
-            log(comment.getStartLineNo(), MSG_EMPTY);
+            log(comment.getLineNo(), MSG_EMPTY);
         }
     }
 
     /**
      * Returns the comment text from the Javadoc.
-     * @param comments the lines of Javadoc.
+     * @param comment the lines of Javadoc.
      * @return a comment text String.
      */
-    private static String getCommentText(String... comments) {
+    private static String getCommentText(String comment) {
         final StringBuilder builder = new StringBuilder(1024);
-        for (final String line : comments) {
+        for (final String line : comment.split("\\r\\n|\\n|\\r")) {
             final int textStart = findTextStart(line);
 
             if (textStart != -1) {
@@ -473,10 +474,10 @@ public class JavadocStyleCheck
      * @noinspection MethodWithMultipleReturnPoints
      */
     // -@cs[ReturnCount] Too complex to break apart.
-    private void checkHtmlTags(final DetailAST ast, final TextBlock comment) {
-        final int lineNo = comment.getStartLineNo();
+    private void checkHtmlTags(final DetailAST ast, final DetailAST comment) {
+        final int lineNo = comment.getLineNo();
         final Deque<HtmlTag> htmlStack = new ArrayDeque<>();
-        final String[] text = comment.getText();
+        final String[] text = comment.getFirstChild().getText().split("\\r\\n|\\n|\\r");
 
         final TagParser parser = new TagParser(text, lineNo);
 

@@ -85,6 +85,72 @@ public final class JavadocUtil {
     }
 
     /**
+     * Finds a javadoc comment for the specified token.
+     * @param token tree token.
+     * @return the javadoc comment if found, otherwise {@code null}.
+     */
+    public static DetailAST findJavadocFrom(DetailAST token) {
+        DetailAST result = findJavadocOnToken(token, TokenTypes.MODIFIERS);
+
+        if (result == null) {
+            result = findJavadocOnToken(token, TokenTypes.TYPE);
+
+            if (result == null) {
+                result = token.findFirstToken(TokenTypes.BLOCK_COMMENT_BEGIN);
+
+                if (result != null && !isCorrectJavadocPosition(result)) {
+                    result = null;
+                }
+            }
+        }
+
+        return result;
+    }
+
+    /**
+     * Finds a javadoc comment.
+     *
+     * @param token tree token.
+     * @param tokenType token type.
+     * @return the javadoc comment if found, otherwise {@code null}.
+     */
+    private static DetailAST findJavadocOnToken(DetailAST token, int tokenType) {
+        final DetailAST child = token.findFirstToken(tokenType);
+        return findJavadocCommentIn(child);
+    }
+
+    /**
+     * Finds a javadoc comment under the token.
+     *
+     * @param token tree token.
+     * @return the javadoc comment if found, otherwise {@code null}.
+     */
+    private static DetailAST findJavadocCommentIn(DetailAST token) {
+        DetailAST result = null;
+        DetailAST curNode = token;
+        while (curNode != null) {
+            if (curNode.getType() == TokenTypes.BLOCK_COMMENT_BEGIN
+                    && JavadocUtil.isJavadocComment(curNode)) {
+                result = curNode;
+                break;
+            }
+
+            DetailAST toVisit = curNode.getFirstChild();
+            while (toVisit == null) {
+                if (curNode == token) {
+                    break;
+                }
+
+                toVisit = curNode.getNextSibling();
+                curNode = curNode.getParent();
+            }
+            curNode = toVisit;
+        }
+
+        return result;
+    }
+
+    /**
      * Gets validTags from a given piece of Javadoc.
      * @param textBlock
      *        the Javadoc comment to process.

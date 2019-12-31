@@ -191,6 +191,11 @@ public class UnusedImportsCheck extends AbstractCheck {
     }
 
     @Override
+    public boolean isCommentNodesRequired() {
+        return true;
+    }
+
+    @Override
     public void visitToken(DetailAST ast) {
         if (ast.getType() == TokenTypes.IDENT) {
             if (collect) {
@@ -266,11 +271,9 @@ public class UnusedImportsCheck extends AbstractCheck {
      * @param ast node to inspect for Javadoc
      */
     private void collectReferencesFromJavadoc(DetailAST ast) {
-        final FileContents contents = getFileContents();
-        final int lineNo = ast.getLineNo();
-        final TextBlock textBlock = contents.getJavadocBefore(lineNo);
+        final DetailAST textBlock = JavadocUtil.findJavadocFrom(ast);
         if (textBlock != null) {
-            referenced.addAll(collectReferencesFromJavadoc(textBlock));
+            referenced.addAll(collectReferencesFromJavadocEx(textBlock));
         }
     }
 
@@ -280,7 +283,7 @@ public class UnusedImportsCheck extends AbstractCheck {
      * @param textBlock The javadoc block to parse
      * @return a set of classes referenced in the javadoc block
      */
-    private static Set<String> collectReferencesFromJavadoc(TextBlock textBlock) {
+    private static Set<String> collectReferencesFromJavadocEx(DetailAST textBlock) {
         final List<JavadocTag> tags = new ArrayList<>();
         // gather all the inline tags, like @link
         // INLINE tags inside BLOCKs get hidden when using ALL
@@ -302,7 +305,7 @@ public class UnusedImportsCheck extends AbstractCheck {
      * @param tagType The type of tags we're interested in
      * @return the list of tags
      */
-    private static List<JavadocTag> getValidTags(TextBlock cmt,
+    private static List<JavadocTag> getValidTags(DetailAST cmt,
             JavadocUtil.JavadocTagType tagType) {
         return JavadocUtil.getJavadocTags(cmt, tagType).getValidTags();
     }

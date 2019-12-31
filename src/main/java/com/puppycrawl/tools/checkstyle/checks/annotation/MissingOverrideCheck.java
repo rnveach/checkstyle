@@ -25,11 +25,11 @@ import java.util.regex.Pattern;
 import com.puppycrawl.tools.checkstyle.StatelessCheck;
 import com.puppycrawl.tools.checkstyle.api.AbstractCheck;
 import com.puppycrawl.tools.checkstyle.api.DetailAST;
-import com.puppycrawl.tools.checkstyle.api.TextBlock;
 import com.puppycrawl.tools.checkstyle.api.TokenTypes;
 import com.puppycrawl.tools.checkstyle.checks.javadoc.JavadocTagInfo;
 import com.puppycrawl.tools.checkstyle.utils.AnnotationUtil;
 import com.puppycrawl.tools.checkstyle.utils.CommonUtil;
+import com.puppycrawl.tools.checkstyle.utils.JavadocUtil;
 
 /**
  * <p>
@@ -139,11 +139,16 @@ public final class MissingOverrideCheck extends AbstractCheck {
         {TokenTypes.METHOD_DEF, };
     }
 
+    @Override
+    public boolean isCommentNodesRequired() {
+        return true;
+    }
+
     // -@cs[CyclomaticComplexity] Too complex to break apart.
     @Override
     public void visitToken(final DetailAST ast) {
-        final TextBlock javadoc =
-            getFileContents().getJavadocBefore(ast.getLineNo());
+        final DetailAST javadoc =
+            JavadocUtil.findJavadocFrom(ast);
 
         final boolean containsTag = containsJavadocTag(javadoc);
         if (containsTag && !JavadocTagInfo.INHERIT_DOC.isValidOn(ast)) {
@@ -178,11 +183,11 @@ public final class MissingOverrideCheck extends AbstractCheck {
      * @param javadoc the javadoc of the AST
      * @return true if contains the tag
      */
-    private static boolean containsJavadocTag(final TextBlock javadoc) {
+    private static boolean containsJavadocTag(final DetailAST javadoc) {
         boolean javadocTag = false;
 
         if (javadoc != null) {
-            final String[] lines = javadoc.getText();
+            final String[] lines = javadoc.getFirstChild().getText().split("\\r\\n|\\n|\\r");
 
             for (final String line : lines) {
                 final Matcher matchInheritDoc =

@@ -25,11 +25,10 @@ import java.util.regex.Pattern;
 import com.puppycrawl.tools.checkstyle.StatelessCheck;
 import com.puppycrawl.tools.checkstyle.api.AbstractCheck;
 import com.puppycrawl.tools.checkstyle.api.DetailAST;
-import com.puppycrawl.tools.checkstyle.api.FileContents;
 import com.puppycrawl.tools.checkstyle.api.SeverityLevel;
-import com.puppycrawl.tools.checkstyle.api.TextBlock;
 import com.puppycrawl.tools.checkstyle.api.TokenTypes;
 import com.puppycrawl.tools.checkstyle.utils.CommonUtil;
+import com.puppycrawl.tools.checkstyle.utils.JavadocUtil;
 
 /**
  * <p>
@@ -176,16 +175,20 @@ public class WriteTagCheck
     }
 
     @Override
+    public boolean isCommentNodesRequired() {
+        return true;
+    }
+
+    @Override
     public void visitToken(DetailAST ast) {
-        final FileContents contents = getFileContents();
         final int lineNo = ast.getLineNo();
-        final TextBlock cmt =
-            contents.getJavadocBefore(lineNo);
+        final DetailAST cmt =
+            JavadocUtil.findJavadocFrom(ast);
         if (cmt == null) {
             log(lineNo, MSG_MISSING_TAG, tag);
         }
         else {
-            checkTag(lineNo, cmt.getText());
+            checkTag(lineNo, cmt.getFirstChild().getText().split("\\r\\n|\\n|\\r"));
         }
     }
 

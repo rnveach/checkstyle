@@ -38,14 +38,13 @@ import java.util.regex.Pattern;
 import com.puppycrawl.tools.checkstyle.FileStatefulCheck;
 import com.puppycrawl.tools.checkstyle.api.AbstractCheck;
 import com.puppycrawl.tools.checkstyle.api.DetailAST;
-import com.puppycrawl.tools.checkstyle.api.FileContents;
 import com.puppycrawl.tools.checkstyle.api.FullIdent;
 import com.puppycrawl.tools.checkstyle.api.Scope;
-import com.puppycrawl.tools.checkstyle.api.TextBlock;
 import com.puppycrawl.tools.checkstyle.api.TokenTypes;
 import com.puppycrawl.tools.checkstyle.utils.AnnotationUtil;
 import com.puppycrawl.tools.checkstyle.utils.CheckUtil;
 import com.puppycrawl.tools.checkstyle.utils.CommonUtil;
+import com.puppycrawl.tools.checkstyle.utils.JavadocUtil;
 import com.puppycrawl.tools.checkstyle.utils.ScopeUtil;
 
 /**
@@ -247,7 +246,7 @@ public class JavadocMethodCheck extends AbstractCheck {
 
     /** Compiled regexp to look for a continuation of the comment. */
     private static final Pattern MATCH_JAVADOC_MULTILINE_CONT =
-            CommonUtil.createPattern("(\\*\\/|@|[^\\s\\*])");
+            CommonUtil.createPattern("(@|[^\\s\\*])");
 
     /** Multiline finished at end of comment. */
     private static final String END_JAVADOC = "*/";
@@ -379,6 +378,11 @@ public class JavadocMethodCheck extends AbstractCheck {
     }
 
     @Override
+    public boolean isCommentNodesRequired() {
+        return true;
+    }
+
+    @Override
     public void beginTree(DetailAST rootAST) {
         currentClassName = "";
         currentTypeParams.clear();
@@ -432,8 +436,7 @@ public class JavadocMethodCheck extends AbstractCheck {
     private void processAST(DetailAST ast) {
         final Scope theScope = calculateScope(ast);
         if (shouldCheck(ast, theScope)) {
-            final FileContents contents = getFileContents();
-            final TextBlock textBlock = contents.getJavadocBefore(ast.getLineNo());
+            final DetailAST textBlock = JavadocUtil.findJavadocFrom(ast);
 
             if (textBlock != null) {
                 checkComment(ast, textBlock);
@@ -464,7 +467,7 @@ public class JavadocMethodCheck extends AbstractCheck {
      * @param ast the token for the method
      * @param comment the Javadoc comment
      */
-    private void checkComment(DetailAST ast, TextBlock comment) {
+    private void checkComment(DetailAST ast, DetailAST comment) {
         final List<JavadocTag> tags = getMethodTags(comment);
 
         if (!hasShortCircuitTag(ast, tags)) {
@@ -548,11 +551,11 @@ public class JavadocMethodCheck extends AbstractCheck {
      * @param comment the Javadoc comment
      * @return the tags found
      */
-    private static List<JavadocTag> getMethodTags(TextBlock comment) {
-        final String[] lines = comment.getText();
+    private static List<JavadocTag> getMethodTags(DetailAST comment) {
+        final String[] lines = comment.getFirstChild().getText().split("\\r\\n|\\n|\\r");
         final List<JavadocTag> tags = new ArrayList<>();
-        int currentLine = comment.getStartLineNo() - 1;
-        final int startColumnNumber = comment.getStartColNo();
+        int currentLine = comment.getLineNo() - 1;
+        final int startColumnNumber = comment.getColumnNo() + 2;
 
         for (int i = 0; i < lines.length; i++) {
             currentLine++;
@@ -621,15 +624,25 @@ public class JavadocMethodCheck extends AbstractCheck {
     private static List<JavadocTag> getMultilineNoArgTags(final Matcher noargMultilineStart,
             final String[] lines, final int lineIndex, final int tagLine) {
         int remIndex = lineIndex;
-        Matcher multilineCont;
+        String lFin;
 
         do {
             remIndex++;
-            multilineCont = MATCH_JAVADOC_MULTILINE_CONT.matcher(lines[remIndex]);
-        } while (!multilineCont.find());
+
+            if (remIndex >= lines.length) {
+                lFin = END_JAVADOC;
+                break;
+            }
+
+            final Matcher multilineCont = MATCH_JAVADOC_MULTILINE_CONT.matcher(lines[remIndex]);
+
+            if (multilineCont.find()) {
+                lFin = multilineCont.group(1);
+                break;
+            }
+        } while (true);
 
         final List<JavadocTag> tags = new ArrayList<>();
-        final String lFin = multilineCont.group(1);
         if (!lFin.equals(NEXT_TAG)
             && !lFin.equals(END_JAVADOC)) {
             final String param1 = noargMultilineStart.group(1);

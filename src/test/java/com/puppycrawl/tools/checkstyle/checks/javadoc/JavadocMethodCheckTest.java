@@ -581,4 +581,14 @@ public class JavadocMethodCheckTest extends AbstractModuleTestSupport {
                 CommonUtil.EMPTY_STRING_ARRAY);
     }
 
+    @Test
+    public void testComments() throws Exception {
+        final DefaultConfiguration config = createModuleConfig(JavadocMethodCheck.class);
+        final String[] expected = {
+            "9: " + getCheckMessage(MSG_RETURN_EXPECTED),
+            "15: " + getCheckMessage(MSG_RETURN_EXPECTED),
+        };
+        verify(config, getPath("InputJavadocMethodComments.java"), expected);
+    }
+
 }

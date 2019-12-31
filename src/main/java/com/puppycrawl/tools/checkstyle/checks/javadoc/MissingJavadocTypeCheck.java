@@ -26,12 +26,11 @@ import java.util.List;
 import com.puppycrawl.tools.checkstyle.StatelessCheck;
 import com.puppycrawl.tools.checkstyle.api.AbstractCheck;
 import com.puppycrawl.tools.checkstyle.api.DetailAST;
-import com.puppycrawl.tools.checkstyle.api.FileContents;
 import com.puppycrawl.tools.checkstyle.api.Scope;
-import com.puppycrawl.tools.checkstyle.api.TextBlock;
 import com.puppycrawl.tools.checkstyle.api.TokenTypes;
 import com.puppycrawl.tools.checkstyle.utils.AnnotationUtil;
 import com.puppycrawl.tools.checkstyle.utils.CommonUtil;
+import com.puppycrawl.tools.checkstyle.utils.JavadocUtil;
 import com.puppycrawl.tools.checkstyle.utils.ScopeUtil;
 
 /**
@@ -205,13 +204,16 @@ public class MissingJavadocTypeCheck extends AbstractCheck {
     }
 
     @Override
+    public boolean isCommentNodesRequired() {
+        return true;
+    }
+
+    @Override
     public void visitToken(DetailAST ast) {
         if (shouldCheck(ast)) {
-            final FileContents contents = getFileContents();
-            final int lineNo = ast.getLineNo();
-            final TextBlock textBlock = contents.getJavadocBefore(lineNo);
+            final DetailAST textBlock = JavadocUtil.findJavadocFrom(ast);
             if (textBlock == null) {
-                log(lineNo, MSG_JAVADOC_MISSING);
+                log(ast.getLineNo(), MSG_JAVADOC_MISSING);
             }
         }
     }

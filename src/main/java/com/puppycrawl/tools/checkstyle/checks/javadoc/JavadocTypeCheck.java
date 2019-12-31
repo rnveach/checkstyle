@@ -320,11 +320,15 @@ public class JavadocTypeCheck
     }
 
     @Override
+    public boolean isCommentNodesRequired() {
+        return true;
+    }
+
+    @Override
     public void visitToken(DetailAST ast) {
         if (shouldCheck(ast)) {
-            final FileContents contents = getFileContents();
             final int lineNo = ast.getLineNo();
-            final TextBlock textBlock = contents.getJavadocBefore(lineNo);
+            final DetailAST textBlock = JavadocUtil.findJavadocFrom(ast);
             if (textBlock != null) {
                 final List<JavadocTag> tags = getJavadocTags(textBlock);
                 if (ScopeUtil.isOuterMostType(ast)) {
@@ -382,7 +386,7 @@ public class JavadocTypeCheck
      * @param textBlock the Javadoc comment to process.
      * @return all standalone tags from the given javadoc.
      */
-    private List<JavadocTag> getJavadocTags(TextBlock textBlock) {
+    private List<JavadocTag> getJavadocTags(DetailAST textBlock) {
         final JavadocTags tags = JavadocUtil.getJavadocTags(textBlock,
             JavadocUtil.JavadocTagType.BLOCK);
         if (!allowUnknownTags) {

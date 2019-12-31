@@ -257,7 +257,7 @@ public class DesignForExtensionCheck extends AbstractCheck {
 
     @Override
     public void visitToken(DetailAST ast) {
-        if (!hasJavadocComment(ast)
+        if (JavadocUtil.findJavadocFrom(ast) == null
                 && canBeOverridden(ast)
                 && (isNativeMethod(ast)
                     || !hasEmptyImplementation(ast))
@@ -269,59 +269,6 @@ public class DesignForExtensionCheck extends AbstractCheck {
                 log(ast, MSG_KEY, className, methodName);
             }
         }
-    }
-
-    /**
-     * Checks whether a method has a javadoc comment.
-     * @param methodDef method definition token.
-     * @return true if a method has a javadoc comment.
-     */
-    private static boolean hasJavadocComment(DetailAST methodDef) {
-        return hasJavadocCommentOnToken(methodDef, TokenTypes.MODIFIERS)
-                || hasJavadocCommentOnToken(methodDef, TokenTypes.TYPE);
-    }
-
-    /**
-     * Checks whether a token has a javadoc comment.
-     *
-     * @param methodDef method definition token.
-     * @param tokenType token type.
-     * @return true if a token has a javadoc comment.
-     */
-    private static boolean hasJavadocCommentOnToken(DetailAST methodDef, int tokenType) {
-        final DetailAST token = methodDef.findFirstToken(tokenType);
-        return branchContainsJavadocComment(token);
-    }
-
-    /**
-     * Checks whether a javadoc comment exists under the token.
-     *
-     * @param token tree token.
-     * @return true if a javadoc comment exists under the token.
-     */
-    private static boolean branchContainsJavadocComment(DetailAST token) {
-        boolean result = false;
-        DetailAST curNode = token;
-        while (curNode != null) {
-            if (curNode.getType() == TokenTypes.BLOCK_COMMENT_BEGIN
-                    && JavadocUtil.isJavadocComment(curNode)) {
-                result = true;
-                break;
-            }
-
-            DetailAST toVisit = curNode.getFirstChild();
-            while (toVisit == null) {
-                if (curNode == token) {
-                    break;
-                }
-
-                toVisit = curNode.getNextSibling();
-                curNode = curNode.getParent();
-            }
-            curNode = toVisit;
-        }
-
-        return result;
     }
 
     /**
