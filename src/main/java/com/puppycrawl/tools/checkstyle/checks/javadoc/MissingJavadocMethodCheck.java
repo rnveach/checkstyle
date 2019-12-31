@@ -269,7 +269,8 @@ public class MissingJavadocMethodCheck extends AbstractCheck {
         final DetailAST lcurly = methodDef.getLastChild();
         final DetailAST rcurly = lcurly.getLastChild();
 
-        if (lcurly.getFirstChild() == rcurly) {
+        if (rcurly == null || lcurly.getFirstChild() == rcurly
+                || lcurly.getLineNo() == rcurly.getLineNo()) {
             numberOfLines = 1;
         }
         else {

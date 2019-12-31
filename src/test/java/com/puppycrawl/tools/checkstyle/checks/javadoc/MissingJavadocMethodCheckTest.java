@@ -449,6 +449,8 @@ public class MissingJavadocMethodCheckTest extends AbstractModuleTestSupport {
             "6:5: " + getCheckMessage(MSG_JAVADOC_MISSING),
             "9:5: " + getCheckMessage(MSG_JAVADOC_MISSING),
             "13:5: " + getCheckMessage(MSG_JAVADOC_MISSING),
+            "15:5: " + getCheckMessage(MSG_JAVADOC_MISSING),
+            "18:5: " + getCheckMessage(MSG_JAVADOC_MISSING),
         };
         verify(checkConfig, getPath("InputMissingJavadocMethodJavadocInMethod.java"), expected);
     }
@@ -460,6 +462,7 @@ public class MissingJavadocMethodCheckTest extends AbstractModuleTestSupport {
         checkConfig.addAttribute("scope", "private");
         final String[] expected = {
             "5:5: " + getCheckMessage(MSG_JAVADOC_MISSING),
+            "6:5: " + getCheckMessage(MSG_JAVADOC_MISSING),
         };
         verify(checkConfig, getPath("InputMissingJavadocMethodConstructor.java"), expected);
     }
