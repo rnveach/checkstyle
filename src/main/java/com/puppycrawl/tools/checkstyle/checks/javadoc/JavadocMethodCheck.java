@@ -757,12 +757,11 @@ public class JavadocMethodCheck extends AbstractCheck {
         while (curNode != null) {
             DetailAST toVisit = curNode.getFirstChild();
             while (curNode != null && toVisit == null) {
-                toVisit = curNode.getNextSibling();
-                curNode = curNode.getParent();
                 if (curNode == root) {
-                    toVisit = null;
                     break;
                 }
+                toVisit = curNode.getNextSibling();
+                curNode = curNode.getParent();
             }
             curNode = toVisit;
             if (curNode != null && curNode.getType() == astType) {
