@@ -25,21 +25,12 @@ import static com.puppycrawl.tools.checkstyle.checks.javadoc.JavadocMethodCheck.
 import static com.puppycrawl.tools.checkstyle.checks.javadoc.JavadocMethodCheck.MSG_RETURN_EXPECTED;
 import static com.puppycrawl.tools.checkstyle.checks.javadoc.JavadocMethodCheck.MSG_UNUSED_TAG;
 import static com.puppycrawl.tools.checkstyle.checks.javadoc.JavadocMethodCheck.MSG_UNUSED_TAG_GENERAL;
-import static org.junit.jupiter.api.Assertions.assertArrayEquals;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.junit.jupiter.api.Assertions.fail;
 
-import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-
-import org.junit.jupiter.api.Test;
+import org.junit.Test;
 
 import com.puppycrawl.tools.checkstyle.AbstractModuleTestSupport;
 import com.puppycrawl.tools.checkstyle.DefaultConfiguration;
 import com.puppycrawl.tools.checkstyle.api.Scope;
-import com.puppycrawl.tools.checkstyle.api.TokenTypes;
 import com.puppycrawl.tools.checkstyle.utils.CommonUtil;
 
 public class JavadocMethodCheckTest extends AbstractModuleTestSupport {
@@ -47,23 +38,6 @@ public class JavadocMethodCheckTest extends AbstractModuleTestSupport {
     @Override
     protected String getPackageLocation() {
         return "com/puppycrawl/tools/checkstyle/checks/javadoc/javadocmethod";
-    }
-
-    @Test
-    public void testGetAcceptableTokens() {
-        final JavadocMethodCheck javadocMethodCheck = new JavadocMethodCheck();
-
-        final int[] actual = javadocMethodCheck.getAcceptableTokens();
-        final int[] expected = {
-            TokenTypes.CLASS_DEF,
-            TokenTypes.ENUM_DEF,
-            TokenTypes.INTERFACE_DEF,
-            TokenTypes.METHOD_DEF,
-            TokenTypes.CTOR_DEF,
-            TokenTypes.ANNOTATION_FIELD_DEF,
-        };
-
-        assertArrayEquals(expected, actual, "Default acceptable tokens are invalid");
     }
 
     @Test
@@ -471,107 +445,6 @@ public class JavadocMethodCheckTest extends AbstractModuleTestSupport {
             "10:50: " + getCheckMessage(MSG_EXPECTED_TAG, "@param", "p1"),
         };
         verify(checkConfig, getPath("InputJavadocMethodConstructor.java"), expected);
-    }
-
-    @Test
-    public void testGetRequiredTokens() {
-        final int[] expected = {
-            TokenTypes.CLASS_DEF,
-            TokenTypes.INTERFACE_DEF,
-            TokenTypes.ENUM_DEF,
-        };
-        final JavadocMethodCheck check = new JavadocMethodCheck();
-        final int[] actual = check.getRequiredTokens();
-        assertArrayEquals(expected, actual, "Required tokens differ from expected");
-    }
-
-    @Test
-    public void testTokenToString() throws Exception {
-        final Class<?> tokenType = Class.forName("com.puppycrawl.tools.checkstyle.checks.javadoc."
-                + "JavadocMethodCheck$Token");
-        final Constructor<?> tokenConstructor = tokenType.getDeclaredConstructor(String.class,
-                int.class, int.class);
-        final Object token = tokenConstructor.newInstance("blablabla", 1, 1);
-        final Method toString = token.getClass().getDeclaredMethod("toString");
-        final String result = (String) toString.invoke(token);
-        assertEquals("Token[blablabla(1x1)]", result, "Invalid toString result");
-    }
-
-    @Test
-    public void testClassRegularClass() throws Exception {
-        final Class<?> tokenType = Class.forName("com.puppycrawl.tools.checkstyle.checks.javadoc."
-                + "JavadocMethodCheck$Token");
-
-        final Class<?> regularClassType = Class
-                .forName("com.puppycrawl.tools.checkstyle.checks.javadoc."
-                        + "JavadocMethodCheck$RegularClass");
-        final Constructor<?> regularClassConstructor = regularClassType.getDeclaredConstructor(
-                tokenType, String.class, JavadocMethodCheck.class);
-        regularClassConstructor.setAccessible(true);
-
-        try {
-            regularClassConstructor.newInstance(null, "", new JavadocMethodCheck());
-            fail("Exception is expected");
-        }
-        catch (InvocationTargetException ex) {
-            assertTrue(ex.getCause() instanceof IllegalArgumentException,
-                    "Invalid exception class, expected: IllegalArgumentException.class");
-            assertEquals("ClassInfo's name should be non-null", ex.getCause().getMessage(),
-                    "Invalid exception message");
-        }
-
-        final Constructor<?> tokenConstructor = tokenType.getDeclaredConstructor(String.class,
-                int.class, int.class);
-        final Object token = tokenConstructor.newInstance("blablabla", 1, 1);
-
-        final JavadocMethodCheck methodCheck = new JavadocMethodCheck();
-        final Object regularClass = regularClassConstructor.newInstance(token, "sur",
-                methodCheck);
-
-        final Method toString = regularClass.getClass().getDeclaredMethod("toString");
-        toString.setAccessible(true);
-        final String result = (String) toString.invoke(regularClass);
-        final String expected = "RegularClass[name=Token[blablabla(1x1)], in class='sur', check="
-                + methodCheck.hashCode() + "]";
-
-        assertEquals(expected, result, "Invalid toString result");
-    }
-
-    @Test
-    public void testClassAliasToString() throws Exception {
-        final Class<?> tokenType = Class.forName("com.puppycrawl.tools.checkstyle.checks.javadoc."
-                + "JavadocMethodCheck$Token");
-
-        final Class<?> regularClassType = Class
-                .forName("com.puppycrawl.tools.checkstyle.checks.javadoc."
-                        + "JavadocMethodCheck$RegularClass");
-        final Constructor<?> regularClassConstructor = regularClassType.getDeclaredConstructor(
-                tokenType, String.class, JavadocMethodCheck.class);
-        regularClassConstructor.setAccessible(true);
-
-        final Constructor<?> tokenConstructor = tokenType.getDeclaredConstructor(String.class,
-                int.class, int.class);
-        final Object token = tokenConstructor.newInstance("blablabla", 1, 1);
-
-        final Object regularClass = regularClassConstructor.newInstance(token, "sur",
-                new JavadocMethodCheck());
-
-        final Class<?> classAliasType = Class.forName(
-                "com.puppycrawl.tools.checkstyle.checks.javadoc.JavadocMethodCheck$ClassAlias");
-        final Class<?> abstractTypeInfoType = Class
-                .forName("com.puppycrawl.tools.checkstyle.checks.javadoc."
-                        + "JavadocMethodCheck$ClassInfo");
-
-        final Constructor<?> classAliasConstructor = classAliasType
-                .getDeclaredConstructor(tokenType, abstractTypeInfoType);
-        classAliasConstructor.setAccessible(true);
-
-        final Object classAlias = classAliasConstructor.newInstance(token, regularClass);
-        final Method toString = classAlias.getClass().getDeclaredMethod("toString");
-        toString.setAccessible(true);
-        final String result = (String) toString.invoke(classAlias);
-        assertEquals("ClassAlias[alias Token[blablabla(1x1)] for Token[blablabla(1x1)]]", result,
-                "Invalid toString result");
     }
 
     @Test
