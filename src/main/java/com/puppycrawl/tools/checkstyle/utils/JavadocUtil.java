@@ -22,6 +22,7 @@ package com.puppycrawl.tools.checkstyle.utils;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.regex.Pattern;
 
 import com.puppycrawl.tools.checkstyle.api.DetailAST;
@@ -82,6 +83,101 @@ public final class JavadocUtil {
 
     /** Prevent instantiation. */
     private JavadocUtil() {
+    }
+
+    /**
+     * Finds a javadoc comment for the specified token.
+     * @param token tree token.
+     * @return the javadoc comment if found, otherwise {@code null}.
+     */
+    public static DetailAST findJavadocFrom(DetailAST token) {
+        DetailAST result = null;
+
+        if (token.getType() == TokenTypes.PACKAGE_DEF) {
+            result = token.getPreviousSibling();
+
+            while (result != null && result.getType() != TokenTypes.BLOCK_COMMENT_BEGIN && !isCorrectJavadocPosition(result)) {
+                result = result.getPreviousSibling();
+            }
+
+            if (result == null) {
+                final DetailAST annotationComment = Optional.of(token.findFirstToken(TokenTypes.ANNOTATIONS))
+                        .map(DetailAST::getFirstChild).map(DetailAST::getFirstChild).get();
+
+                if (annotations)
+            }
+        }
+        DetailAST result = findJavadocOnToken(token, TokenTypes.MODIFIERS);
+
+        if (result == null) {
+            result = findJavadocOnToken(token, TokenTypes.TYPE);
+
+            if (result == null) {
+                result = findJavadocOnToken(token, TokenTypes.ANNOTATIONS);
+
+                if (result == null) {
+                    result = token.findFirstToken(TokenTypes.BLOCK_COMMENT_BEGIN);
+
+                    if (result != null && !isCorrectJavadocPosition(result)) {
+                        result = null;
+                    }
+
+                    if (result == null) {
+                        result = token.getPreviousSibling();
+
+                        if (result != null && (result.getType() != TokenTypes.BLOCK_COMMENT_BEGIN
+                                || !isCorrectJavadocPosition(result))) {
+                            result = null;
+                        }
+                    }
+                }
+            }
+        }
+
+        return result;
+    }
+
+    /**
+     * Finds a javadoc comment.
+     *
+     * @param token tree token.
+     * @param tokenType token type.
+     * @return the javadoc comment if found, otherwise {@code null}.
+     */
+    private static DetailAST findJavadocOnToken(DetailAST token, int tokenType) {
+        final DetailAST child = token.findFirstToken(tokenType);
+        return findJavadocCommentIn(child);
+    }
+
+    /**
+     * Finds a javadoc comment under the token.
+     *
+     * @param token tree token.
+     * @return the javadoc comment if found, otherwise {@code null}.
+     */
+    private static DetailAST findJavadocCommentIn(DetailAST token) {
+        DetailAST result = null;
+        DetailAST curNode = token;
+        while (curNode != null) {
+            if (curNode.getType() == TokenTypes.BLOCK_COMMENT_BEGIN
+                    && JavadocUtil.isJavadocComment(curNode)) {
+                result = curNode;
+                break;
+            }
+
+            DetailAST toVisit = curNode.getFirstChild();
+            while (toVisit == null) {
+                if (curNode == token) {
+                    break;
+                }
+
+                toVisit = curNode.getNextSibling();
+                curNode = curNode.getParent();
+            }
+            curNode = toVisit;
+        }
+
+        return result;
     }
 
     /**
