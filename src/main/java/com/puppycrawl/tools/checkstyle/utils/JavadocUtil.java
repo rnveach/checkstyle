@@ -96,10 +96,23 @@ public final class JavadocUtil {
             result = findJavadocOnToken(token, TokenTypes.TYPE);
 
             if (result == null) {
-                result = token.findFirstToken(TokenTypes.BLOCK_COMMENT_BEGIN);
+                result = findJavadocOnToken(token, TokenTypes.ANNOTATIONS);
 
-                if (result != null && !isCorrectJavadocPosition(result)) {
-                    result = null;
+                if (result == null) {
+                    result = token.findFirstToken(TokenTypes.BLOCK_COMMENT_BEGIN);
+
+                    if (result != null && !isCorrectJavadocPosition(result)) {
+                        result = null;
+                    }
+
+                    if (result == null) {
+                        result = token.getPreviousSibling();
+
+                        if (result != null && (result.getType() != TokenTypes.BLOCK_COMMENT_BEGIN
+                                || !isCorrectJavadocPosition(result))) {
+                            result = null;
+                        }
+                    }
                 }
             }
         }
