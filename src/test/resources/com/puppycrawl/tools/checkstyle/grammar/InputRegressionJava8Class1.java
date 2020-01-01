@@ -25,6 +25,8 @@ public class InputRegressionJava8Class1 {
     public void m3() throws NullPointerException, @Nullable ArrayIndexOutOfBoundsException {}
     public void m4(InputRegressionJava8Class1 this) {}
     public void m5(@Nullable InputRegressionJava8Class1 this) {}
+    public void m6(@Nullable String @Nullable ... vararg) {}
+    public String m7() @Nullable [] @Nullable [] { return null; }
 
     {
         List<String> vlist = new ArrayList<String>();
@@ -44,6 +46,9 @@ public class InputRegressionJava8Class1 {
         Map.@Nullable Entry e;
         String str = (@Nullable String) "";
         (new Inner3()).<@Nullable String>m();
+        Object arr = new @Nullable String @Nullable [3];
+        for (String a @Nullable [] : m7()) {}
+        Object arr2 = new @Nullable int[3];
 
         // method reference
         IntBinaryOperator ibo = Math::max;
