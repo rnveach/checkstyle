@@ -150,6 +150,9 @@ public abstract class AbstractItModuleTestSupport extends AbstractPathTestSuppor
         else if (ROOT_MODULE_NAME.equals(moduleConfig.getName())) {
             dc = moduleConfig;
         }
+        else if ("Checker".equals(moduleConfig.getName())) {
+            dc = moduleConfig;
+        }
         else {
             dc = createRootConfig(moduleConfig);
         }

@@ -21,6 +21,7 @@ package com.google.checkstyle.test.base;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
 
@@ -149,7 +150,7 @@ public abstract class AbstractGoogleModuleTestSupport extends AbstractItModuleTe
                 result.add(currentConfig);
             }
         }
-        return result;
+        return Arrays.asList(CONFIGURATION);
     }
 
 }
