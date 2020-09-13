@@ -33,7 +33,7 @@ public class LambdaHandler extends AbstractExpressionHandler {
      * A true value depicts lambda is correctly aligned without giving any errors.
      * This is updated to false where there is any Indentation error log.
      */
-    private boolean isLambdaCorrectlyIndented = true;
+    private Boolean isLambdaCorrectlyIndented = null;
 
     /**
      * Construct an instance of this handler with the given indentation check,
@@ -97,6 +97,9 @@ public class LambdaHandler extends AbstractExpressionHandler {
                 && getLineStart(firstChild) == expandedTabsColumnNo(firstChild)) {
             final IndentLevel level = getIndent();
             if (isNonAcceptableIndent(firstChild, level)) {
+                if (isLambdaCorrectlyIndented != null)
+                    throw new NullPointerException();
+
                 isLambdaCorrectlyIndented = false;
                 logError(firstChild, "arguments", expandedTabsColumnNo(firstChild), level);
             }
@@ -107,10 +110,16 @@ public class LambdaHandler extends AbstractExpressionHandler {
             final IndentLevel level =
                 new IndentLevel(getIndent(), getIndentCheck().getLineWrappingIndentation());
             if (isNonAcceptableIndent(getMainAst(), level)) {
+                if (isLambdaCorrectlyIndented != null)
+                    throw new NullPointerException();
+
                 isLambdaCorrectlyIndented = false;
                 logError(getMainAst(), "", expandedTabsColumnNo(getMainAst()), level);
             }
         }
+
+        if (isLambdaCorrectlyIndented == null)
+            isLambdaCorrectlyIndented = true;
     }
 
     private boolean isNonAcceptableIndent(DetailAST firstChild, IndentLevel level) {
