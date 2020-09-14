@@ -115,11 +115,15 @@ public class XMLLogger
 
     @Override
     public void fileStarted(AuditEvent event) {
+        System.out.println("Start file: " + event.getFileName());
+        System.out.flush();
         fileMessages.put(event.getFileName(), new FileMessages());
     }
 
     @Override
     public void fileFinished(AuditEvent event) {
+        System.out.println("Finish file: " + event.getFileName());
+        System.out.flush();
         final String fileName = event.getFileName();
         final FileMessages messages = fileMessages.get(fileName);
 
