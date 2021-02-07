@@ -19,6 +19,8 @@
 
 package com.puppycrawl.tools.checkstyle;
 
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+
 import java.io.File;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
@@ -26,6 +28,8 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+
+import org.junit.jupiter.api.function.Executable;
 
 public abstract class AbstractPathTestSupport {
 
@@ -35,6 +39,21 @@ public abstract class AbstractPathTestSupport {
     private static final String CR_FOLLOWED_BY_LF_REGEX = "(?x)\\\\r(?=\\\\n)|\\r(?=\\n)";
 
     private static final String EOL = System.lineSeparator();
+
+    /**
+     * The stack size used in {@link #executeWithLimitedStackSizeAndTimeout(Executable)}.
+     * This value should be as small as possible. Some JVM requires this value to be
+     * at least 144k.
+     *
+     * @see <a href="https://www.baeldung.com/jvm-configure-stack-sizes">
+     *      Configuring Stack Sizes in the JVM</a>
+     */
+    private static final int MINIMAL_STACK_SIZE = 147456;
+
+    /**
+     * Timeout for {@link #executeWithLimitedStackSizeAndTimeout} method.
+     */
+    private static final int EXECUTION_TIMEOUT = 20_000;
 
     /**
      * Returns the exact location for the package where the file is present.
@@ -95,6 +114,21 @@ public abstract class AbstractPathTestSupport {
 
     protected static String toLfLineEnding(String text) {
         return text.replaceAll(CR_FOLLOWED_BY_LF_REGEX, "");
+    }
+
+    /**
+     * Executes a test method in a thread with limited stack size.
+     *
+     * @param executable the method to execute
+     * @see <a href="https://docs.oracle.com/javase/specs/jvms/se15/html/jvms-2.html#jvms-2.5.2">
+     *      JVMS &sect;2.5.2</a>
+     */
+    public static void executeWithLimitedStackSizeAndTimeout(Executable executable) {
+        final Thread thread = new Thread(null, () -> {
+            assertDoesNotThrow(executable, "No exception expected");
+        }, "LimitedStackThread", MINIMAL_STACK_SIZE);
+        assertDoesNotThrow(() -> thread.join(EXECUTION_TIMEOUT),
+            "The worker thread should finish in the time alloted time");
     }
 
 }

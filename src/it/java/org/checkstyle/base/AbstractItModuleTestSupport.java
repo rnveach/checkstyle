@@ -226,9 +226,27 @@ public abstract class AbstractItModuleTestSupport extends AbstractPathTestSuppor
      * @param messageFileName message file name.
      * @param expected an array of expected messages.
      * @param warnsExpected an array of expected warning line numbers.
-     * @throws Exception if exception occurs during verification process.
      */
     protected final void verify(Checker checker,
+            File[] processedFiles,
+            String messageFileName,
+            String[] expected,
+            Integer... warnsExpected) {
+        executeWithLimitedStackSizeAndTimeout(
+                () -> verifyEx(checker, processedFiles, messageFileName, expected, warnsExpected));
+    }
+
+    /**
+     * Performs verification of files. Uses provided {@link Checker} instance.
+     *
+     * @param checker {@link Checker} instance.
+     * @param processedFiles files to process.
+     * @param messageFileName message file name.
+     * @param expected an array of expected messages.
+     * @param warnsExpected an array of expected warning line numbers.
+     * @throws Exception if exception occurs during verification process.
+     */
+    protected final void verifyEx(Checker checker,
             File[] processedFiles,
             String messageFileName,
             String[] expected,
