@@ -25,6 +25,7 @@ import java.io.File;
 import java.io.Writer;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
+import java.util.Arrays;
 
 import org.junit.Assert;
 import org.junit.Rule;
@@ -173,7 +174,7 @@ public class XpathSuppressionTest extends AbstractModuleTestSupport {
                 .split(LINE_SEPARATOR);
 
         // System.out.println("---------");
-        System.out.println("Node: " + node.toString());
+        // System.out.println("Node: " + node.toString());
         // System.out.println("Line: " + line);
         // System.out.println("Column: " + column);
 
@@ -210,7 +211,7 @@ public class XpathSuppressionTest extends AbstractModuleTestSupport {
 
         Assert.assertTrue("one of the xpath suppressions must work for '" + file.getCanonicalPath()
                 + "' at line " + line + ", column " + column + " for type "
-                + TokenUtil.getTokenName(node.getType()), atleastOneWorks);
+                + TokenUtil.getTokenName(node.getType()) + "\n" + Arrays.toString(xpathQueries), atleastOneWorks);
     }
 
     private String createSuppressionsXpathConfigFile(String xpathQuery) throws Exception {
@@ -227,7 +228,7 @@ public class XpathSuppressionTest extends AbstractModuleTestSupport {
             bw.write("   <suppress-xpath\n");
             bw.write("       checks=\".\"\n");
             bw.write("       query=\"");
-            bw.write(xpathQuery);
+            bw.write(xpathQuery.replace("\\", "\\\\"));
             bw.write("\"/>\n");
             bw.write("</suppressions>");
         }
