@@ -261,8 +261,9 @@ public abstract class AbstractModuleTestSupport extends AbstractPathTestSupport 
      * @param checker {@link Checker} instance.
      * @param fileName file name to verify.
      * @param expected an array of expected messages.
+     * @throws Exception 
      */
-    protected void verify(Checker checker, String fileName, String... expected) {
+    protected void verify(Checker checker, String fileName, String... expected) throws Exception {
         verify(checker, fileName, fileName, expected);
     }
 
@@ -277,11 +278,12 @@ public abstract class AbstractModuleTestSupport extends AbstractPathTestSupport 
      * @param processedFilename file name to verify.
      * @param messageFileName message file name.
      * @param expected an array of expected messages.
+     * @throws Exception 
      */
     protected final void verify(Checker checker,
                           String processedFilename,
                           String messageFileName,
-                          String... expected) {
+                          String... expected) throws Exception {
         verify(checker,
                 new File[] {new File(processedFilename)},
                 messageFileName, expected);
@@ -295,11 +297,12 @@ public abstract class AbstractModuleTestSupport extends AbstractPathTestSupport 
      *  @param processedFiles list of files to verify.
      *  @param messageFileName message file name.
      *  @param expected an array of expected messages.
+     * @throws Exception 
      */
     protected void verify(Checker checker,
                           File[] processedFiles,
                           String messageFileName,
-                          String... expected) {
+                          String... expected) throws Exception {
         executeWithLimitedStackSizeAndTimeout(
                 () -> verifyEx(checker, processedFiles, messageFileName, expected));
     }
@@ -310,10 +313,11 @@ public abstract class AbstractModuleTestSupport extends AbstractPathTestSupport 
      * @param checker {@link Checker} instance
      * @param processedFiles files to process.
      * @param expectedViolations a map of expected violations per files.
+     * @throws Exception 
      */
     protected final void verify(Checker checker,
                           File[] processedFiles,
-                          Map<String, List<String>> expectedViolations) {
+                          Map<String, List<String>> expectedViolations) throws Exception {
         executeWithLimitedStackSizeAndTimeout(
                 () -> verifyEx(checker, processedFiles, expectedViolations));
     }
@@ -326,12 +330,13 @@ public abstract class AbstractModuleTestSupport extends AbstractPathTestSupport 
      *  @param processedFiles list of files to verify.
      *  @param messageFileName message file name.
      *  @param expected an array of expected messages.
+     * @throws Exception 
      *  @throws Exception if exception occurs during verification process.
      */
     protected void verifyEx(Checker checker,
                           File[] processedFiles,
                           String messageFileName,
-                          String... expected)
+                          String... expected) throws Exception
             {
         final Map<String, List<String>> expectedViolations = new HashMap<>();
         expectedViolations.put(messageFileName, Arrays.asList(expected));

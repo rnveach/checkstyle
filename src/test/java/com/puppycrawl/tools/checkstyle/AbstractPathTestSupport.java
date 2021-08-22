@@ -29,6 +29,7 @@ import java.nio.file.Paths;
 import java.util.concurrent.Callable;
 import java.util.concurrent.FutureTask;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -118,30 +119,34 @@ public abstract class AbstractPathTestSupport {
      * Executes a test method in a thread with limited stack size.
      *
      * @param executable the method to execute
+     * @throws Exception 
      * @see <a href="https://docs.oracle.com/javase/specs/jvms/se15/html/jvms-2.html#jvms-2.5.2">
      *      JVMS &sect;2.5.2</a>
      */
-    public static void executeWithLimitedStackSizeAndTimeout(final Executable executable) {
+    public static void executeWithLimitedStackSizeAndTimeout(final Executable executable) throws Exception {
+        final AtomicReference<Throwable> exception = new AtomicReference<>();
         Void result = null;
-        try {
-            // We return null here, which gives us a result to make an assertion
-            // about
-            result = getResultWithLimitedResources(() -> {
-                try {
-                    executable.execute();
-                }
-                catch (Throwable e) {
-                    throw new IllegalStateException(e);
-                }
-                return null;
-            });
-        }
-        catch (Exception e) {
-            throw new IllegalStateException(e);
-        }
+        // We return null here, which gives us a result to make an assertion about
+        result = getResultWithLimitedResources(() -> {
+            try {
+                executable.execute();
+            }
+            catch (Throwable e) {
+                exception.set(e);
+            }
+            return null;
+        });
         assertWithMessage("Verify should complete successfully.")
                 .that(result)
                 .isNull();
+
+        final Throwable ex = exception.get();
+        if (ex != null) {
+            if (ex instanceof Exception)
+                throw (Exception) ex;
+
+            throw new IllegalStateException(ex);
+        }
 
 //        final Thread thread = new Thread(null, () -> {
 //            assertDoesNotThrow(executable, "No exception expected");

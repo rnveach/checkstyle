@@ -226,12 +226,13 @@ public abstract class AbstractItModuleTestSupport extends AbstractPathTestSuppor
      * @param messageFileName message file name.
      * @param expected an array of expected messages.
      * @param warnsExpected an array of expected warning line numbers.
+     * @throws Exception 
      */
     protected final void verify(Checker checker,
             File[] processedFiles,
             String messageFileName,
             String[] expected,
-            Integer... warnsExpected) {
+            Integer... warnsExpected) throws Exception {
         executeWithLimitedStackSizeAndTimeout(
                 () -> verifyEx(checker, processedFiles, messageFileName, expected, warnsExpected));
     }
