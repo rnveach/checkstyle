@@ -23,9 +23,22 @@ import static com.puppycrawl.tools.checkstyle.checks.javadoc.WriteTagCheck.MSG_M
 import static com.puppycrawl.tools.checkstyle.checks.javadoc.WriteTagCheck.MSG_TAG_FORMAT;
 import static com.puppycrawl.tools.checkstyle.checks.javadoc.WriteTagCheck.MSG_WRITE_TAG;
 
+import java.io.ByteArrayInputStream;
+import java.io.File;
+import java.io.InputStreamReader;
+import java.io.LineNumberReader;
+import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import org.junit.jupiter.api.Test;
 
 import com.puppycrawl.tools.checkstyle.AbstractModuleTestSupport;
+import com.puppycrawl.tools.checkstyle.Checker;
 import com.puppycrawl.tools.checkstyle.DefaultConfiguration;
 import com.puppycrawl.tools.checkstyle.utils.CommonUtil;
 
@@ -225,6 +238,33 @@ public class WriteTagCheckTest extends AbstractModuleTestSupport {
         };
         verify(checkConfig,
             getNonCompilablePath("InputWriteTagRecordsAndCompactCtors.java"), expected);
+    }
+
+    @Override
+    protected void verifyEx(Checker checker,
+                          File[] processedFiles,
+                          String messageFileName,
+                          String... expected)
+            throws Exception {
+        getStream().flush();
+        final List<File> theFiles = new ArrayList<>();
+        Collections.addAll(theFiles, processedFiles);
+        final int errs = checker.process(theFiles);
+
+        // process each of the lines
+        try (ByteArrayInputStream localStream =
+                new ByteArrayInputStream(getStream().toByteArray());
+            LineNumberReader lnr = new LineNumberReader(
+                new InputStreamReader(localStream, StandardCharsets.UTF_8))) {
+            for (int i = 0; i < expected.length; i++) {
+                final String expectedResult = messageFileName + ":" + expected[i];
+                final String actual = lnr.readLine();
+                assertEquals(expectedResult, actual, "error message " + i);
+            }
+
+            assertTrue(expected.length >= errs, "unexpected output: " + lnr.readLine());
+        }
+        checker.destroy();
     }
 
 }
