@@ -19,13 +19,16 @@
 
 package com.puppycrawl.tools.checkstyle;
 
-import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+import static com.google.common.truth.Truth.assertWithMessage;
 
 import java.io.File;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.concurrent.Callable;
+import java.util.concurrent.FutureTask;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -49,11 +52,6 @@ public abstract class AbstractPathTestSupport {
      *      Configuring Stack Sizes in the JVM</a>
      */
     private static final int MINIMAL_STACK_SIZE = 147456;
-
-    /**
-     * Timeout for {@link #executeWithLimitedStackSizeAndTimeout} method.
-     */
-    private static final int EXECUTION_TIMEOUT = 20_000;
 
     /**
      * Returns the exact location for the package where the file is present.
@@ -123,12 +121,52 @@ public abstract class AbstractPathTestSupport {
      * @see <a href="https://docs.oracle.com/javase/specs/jvms/se15/html/jvms-2.html#jvms-2.5.2">
      *      JVMS &sect;2.5.2</a>
      */
-    public static void executeWithLimitedStackSizeAndTimeout(Executable executable) {
-        final Thread thread = new Thread(null, () -> {
-            assertDoesNotThrow(executable, "No exception expected");
-        }, "LimitedStackThread", MINIMAL_STACK_SIZE);
-        assertDoesNotThrow(() -> thread.join(EXECUTION_TIMEOUT),
-            "The worker thread should finish in the time alloted time");
+    public static void executeWithLimitedStackSizeAndTimeout(final Executable executable) {
+        Void result = null;
+        try {
+            // We return null here, which gives us a result to make an assertion
+            // about
+            result = getResultWithLimitedResources(() -> {
+                try {
+                    executable.execute();
+                }
+                catch (Throwable e) {
+                    throw new IllegalStateException(e);
+                }
+                return null;
+            });
+        }
+        catch (Exception e) {
+            throw new IllegalStateException(e);
+        }
+        assertWithMessage("Verify should complete successfully.")
+                .that(result)
+                .isNull();
+
+//        final Thread thread = new Thread(null, () -> {
+//            assertDoesNotThrow(executable, "No exception expected");
+//        }, "LimitedStackThread", MINIMAL_STACK_SIZE);
+//        assertDoesNotThrow(() -> thread.join(EXECUTION_TIMEOUT),
+//            "The worker thread should finish in the time alloted time");
+    }
+
+    /**
+     * Runs a given task with limited stack size and time duration, then
+     * returns the result. See AbstractModuleTestSupport#verifyWithLimitedResources
+     * for an example of how to use this method when task does not return a result, i.e.
+     * the given method's return type is {@code void}.
+     *
+     * @param callable the task to execute
+     * @param <V> return type of task - {@code Void} if task does not return result
+     * @return result
+     * @throws Exception if getting result fails
+     */
+    public static <V> V getResultWithLimitedResources(Callable<V> callable) throws Exception {
+        final FutureTask<V> futureTask = new FutureTask<>(callable);
+        final Thread thread = new Thread(null, futureTask,
+                "LimitedStackSizeThread", MINIMAL_STACK_SIZE);
+        thread.start();
+        return futureTask.get(10, TimeUnit.SECONDS);
     }
 
 }

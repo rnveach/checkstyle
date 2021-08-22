@@ -332,7 +332,7 @@ public abstract class AbstractModuleTestSupport extends AbstractPathTestSupport 
                           File[] processedFiles,
                           String messageFileName,
                           String... expected)
-            throws Exception {
+            {
         final Map<String, List<String>> expectedViolations = new HashMap<>();
         expectedViolations.put(messageFileName, Arrays.asList(expected));
         verify(checker, processedFiles, expectedViolations);
