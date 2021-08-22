@@ -503,8 +503,7 @@ public class CommonUtilTest extends AbstractPathTestSupport {
 
     @Test
     public void testGetUriByFilenameFindsAbsoluteResourceOnClasspath() throws Exception {
-        final String filename =
-            "/" + getPackageLocation() + "/InputCommonUtilTest_empty_checks.xml";
+        final String filename = getResourcePath("InputCommonUtilTest_empty_checks.xml");
         final URI uri = CommonUtil.getUriByFilename(filename);
 
         final Properties properties = System.getProperties();
@@ -517,8 +516,7 @@ public class CommonUtilTest extends AbstractPathTestSupport {
 
     @Test
     public void testGetUriByFilenameFindsRelativeResourceOnClasspath() throws Exception {
-        final String filename =
-            getPackageLocation() + "/InputCommonUtilTest_empty_checks.xml";
+        final String filename = getResourcePath("InputCommonUtilTest_empty_checks.xml");
         final URI uri = CommonUtil.getUriByFilename(filename);
 
         final Properties properties = System.getProperties();
@@ -538,8 +536,7 @@ public class CommonUtilTest extends AbstractPathTestSupport {
      */
     @Test
     public void testGetUriByFilenameFindsResourceRelativeToRootClasspath() throws Exception {
-        final String filename =
-                getPackageLocation() + "/InputCommonUtilTest_resource.txt";
+        final String filename = getResourcePath("InputCommonUtilTest_resource.txt");
         final URI uri = CommonUtil.getUriByFilename(filename);
         assertWithMessage("URI is null for: " + filename)
             .that(uri)
@@ -559,7 +556,7 @@ public class CommonUtilTest extends AbstractPathTestSupport {
     @Test
     public void testGetUriByFilenameClasspathPrefixLoadConfig() throws Exception {
         final String filename = CommonUtil.CLASSPATH_URL_PROTOCOL
-            + getPackageLocation() + "/InputCommonUtilTestWithChecks.xml";
+            + getResourcePath("InputCommonUtilTestWithChecks.xml");
         final URI uri = CommonUtil.getUriByFilename(filename);
 
         final Properties properties = System.getProperties();

@@ -623,8 +623,8 @@ public class TreeWalkerTest extends AbstractModuleTestSupport {
         final DefaultConfiguration checkerConfig = createRootConfig(treeWalkerConfig);
 
         // test is only valid when relative paths are given
-        final String filePath = "src/test/resources/" + getPackageLocation()
-                + "/InputTreeWalkerSuppressionXpathFilterAbsolute.java";
+        final String filePath = "src/test/resources"
+                + getResourcePath("InputTreeWalkerSuppressionXpathFilterAbsolute.java");
         final String[] expected = CommonUtil.EMPTY_STRING_ARRAY;
 
         verify(checkerConfig, filePath, expected);

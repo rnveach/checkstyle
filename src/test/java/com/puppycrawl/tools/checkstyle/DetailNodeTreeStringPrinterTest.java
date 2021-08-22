@@ -142,8 +142,9 @@ public class DetailNodeTreeStringPrinterTest extends AbstractTreeTestSupport {
     @Test
     public void testUnescapedJavaCodeWithGenericsInJavadoc() throws Exception {
         final File file = new File(
-                getPath("InputDetailNodeTreeStringPrinter"
-                        + "UnescapedJavaCodeWithGenericsInJavadoc.javadoc"));
+            getPath(
+                "InputDetailNodeTreeStringPrinterUnescapedJavaCodeWithGenericsInJavadoc.javadoc"
+            ));
         try {
             DetailNodeTreeStringPrinter.printFileAst(file);
             assertWithMessage("Exception is expected").fail();
