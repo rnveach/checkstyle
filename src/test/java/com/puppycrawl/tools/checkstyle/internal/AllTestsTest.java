@@ -295,7 +295,6 @@ public class AllTestsTest {
                 || inputName.contains("InputConfigurationLoaderIncludeFile")
                 || inputName.contains("InputConfigurationLoaderExternalEntitySubDir")
                 // questionable
-                || inputName.contains("InputOperatorWrapSeparatorAndInterfaces")
                 || inputName.contains("InputIllegalType")
                 ) {
             return true;
