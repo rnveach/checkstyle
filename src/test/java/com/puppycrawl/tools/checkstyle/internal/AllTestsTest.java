@@ -292,7 +292,6 @@ public class AllTestsTest {
                 || inputName.contains("InputImportOrderBug")
                 || inputName.contains("InputRedundantImportBug")
                 || inputName.contains("InputUnusedImports15Extensions")
-                || inputName.contains("InputAnnotationUseStyleCustomAnnotation")
                 || inputName.contains("InputIllegalTypeGregCal")
                 // xml helpers
                 || inputName.contains("InputConfigurationLoaderIncludeFile")
