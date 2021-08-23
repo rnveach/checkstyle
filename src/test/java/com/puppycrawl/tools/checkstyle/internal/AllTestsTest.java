@@ -285,7 +285,6 @@ public class AllTestsTest {
                 // helper inputs
                 || inputName.contains("InputIllegalTypeGregorianCalendar")
                 || inputName.contains("InputMagicNumberIntMethodAnnotation")
-                || inputName.contains("InputDesignForExtensionsLocalAnnotations")
                 || inputName.contains("InputVisibilityModifierGregorianCalendar")
                 || inputName.contains("InputVisibilityModifierLocalAnnotations")
                 || inputName.contains("InputAvoidStaticImportNestedClass")
