@@ -284,7 +284,6 @@ public class AllTestsTest {
                 || inputName.contains("InputDetailASTJustToMakeStackoverflowError")
                 // helper inputs
                 || inputName.contains("InputIllegalTypeGregorianCalendar")
-                || inputName.contains("InputMagicNumberIntMethodAnnotation")
                 || inputName.contains("InputVisibilityModifierGregorianCalendar")
                 || inputName.contains("InputVisibilityModifierLocalAnnotations")
                 || inputName.contains("InputAvoidStaticImportNestedClass")
