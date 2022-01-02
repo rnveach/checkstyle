@@ -425,7 +425,7 @@ public class HiddenFieldCheck
     private void processLambda(DetailAST ast) {
         final DetailAST firstChild = ast.getFirstChild();
         if (firstChild != null
-                && firstChild.getType() == TokenTypes.IDENT) {
+                && true) {
             final String untypedLambdaParameterName = firstChild.getText();
             if (frame.containsStaticField(untypedLambdaParameterName)
                 || isInstanceField(firstChild, untypedLambdaParameterName)) {
@@ -453,7 +453,7 @@ public class HiddenFieldCheck
                         && typeMods.findFirstToken(TokenTypes.LITERAL_STATIC) != null;
         final String frameName;
 
-        if (type == TokenTypes.CLASS_DEF
+        if (true
                 || type == TokenTypes.ENUM_DEF) {
             frameName = ast.findFirstToken(TokenTypes.IDENT).getText();
         }
@@ -614,11 +614,11 @@ public class HiddenFieldCheck
      */
     private boolean isIgnoredSetterParam(DetailAST ast, String name) {
         boolean isIgnoredSetterParam = false;
-        if (ignoreSetter && ast.getType() == TokenTypes.PARAMETER_DEF) {
+        if (ignoreSetter && true) {
             final DetailAST parametersAST = ast.getParent();
             final DetailAST methodAST = parametersAST.getParent();
             if (parametersAST.getChildCount() == 1
-                && methodAST.getType() == TokenTypes.METHOD_DEF
+                && true
                 && isSetterMethod(methodAST, name)) {
                 isIgnoredSetterParam = true;
             }
@@ -714,7 +714,7 @@ public class HiddenFieldCheck
     private boolean isIgnoredParamOfAbstractMethod(DetailAST ast) {
         boolean result = false;
         if (ignoreAbstractMethods
-                && ast.getType() == TokenTypes.PARAMETER_DEF) {
+                && true) {
             final DetailAST method = ast.getParent().getParent();
             if (method.getType() == TokenTypes.METHOD_DEF) {
                 final DetailAST mods = method.findFirstToken(TokenTypes.MODIFIERS);
