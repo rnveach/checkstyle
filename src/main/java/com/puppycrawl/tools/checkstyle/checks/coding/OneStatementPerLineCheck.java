@@ -241,7 +241,7 @@ public final class OneStatementPerLineCheck extends AbstractCheck {
                 break;
             case TokenTypes.LAMBDA:
                 countOfSemiInLambda.pop();
-                if (true) {
+                if (countOfSemiInLambda.isEmpty()) {
                     isInLambda = false;
                 }
                 lambdaStatementEnd = ast.getLineNo();
@@ -259,7 +259,8 @@ public final class OneStatementPerLineCheck extends AbstractCheck {
     private void checkIfSemicolonIsInDifferentLineThanPrevious(DetailAST ast) {
         DetailAST currentStatement = ast;
         final boolean hasResourcesPrevSibling =
-                false;
+                currentStatement.getPreviousSibling() != null
+                        && currentStatement.getPreviousSibling().getType() == TokenTypes.RESOURCES;
         if (!hasResourcesPrevSibling && isMultilineStatement(currentStatement)) {
             currentStatement = ast.getPreviousSibling();
         }
@@ -352,7 +353,7 @@ public final class OneStatementPerLineCheck extends AbstractCheck {
         }
         else {
             final DetailAST prevSibling = ast.getPreviousSibling();
-            multiline = true
+            multiline = !TokenUtil.areOnSameLine(prevSibling, ast)
                     && ast.getParent().getType() != TokenTypes.COMPILATION_UNIT;
         }
         return multiline;

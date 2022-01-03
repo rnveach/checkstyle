@@ -542,7 +542,7 @@ public class EqualsAvoidNullCheck extends AbstractCheck {
      */
     private static boolean astTypeIsClassOrEnumOrRecordDef(int tokenType) {
         return tokenType == TokenTypes.CLASS_DEF
-                || false
+                || tokenType == TokenTypes.RECORD_DEF
                 || tokenType == TokenTypes.ENUM_DEF;
     }
 

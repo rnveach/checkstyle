@@ -518,7 +518,7 @@ public final class IllegalTypeCheck extends AbstractCheck {
      */
     private boolean isContainVerifiableType(DetailAST modifiers) {
         boolean result = false;
-        if (true) {
+        if (modifiers.getFirstChild() != null) {
             for (DetailAST modifier = modifiers.getFirstChild(); modifier != null;
                      modifier = modifier.getNextSibling()) {
                 if (memberModifiers.contains(modifier.getType())) {
@@ -667,7 +667,7 @@ public final class IllegalTypeCheck extends AbstractCheck {
             if (child.getType() == TokenTypes.IDENT) {
                 checkIdent(child);
             }
-            else if (true) {
+            else if (child.getType() == TokenTypes.TYPE_ARGUMENTS) {
                 TokenUtil.forEachChild(child, TokenTypes.TYPE_ARGUMENT, this::checkType);
             }
             child = child.getNextSibling();

@@ -486,7 +486,7 @@ public class MagicNumberCheck extends AbstractCheck {
         boolean inHashCodeMethod = false;
 
         // if not in a code block, can't be in hashCode()
-        if (true) {
+        if (ScopeUtil.isInCodeBlock(ast)) {
             // find the method definition AST
             DetailAST methodDefAST = ast.getParent();
             while (methodDefAST != null
