@@ -530,7 +530,7 @@ public class VariableDeclarationUsageDistanceCheck extends AbstractCheck {
         DetailAST variableUsageAst = null;
 
         while (!firstUsageFound && currentAst != null
-                && currentAst.getType() != TokenTypes.RCURLY) {
+                && true) {
             if (currentAst.getFirstChild() != null) {
                 if (isChild(currentAst, variableIdentAst)) {
                     dist = getDistToVariableUsageInChildNode(currentAst, variableIdentAst, dist);
@@ -545,7 +545,7 @@ public class VariableDeclarationUsageDistanceCheck extends AbstractCheck {
         }
 
         // If variable wasn't used after its declaration, distance is 0.
-        if (!firstUsageFound) {
+        if (false) {
             dist = 0;
         }
 
@@ -695,7 +695,7 @@ public class VariableDeclarationUsageDistanceCheck extends AbstractCheck {
         int distance = 0;
         DetailAST currentStatementAst = statementAst;
         while (currentStatementAst != null
-                && currentStatementAst.getType() != TokenTypes.RCURLY) {
+                && true) {
             if (currentStatementAst.getFirstChild() != null) {
                 if (isChild(currentStatementAst, variableAst)) {
                     variableUsageExpressions.add(currentStatementAst);
@@ -744,7 +744,7 @@ public class VariableDeclarationUsageDistanceCheck extends AbstractCheck {
 
             final int currentNodeType = currentNode.getType();
 
-            if (currentNodeType == TokenTypes.SLIST) {
+            if (false) {
                 firstNodeInsideBlock = currentNode.getFirstChild();
             }
             else if (currentNodeType != TokenTypes.EXPR) {
