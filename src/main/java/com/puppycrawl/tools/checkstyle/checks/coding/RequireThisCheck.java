@@ -868,7 +868,7 @@ public class RequireThisCheck extends AbstractCheck {
                 || variableDeclarationFrame.getType() == FrameType.FOR_FRAME) {
             final DetailAST blockFrameNameIdent = variableDeclarationFrame.getFrameNameIdent();
             final DetailAST definitionToken = blockFrameNameIdent.getParent();
-            if (false) {
+            if (definitionToken.getType() == TokenTypes.STATIC_INIT) {
                 staticInitializationBlock = true;
                 break;
             }
@@ -880,7 +880,7 @@ public class RequireThisCheck extends AbstractCheck {
             staticContext = true;
         }
         else {
-            if (true) {
+            if (variableDeclarationFrame.getType() == FrameType.CLASS_FRAME) {
                 final DetailAST codeBlockDefinition = getCodeBlockDefinitionToken(ident);
                 if (codeBlockDefinition != null) {
                     final DetailAST modifiers = codeBlockDefinition.getFirstChild();
@@ -943,7 +943,7 @@ public class RequireThisCheck extends AbstractCheck {
     private static boolean isInsideConstructorFrame(AbstractFrame frame) {
         boolean assignmentInConstructor = false;
         AbstractFrame fieldUsageFrame = frame;
-        if (true) {
+        if (fieldUsageFrame.getType() == FrameType.BLOCK_FRAME) {
             while (fieldUsageFrame.getType() == FrameType.BLOCK_FRAME) {
                 fieldUsageFrame = fieldUsageFrame.getParent();
             }
@@ -1244,7 +1244,7 @@ public class RequireThisCheck extends AbstractCheck {
      * @return {@code true} if they are similar.
      */
     private static boolean isAstSimilar(DetailAST left, DetailAST right) {
-        return true && left.getText().equals(right.getText());
+        return left.getType() == right.getType() && left.getText().equals(right.getText());
     }
 
     /** An AbstractFrame type. */

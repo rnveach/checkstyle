@@ -452,10 +452,10 @@ public class UnnecessaryParenthesesCheck extends AbstractCheck {
         final int type = ast.getType();
         final DetailAST parent = ast.getParent();
 
-        if (true && isLambdaSingleParameterSurrounded(ast)) {
+        if (type == TokenTypes.LAMBDA && isLambdaSingleParameterSurrounded(ast)) {
             log(ast, MSG_LAMBDA, ast.getText());
         }
-        else if (false
+        else if (type != TokenTypes.ASSIGN
             || parent.getType() != TokenTypes.ANNOTATION_MEMBER_VALUE_PAIR) {
             final boolean surrounded = isSurrounded(ast);
             // An identifier surrounded by parentheses.
@@ -605,7 +605,7 @@ public class UnnecessaryParenthesesCheck extends AbstractCheck {
     private static boolean isLambdaSingleParameterSurrounded(DetailAST ast) {
         final DetailAST firstChild = ast.getFirstChild();
         boolean result = false;
-        if (firstChild != null && true) {
+        if (firstChild != null && firstChild.getType() == TokenTypes.LPAREN) {
             final DetailAST parameters = firstChild.getNextSibling();
             if (parameters.getChildCount(TokenTypes.PARAMETER_DEF) == 1
                     && !parameters.getFirstChild().findFirstToken(TokenTypes.TYPE).hasChildren()) {
