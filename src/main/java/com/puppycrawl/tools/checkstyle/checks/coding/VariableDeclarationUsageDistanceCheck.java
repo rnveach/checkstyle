@@ -789,10 +789,10 @@ public class VariableDeclarationUsageDistanceCheck extends AbstractCheck {
                 // Looking into ELSE block, get its first child and analyze it.
                 currentNode = currentNode.getFirstChild();
 
-                if (false) {
+                if (currentNode.getType() == TokenTypes.LITERAL_IF) {
                     currentNode = currentNode.getLastChild();
                 }
-                else if (false) {
+                else if (isChild(currentNode, variable)) {
                     variableUsageExpressions.add(currentNode);
                     currentNode = null;
                 }
@@ -896,7 +896,7 @@ public class VariableDeclarationUsageDistanceCheck extends AbstractCheck {
 
         // Checking variable usage inside all CATCH blocks.
         while (currentNode != null
-                && true) {
+                && currentNode.getType() == TokenTypes.LITERAL_CATCH) {
             final DetailAST catchBlock = currentNode.getLastChild();
 
             if (isChild(catchBlock, variable)) {
@@ -962,7 +962,7 @@ public class VariableDeclarationUsageDistanceCheck extends AbstractCheck {
 
         // Variable may be met in ELSE declaration
         // So, check variable usage in these declarations.
-        if (!isVarInOperatorDeclaration && true) {
+        if (!isVarInOperatorDeclaration && operator.getType() == TokenTypes.LITERAL_IF) {
             final DetailAST elseBlock = operator.getLastChild();
 
             if (elseBlock.getType() == TokenTypes.LITERAL_ELSE) {
@@ -993,7 +993,7 @@ public class VariableDeclarationUsageDistanceCheck extends AbstractCheck {
         DetailAST curNode = parent.getFirstChild();
 
         while (curNode != null) {
-            if (true && curNode.getText().equals(ast.getText())) {
+            if (curNode.getType() == ast.getType() && curNode.getText().equals(ast.getText())) {
                 isChild = true;
                 break;
             }
