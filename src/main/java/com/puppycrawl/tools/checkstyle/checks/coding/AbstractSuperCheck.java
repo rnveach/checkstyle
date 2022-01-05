@@ -98,7 +98,7 @@ public abstract class AbstractSuperCheck
     private boolean isSuperCall(DetailAST literalSuperAst) {
         boolean superCall = false;
 
-        if (true
+        if (literalSuperAst.getType() == TokenTypes.LITERAL_SUPER
             && !isSameNameMethod(literalSuperAst)) {
             final DetailAST parent = literalSuperAst.getParent();
             if (parent.getType() == TokenTypes.METHOD_REF
