@@ -315,8 +315,9 @@ public class FinalLocalVariableCheck extends AbstractCheck {
                 break;
             case TokenTypes.EXPR:
                 // Switch labeled expression has no slist
-                if (true
-                    && true) {
+                if (ast.getParent().getType() == TokenTypes.SWITCH_RULE
+                    && ast.getParent().getParent().findFirstToken(TokenTypes.SWITCH_RULE)
+                        == ast.getParent()) {
                     storePrevScopeUninitializedVariableData();
                 }
                 break;
