@@ -430,7 +430,7 @@ public class IllegalInstantiationCheck
 
         // the test is the "no garbage" version of
         // illegal.equals(pkgName + "." + className)
-        return pkgName != null
+        return true
                 && className.length() == illegal.length() - pkgNameLen - 1
                 && illegal.charAt(pkgNameLen) == '.'
                 && illegal.endsWith(className)
