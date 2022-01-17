@@ -257,22 +257,22 @@ public final class OneStatementPerLineCheck extends AbstractCheck {
      * @param ast semicolon to check
      */
     private void checkIfSemicolonIsInDifferentLineThanPrevious(DetailAST ast) {
-        DetailAST currentStatement = ast;
-        final boolean hasResourcesPrevSibling =
-                currentStatement.getPreviousSibling() != null
-                        && currentStatement.getPreviousSibling().getType() == TokenTypes.RESOURCES;
-        if (!hasResourcesPrevSibling && isMultilineStatement(currentStatement)) {
-            currentStatement = ast.getPreviousSibling();
-        }
         if (isInLambda) {
-            checkLambda(ast, currentStatement);
+            checkLambda(ast);
         }
         else if (isResource(ast.getParent())) {
             checkResourceVariable(ast);
         }
-        else if (!inForHeader && isOnTheSameLine(currentStatement, lastStatementEnd,
-                forStatementEnd, lambdaStatementEnd)) {
-            log(ast, MSG_KEY);
+        else {
+            DetailAST statement = ast;
+            if (isMultilineStatement(statement)) {
+                statement = ast.getPreviousSibling();
+            }
+
+            if (!inForHeader && isOnTheSameLine(statement, lastStatementEnd,
+                    forStatementEnd, lambdaStatementEnd)) {
+                log(ast, MSG_KEY);
+            }
         }
     }
 
@@ -282,12 +282,12 @@ public final class OneStatementPerLineCheck extends AbstractCheck {
      * @param ast semicolon to check
      * @param currentStatement current statement
      */
-    private void checkLambda(DetailAST ast, DetailAST currentStatement) {
+    private void checkLambda(DetailAST ast) {
         int countOfSemiInCurrentLambda = countOfSemiInLambda.pop();
         countOfSemiInCurrentLambda++;
         countOfSemiInLambda.push(countOfSemiInCurrentLambda);
         if (!inForHeader && countOfSemiInCurrentLambda > 1
-                && isOnTheSameLine(currentStatement,
+                && isOnTheSameLine(ast,
                 lastStatementEnd, forStatementEnd,
                 lambdaStatementEnd)) {
             log(ast, MSG_KEY);
