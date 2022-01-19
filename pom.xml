@@ -2242,7 +2242,7 @@
                 <mutator>MATH</mutator>
                 <mutator>NEGATE_CONDITIONALS</mutator>
                 <!-- result in 115 extra survived items, too much to keep in ignore list -->
-                <!-- <mutator>REMOVE_CONDITIONALS</mutator> -->
+                <mutator>REMOVE_CONDITIONALS</mutator>
                 <mutator>RETURN_VALS</mutator>
                 <mutator>TRUE_RETURNS</mutator>
                 <mutator>VOID_METHOD_CALLS</mutator>
@@ -2423,7 +2423,7 @@
                 <mutator>MATH</mutator>
                 <mutator>NEGATE_CONDITIONALS</mutator>
                 <!-- result in 53 extra survived items, too much to keep in ignore list -->
-                <!-- <mutator>REMOVE_CONDITIONALS</mutator> -->
+                <mutator>REMOVE_CONDITIONALS</mutator>
                 <mutator>RETURN_VALS</mutator>
                 <mutator>TRUE_RETURNS</mutator>
                 <mutator>VOID_METHOD_CALLS</mutator>
@@ -2469,7 +2469,7 @@
                 <mutator>MATH</mutator>
                 <mutator>NEGATE_CONDITIONALS</mutator>
                 <!-- result in 64 extra survived items, too much to keep in ignore list -->
-                <!-- <mutator>REMOVE_CONDITIONALS</mutator> -->
+                <mutator>REMOVE_CONDITIONALS</mutator>
                 <mutator>RETURN_VALS</mutator>
                 <mutator>TRUE_RETURNS</mutator>
                 <mutator>VOID_METHOD_CALLS</mutator>
@@ -3266,7 +3266,7 @@
                 <mutator>MATH</mutator>
                 <mutator>NEGATE_CONDITIONALS</mutator>
                 <!-- result in 58 extra survived items, too much to keep in ignore list -->
-                <!-- <mutator>REMOVE_CONDITIONALS</mutator> -->
+                <mutator>REMOVE_CONDITIONALS</mutator>
                 <mutator>RETURN_VALS</mutator>
                 <mutator>TRUE_RETURNS</mutator>
                 <mutator>VOID_METHOD_CALLS</mutator>
