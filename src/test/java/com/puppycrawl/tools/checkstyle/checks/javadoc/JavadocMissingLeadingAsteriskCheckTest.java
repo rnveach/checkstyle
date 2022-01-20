@@ -66,9 +66,10 @@ public class JavadocMissingLeadingAsteriskCheckTest extends AbstractModuleTestSu
             "41: " + getCheckMessage(MSG_MISSING_ASTERISK),
             "46: " + getCheckMessage(MSG_MISSING_ASTERISK),
             "53: " + getCheckMessage(MSG_MISSING_ASTERISK),
-            "62: " + getCheckMessage(MSG_MISSING_ASTERISK),
-            "63: " + getCheckMessage(MSG_MISSING_ASTERISK),
-            "64: " + getCheckMessage(MSG_MISSING_ASTERISK),
+            "59: " + getCheckMessage(MSG_MISSING_ASTERISK),
+            "67: " + getCheckMessage(MSG_MISSING_ASTERISK),
+            "68: " + getCheckMessage(MSG_MISSING_ASTERISK),
+            "69: " + getCheckMessage(MSG_MISSING_ASTERISK),
         };
         verifyWithInlineConfigParser(
                 getPath("InputJavadocMissingLeadingAsteriskIncorrect.java"), expected);

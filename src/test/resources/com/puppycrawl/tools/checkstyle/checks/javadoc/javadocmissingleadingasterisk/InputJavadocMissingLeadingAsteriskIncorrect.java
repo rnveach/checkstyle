@@ -55,6 +55,11 @@ public class InputJavadocMissingLeadingAsteriskIncorrect {
    **/
   public int code;
 
+  /**
+
+*/
+  // violation 2 lines above
+  public int javadocWithEmptyLines;
 }
 
 /**
