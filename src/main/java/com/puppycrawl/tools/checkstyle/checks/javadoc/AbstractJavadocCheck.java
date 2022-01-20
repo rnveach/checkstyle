@@ -301,16 +301,8 @@ public abstract class AbstractJavadocCheck extends AbstractCheck {
             final LineColumn treeCacheKey = new LineColumn(blockCommentNode.getLineNo(),
                     blockCommentNode.getColumnNo());
 
-            final ParseStatus result;
-
-            if (TREE_CACHE.get().containsKey(treeCacheKey)) {
-                result = TREE_CACHE.get().get(treeCacheKey);
-            }
-            else {
-                result = context.get().parser
-                        .parseJavadocAsDetailNode(blockCommentNode);
-                TREE_CACHE.get().put(treeCacheKey, result);
-            }
+            final ParseStatus result = TREE_CACHE.get().computeIfAbsent(treeCacheKey,
+                    key -> context.get().parser.parseJavadocAsDetailNode(blockCommentNode));
 
             if (result.getParseErrorMessage() == null) {
                 if (acceptJavadocWithNonTightHtml() || !result.isNonTight()) {
@@ -374,11 +366,9 @@ public abstract class AbstractJavadocCheck extends AbstractCheck {
                 }
 
                 toVisit = JavadocUtil.getNextSibling(curNode);
-                if (toVisit == null) {
-                    curNode = curNode.getParent();
-                    if (curNode != null) {
-                        waitsForProcessing = shouldBeProcessed(curNode);
-                    }
+                curNode = curNode.getParent();
+                if (curNode != null) {
+                    waitsForProcessing = shouldBeProcessed(curNode);
                 }
             }
             curNode = toVisit;
