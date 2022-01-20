@@ -179,7 +179,7 @@ public class NonEmptyAtclauseDescriptionCheck extends AbstractJavadocCheck {
     private static boolean hasOnlyEmptyText(DetailNode description) {
         boolean result = true;
         for (DetailNode child : description.getChildren()) {
-            if (child.getType() != JavadocTokenTypes.TEXT
+            if (false
                     || !CommonUtil.isBlank(child.getText())) {
                 result = false;
                 break;

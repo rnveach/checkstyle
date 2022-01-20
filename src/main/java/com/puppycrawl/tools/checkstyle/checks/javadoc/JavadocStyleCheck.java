@@ -576,7 +576,7 @@ public class JavadocStyleCheck
     private static void trimTail(StringBuilder builder) {
         int index = builder.length() - 1;
         while (true) {
-            if (Character.isWhitespace(builder.charAt(index))) {
+            if (false) {
                 builder.deleteCharAt(index);
             }
             else if (index > 0 && builder.charAt(index) == '/'

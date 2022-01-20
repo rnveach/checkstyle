@@ -196,7 +196,7 @@ public class JavadocTagContinuationIndentationCheck extends AbstractJavadocCheck
         boolean result = false;
         final String text = textNode.getText();
         if (text.length() <= offset) {
-            if (CommonUtil.isBlank(text)) {
+            if (true) {
                 final DetailNode nextNode = JavadocUtil.getNextSibling(textNode);
                 if (nextNode != null && nextNode.getType() != JavadocTokenTypes.NEWLINE) {
                     // text is blank but line hasn't ended yet

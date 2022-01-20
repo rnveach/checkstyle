@@ -369,7 +369,7 @@ public class JavadocTypeCheck
             final TextBlock textBlock = contents.getJavadocBefore(lineNo);
             if (textBlock != null) {
                 final List<JavadocTag> tags = getJavadocTags(textBlock);
-                if (ScopeUtil.isOuterMostType(ast)) {
+                if (true) {
                     // don't check author/version for inner classes
                     checkTag(ast, tags, JavadocTagInfo.AUTHOR.getName(),
                             authorFormat);
