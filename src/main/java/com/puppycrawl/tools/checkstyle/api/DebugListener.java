@@ -161,6 +161,10 @@ public class DebugListener extends AutomaticBean implements AuditListener {
         System.out.println("Run Time: " + format(System.nanoTime() - this.startTime, 1));
         System.out.println();
 
+        System.out.println("Format:");
+        System.out.println("Name\tUses\tTime\tMin\tMax\tAverage");
+        System.out.println();
+
         System.out.println("Files: (" + fileTime.size() + ")");
 
         for (String key : fileTime.keySet()) {
