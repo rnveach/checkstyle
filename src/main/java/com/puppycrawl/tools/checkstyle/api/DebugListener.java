@@ -344,8 +344,9 @@ public class DebugListener extends AutomaticBean implements AuditListener {
             return;
         }
 
-        final String src = "Java";
         final long d = System.nanoTime() - this.parseStartTime;
+
+        final String src = "Java";
         this.parseStartTime = 0;
 
         if (d < 0) {
@@ -384,8 +385,9 @@ public class DebugListener extends AutomaticBean implements AuditListener {
             return;
         }
 
-        final String src = "JavaDoc";
         final long d = System.nanoTime() - this.javaDocParseStartTime;
+
+        final String src = "JavaDoc";
         this.javaDocParseStartTime = 0;
 
         if (d < 0) {
@@ -427,8 +429,9 @@ public class DebugListener extends AutomaticBean implements AuditListener {
             return;
         }
 
-        final String src = event.getSource().getClass().getSimpleName();
         final long d = System.nanoTime() - this.checkStartTime;
+
+        final String src = event.getSource().getClass().getSimpleName();
         this.checkStartTime = 0;
 
         if (d < 0) {
@@ -467,8 +470,9 @@ public class DebugListener extends AutomaticBean implements AuditListener {
             return;
         }
 
-        final String src = event.getSource().getClass().getSimpleName();
         final long d = System.nanoTime() - this.fileSetStartTime;
+
+        final String src = event.getSource().getClass().getSimpleName();
         this.fileSetStartTime = 0;
 
         if (d < 0) {
@@ -502,6 +506,8 @@ public class DebugListener extends AutomaticBean implements AuditListener {
             return;
         }
 
+        final long d = System.nanoTime() - this.beforeExecutionFileFilterStartTime;
+
         final String src = event.getSource().getClass().getSimpleName();
         final String startSrc = this.beforeExecutionFileFilterNamesMemory.pop();
 
@@ -509,8 +515,6 @@ public class DebugListener extends AutomaticBean implements AuditListener {
             System.err.println(
                     "Error: BeforeExecutionFileFilter name mis-match: " + src + " vs " + startSrc);
         }
-
-        final long d = System.nanoTime() - this.beforeExecutionFileFilterStartTime;
 
         if (this.beforeExecutionFileFilterStartTimeMemory.size() > 0) {
             this.beforeExecutionFileFilterStartTime = this.beforeExecutionFileFilterStartTimeMemory
@@ -551,14 +555,14 @@ public class DebugListener extends AutomaticBean implements AuditListener {
             return;
         }
 
+        final long d = System.nanoTime() - this.filterStartTime;
+
         final String src = event.getSource().getClass().getSimpleName();
         final String startSrc = this.filterNamesMemory.pop();
 
         if (!startSrc.equals(src)) {
             System.err.println("Error: Filter name mis-match: " + src + " vs " + startSrc);
         }
-
-        final long d = System.nanoTime() - this.filterStartTime;
 
         if (this.filterStartTimeMemory.size() > 0)
             this.filterStartTime = this.filterStartTimeMemory.pop() + d;
@@ -596,6 +600,8 @@ public class DebugListener extends AutomaticBean implements AuditListener {
             return;
         }
 
+        final long d = System.nanoTime() - this.treeWalkerFilterStartTime;
+
         final String src = event.getSource().getClass().getSimpleName();
         final String startSrc = this.treeWalkerFilterNamesMemory.pop();
 
@@ -603,8 +609,6 @@ public class DebugListener extends AutomaticBean implements AuditListener {
             System.err
                     .println("Error: TreeWalker Filter name mis-match: " + src + " vs " + startSrc);
         }
-
-        final long d = System.nanoTime() - this.treeWalkerFilterStartTime;
 
         if (this.treeWalkerFilterStartTimeMemory.size() > 0)
             this.treeWalkerFilterStartTime = this.treeWalkerFilterStartTimeMemory.pop() + d;
@@ -647,8 +651,9 @@ public class DebugListener extends AutomaticBean implements AuditListener {
             return;
         }
 
-        final String src = event.getFileName();
         final long d = System.nanoTime() - this.fileStartTime;
+
+        final String src = event.getFileName();
         this.fileStartTime = 0;
 
         if (d < 0) {
@@ -677,8 +682,12 @@ public class DebugListener extends AutomaticBean implements AuditListener {
 
     @Override
     public void CustomFinished(AuditEvent event) {
-        if (this.customStartTime == 0)
+        if (this.customStartTime == 0) {
+            System.err.println("Error: Custom has no start time!");
             return;
+        }
+
+        final long d = System.nanoTime() - this.customStartTime;
 
         final String src = event.getSource().toString();
         final String startSrc = this.customNamesMemory.pop();
@@ -686,8 +695,6 @@ public class DebugListener extends AutomaticBean implements AuditListener {
         if (!startSrc.equals(src)) {
             System.err.println("Custom name mis-match: " + src + " vs " + startSrc);
         }
-
-        final long d = System.nanoTime() - this.customStartTime;
 
         if (this.customStartTimeMemory.size() > 0)
             this.customStartTime = this.customStartTimeMemory.pop() + d;
