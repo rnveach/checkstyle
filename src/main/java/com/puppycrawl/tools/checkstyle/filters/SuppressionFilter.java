@@ -264,14 +264,14 @@ public class SuppressionFilter extends AutomaticBean implements Filter, External
         if (file != null) {
             if (optional) {
                 if (FilterUtil.isFileExists(file)) {
-                    filters = SuppressionsLoader.loadSuppressions(file);
+                    filters = SuppressionsLoader.load(file);
                 }
                 else {
                     filters = new FilterSet();
                 }
             }
             else {
-                filters = SuppressionsLoader.loadSuppressions(file);
+                filters = SuppressionsLoader.load(file);
             }
         }
     }

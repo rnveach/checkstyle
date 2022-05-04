@@ -580,11 +580,14 @@ public class SuppressionXpathFilter extends AutomaticBean implements
         if (file != null) {
             if (optional) {
                 if (FilterUtil.isFileExists(file)) {
-                    filters.addAll(SuppressionsLoader.loadXpathSuppressions(file));
+                    filters.addAll(XpathSuppressionsLoader.load(file));
+                }
+                else {
+                    filters.clear();
                 }
             }
             else {
-                filters.addAll(SuppressionsLoader.loadXpathSuppressions(file));
+                filters.addAll(XpathSuppressionsLoader.load(file));
             }
         }
     }
