@@ -100,13 +100,12 @@ public final class XpathSuppressionsLoader extends XmlLoader {
                              String qName,
                              Attributes attributes)
             throws SAXException {
-        if (!ELEMENT_NAME.equals(qName) && !"suppressions".equals(qName)) {
-            throw new IllegalStateException("Unknown name:" + qName + ".");
-        }
-
         if (ELEMENT_NAME.equals(qName)) {
             final XpathFilterElement filter = getXpathFilter(attributes);
             treeWalkerFilters.add(filter);
+        }
+        else if (!"suppressions".equals(qName)) {
+            throw new IllegalStateException("Unknown name:" + qName + ".");
         }
     }
 

@@ -110,13 +110,12 @@ public final class SuppressionsLoader extends XmlLoader {
                              String qName,
                              Attributes attributes)
             throws SAXException {
-        if (!ELEMENT_NAME.equals(qName) && !"suppressions".equals(qName)) {
-            throw new IllegalStateException("Unknown name:" + qName + ".");
-        }
-
         if (ELEMENT_NAME.equals(qName)) {
             final SuppressFilterElement suppress = getSuppressElement(attributes);
             filterChain.addFilter(suppress);
+        }
+        else if (!"suppressions".equals(qName)) {
+            throw new IllegalStateException("Unknown name:" + qName + ".");
         }
     }
 
