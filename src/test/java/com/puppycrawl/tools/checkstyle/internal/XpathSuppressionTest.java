@@ -112,6 +112,15 @@ public class XpathSuppressionTest extends AbstractModuleTestSupport {
                 || path.contains("InputClassFanOutComplexityAnnotations.java")
                 || path.contains("InputLineLengthUnicodeChars.java")
                 || path.contains("InputParenPadLeftRightAndNoSpace.java")
+                // 2022
+                || path.contains("InputAvoidEscapedUnicodeCharacters2.java")
+                || path.contains("InputAvoidEscapedUnicodeCharacters3.java")
+                || path.contains("InputAvoidEscapedUnicodeCharacters4.java")
+                || path.contains("InputAvoidEscapedUnicodeCharacters5.java")
+                || path.contains("InputEmptyBlockDefault.java")
+                || path.contains("InputEmptyBlockDefault2.java")
+                || path.contains("InputEmptyBlockSemantic.java")
+                || path.contains("InputEmptyBlockSemantic2Statement.java")
                 // file is too big and slow
                 || path.contains(
                         "InputAvoidEscapedUnicodeCharactersAllEscapedUnicodeCharacters.java")) {
