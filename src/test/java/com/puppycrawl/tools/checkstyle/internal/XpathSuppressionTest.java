@@ -25,12 +25,12 @@ import java.io.File;
 import java.io.Writer;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.Arrays;
 
 import org.junit.Assert;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.TemporaryFolder;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.io.TempDir;
 
 import com.puppycrawl.tools.checkstyle.AbstractModuleTestSupport;
 import com.puppycrawl.tools.checkstyle.DefaultConfiguration;
@@ -49,8 +49,8 @@ public class XpathSuppressionTest extends AbstractModuleTestSupport {
 
     private static final String LINE_SEPARATOR = System.getProperty("line.separator");
 
-    @Rule
-    public final TemporaryFolder temporaryFolder = new TemporaryFolder();
+    @TempDir
+    public Path temporaryFolder;
 
     @Override
     protected String getPackageLocation() {
@@ -211,13 +211,14 @@ public class XpathSuppressionTest extends AbstractModuleTestSupport {
 
         Assert.assertTrue("one of the xpath suppressions must work for '" + file.getCanonicalPath()
                 + "' at line " + line + ", column " + column + " for type "
-                + TokenUtil.getTokenName(node.getType()) + "\n" + Arrays.toString(xpathQueries), atleastOneWorks);
+                + TokenUtil.getTokenName(node.getType()) + "\n" + Arrays.toString(xpathQueries),
+                atleastOneWorks);
     }
 
     private String createSuppressionsXpathConfigFile(String xpathQuery) throws Exception {
 
-        final File suppressionsXpathConfigFile = temporaryFolder.newFile();
-        try (Writer bw = Files.newBufferedWriter(suppressionsXpathConfigFile.toPath(),
+        final Path suppressionsXpathConfigFile = Files.createTempFile(temporaryFolder, "", "");
+        try (Writer bw = Files.newBufferedWriter(suppressionsXpathConfigFile,
                 StandardCharsets.UTF_8)) {
             bw.write("<?xml version=\"1.0\"?>\n");
             bw.write("<!DOCTYPE suppressions PUBLIC\n");
@@ -233,7 +234,7 @@ public class XpathSuppressionTest extends AbstractModuleTestSupport {
             bw.write("</suppressions>");
         }
 
-        return suppressionsXpathConfigFile.getPath();
+        return suppressionsXpathConfigFile.toString();
     }
 
     public static final class TestCheck extends AbstractCheck {
