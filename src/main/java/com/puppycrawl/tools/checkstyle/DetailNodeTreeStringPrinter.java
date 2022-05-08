@@ -57,6 +57,19 @@ public final class DetailNodeTreeStringPrinter {
     }
 
     /**
+     * Parse a file and return the parse tree.
+     *
+     * @param file the file to parse.
+     * @return the root node of the parse tree.
+     * @throws IOException if the file could not be read.
+     */
+    private static DetailNode parseFile(File file) throws IOException {
+        final FileText text = new FileText(file.getAbsoluteFile(),
+            System.getProperty("file.encoding", StandardCharsets.UTF_8.name()));
+        return parseJavadocAsDetailNode(text.getFullText().toString());
+    }
+
+    /**
      * Parse block comment DetailAST as Javadoc DetailNode tree.
      *
      * @param blockComment DetailAST
@@ -159,19 +172,6 @@ public final class DetailNodeTreeStringPrinter {
             }
         }
         return indentation.toString();
-    }
-
-    /**
-     * Parse a file and return the parse tree.
-     *
-     * @param file the file to parse.
-     * @return the root node of the parse tree.
-     * @throws IOException if the file could not be read.
-     */
-    private static DetailNode parseFile(File file) throws IOException {
-        final FileText text = new FileText(file.getAbsoluteFile(),
-            System.getProperty("file.encoding", StandardCharsets.UTF_8.name()));
-        return parseJavadocAsDetailNode(text.getFullText().toString());
     }
 
 }

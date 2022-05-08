@@ -54,15 +54,15 @@ public final class AstTreeStringPrinter {
     /**
      * Parse a file and print the parse tree.
      *
-     * @param file the file to print.
+     * @param text the text to parse.
      * @param options {@link JavaParser.Options} to control the inclusion of comment nodes.
      * @return the AST of the file in String form.
-     * @throws IOException if the file could not be read.
      * @throws CheckstyleException if the file is not a Java source.
      */
-    public static String printFileAst(File file, JavaParser.Options options)
-            throws IOException, CheckstyleException {
-        return printTree(JavaParser.parseFile(file, options));
+    public static String printAst(FileText text, JavaParser.Options options)
+            throws CheckstyleException {
+        final DetailAST ast = JavaParser.parseFileText(text, options);
+        return printTree(ast);
     }
 
     /**
@@ -106,6 +106,20 @@ public final class AstTreeStringPrinter {
     }
 
     /**
+     * Parse a file and print the parse tree.
+     *
+     * @param file the file to print.
+     * @param options {@link JavaParser.Options} to control the inclusion of comment nodes.
+     * @return the AST of the file in String form.
+     * @throws IOException if the file could not be read.
+     * @throws CheckstyleException if the file is not a Java source.
+     */
+    public static String printFileAst(File file, JavaParser.Options options)
+            throws IOException, CheckstyleException {
+        return printTree(JavaParser.parseFile(file, options));
+    }
+
+    /**
      * Parses block comment as javadoc and prints its tree.
      *
      * @param node block comment begin
@@ -123,32 +137,18 @@ public final class AstTreeStringPrinter {
     }
 
     /**
-     * Parse a file and print the parse tree.
-     *
-     * @param text the text to parse.
-     * @param options {@link JavaParser.Options} to control the inclusion of comment nodes.
-     * @return the AST of the file in String form.
-     * @throws CheckstyleException if the file is not a Java source.
-     */
-    public static String printAst(FileText text, JavaParser.Options options)
-            throws CheckstyleException {
-        final DetailAST ast = JavaParser.parseFileText(text, options);
-        return printTree(ast);
-    }
-
-    /**
      * Print branch info from root down to given {@code node}.
      *
      * @param node last item of the branch
      * @return branch as string
      */
-    public static String printBranch(DetailAST node) {
+    public static String printReverseBranch(DetailAST node) {
         final String result;
         if (node == null) {
             result = "";
         }
         else {
-            result = printBranch(node.getParent())
+            result = printReverseBranch(node.getParent())
                 + getIndentation(node)
                 + getNodeInfo(node)
                 + LINE_SEPARATOR;

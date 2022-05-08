@@ -50,7 +50,6 @@ import com.puppycrawl.tools.checkstyle.api.Configuration;
 import com.puppycrawl.tools.checkstyle.api.RootModule;
 import com.puppycrawl.tools.checkstyle.utils.ChainedPropertyUtil;
 import com.puppycrawl.tools.checkstyle.utils.CommonUtil;
-import com.puppycrawl.tools.checkstyle.utils.XpathUtil;
 import picocli.CommandLine;
 import picocli.CommandLine.Command;
 import picocli.CommandLine.Option;
@@ -293,7 +292,8 @@ public final class Main {
             System.out.print(stringAst);
         }
         else if (Objects.nonNull(options.xpath)) {
-            final String branch = XpathUtil.printXpathBranch(options.xpath, filesToProcess.get(0));
+            final String branch = XpathTreeStringPrinter.printXpathBranch(options.xpath,
+                    filesToProcess.get(0));
             System.out.print(branch);
         }
         else if (options.printAstWithComments) {

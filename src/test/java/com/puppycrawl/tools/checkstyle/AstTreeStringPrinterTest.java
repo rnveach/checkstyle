@@ -84,7 +84,7 @@ public class AstTreeStringPrinterTest extends AbstractTreeTestSupport {
             "    |   `--LITERAL_PUBLIC -> public [3:0]");
         final DetailAST nodeToPrint = ast.getFirstChild().getNextSibling()
                 .getFirstChild().getFirstChild();
-        final String result = AstTreeStringPrinter.printBranch(nodeToPrint);
+        final String result = AstTreeStringPrinter.printReverseBranch(nodeToPrint);
         assertWithMessage("Branches do not match")
             .that(result)
             .isEqualTo(expected);

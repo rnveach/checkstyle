@@ -59,6 +59,13 @@
     <allow class="com.puppycrawl.tools.checkstyle.DetailAstImpl"/>
     <allow class="org.antlr.v4.runtime.CommonToken"/>
   </file>
+  <file name="XpathTreeStringPrinter">
+    <allow pkg="net.sf.saxon"/>
+    <allow pkg="net.sf.saxon.om"/>
+    <allow pkg="net.sf.saxon.trans"/>
+    <allow class="com.puppycrawl.tools.checkstyle.xpath.AbstractNode"/>
+    <allow class="com.puppycrawl.tools.checkstyle.xpath.RootNode"/>
+  </file>
 
   <file name="LocalizedMessage">
     <allow class="java.text.MessageFormat"/>
@@ -73,11 +80,9 @@
 
     <file name="XpathUtil" regex="true">
       <allow pkg="net.sf.saxon"/>
-      <allow class="com.puppycrawl.tools.checkstyle.AstTreeStringPrinter"/>
       <allow class="com.puppycrawl.tools.checkstyle.JavaParser"/>
       <allow class="com.puppycrawl.tools.checkstyle.xpath.AbstractNode"/>
       <allow class="com.puppycrawl.tools.checkstyle.xpath.ElementNode"/>
-      <allow class="com.puppycrawl.tools.checkstyle.xpath.RootNode"/>
     </file>
   </subpackage>
 

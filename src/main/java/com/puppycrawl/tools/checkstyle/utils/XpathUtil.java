@@ -19,23 +19,16 @@
 
 package com.puppycrawl.tools.checkstyle.utils;
 
-import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.BitSet;
 import java.util.List;
-import java.util.Locale;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
-import com.puppycrawl.tools.checkstyle.AstTreeStringPrinter;
-import com.puppycrawl.tools.checkstyle.JavaParser;
-import com.puppycrawl.tools.checkstyle.api.CheckstyleException;
 import com.puppycrawl.tools.checkstyle.api.DetailAST;
 import com.puppycrawl.tools.checkstyle.api.TokenTypes;
 import com.puppycrawl.tools.checkstyle.xpath.AbstractNode;
 import com.puppycrawl.tools.checkstyle.xpath.ElementNode;
-import com.puppycrawl.tools.checkstyle.xpath.RootNode;
 import net.sf.saxon.Configuration;
 import net.sf.saxon.om.Item;
 import net.sf.saxon.om.NodeInfo;
@@ -118,9 +111,6 @@ public final class XpathUtil {
      */
     private static final Pattern CARRIAGE_RETURN_TO_TAG = Pattern.compile("\r");
 
-    /** Delimiter to separate xpath results. */
-    private static final String DELIMITER = "---------" + System.lineSeparator();
-
     /** Stop instances being created. **/
     private XpathUtil() {
     }
@@ -170,33 +160,6 @@ public final class XpathUtil {
         }
         text = CARRIAGE_RETURN_TO_TAG.matcher(text).replaceAll("\\\\r");
         return NEWLINE_TO_TAG.matcher(text).replaceAll("\\\\n");
-    }
-
-    /**
-     * Returns xpath query results on file as string.
-     *
-     * @param xpath query to evaluate
-     * @param file file to run on
-     * @return all results as string separated by delimiter
-     * @throws CheckstyleException if some parsing error happens
-     * @throws IOException if an error occurs
-     */
-    public static String printXpathBranch(String xpath, File file) throws CheckstyleException,
-            IOException {
-        try {
-            final RootNode rootNode = new RootNode(JavaParser.parseFile(file,
-                JavaParser.Options.WITH_COMMENTS));
-            final List<NodeInfo> matchingItems = getXpathItems(xpath, rootNode);
-            return matchingItems.stream()
-                .map(item -> ((ElementNode) item).getUnderlyingNode())
-                .map(AstTreeStringPrinter::printBranch)
-                .collect(Collectors.joining(DELIMITER));
-        }
-        catch (XPathException ex) {
-            final String errMsg = String.format(Locale.ROOT,
-                "Error during evaluation for xpath: %s, file: %s", xpath, file.getCanonicalPath());
-            throw new CheckstyleException(errMsg, ex);
-        }
     }
 
     /**
