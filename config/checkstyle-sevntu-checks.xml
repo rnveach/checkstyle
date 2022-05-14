@@ -218,5 +218,5 @@
     </module>
   </module>
 
-  <!-- <module name="com.puppycrawl.tools.checkstyle.checks.ReportExcessSuppressionsCheck" /> -->
+  <module name="com.puppycrawl.tools.checkstyle.checks.ReportExcessSuppressionsCheck" />
 </module>
