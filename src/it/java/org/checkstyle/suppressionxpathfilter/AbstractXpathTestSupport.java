@@ -22,6 +22,7 @@ package org.checkstyle.suppressionxpathfilter;
 import static com.google.common.truth.Truth.assertWithMessage;
 
 import java.io.File;
+import java.io.IOException;
 import java.io.Writer;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
@@ -70,6 +71,32 @@ public abstract class AbstractXpathTestSupport extends AbstractCheckstyleModuleT
         final String subpackage = getCheckName().toLowerCase(Locale.ENGLISH)
                 .replace("check", "");
         return "org/checkstyle/suppressionxpathfilter/" + subpackage;
+    }
+
+    /**
+     * Returns canonical path for the file with the given file name.
+     * The path is formed base on the non-compilable resources location.
+     *
+     * @param filename file name.
+     * @return canonical path for the file with the given file name.
+     * @throws IOException if I/O exception occurs while forming the path.
+     */
+    protected final String getXpathPath(String filename) throws IOException {
+        return new File("src/it/resources/" + getPackageLocation() + "/"
+                + filename).getCanonicalPath();
+    }
+
+    /**
+     * Returns canonical path for the file with the given file name.
+     * The path is formed base on the non-compilable resources location.
+     *
+     * @param filename file name.
+     * @return canonical path for the file with the given file name.
+     * @throws IOException if I/O exception occurs while forming the path.
+     */
+    protected final String getXpathNonCompilablePath(String filename) throws IOException {
+        return new File("src/it/resources-noncompilable/" + getPackageLocation() + "/"
+                + filename).getCanonicalPath();
     }
 
     /**
@@ -211,7 +238,7 @@ public abstract class AbstractXpathTestSupport extends AbstractCheckstyleModuleT
                 generatedXpathQueries));
 
         // TODO
-        // final Integer[] warnList = getLinesWithWarn(fileToProcess.getPath());
+        // final Integer[] warnList = getLinesWithWarn(fileToProcess.getXpathPath());
         verify(moduleConfig, fileToProcess.getPath(), expectedViolations);
         verifyXpathQueries(generatedXpathQueries, expectedXpathQueries);
         verify(treeWalkerConfigWithXpath, fileToProcess.getPath(), CommonUtil.EMPTY_STRING_ARRAY);

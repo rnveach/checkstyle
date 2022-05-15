@@ -40,7 +40,7 @@ public class XpathRegressionAbstractClassNameTest extends AbstractXpathTestSuppo
     @Test
     public void testClassNameTop() throws Exception {
         final File fileToProcess =
-                new File(getPath("SuppressionXpathRegressionAbstractClassNameTop.java"));
+                new File(getXpathPath("SuppressionXpathRegressionAbstractClassNameTop.java"));
 
         final DefaultConfiguration moduleConfig =
                 createModuleConfig(AbstractClassNameCheck.class);
@@ -69,7 +69,7 @@ public class XpathRegressionAbstractClassNameTest extends AbstractXpathTestSuppo
     @Test
     public void testClassNameInner() throws Exception {
         final File fileToProcess =
-                new File(getPath("SuppressionXpathRegressionAbstractClassNameInner.java"));
+                new File(getXpathPath("SuppressionXpathRegressionAbstractClassNameInner.java"));
 
         final DefaultConfiguration moduleConfig =
                 createModuleConfig(AbstractClassNameCheck.class);
@@ -99,7 +99,7 @@ public class XpathRegressionAbstractClassNameTest extends AbstractXpathTestSuppo
     @Test
     public void testClassNameNoModifier() throws Exception {
         final File fileToProcess =
-                new File(getPath("SuppressionXpathRegressionAbstractClassNameNoModifier.java"));
+                new File(getXpathPath("SuppressionXpathRegressionAbstractClassNameNoModifier.java"));
 
         final DefaultConfiguration moduleConfig =
                 createModuleConfig(AbstractClassNameCheck.class);
