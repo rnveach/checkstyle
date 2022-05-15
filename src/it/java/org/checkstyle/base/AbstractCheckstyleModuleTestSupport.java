@@ -19,28 +19,8 @@
 
 package org.checkstyle.base;
 
-import com.puppycrawl.tools.checkstyle.utils.ModuleReflectionUtil;
+import com.puppycrawl.tools.checkstyle.AbstractModuleTestSupport;
 
-public abstract class AbstractCheckstyleModuleTestSupport extends AbstractItModuleTestSupport {
-
-    @Override
-    protected ModuleCreationOption findModuleCreationOption(String moduleName) {
-        ModuleCreationOption moduleCreationOption = ModuleCreationOption.IN_CHECKER;
-
-        if (!ROOT_MODULE_NAME.equals(moduleName)) {
-            try {
-                final Class<?> moduleClass = Class.forName(moduleName);
-                if (ModuleReflectionUtil.isCheckstyleTreeWalkerCheck(moduleClass)
-                        || ModuleReflectionUtil.isTreeWalkerFilterModule(moduleClass)) {
-                    moduleCreationOption = ModuleCreationOption.IN_TREEWALKER;
-                }
-            }
-            catch (ClassNotFoundException ignore) {
-                // ignore exception, assume it is not part of TreeWalker
-            }
-        }
-
-        return moduleCreationOption;
-    }
-
+public abstract class AbstractCheckstyleModuleTestSupport extends AbstractModuleTestSupport {
+    // no code
 }

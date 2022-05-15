@@ -19,26 +19,18 @@
 
 package com.google.checkstyle.test.base;
 
-import java.io.IOException;
-import java.util.List;
-import java.util.Set;
-
 import org.checkstyle.base.AbstractItModuleTestSupport;
 
 import com.puppycrawl.tools.checkstyle.ConfigurationLoader;
 import com.puppycrawl.tools.checkstyle.PropertiesExpander;
 import com.puppycrawl.tools.checkstyle.api.CheckstyleException;
 import com.puppycrawl.tools.checkstyle.api.Configuration;
-import com.puppycrawl.tools.checkstyle.internal.utils.CheckUtil;
-import com.puppycrawl.tools.checkstyle.utils.ModuleReflectionUtil;
 
 public abstract class AbstractGoogleModuleTestSupport extends AbstractItModuleTestSupport {
 
     private static final String XML_NAME = "/google_checks.xml";
 
     private static final Configuration CONFIGURATION;
-
-    private static final Set<Class<?>> CHECKSTYLE_MODULES;
 
     static {
         try {
@@ -48,41 +40,6 @@ public abstract class AbstractGoogleModuleTestSupport extends AbstractItModuleTe
         catch (CheckstyleException ex) {
             throw new IllegalStateException(ex);
         }
-        try {
-            CHECKSTYLE_MODULES = CheckUtil.getCheckstyleModules();
-        }
-        catch (IOException ex) {
-            throw new IllegalStateException(ex);
-        }
-    }
-
-    @Override
-    protected ModuleCreationOption findModuleCreationOption(String moduleName) {
-        ModuleCreationOption moduleCreationOption = ModuleCreationOption.IN_CHECKER;
-
-        for (Class<?> moduleClass : CHECKSTYLE_MODULES) {
-            if (moduleClass.getSimpleName().equals(moduleName)
-                    || moduleClass.getSimpleName().equals(moduleName + "Check")) {
-                if (ModuleReflectionUtil.isCheckstyleTreeWalkerCheck(moduleClass)
-                        || ModuleReflectionUtil.isTreeWalkerFilterModule(moduleClass)) {
-                    moduleCreationOption = ModuleCreationOption.IN_TREEWALKER;
-                }
-                break;
-            }
-        }
-
-        return moduleCreationOption;
-    }
-
-    /**
-     * Returns {@link Configuration} instance for the given module name.
-     * This implementation uses {@link #getModuleConfig(String, String)} method inside.
-     *
-     * @param moduleName module name.
-     * @return {@link Configuration} instance for the given module name.
-     */
-    protected static Configuration getModuleConfig(String moduleName) {
-        return getModuleConfig(moduleName, null);
     }
 
     /**
@@ -94,20 +51,20 @@ public abstract class AbstractGoogleModuleTestSupport extends AbstractItModuleTe
      * @return {@link Configuration} instance for the given module name.
      * @throws IllegalStateException if there is a problem retrieving the module or config.
      */
-    protected static Configuration getModuleConfig(String moduleName, String moduleId) {
-        return getModuleConfig(CONFIGURATION, moduleName, moduleId);
+    protected static Configuration getModuleConfig(String moduleName) {
+        return getModuleConfig(CONFIGURATION, moduleName);
     }
 
     /**
-     * Returns a list of all {@link Configuration} instances for the given module IDs.
+     * Returns a {@link Configuration} instance for the given module IDs.
      *
      * @param moduleIds module IDs.
-     * @return List of {@link Configuration} instances.
+     * @return {@link Configuration} instance.
      * @throws CheckstyleException if there is an error with the config.
      */
-    protected static List<Configuration> getModuleConfigsByIds(String... moduleIds)
+    protected static Configuration getModuleConfigById(String... moduleIds)
             throws CheckstyleException {
-        return getModuleConfigsByIds(CONFIGURATION, moduleIds);
+        return getModuleConfigById(CONFIGURATION, moduleIds);
     }
 
 }

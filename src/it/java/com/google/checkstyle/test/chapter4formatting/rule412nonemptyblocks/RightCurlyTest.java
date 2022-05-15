@@ -51,7 +51,7 @@ public class RightCurlyTest extends AbstractGoogleModuleTestSupport {
             "108:5: " + getCheckMessage(RightCurlyCheck.class, MSG_KEY_LINE_ALONE, "}", 5),
         };
 
-        final Configuration checkConfig = createTreeWalkerConfig(getModuleConfigsByIds(MODULES));
+        final Configuration checkConfig = getModuleConfigById(MODULES);
         final String filePath = getPath("InputRightCurlyOther.java");
 
         final Integer[] warnList = getLinesWithWarn(filePath);
@@ -62,7 +62,7 @@ public class RightCurlyTest extends AbstractGoogleModuleTestSupport {
     public void testRightCurly2() throws Exception {
         final String[] expected = CommonUtil.EMPTY_STRING_ARRAY;
 
-        final Configuration checkConfig = createTreeWalkerConfig(getModuleConfigsByIds(MODULES));
+        final Configuration checkConfig = getModuleConfigById(MODULES);
         final String filePath = getPath("InputRightCurly2.java");
 
         final Integer[] warnList = getLinesWithWarn(filePath);
@@ -77,7 +77,7 @@ public class RightCurlyTest extends AbstractGoogleModuleTestSupport {
             "83:9: " + getCheckMessage(RightCurlyCheck.class, MSG_KEY_LINE_SAME, "}", 9),
         };
 
-        final Configuration checkConfig = createTreeWalkerConfig(getModuleConfigsByIds(MODULES));
+        final Configuration checkConfig = getModuleConfigById(MODULES);
         final String filePath = getPath("InputRightCurlyDoWhile.java");
 
         final Integer[] warnList = getLinesWithWarn(filePath);
@@ -94,7 +94,7 @@ public class RightCurlyTest extends AbstractGoogleModuleTestSupport {
             "108:5: " + getCheckMessage(RightCurlyCheck.class, MSG_KEY_LINE_ALONE, "}", 5),
         };
 
-        final Configuration checkConfig = createTreeWalkerConfig(getModuleConfigsByIds(MODULES));
+        final Configuration checkConfig = getModuleConfigById(MODULES);
         final String filePath = getPath("InputRightCurlyOther2.java");
 
         final Integer[] warnList = getLinesWithWarn(filePath);
@@ -109,7 +109,7 @@ public class RightCurlyTest extends AbstractGoogleModuleTestSupport {
             "83:9: " + getCheckMessage(RightCurlyCheck.class, MSG_KEY_LINE_SAME, "}", 9),
         };
 
-        final Configuration checkConfig = createTreeWalkerConfig(getModuleConfigsByIds(MODULES));
+        final Configuration checkConfig = getModuleConfigById(MODULES);
         final String filePath = getPath("InputRightCurlyDoWhile2.java");
 
         final Integer[] warnList = getLinesWithWarn(filePath);

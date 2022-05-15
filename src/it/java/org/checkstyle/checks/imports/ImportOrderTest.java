@@ -47,8 +47,7 @@ public class ImportOrderTest extends AbstractCheckstyleModuleTestSupport {
 
         final String filePath = getNonCompilablePath("InputFromAndroid.java");
         final String[] expected = CommonUtil.EMPTY_STRING_ARRAY;
-        final Integer[] warnList = getLinesWithWarn(filePath);
-        verify(checkConfig, filePath, expected, warnList);
+        verify(checkConfig, filePath, expected);
     }
 
     @Test
@@ -63,8 +62,7 @@ public class ImportOrderTest extends AbstractCheckstyleModuleTestSupport {
 
         final String filePath = getNonCompilablePath("InputFromSpotify.java");
         final String[] expected = CommonUtil.EMPTY_STRING_ARRAY;
-        final Integer[] warnList = getLinesWithWarn(filePath);
-        verify(checkConfig, filePath, expected, warnList);
+        verify(checkConfig, filePath, expected);
     }
 
     @Test
@@ -81,8 +79,7 @@ public class ImportOrderTest extends AbstractCheckstyleModuleTestSupport {
 
         final String filePath = getNonCompilablePath("InputFromTwitter.java");
         final String[] expected = CommonUtil.EMPTY_STRING_ARRAY;
-        final Integer[] warnList = getLinesWithWarn(filePath);
-        verify(checkConfig, filePath, expected, warnList);
+        verify(checkConfig, filePath, expected);
     }
 
 }

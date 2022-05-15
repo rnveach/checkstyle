@@ -52,25 +52,7 @@ import com.puppycrawl.tools.checkstyle.utils.CommonUtil;
 
 public abstract class AbstractItModuleTestSupport extends AbstractPathTestSupport {
 
-    /**
-     * Enum to specify options for checker creation.
-     */
-    public enum ModuleCreationOption {
-
-        /**
-         * Points that the module configurations
-         * has to be added under {@link TreeWalker}.
-         */
-        IN_TREEWALKER,
-        /**
-         * Points that checker will be created as
-         * a root of default configuration.
-         */
-        IN_CHECKER,
-
-    }
-
-    protected static final String ROOT_MODULE_NAME = "root";
+    protected static final String ROOT_MODULE_NAME = Checker.class.getSimpleName();
 
     private static final Pattern WARN_PATTERN = CommonUtil
             .createPattern(".*[ ]*//[ ]*warn[ ]*|/[*]\\*?\\s?warn\\s?[*]/");
@@ -78,19 +60,11 @@ public abstract class AbstractItModuleTestSupport extends AbstractPathTestSuppor
     private final ByteArrayOutputStream stream = new ByteArrayOutputStream();
 
     /**
-     * Find the module creation option to use for the module name.
-     *
-     * @param moduleName the module name.
-     * @return the module creation option.
-     */
-    protected abstract ModuleCreationOption findModuleCreationOption(String moduleName);
-
-    /**
      * Returns test logger.
      *
      * @return logger for tests
      */
-    protected final BriefUtLogger getBriefUtLogger() {
+    private BriefUtLogger getBriefUtLogger() {
         return new BriefUtLogger(stream);
     }
 
@@ -111,76 +85,96 @@ public abstract class AbstractItModuleTestSupport extends AbstractPathTestSuppor
      *
      * @param masterConfig The master configuration to examine.
      * @param moduleName module name.
-     * @param moduleId module id.
      * @return {@link Configuration} instance for the given module name.
      * @throws IllegalStateException if there is a problem retrieving the module
      *         or config.
      */
-    protected static Configuration getModuleConfig(Configuration masterConfig, String moduleName,
-            String moduleId) {
+    protected static Configuration getModuleConfig(Configuration masterConfig, String moduleName) {
         final Configuration result;
-        final List<Configuration> configs = getModuleConfigs(masterConfig, moduleName);
+
+        final List<Configuration> configs = getModuleConfigsByName(masterConfig, moduleName);
         if (configs.size() == 1) {
             result = configs.get(0);
         }
         else if (configs.isEmpty()) {
             throw new IllegalStateException("no instances of the Module was found: " + moduleName);
         }
-        else if (moduleId == null) {
-            throw new IllegalStateException("multiple instances of the same Module are detected");
-        }
         else {
-            result = configs.stream().filter(conf -> isSameModuleId(conf, moduleId))
-            .findFirst()
-            .orElseThrow(() -> new IllegalStateException("problem with module config"));
+            throw new IllegalStateException("multiple instances of the same Module are detected");
         }
 
         return result;
     }
 
     /**
-     * Verifies if the configuration's ID matches the expected {@code moduleId}.
-     *
-     * @param conf The config to examine.
-     * @param moduleId The module ID to match against.
-     * @return {@code true} if it matches.
-     * @throws IllegalStateException If there is an issue with finding the ID.
-     */
-    private static boolean isSameModuleId(Configuration conf, String moduleId) {
-        try {
-            return conf.getProperty("id").equals(moduleId);
-        }
-        catch (CheckstyleException ex) {
-            throw new IllegalStateException("problem to get ID attribute from " + conf, ex);
-        }
-    }
-
-    /**
-     * Returns a list of all {@link Configuration} instances for the given module IDs in the
+     * Returns a {@link Configuration} instance for the given module IDs in the
      * {@code masterConfig}.
      *
      * @param masterConfig The master configuration to pull results from.
      * @param moduleIds module IDs.
-     * @return List of {@link Configuration} instances.
+     * @return {@link Configuration} instances.
      * @throws CheckstyleException if there is an error with the config.
      */
-    protected static List<Configuration> getModuleConfigsByIds(Configuration masterConfig,
+    protected static Configuration getModuleConfigById(Configuration masterConfig,
             String... moduleIds) throws CheckstyleException {
-        final List<Configuration> result = new ArrayList<>();
+        DefaultConfiguration result = null;
+
         for (Configuration currentConfig : masterConfig.getChildren()) {
             if ("TreeWalker".equals(currentConfig.getName())) {
                 for (Configuration moduleConfig : currentConfig.getChildren()) {
                     final String id = getProperty(moduleConfig, "id");
                     if (id != null && isIn(id, moduleIds)) {
-                        result.add(moduleConfig);
+                        if (result == null) {
+                            result = createTreeWalkerConfig(moduleConfig);
+                        }
+                        else {
+                            result.addChild(moduleConfig);
+                        }
                     }
                 }
             }
             else {
                 final String id = getProperty(currentConfig, "id");
                 if (id != null && isIn(id, moduleIds)) {
-                    result.add(currentConfig);
+                    if (result == null) {
+                        result = createRootConfig(currentConfig);
+                    }
+                    else {
+                        result.addChild(currentConfig);
+                    }
                 }
+            }
+        }
+
+        if (result == null) {
+            throw new IllegalStateException(
+                    "no instances of the Module was found: " + String.join(", ", moduleIds));
+        }
+
+        return result;
+    }
+
+    /**
+     * Returns a list of all {@link Configuration} instances for the given
+     * module name pulled from the {@code masterConfig}.
+     *
+     * @param masterConfig The master configuration to examine.
+     * @param moduleName module name.
+     * @return {@link Configuration} instance for the given module name.
+     */
+    private static List<Configuration> getModuleConfigsByName(Configuration masterConfig,
+            String moduleName) {
+        final List<Configuration> result = new ArrayList<>();
+        for (Configuration currentConfig : masterConfig.getChildren()) {
+            if ("TreeWalker".equals(currentConfig.getName())) {
+                for (Configuration moduleConfig : currentConfig.getChildren()) {
+                    if (moduleName.equals(moduleConfig.getName())) {
+                        result.add(moduleConfig);
+                    }
+                }
+            }
+            else if (moduleName.equals(currentConfig.getName())) {
+                result.add(currentConfig);
             }
         }
         return result;
@@ -226,32 +220,6 @@ public abstract class AbstractItModuleTestSupport extends AbstractPathTestSuppor
     }
 
     /**
-     * Returns a list of all {@link Configuration} instances for the given
-     * module name pulled from the {@code masterConfig}.
-     *
-     * @param masterConfig The master configuration to examine.
-     * @param moduleName module name.
-     * @return {@link Configuration} instance for the given module name.
-     */
-    private static List<Configuration> getModuleConfigs(Configuration masterConfig,
-            String moduleName) {
-        final List<Configuration> result = new ArrayList<>();
-        for (Configuration currentConfig : masterConfig.getChildren()) {
-            if ("TreeWalker".equals(currentConfig.getName())) {
-                for (Configuration moduleConfig : currentConfig.getChildren()) {
-                    if (moduleName.equals(moduleConfig.getName())) {
-                        result.add(moduleConfig);
-                    }
-                }
-            }
-            else if (moduleName.equals(currentConfig.getName())) {
-                result.add(currentConfig);
-            }
-        }
-        return result;
-    }
-
-    /**
      * Creates {@link Checker} instance based on the given {@link Configuration} instance.
      *
      * @param moduleConfig {@link Configuration} instance.
@@ -259,23 +227,6 @@ public abstract class AbstractItModuleTestSupport extends AbstractPathTestSuppor
      * @throws Exception if an exception occurs during checker configuration.
      */
     protected final Checker createChecker(Configuration moduleConfig)
-            throws Exception {
-        final String name = moduleConfig.getName();
-
-        return createChecker(moduleConfig, findModuleCreationOption(name));
-    }
-
-    /**
-     * Creates {@link Checker} instance based on the given {@link Configuration} instance.
-     *
-     * @param moduleConfig {@link Configuration} instance.
-     * @param moduleCreationOption {@code IN_TREEWALKER} if the {@code moduleConfig} should be added
-     *                                                  under {@link TreeWalker}.
-     * @return {@link Checker} instance based on the given {@link Configuration} instance.
-     * @throws Exception if an exception occurs during checker configuration.
-     */
-    protected final Checker createChecker(Configuration moduleConfig,
-                                 ModuleCreationOption moduleCreationOption)
             throws Exception {
         final Checker checker = new Checker();
         checker.setModuleClassLoader(Thread.currentThread().getContextClassLoader());
@@ -285,19 +236,30 @@ public abstract class AbstractItModuleTestSupport extends AbstractPathTestSuppor
         checker.setLocaleCountry(locale.getCountry());
         checker.setLocaleLanguage(locale.getLanguage());
 
-        if (moduleCreationOption == ModuleCreationOption.IN_TREEWALKER) {
-            final Configuration config = createTreeWalkerConfig(moduleConfig);
-            checker.configure(config);
-        }
-        else if (ROOT_MODULE_NAME.equals(moduleConfig.getName())) {
+        if (ROOT_MODULE_NAME.equals(moduleConfig.getName())) {
             checker.configure(moduleConfig);
         }
         else {
             final Configuration config = createRootConfig(moduleConfig);
             checker.configure(config);
         }
+
         checker.addListener(getBriefUtLogger());
         return checker;
+    }
+
+    /**
+     * Creates {@link DefaultConfiguration} for the given {@link Configuration} instance.
+     *
+     * @param config {@link Configuration} instance.
+     * @return {@link DefaultConfiguration} for the given {@link Configuration} instance.
+     */
+    protected static DefaultConfiguration createRootConfig(Configuration config) {
+        final DefaultConfiguration rootConfig = new DefaultConfiguration(ROOT_MODULE_NAME);
+        // make sure that the tests always run with this charset
+        rootConfig.addProperty("charset", StandardCharsets.UTF_8.name());
+        rootConfig.addChild(config);
+        return rootConfig;
     }
 
     /**
@@ -309,14 +271,9 @@ public abstract class AbstractItModuleTestSupport extends AbstractPathTestSuppor
      *     based on the given {@link Configuration} instance.
      */
     protected static DefaultConfiguration createTreeWalkerConfig(Configuration config) {
-        final DefaultConfiguration rootConfig =
-                new DefaultConfiguration(ROOT_MODULE_NAME);
         final DefaultConfiguration twConf = createModuleConfig(TreeWalker.class);
-        // make sure that the tests always run with this charset
-        rootConfig.addProperty("charset", StandardCharsets.UTF_8.name());
-        rootConfig.addChild(twConf);
         twConf.addChild(config);
-        return rootConfig;
+        return twConf;
     }
 
     /**
@@ -340,18 +297,6 @@ public abstract class AbstractItModuleTestSupport extends AbstractPathTestSuppor
         }
 
         return result;
-    }
-
-    /**
-     * Creates {@link DefaultConfiguration} for the given {@link Configuration} instance.
-     *
-     * @param config {@link Configuration} instance.
-     * @return {@link DefaultConfiguration} for the given {@link Configuration} instance.
-     */
-    protected static DefaultConfiguration createRootConfig(Configuration config) {
-        final DefaultConfiguration rootConfig = new DefaultConfiguration(ROOT_MODULE_NAME);
-        rootConfig.addChild(config);
-        return rootConfig;
     }
 
     /**

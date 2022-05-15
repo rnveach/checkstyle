@@ -19,25 +19,18 @@
 
 package com.sun.checkstyle.test.base;
 
-import java.io.IOException;
-import java.util.Set;
-
 import org.checkstyle.base.AbstractItModuleTestSupport;
 
 import com.puppycrawl.tools.checkstyle.ConfigurationLoader;
 import com.puppycrawl.tools.checkstyle.PropertiesExpander;
 import com.puppycrawl.tools.checkstyle.api.CheckstyleException;
 import com.puppycrawl.tools.checkstyle.api.Configuration;
-import com.puppycrawl.tools.checkstyle.internal.utils.CheckUtil;
-import com.puppycrawl.tools.checkstyle.utils.ModuleReflectionUtil;
 
 public abstract class AbstractSunModuleTestSupport extends AbstractItModuleTestSupport {
 
     private static final String XML_NAME = "/sun_checks.xml";
 
     private static final Configuration CONFIGURATION;
-
-    private static final Set<Class<?>> CHECKSTYLE_MODULES;
 
     static {
         try {
@@ -47,30 +40,6 @@ public abstract class AbstractSunModuleTestSupport extends AbstractItModuleTestS
         catch (CheckstyleException ex) {
             throw new IllegalStateException(ex);
         }
-        try {
-            CHECKSTYLE_MODULES = CheckUtil.getCheckstyleModules();
-        }
-        catch (IOException ex) {
-            throw new IllegalStateException(ex);
-        }
-    }
-
-    @Override
-    protected ModuleCreationOption findModuleCreationOption(String moduleName) {
-        ModuleCreationOption moduleCreationOption = ModuleCreationOption.IN_CHECKER;
-
-        for (Class<?> moduleClass : CHECKSTYLE_MODULES) {
-            if (moduleClass.getSimpleName().equals(moduleName)
-                    || moduleClass.getSimpleName().equals(moduleName + "Check")) {
-                if (ModuleReflectionUtil.isCheckstyleTreeWalkerCheck(moduleClass)
-                        || ModuleReflectionUtil.isTreeWalkerFilterModule(moduleClass)) {
-                    moduleCreationOption = ModuleCreationOption.IN_TREEWALKER;
-                }
-                break;
-            }
-        }
-
-        return moduleCreationOption;
     }
 
     /**
@@ -81,20 +50,7 @@ public abstract class AbstractSunModuleTestSupport extends AbstractItModuleTestS
      * @return {@link Configuration} instance for the given module name.
      */
     protected static Configuration getModuleConfig(String moduleName) {
-        return getModuleConfig(moduleName, null);
-    }
-
-    /**
-     * Returns {@link Configuration} instance for the given module name.
-     * This implementation uses {@link #getModuleConfig(String)} method inside.
-     *
-     * @param moduleName module name.
-     * @param moduleId module id.
-     * @return {@link Configuration} instance for the given module name.
-     * @throws IllegalStateException if there is a problem retrieving the module or config.
-     */
-    protected static Configuration getModuleConfig(String moduleName, String moduleId) {
-        return getModuleConfig(CONFIGURATION, moduleName, moduleId);
+        return getModuleConfig(CONFIGURATION, moduleName);
     }
 
 }
