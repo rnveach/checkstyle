@@ -228,6 +228,7 @@ public abstract class AbstractItModuleTestSupport extends AbstractPathTestSuppor
      */
     protected final Checker createChecker(Configuration moduleConfig)
             throws Exception {
+        final String moduleName = moduleConfig.getName();
         final Checker checker = new Checker();
         checker.setModuleClassLoader(Thread.currentThread().getContextClassLoader());
         // make sure the tests always run with English error messages
@@ -236,7 +237,7 @@ public abstract class AbstractItModuleTestSupport extends AbstractPathTestSuppor
         checker.setLocaleCountry(locale.getCountry());
         checker.setLocaleLanguage(locale.getLanguage());
 
-        if (ROOT_MODULE_NAME.equals(moduleConfig.getName())) {
+        if (ROOT_MODULE_NAME.equals(moduleName)) {
             checker.configure(moduleConfig);
         }
         else {
@@ -246,20 +247,6 @@ public abstract class AbstractItModuleTestSupport extends AbstractPathTestSuppor
 
         checker.addListener(getBriefUtLogger());
         return checker;
-    }
-
-    /**
-     * Creates {@link DefaultConfiguration} for the given {@link Configuration} instance.
-     *
-     * @param config {@link Configuration} instance.
-     * @return {@link DefaultConfiguration} for the given {@link Configuration} instance.
-     */
-    protected static DefaultConfiguration createRootConfig(Configuration config) {
-        final DefaultConfiguration rootConfig = new DefaultConfiguration(ROOT_MODULE_NAME);
-        // make sure that the tests always run with this charset
-        rootConfig.addProperty("charset", StandardCharsets.UTF_8.name());
-        rootConfig.addChild(config);
-        return rootConfig;
     }
 
     /**
@@ -277,26 +264,15 @@ public abstract class AbstractItModuleTestSupport extends AbstractPathTestSuppor
     }
 
     /**
-     * Creates {@link DefaultConfiguration} or the Checker.
-     * based on the the list of {@link Configuration}.
+     * Creates {@link DefaultConfiguration} for the given {@link Configuration} instance.
      *
-     * @param configs list of {@link Configuration} instances.
-     * @return {@link DefaultConfiguration} for the Checker.
+     * @param config {@link Configuration} instance.
+     * @return {@link DefaultConfiguration} for the given {@link Configuration} instance.
      */
-    protected static DefaultConfiguration createTreeWalkerConfig(
-            List<Configuration> configs) {
-        DefaultConfiguration result = null;
-
-        for (Configuration config : configs) {
-            if (result == null) {
-                result = (DefaultConfiguration) createTreeWalkerConfig(config).getChildren()[0];
-            }
-            else {
-                result.addChild(config);
-            }
-        }
-
-        return result;
+    protected static DefaultConfiguration createRootConfig(Configuration config) {
+        final DefaultConfiguration rootConfig = new DefaultConfiguration(ROOT_MODULE_NAME);
+        rootConfig.addChild(config);
+        return rootConfig;
     }
 
     /**
