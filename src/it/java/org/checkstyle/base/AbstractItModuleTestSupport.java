@@ -169,12 +169,12 @@ public abstract class AbstractItModuleTestSupport extends AbstractPathTestSuppor
             if ("TreeWalker".equals(currentConfig.getName())) {
                 for (Configuration moduleConfig : currentConfig.getChildren()) {
                     if (moduleName.equals(moduleConfig.getName())) {
-                        result.add(moduleConfig);
+                        result.add(createTreeWalkerConfig(moduleConfig));
                     }
                 }
             }
             else if (moduleName.equals(currentConfig.getName())) {
-                result.add(currentConfig);
+                result.add(createRootConfig(currentConfig));
             }
         }
         return result;
