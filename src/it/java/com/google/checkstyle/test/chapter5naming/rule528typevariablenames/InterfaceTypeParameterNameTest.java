@@ -19,8 +19,6 @@
 
 package com.google.checkstyle.test.chapter5naming.rule528typevariablenames;
 
-import java.util.Map;
-
 import org.junit.jupiter.api.Test;
 
 import com.google.checkstyle.test.base.AbstractGoogleModuleTestSupport;
@@ -28,7 +26,7 @@ import com.puppycrawl.tools.checkstyle.api.Configuration;
 
 public class InterfaceTypeParameterNameTest extends AbstractGoogleModuleTestSupport {
 
-    private static final String MSG_KEY = "name.invalidPattern";
+    private static final String MSG = "Interface type name ''{0}'' must match pattern ''{1}''.";
 
     @Override
     protected String getPackageLocation() {
@@ -39,12 +37,11 @@ public class InterfaceTypeParameterNameTest extends AbstractGoogleModuleTestSupp
     public void testInterfaceDefault() throws Exception {
         final Configuration configuration = getModuleConfig("InterfaceTypeParameterName");
         final String format = "(^[A-Z][0-9]?)$|([A-Z][a-zA-Z0-9]*[T]$)";
-        final Map<String, String> messages = configuration.getMessages();
 
         final String[] expected = {
-            "48:15: " + getCheckMessage(messages, MSG_KEY, "Input", format),
-            "76:25: " + getCheckMessage(messages, MSG_KEY, "Request", format),
-            "80:25: " + getCheckMessage(messages, MSG_KEY, "TRequest", format),
+            "48:15: " + getCheckMessage(MSG, "Input", format),
+            "76:25: " + getCheckMessage(MSG, "Request", format),
+            "80:25: " + getCheckMessage(MSG, "TRequest", format),
         };
 
         final String filePath = getPath("InputInterfaceTypeParameterName.java");
