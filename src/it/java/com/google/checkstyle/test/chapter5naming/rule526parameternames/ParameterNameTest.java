@@ -38,7 +38,7 @@ public class ParameterNameTest extends AbstractGoogleModuleTestSupport {
     @Test
     public void testGeneralParameterName() throws Exception {
         final Configuration config = getModuleConfig("ParameterName");
-        final String format = config.getProperty("format");
+        final String format = "(^[A-Z][0-9]?)$|([A-Z][a-zA-Z0-9]*[T]$)";
         final Map<String, String> messages = config.getMessages();
         final String[] expected = {
             "10:21: " + getCheckMessage(messages, MSG_KEY, "bB", format),

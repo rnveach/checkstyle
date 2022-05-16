@@ -38,7 +38,7 @@ public class PatternVariableNameTest extends AbstractGoogleModuleTestSupport {
     @Test
     public void testPatternVariableName() throws Exception {
         final Configuration checkConfig = getModuleConfig("PatternVariableName");
-        final String format = checkConfig.getProperty("format");
+        final String format = "^[a-z]([a-z0-9][a-zA-Z0-9]*)?$";
         final Map<String, String> messages = checkConfig.getMessages();
         final String[] expected = {
             "11:39: " + getCheckMessage(messages, MSG_KEY, "OTHER", format),

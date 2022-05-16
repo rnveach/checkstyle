@@ -38,7 +38,7 @@ public class InterfaceTypeParameterNameTest extends AbstractGoogleModuleTestSupp
     @Test
     public void testInterfaceDefault() throws Exception {
         final Configuration configuration = getModuleConfig("InterfaceTypeParameterName");
-        final String format = configuration.getProperty("format");
+        final String format = "(^[A-Z][0-9]?)$|([A-Z][a-zA-Z0-9]*[T]$)";
         final Map<String, String> messages = configuration.getMessages();
 
         final String[] expected = {

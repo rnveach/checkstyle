@@ -38,7 +38,7 @@ public class LambdaParameterNameTest extends AbstractGoogleModuleTestSupport {
     @Test
     public void testLambdaParameterName() throws Exception {
         final Configuration config = getModuleConfig("LambdaParameterName");
-        final String format = config.getProperty("format");
+        final String format = "^[a-z]([a-z0-9][a-zA-Z0-9]*)?$";
         final Map<String, String> messages = config.getMessages();
 
         final String[] expected = {
