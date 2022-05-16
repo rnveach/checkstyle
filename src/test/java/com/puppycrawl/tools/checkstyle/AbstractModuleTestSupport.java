@@ -121,7 +121,7 @@ public abstract class AbstractModuleTestSupport extends AbstractPathTestSupport 
 
         if (ModuleReflectionUtil.isCheckstyleTreeWalkerCheck(moduleClass)
                 || ModuleReflectionUtil.isTreeWalkerFilterModule(moduleClass)) {
-            final Configuration config = createTreeWalkerConfig(moduleConfig);
+            final Configuration config = createRootConfig(createTreeWalkerConfig(moduleConfig));
             checker.configure(config);
         }
         else {
@@ -139,14 +139,9 @@ public abstract class AbstractModuleTestSupport extends AbstractPathTestSupport 
      *     based on the given {@link Configuration} instance.
      */
     protected static DefaultConfiguration createTreeWalkerConfig(Configuration config) {
-        final DefaultConfiguration rootConfig =
-                new DefaultConfiguration(ROOT_MODULE_NAME);
         final DefaultConfiguration twConf = createModuleConfig(TreeWalker.class);
-        // make sure that the tests always run with this charset
-        rootConfig.addProperty("charset", StandardCharsets.UTF_8.name());
-        rootConfig.addChild(twConf);
         twConf.addChild(config);
-        return rootConfig;
+        return twConf;
     }
 
     /**
