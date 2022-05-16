@@ -115,8 +115,8 @@ public class XpathRegressionGenericWhitespaceTest extends AbstractXpathTestSuppo
 
     @Test
     public void testProcessNestedGenericsThree() throws Exception {
-        final File fileToProcess = new File(
-                getXpathPath("SuppressionXpathRegressionGenericWhitespaceNestedGenericsThree.java"));
+        final File fileToProcess = new File(getXpathPath(
+                "SuppressionXpathRegressionGenericWhitespaceNestedGenericsThree.java"));
 
         final DefaultConfiguration moduleConfig =
                 createModuleConfig(GenericWhitespaceCheck.class);

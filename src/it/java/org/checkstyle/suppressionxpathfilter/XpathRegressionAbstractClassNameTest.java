@@ -98,8 +98,8 @@ public class XpathRegressionAbstractClassNameTest extends AbstractXpathTestSuppo
 
     @Test
     public void testClassNameNoModifier() throws Exception {
-        final File fileToProcess =
-                new File(getXpathPath("SuppressionXpathRegressionAbstractClassNameNoModifier.java"));
+        final File fileToProcess = new File(
+                getXpathPath("SuppressionXpathRegressionAbstractClassNameNoModifier.java"));
 
         final DefaultConfiguration moduleConfig =
                 createModuleConfig(AbstractClassNameCheck.class);

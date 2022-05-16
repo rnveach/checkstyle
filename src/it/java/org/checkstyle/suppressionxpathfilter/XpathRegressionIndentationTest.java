@@ -251,8 +251,8 @@ public class XpathRegressionIndentationTest extends AbstractXpathTestSupport {
 
     @Test
     public void testElseWithNoCurlies() throws Exception {
-        final File fileToProcess =
-                new File(getXpathPath("SuppressionXpathRegressionIndentationElseWithoutCurly.java"));
+        final File fileToProcess = new File(
+                getXpathPath("SuppressionXpathRegressionIndentationElseWithoutCurly.java"));
 
         final DefaultConfiguration moduleConfig =
                 createModuleConfig(IndentationCheck.class);

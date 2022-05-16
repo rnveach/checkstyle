@@ -92,8 +92,8 @@ public class XpathRegressionMatchXpathTest extends AbstractXpathTestSupport {
 
     @Test
     public void testEncodedQuoteString() throws Exception {
-        final File fileToProcess =
-                new File(getXpathPath("SuppressionXpathRegressionMatchXpathEncodedQuoteString.java"));
+        final File fileToProcess = new File(
+                getXpathPath("SuppressionXpathRegressionMatchXpathEncodedQuoteString.java"));
 
         final DefaultConfiguration moduleConfig =
                 createModuleConfig(IllegalTokenCheck.class);
@@ -121,8 +121,8 @@ public class XpathRegressionMatchXpathTest extends AbstractXpathTestSupport {
 
     @Test
     public void testEncodedLessString() throws Exception {
-        final File fileToProcess =
-                new File(getXpathPath("SuppressionXpathRegressionMatchXpathEncodedLessString.java"));
+        final File fileToProcess = new File(
+                getXpathPath("SuppressionXpathRegressionMatchXpathEncodedLessString.java"));
 
         final DefaultConfiguration moduleConfig =
                 createModuleConfig(IllegalTokenCheck.class);
@@ -150,8 +150,8 @@ public class XpathRegressionMatchXpathTest extends AbstractXpathTestSupport {
 
     @Test
     public void testEncodedNewLineString() throws Exception {
-        final File fileToProcess =
-                new File(getXpathPath("SuppressionXpathRegressionMatchXpathEncodedNewLineString.java"));
+        final File fileToProcess = new File(
+                getXpathPath("SuppressionXpathRegressionMatchXpathEncodedNewLineString.java"));
 
         final DefaultConfiguration moduleConfig =
                 createModuleConfig(IllegalTokenCheck.class);
@@ -179,8 +179,8 @@ public class XpathRegressionMatchXpathTest extends AbstractXpathTestSupport {
 
     @Test
     public void testGreaterString() throws Exception {
-        final File fileToProcess =
-                new File(getXpathPath("SuppressionXpathRegressionMatchXpathEncodedGreaterString.java"));
+        final File fileToProcess = new File(
+                getXpathPath("SuppressionXpathRegressionMatchXpathEncodedGreaterString.java"));
 
         final DefaultConfiguration moduleConfig =
                 createModuleConfig(IllegalTokenCheck.class);
@@ -237,8 +237,8 @@ public class XpathRegressionMatchXpathTest extends AbstractXpathTestSupport {
 
     @Test
     public void testEncodedAposString() throws Exception {
-        final File fileToProcess =
-                new File(getXpathPath("SuppressionXpathRegressionMatchXpathEncodedAposString.java"));
+        final File fileToProcess = new File(
+                getXpathPath("SuppressionXpathRegressionMatchXpathEncodedAposString.java"));
 
         final DefaultConfiguration moduleConfig =
                 createModuleConfig(IllegalTokenCheck.class);
@@ -266,8 +266,8 @@ public class XpathRegressionMatchXpathTest extends AbstractXpathTestSupport {
 
     @Test
     public void testEncodedCarriageString() throws Exception {
-        final File fileToProcess =
-            new File(getXpathPath("SuppressionXpathRegressionMatchXpathEncodedCarriageString.java"));
+        final File fileToProcess = new File(
+                getXpathPath("SuppressionXpathRegressionMatchXpathEncodedCarriageString.java"));
 
         final DefaultConfiguration moduleConfig =
                 createModuleConfig(IllegalTokenCheck.class);
@@ -411,8 +411,8 @@ public class XpathRegressionMatchXpathTest extends AbstractXpathTestSupport {
 
     @Test
     public void testEncodedGreaterChar() throws Exception {
-        final File fileToProcess =
-                new File(getXpathPath("SuppressionXpathRegressionMatchXpathEncodedGreaterChar.java"));
+        final File fileToProcess = new File(
+                getXpathPath("SuppressionXpathRegressionMatchXpathEncodedGreaterChar.java"));
 
         final DefaultConfiguration moduleConfig =
                 createModuleConfig(IllegalTokenCheck.class);
