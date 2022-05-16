@@ -149,6 +149,9 @@ public abstract class AbstractItModuleTestSupport extends AbstractPathTestSuppor
             throw new IllegalStateException(
                     "no instances of the Module was found: " + String.join(", ", moduleIds));
         }
+        if (result.getChildren().length < moduleIds.length) {
+            throw new IllegalStateException("too few instances of the Module was found");
+        }
 
         return result;
     }
