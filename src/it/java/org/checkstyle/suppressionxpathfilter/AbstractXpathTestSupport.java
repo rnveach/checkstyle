@@ -32,9 +32,9 @@ import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.checkstyle.base.AbstractCheckstyleModuleTestSupport;
 import org.junit.jupiter.api.io.TempDir;
 
+import com.puppycrawl.tools.checkstyle.AbstractModuleTestSupport;
 import com.puppycrawl.tools.checkstyle.DefaultConfiguration;
 import com.puppycrawl.tools.checkstyle.JavaParser;
 import com.puppycrawl.tools.checkstyle.TreeWalker;
@@ -44,7 +44,7 @@ import com.puppycrawl.tools.checkstyle.filters.SuppressionXpathFilter;
 import com.puppycrawl.tools.checkstyle.utils.CommonUtil;
 import com.puppycrawl.tools.checkstyle.xpath.XpathQueryGenerator;
 
-public abstract class AbstractXpathTestSupport extends AbstractCheckstyleModuleTestSupport {
+public abstract class AbstractXpathTestSupport extends AbstractModuleTestSupport {
 
     private static final int DEFAULT_TAB_WIDTH = 4;
 

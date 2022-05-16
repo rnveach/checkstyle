@@ -45,7 +45,7 @@ public class ImportOrderTest extends AbstractCheckstyleModuleTestSupport {
         checkConfig.addProperty("staticGroups",
             "android,androidx,com.android,dalvik,com,gov,junit,libcore,net,org,java,javax");
 
-        final String filePath = getNonCompilablePath("InputFromAndroid.java");
+        final String filePath = getItNonCompilablePath("InputFromAndroid.java");
         final String[] expected = CommonUtil.EMPTY_STRING_ARRAY;
         verify(checkConfig, filePath, expected);
     }
@@ -60,7 +60,7 @@ public class ImportOrderTest extends AbstractCheckstyleModuleTestSupport {
         checkConfig.addProperty("separatedStaticGroups", "true");
         checkConfig.addProperty("staticGroups", "android,com,net,junit,org,java,javax");
 
-        final String filePath = getNonCompilablePath("InputFromSpotify.java");
+        final String filePath = getItNonCompilablePath("InputFromSpotify.java");
         final String[] expected = CommonUtil.EMPTY_STRING_ARRAY;
         verify(checkConfig, filePath, expected);
     }
@@ -77,7 +77,7 @@ public class ImportOrderTest extends AbstractCheckstyleModuleTestSupport {
         checkConfig.addProperty("staticGroups",
             "android,com.twitter,com,junit,net,org,java,javax");
 
-        final String filePath = getNonCompilablePath("InputFromTwitter.java");
+        final String filePath = getItNonCompilablePath("InputFromTwitter.java");
         final String[] expected = CommonUtil.EMPTY_STRING_ARRAY;
         verify(checkConfig, filePath, expected);
     }

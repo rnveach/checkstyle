@@ -19,8 +19,24 @@
 
 package org.checkstyle.base;
 
+import java.io.File;
+import java.io.IOException;
+
 import com.puppycrawl.tools.checkstyle.AbstractModuleTestSupport;
 
 public abstract class AbstractCheckstyleModuleTestSupport extends AbstractModuleTestSupport {
-    // no code
+
+    /**
+     * Returns canonical path for the file with the given file name.
+     * The path is formed base on the non-compilable resources location.
+     *
+     * @param filename file name.
+     * @return canonical path for the file with the given file name.
+     * @throws IOException if I/O exception occurs while forming the path.
+     */
+    protected final String getItNonCompilablePath(String filename) throws IOException {
+        return new File("src/it/resources-noncompilable/" + getPackageLocation() + "/"
+                + filename).getCanonicalPath();
+    }
+
 }
