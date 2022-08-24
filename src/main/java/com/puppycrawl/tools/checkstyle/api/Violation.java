@@ -28,10 +28,7 @@ import java.net.URLConnection;
 import java.nio.charset.StandardCharsets;
 import java.text.MessageFormat;
 import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashMap;
 import java.util.Locale;
-import java.util.Map;
 import java.util.MissingResourceException;
 import java.util.Objects;
 import java.util.PropertyResourceBundle;
@@ -58,14 +55,14 @@ public final class Violation
      * A cache that maps bundle names to ResourceBundles.
      * Avoids repetitive calls to ResourceBundle.getBundle().
      */
-    private static final Map<String, ResourceBundle> BUNDLE_CACHE =
-        Collections.synchronizedMap(new HashMap<>());
+//    private static final Map<String, ResourceBundle> BUNDLE_CACHE =
+//        Collections.synchronizedMap(new HashMap<>());
 
     /** The default severity level if one is not specified. */
     private static final SeverityLevel DEFAULT_SEVERITY = SeverityLevel.ERROR;
 
     /** The locale to localise violations to. **/
-    private static Locale sLocale = Locale.getDefault();
+    private static Locale sLocale; // = Locale.getDefault();
 
     /** The line number. **/
     private final int lineNo;
@@ -393,7 +390,7 @@ public final class Violation
 
     /** Clears the cache. */
     public static void clearCache() {
-        BUNDLE_CACHE.clear();
+//        BUNDLE_CACHE.clear();
     }
 
     /**
@@ -520,10 +517,10 @@ public final class Violation
      * @return a ResourceBundle
      */
     private ResourceBundle getBundle(String bundleName) {
-        return BUNDLE_CACHE.computeIfAbsent(bundleName, name -> {
+//        return BUNDLE_CACHE.computeIfAbsent(bundleName, name -> {
             return ResourceBundle.getBundle(
-                name, sLocale, sourceClass.getClassLoader(), new Utf8Control());
-        });
+                bundleName, sLocale, sourceClass.getClassLoader(), new Utf8Control());
+//        });
     }
 
     /**

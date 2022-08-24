@@ -4011,18 +4011,7 @@
                 <param>com.puppycrawl.tools.checkstyle.api.*</param>
               </targetClasses>
               <targetTests>
-                <param>com.puppycrawl.tools.checkstyle.api.*</param>
-                <!-- 1% mutation in FullIdent -->
-                <param>com.puppycrawl.tools.checkstyle.checks.coding.UnusedLocalVariableCheckTest</param>
-                <!-- 1% mutation in CheckUtil -->
-                <param>com.puppycrawl.tools.checkstyle.checks.OuterTypeFilenameCheckTest</param>
-                <param>org.checkstyle.suppressionxpathfilter.XpathRegressionUnusedLocalVariableTest</param>
-                <param>com.puppycrawl.tools.checkstyle.checks.javadoc.SummaryJavadocCheckTest</param>
-                <param>org.checkstyle.suppressionxpathfilter.XpathRegressionJavadocMethodTest</param>
-                <param>com.puppycrawl.tools.checkstyle.checks.javadoc.JavadocMethodCheckTest</param>
-                <param>com.puppycrawl.tools.checkstyle.filters.SuppressWithPlainTextCommentFilterTest</param>
-                <param>com.puppycrawl.tools.checkstyle.checks.whitespace.FileTabCharacterCheckTest</param>
-                <param>com.puppycrawl.tools.checkstyle.checks.NewlineAtEndOfFileCheckTest</param>
+                <param>com.puppycrawl.tools.checkstyle.api.ViolationTest*</param>
               </targetTests>
               <excludedTestClasses>
                 <param>*.Input*</param>
