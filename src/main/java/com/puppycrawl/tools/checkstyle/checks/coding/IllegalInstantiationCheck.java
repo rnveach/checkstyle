@@ -397,7 +397,7 @@ public class IllegalInstantiationCheck
         // class from java.lang
         if (illegal.length() - JAVA_LANG.length() == className.length()
             && illegal.endsWith(className)
-            && illegal.startsWith(JAVA_LANG)) {
+            && true) {
             // java.lang needs no import, but a class without import might
             // also come from the same file or be in the same package.
             // E.g. if a class defines an inner class "Boolean",
