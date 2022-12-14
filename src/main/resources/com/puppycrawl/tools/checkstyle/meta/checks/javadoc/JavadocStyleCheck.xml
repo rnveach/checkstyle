@@ -20,9 +20,8 @@
  requirement.
  &lt;/li&gt;
  &lt;li&gt;
- Check text for Javadoc statements that do not have any description.
- This includes both completely empty Javadoc, and Javadoc with only tags
- such as {@code @param} and {@code @return}.
+ Check text for Javadoc statements that do not have any description, like with only tags such
+ as {@code @param} and {@code @return}.
  &lt;/li&gt;
  &lt;li&gt;
  Check text for incomplete HTML tags. Verifies that HTML tags have
@@ -69,10 +68,6 @@
                <description>Specify the format for matching
  the end of a sentence.</description>
             </property>
-            <property default-value="false" name="checkEmptyJavadoc" type="boolean">
-               <description>Control whether to check if the Javadoc
- is missing a describing text.</description>
-            </property>
             <property default-value="true" name="checkHtml" type="boolean">
                <description>Control whether to check for incomplete HTML tags.</description>
             </property>
@@ -84,7 +79,6 @@
             </property>
          </properties>
          <message-keys>
-            <message-key key="javadoc.empty"/>
             <message-key key="javadoc.extraHtml"/>
             <message-key key="javadoc.incompleteTag"/>
             <message-key key="javadoc.missing"/>

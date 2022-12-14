@@ -20,7 +20,6 @@
 package com.puppycrawl.tools.checkstyle.checks.javadoc;
 
 import static com.google.common.truth.Truth.assertWithMessage;
-import static com.puppycrawl.tools.checkstyle.checks.javadoc.JavadocStyleCheck.MSG_EMPTY;
 import static com.puppycrawl.tools.checkstyle.checks.javadoc.JavadocStyleCheck.MSG_EXTRA_HTML;
 import static com.puppycrawl.tools.checkstyle.checks.javadoc.JavadocStyleCheck.MSG_INCOMPLETE_TAG;
 import static com.puppycrawl.tools.checkstyle.checks.javadoc.JavadocStyleCheck.MSG_JAVADOC_MISSING;
@@ -318,8 +317,6 @@ public class JavadocStyleCheckTest
             "75: " + getCheckMessage(MSG_NO_PERIOD),
             "76:31: " + getCheckMessage(MSG_EXTRA_HTML, "</code> // violation"),
             "77: " + getCheckMessage(MSG_INCOMPLETE_TAG, "    * should fail <"),
-            "175: " + getCheckMessage(MSG_EMPTY),
-            "193: " + getCheckMessage(MSG_EMPTY),
             "198: " + getCheckMessage(MSG_NO_PERIOD),
             "292:21: " + getCheckMessage(MSG_EXTRA_HTML, "</string> // violation"),
             "334: " + getCheckMessage(MSG_NO_PERIOD),
@@ -340,9 +337,6 @@ public class JavadocStyleCheckTest
             "75: " + getCheckMessage(MSG_NO_PERIOD),
             "76:31: " + getCheckMessage(MSG_EXTRA_HTML, "</code> // violation"),
             "77: " + getCheckMessage(MSG_INCOMPLETE_TAG, "    * should fail <"),
-            "176: " + getCheckMessage(MSG_EMPTY),
-            "180: " + getCheckMessage(MSG_EMPTY),
-            "194: " + getCheckMessage(MSG_EMPTY),
             "199: " + getCheckMessage(MSG_NO_PERIOD),
             "293:21: " + getCheckMessage(MSG_EXTRA_HTML, "</string> // violation"),
             "335: " + getCheckMessage(MSG_NO_PERIOD),
@@ -365,10 +359,6 @@ public class JavadocStyleCheckTest
             "75: " + getCheckMessage(MSG_NO_PERIOD),
             "76:32: " + getCheckMessage(MSG_EXTRA_HTML, "</code> // violation"),
             "77: " + getCheckMessage(MSG_INCOMPLETE_TAG, "     * should fail <"),
-            "175: " + getCheckMessage(MSG_EMPTY),
-            "179: " + getCheckMessage(MSG_EMPTY),
-            "184: " + getCheckMessage(MSG_EMPTY),
-            "193: " + getCheckMessage(MSG_EMPTY),
             "198: " + getCheckMessage(MSG_NO_PERIOD),
             "292:21: " + getCheckMessage(MSG_EXTRA_HTML, "</string> // violation"),
             "334: " + getCheckMessage(MSG_NO_PERIOD),
@@ -392,13 +382,7 @@ public class JavadocStyleCheckTest
 
     @Test
     public void testEmptyJavadoc2() throws Exception {
-        final String[] expected = {
-            "75: " + getCheckMessage(MSG_EMPTY),
-            "79: " + getCheckMessage(MSG_EMPTY),
-            "84: " + getCheckMessage(MSG_EMPTY),
-            "89: " + getCheckMessage(MSG_EMPTY),
-            "93: " + getCheckMessage(MSG_EMPTY),
-        };
+        final String[] expected = CommonUtil.EMPTY_STRING_ARRAY;
 
         verifyWithInlineConfigParser(
             getPath("InputJavadocStyleEmptyJavadoc2.java"), expected);
@@ -559,10 +543,7 @@ public class JavadocStyleCheckTest
     @Test
     public void testInterfaceMemberScopeIsPublic()
             throws Exception {
-        final String[] expected = {
-            "20: " + getCheckMessage(MSG_EMPTY),
-            "23: " + getCheckMessage(MSG_EMPTY),
-        };
+        final String[] expected = CommonUtil.EMPTY_STRING_ARRAY;
 
         verifyWithInlineConfigParser(
                 getPath("InputJavadocStyleInterfaceMemberScopeIsPublic.java"),
@@ -572,11 +553,7 @@ public class JavadocStyleCheckTest
     @Test
     public void testEnumCtorScopeIsPrivate()
             throws Exception {
-        final String[] expected = {
-            "20: " + getCheckMessage(MSG_EMPTY),
-            "23: " + getCheckMessage(MSG_EMPTY),
-            "31: " + getCheckMessage(MSG_EMPTY),
-        };
+        final String[] expected = CommonUtil.EMPTY_STRING_ARRAY;
 
         verifyWithInlineConfigParser(
                 getPath("InputJavadocStyleEnumCtorScopeIsPrivate.java"),

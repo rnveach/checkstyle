@@ -55,9 +55,8 @@ import com.puppycrawl.tools.checkstyle.utils.ScopeUtil;
  * requirement.
  * </li>
  * <li>
- * Check text for Javadoc statements that do not have any description.
- * This includes both completely empty Javadoc, and Javadoc with only tags
- * such as {@code @param} and {@code @return}.
+ * Check text for Javadoc statements that do not have any description, like with only tags such
+ * as {@code @param} and {@code @return}.
  * </li>
  * <li>
  * Check text for incomplete HTML tags. Verifies that HTML tags have
@@ -107,12 +106,6 @@ import com.puppycrawl.tools.checkstyle.utils.ScopeUtil;
  * the end of a sentence.
  * Type is {@code java.util.regex.Pattern}.
  * Default value is {@code "([.?!][ \t\n\r\f&lt;])|([.?!]$)"}.
- * </li>
- * <li>
- * Property {@code checkEmptyJavadoc} - Control whether to check if the Javadoc
- * is missing a describing text.
- * Type is {@code boolean}.
- * Default value is {@code false}.
  * </li>
  * <li>
  * Property {@code checkHtml} - Control whether to check for incomplete HTML tags.
@@ -279,9 +272,6 @@ import com.puppycrawl.tools.checkstyle.utils.ScopeUtil;
  * </p>
  * <ul>
  * <li>
- * {@code javadoc.empty}
- * </li>
- * <li>
  * {@code javadoc.extraHtml}
  * </li>
  * <li>
@@ -306,9 +296,6 @@ public class JavadocStyleCheck
 
     /** Message property key for the Missing Javadoc message. */
     public static final String MSG_JAVADOC_MISSING = "javadoc.missing";
-
-    /** Message property key for the Empty Javadoc message. */
-    public static final String MSG_EMPTY = "javadoc.empty";
 
     /** Message property key for the No Javadoc end of Sentence Period message. */
     public static final String MSG_NO_PERIOD = "javadoc.noPeriod";
@@ -361,11 +348,6 @@ public class JavadocStyleCheck
      * Control whether to check for incomplete HTML tags.
      */
     private boolean checkHtml = true;
-
-    /**
-     * Control whether to check if the Javadoc is missing a describing text.
-     */
-    private boolean checkEmptyJavadoc;
 
     @Override
     public int[] getDefaultTokens() {
@@ -464,10 +446,6 @@ public class JavadocStyleCheck
             if (checkHtml) {
                 checkHtmlTags(ast, comment);
             }
-
-            if (checkEmptyJavadoc) {
-                checkJavadocIsNotEmpty(comment);
-            }
         }
     }
 
@@ -489,19 +467,6 @@ public class JavadocStyleCheck
             && !(commentText.startsWith("{@inheritDoc}")
             && JavadocTagInfo.INHERIT_DOC.isValidOn(ast))) {
             log(comment.getStartLineNo(), MSG_NO_PERIOD);
-        }
-    }
-
-    /**
-     * Checks that the Javadoc is not empty.
-     *
-     * @param comment the source lines that make up the Javadoc comment.
-     */
-    private void checkJavadocIsNotEmpty(TextBlock comment) {
-        final String commentText = getCommentText(comment.getText());
-
-        if (commentText.isEmpty()) {
-            log(comment.getStartLineNo(), MSG_EMPTY);
         }
     }
 
@@ -790,15 +755,6 @@ public class JavadocStyleCheck
      */
     public void setCheckHtml(boolean flag) {
         checkHtml = flag;
-    }
-
-    /**
-     * Setter to control whether to check if the Javadoc is missing a describing text.
-     *
-     * @param flag {@code true} if empty Javadoc checking should be done.
-     */
-    public void setCheckEmptyJavadoc(boolean flag) {
-        checkEmptyJavadoc = flag;
     }
 
 }
