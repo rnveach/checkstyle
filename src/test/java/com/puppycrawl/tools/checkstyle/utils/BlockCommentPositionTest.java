@@ -47,30 +47,30 @@ public class BlockCommentPositionTest extends AbstractModuleTestSupport {
     public void testJavaDocsRecognition() throws Exception {
         final List<BlockCommentPositionTestMetadata> metadataList = Arrays.asList(
                 new BlockCommentPositionTestMetadata("InputBlockCommentPositionOnClass.java",
-                        BlockCommentPosition::isOnClass, 3),
+                        BlockCommentPosition::getOnClass, 3),
                 new BlockCommentPositionTestMetadata("InputBlockCommentPositionOnMethod.java",
-                        BlockCommentPosition::isOnMethod, 6),
+                        BlockCommentPosition::getOnMethod, 6),
                 new BlockCommentPositionTestMetadata("InputBlockCommentPositionOnField.java",
-                        BlockCommentPosition::isOnField, 3),
+                        BlockCommentPosition::getOnField, 3),
                 new BlockCommentPositionTestMetadata("InputBlockCommentPositionOnEnum.java",
-                        BlockCommentPosition::isOnEnum, 3),
+                        BlockCommentPosition::getOnEnum, 3),
                 new BlockCommentPositionTestMetadata("InputBlockCommentPositionOnConstructor.java",
-                        BlockCommentPosition::isOnConstructor, 5),
+                        BlockCommentPosition::getOnConstructor, 5),
                 new BlockCommentPositionTestMetadata("InputBlockCommentPositionOnInterface.java",
-                        BlockCommentPosition::isOnInterface, 3),
+                        BlockCommentPosition::getOnInterface, 3),
                 new BlockCommentPositionTestMetadata("InputBlockCommentPositionOnAnnotation.java",
-                        BlockCommentPosition::isOnAnnotationDef, 3),
+                        BlockCommentPosition::getOnAnnotationDef, 3),
                 new BlockCommentPositionTestMetadata("InputBlockCommentPositionOnEnumMember.java",
-                        BlockCommentPosition::isOnEnumConstant, 2),
+                        BlockCommentPosition::getOnEnumConstant, 2),
                 new BlockCommentPositionTestMetadata(
                         "InputBlockCommentPositionOnAnnotationField.java",
-                        BlockCommentPosition::isOnAnnotationField, 4),
+                        BlockCommentPosition::getOnAnnotationField, 4),
                 new BlockCommentPositionTestMetadata(
                         "inputs/normal/package-info.java",
-                        BlockCommentPosition::isOnPackage, 1),
+                        BlockCommentPosition::getOnPackage, 1),
                 new BlockCommentPositionTestMetadata(
                         "inputs/annotation/package-info.java",
-                        BlockCommentPosition::isOnPackage, 1)
+                        BlockCommentPosition::getOnPackage, 1)
         );
 
         for (BlockCommentPositionTestMetadata metadata : metadataList) {
@@ -87,9 +87,9 @@ public class BlockCommentPositionTest extends AbstractModuleTestSupport {
     public void testJavaDocsRecognitionNonCompilable() throws Exception {
         final List<BlockCommentPositionTestMetadata> metadataList = Arrays.asList(
             new BlockCommentPositionTestMetadata("InputBlockCommentPositionOnRecord.java",
-                BlockCommentPosition::isOnRecord, 3),
+                BlockCommentPosition::getOnRecord, 3),
             new BlockCommentPositionTestMetadata("InputBlockCommentPositionOnCompactCtor.java",
-                BlockCommentPosition::isOnCompactConstructor, 3)
+                BlockCommentPosition::getOnCompactConstructor, 3)
         );
 
         for (BlockCommentPositionTestMetadata metadata : metadataList) {
@@ -104,13 +104,14 @@ public class BlockCommentPositionTest extends AbstractModuleTestSupport {
     }
 
     private static int getJavadocsCount(DetailAST detailAST,
-                                        Function<DetailAST, Boolean> assertion) {
+                                        Function<DetailAST, DetailAST> assertion) {
         int matchFound = 0;
         DetailAST node = detailAST;
         while (node != null) {
             if (node.getType() == TokenTypes.BLOCK_COMMENT_BEGIN
-                    && JavadocUtil.isJavadocComment(node)) {
-                if (!assertion.apply(node)) {
+                    && JavadocUtil.isJavadocComment(node)
+                    && JavadocUtil.getAssociatedJavadocTarget(node) != null) {
+                if (assertion.apply(node) == null) {
                     throw new IllegalStateException("Position of comment is defined correctly");
                 }
                 matchFound++;
@@ -129,11 +130,11 @@ public class BlockCommentPositionTest extends AbstractModuleTestSupport {
     private static final class BlockCommentPositionTestMetadata {
 
         private final String fileName;
-        private final Function<DetailAST, Boolean> assertion;
+        private final Function<DetailAST, DetailAST> assertion;
         private final int matchesNum;
 
         private BlockCommentPositionTestMetadata(String fileName, Function<DetailAST,
-                Boolean> assertion, int matchesNum) {
+                DetailAST> assertion, int matchesNum) {
             this.fileName = fileName;
             this.assertion = assertion;
             this.matchesNum = matchesNum;
@@ -143,7 +144,7 @@ public class BlockCommentPositionTest extends AbstractModuleTestSupport {
             return fileName;
         }
 
-        public Function<DetailAST, Boolean> getAssertion() {
+        public Function<DetailAST, DetailAST> getAssertion() {
             return assertion;
         }
 

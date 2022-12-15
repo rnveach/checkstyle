@@ -212,7 +212,8 @@ public final class JavadocPropertiesGenerator {
             }
             // Otherwise, the javadoc comment will be right here.
             else if (child.getType() == TokenTypes.BLOCK_COMMENT_BEGIN
-                    && JavadocUtil.isJavadocComment(child)) {
+                    && JavadocUtil.isJavadocComment(child)
+                    && JavadocUtil.getAssociatedJavadocTarget(child) != null) {
                 final DetailNode tree = DetailNodeTreeStringPrinter.parseJavadocAsDetailNode(child);
                 firstSentence = getFirstJavadocSentence(tree);
             }

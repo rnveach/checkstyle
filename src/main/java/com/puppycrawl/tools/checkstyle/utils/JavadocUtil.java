@@ -159,7 +159,7 @@ public final class JavadocUtil {
      */
     public static boolean isJavadocComment(DetailAST blockCommentBegin) {
         final String commentContent = getBlockCommentContent(blockCommentBegin);
-        return isJavadocComment(commentContent) && isCorrectJavadocPosition(blockCommentBegin);
+        return isJavadocComment(commentContent);
     }
 
     /**
@@ -380,7 +380,7 @@ public final class JavadocUtil {
      * @see <a href="https://docs.oracle.com/javase/8/docs/technotes/tools/unix/javadoc.html">
      *     Javadoc util documentation</a>
      */
-    public static boolean isCorrectJavadocPosition(DetailAST blockComment) {
+    public static DetailAST getAssociatedJavadocTarget(DetailAST blockComment) {
         // We must be sure that after this one there are no other documentation comments.
         DetailAST sibling = blockComment.getNextSibling();
         while (sibling != null) {
@@ -399,10 +399,17 @@ public final class JavadocUtil {
                 sibling = null;
             }
         }
-        return sibling == null
-            && (BlockCommentPosition.isOnType(blockComment)
-                || BlockCommentPosition.isOnMember(blockComment)
-                || BlockCommentPosition.isOnPackage(blockComment));
+        DetailAST result = null;
+        if (sibling == null) {
+            result = BlockCommentPosition.getOnType(blockComment);
+            if (result == null) {
+                result = BlockCommentPosition.getOnMember(blockComment);
+                if (result == null) {
+                    result = BlockCommentPosition.getOnPackage(blockComment);
+                }
+            }
+        }
+        return result;
     }
 
 }

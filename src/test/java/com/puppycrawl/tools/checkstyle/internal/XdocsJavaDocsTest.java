@@ -575,7 +575,8 @@ public class XdocsJavaDocsTest extends AbstractModuleTestSupport {
 
         @Override
         public void visitToken(DetailAST ast) {
-            if (JavadocUtil.isJavadocComment(ast)) {
+            if (JavadocUtil.isJavadocComment(ast)
+                    && JavadocUtil.getAssociatedJavadocTarget(ast) != null) {
                 final DetailAST parentNode = getParent(ast);
 
                 switch (parentNode.getType()) {

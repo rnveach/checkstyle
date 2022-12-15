@@ -104,7 +104,7 @@ public class InvalidJavadocPositionCheck extends AbstractCheck {
         final String commentContent = JavadocUtil.getBlockCommentContent(ast);
 
         if (JavadocUtil.isJavadocComment(commentContent)
-                && !JavadocUtil.isCorrectJavadocPosition(ast)) {
+                && JavadocUtil.getAssociatedJavadocTarget(ast) == null) {
             log(ast, MSG_KEY);
         }
     }

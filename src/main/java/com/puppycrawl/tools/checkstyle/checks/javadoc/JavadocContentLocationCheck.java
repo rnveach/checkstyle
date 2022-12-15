@@ -202,7 +202,8 @@ public class JavadocContentLocationCheck extends AbstractCheck {
 
     @Override
     public void visitToken(DetailAST ast) {
-        if (isMultilineComment(ast) && JavadocUtil.isJavadocComment(ast)) {
+        if (isMultilineComment(ast) && JavadocUtil.isJavadocComment(ast)
+                && JavadocUtil.getAssociatedJavadocTarget(ast) != null) {
             final String commentContent = JavadocUtil.getJavadocCommentContent(ast);
             final int indexOfFirstNonBlankLine = findIndexOfFirstNonBlankLine(commentContent);
             if (indexOfFirstNonBlankLine >= 0) {

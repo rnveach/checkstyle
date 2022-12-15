@@ -396,7 +396,8 @@ public class DesignForExtensionCheck extends AbstractCheck {
         DetailAST curNode = token;
         while (curNode != null) {
             if (curNode.getType() == TokenTypes.BLOCK_COMMENT_BEGIN
-                    && JavadocUtil.isJavadocComment(curNode)) {
+                    && JavadocUtil.isJavadocComment(curNode)
+                    && JavadocUtil.getAssociatedJavadocTarget(curNode) != null) {
                 result = hasValidJavadocComment(curNode);
                 break;
             }

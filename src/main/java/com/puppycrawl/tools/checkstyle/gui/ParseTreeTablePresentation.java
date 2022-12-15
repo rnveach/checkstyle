@@ -188,7 +188,8 @@ public class ParseTreeTablePresentation {
         else {
             if (parseMode == ParseMode.JAVA_WITH_JAVADOC_AND_COMMENTS
                     && ((DetailAST) parent).getType() == TokenTypes.COMMENT_CONTENT
-                    && JavadocUtil.isJavadocComment(((DetailAST) parent).getParent())) {
+                    && JavadocUtil.isJavadocComment(((DetailAST) parent).getParent()) && JavadocUtil
+                            .getAssociatedJavadocTarget(((DetailAST) parent).getParent()) != null) {
                 // getChildCount return 0 on COMMENT_CONTENT,
                 // but we need to attach javadoc tree, that is separate tree
                 result = 1;
@@ -266,7 +267,8 @@ public class ParseTreeTablePresentation {
         final Object result;
         if (parseMode == ParseMode.JAVA_WITH_JAVADOC_AND_COMMENTS
                 && parent.getType() == TokenTypes.COMMENT_CONTENT
-                && JavadocUtil.isJavadocComment(parent.getParent())) {
+                && JavadocUtil.isJavadocComment(parent.getParent())
+                && JavadocUtil.getAssociatedJavadocTarget(parent.getParent()) != null) {
             result = getJavadocTree(parent.getParent());
         }
         else {

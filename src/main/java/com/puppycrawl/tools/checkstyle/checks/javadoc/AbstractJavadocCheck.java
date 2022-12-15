@@ -304,31 +304,44 @@ public abstract class AbstractJavadocCheck extends AbstractCheck {
         if (JavadocUtil.isJavadocComment(blockCommentNode)) {
             // store as field, to share with child Checks
             context.get().blockCommentAst = blockCommentNode;
+            context.get().javadocTargetAst = JavadocUtil
+                    .getAssociatedJavadocTarget(blockCommentNode);
 
-            final LineColumn treeCacheKey = new LineColumn(blockCommentNode.getLineNo(),
-                    blockCommentNode.getColumnNo());
-
-            final ParseStatus result = TREE_CACHE.get().computeIfAbsent(treeCacheKey, key -> {
-                return context.get().parser.parseJavadocAsDetailNode(blockCommentNode);
-            });
-
-            if (result.getParseErrorMessage() == null) {
-                if (acceptJavadocWithNonTightHtml() || !result.isNonTight()) {
-                    processTree(result.getTree());
-                }
-
-                if (violateExecutionOnNonTightHtml && result.isNonTight()) {
-                    log(result.getFirstNonTightHtmlTag().getLine(),
-                            JavadocDetailNodeParser.MSG_UNCLOSED_HTML_TAG,
-                            result.getFirstNonTightHtmlTag().getText());
-                }
+            if (context.get().javadocTargetAst != null) {
+                processValidJavadoc(blockCommentNode);
             }
-            else {
-                final ParseErrorMessage parseErrorMessage = result.getParseErrorMessage();
-                log(parseErrorMessage.getLineNumber(),
-                        parseErrorMessage.getMessageKey(),
-                        parseErrorMessage.getMessageArguments());
+        }
+    }
+
+    /**
+     * Processes the block comment which has been identified as a valid Javadoc.
+     *
+     * @param blockCommentNode The block comment to process.
+     */
+    private void processValidJavadoc(DetailAST blockCommentNode) {
+        final LineColumn treeCacheKey = new LineColumn(blockCommentNode.getLineNo(),
+                blockCommentNode.getColumnNo());
+
+        final ParseStatus result = TREE_CACHE.get().computeIfAbsent(treeCacheKey, key -> {
+            return context.get().parser.parseJavadocAsDetailNode(blockCommentNode);
+        });
+
+        if (result.getParseErrorMessage() == null) {
+            if (acceptJavadocWithNonTightHtml() || !result.isNonTight()) {
+                processTree(result.getTree());
             }
+
+            if (violateExecutionOnNonTightHtml && result.isNonTight()) {
+                log(result.getFirstNonTightHtmlTag().getLine(),
+                        JavadocDetailNodeParser.MSG_UNCLOSED_HTML_TAG,
+                        result.getFirstNonTightHtmlTag().getText());
+            }
+        }
+        else {
+            final ParseErrorMessage parseErrorMessage = result.getParseErrorMessage();
+            log(parseErrorMessage.getLineNumber(),
+                    parseErrorMessage.getMessageKey(),
+                    parseErrorMessage.getMessageArguments());
         }
     }
 
@@ -339,6 +352,15 @@ public abstract class AbstractJavadocCheck extends AbstractCheck {
      */
     protected DetailAST getBlockCommentAst() {
         return context.get().blockCommentAst;
+    }
+
+    /**
+     * Getter for javadoc target in Java language syntax tree.
+     *
+     * @return THe javadoc target in the syntax tree.
+     */
+    protected DetailAST getJavadocTargetAst() {
+        return context.get().javadocTargetAst;
     }
 
     /**
@@ -417,6 +439,12 @@ public abstract class AbstractJavadocCheck extends AbstractCheck {
          * in Java language syntax tree.
          */
         private DetailAST blockCommentAst;
+
+        /**
+         * DetailAST node of the considered target of the Javadoc comment in Java language
+         * syntax tree.
+         */
+        private DetailAST javadocTargetAst;
 
     }
 

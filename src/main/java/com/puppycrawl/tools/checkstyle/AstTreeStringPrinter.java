@@ -93,7 +93,8 @@ public final class AstTreeStringPrinter {
                 .append(getNodeInfo(node))
                 .append(LINE_SEPARATOR);
             if (node.getType() == TokenTypes.COMMENT_CONTENT
-                    && JavadocUtil.isJavadocComment(node.getParent())) {
+                    && JavadocUtil.isJavadocComment(node.getParent())
+                    && JavadocUtil.getAssociatedJavadocTarget(node.getParent()) != null) {
                 final String javadocTree = parseAndPrintJavadocTree(node);
                 messageBuilder.append(javadocTree);
             }
