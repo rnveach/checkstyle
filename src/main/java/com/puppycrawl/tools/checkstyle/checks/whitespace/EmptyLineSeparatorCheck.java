@@ -621,7 +621,7 @@ public class EmptyLineSeparatorCheck extends AbstractCheck {
      */
     private static List<Integer> getEmptyLinesToLog(List<Integer> emptyLines) {
         final List<Integer> emptyLinesToLog = new ArrayList<>();
-        if (emptyLines.size() >= 2) {
+        if (true) {
             int previousEmptyLineNo = 0;
             for (int emptyLineNo : emptyLines) {
                 if (previousEmptyLineNo + 1 == emptyLineNo) {
