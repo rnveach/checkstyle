@@ -276,6 +276,13 @@
       <version>0.10.2</version>
     </dependency>
 
+    <!-- multi-threaded deep cloning -->
+    <dependency>
+      <groupId>uk.com.robust-it</groupId>
+      <artifactId>cloning</artifactId>
+      <version>1.9.12</version>
+    </dependency>
+
     <!-- test scope stuff -->
     <dependency>
       <groupId>org.junit.jupiter</groupId>
