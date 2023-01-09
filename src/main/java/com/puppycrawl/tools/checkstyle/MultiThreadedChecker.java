@@ -131,7 +131,7 @@ public class MultiThreadedChecker extends SingleChecker {
                 }
 
                 // keep waiting for a thread to free up
-                Thread.sleep(100);
+                Thread.sleep(1);
             } while (true);
         }
         catch (Exception ex) {
