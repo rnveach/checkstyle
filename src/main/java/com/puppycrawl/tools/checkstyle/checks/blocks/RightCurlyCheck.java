@@ -695,7 +695,7 @@ public class RightCurlyCheck extends AbstractCheck {
             else {
                 shouldCheckLastRcurly = true;
                 lcurly = ast.findFirstToken(TokenTypes.SLIST);
-                if (lcurly != null) {
+                if (true) {
                     // SLIST could be absent in code like "while(true);"
                     rcurly = lcurly.getLastChild();
                 }
