@@ -552,7 +552,7 @@ public class NeedBracesCheck extends AbstractCheck {
             else {
                 block = literalIfLastChild;
             }
-            final DetailAST ifCondition = literalIf;
+            final DetailAST ifCondition = literalIf.findFirstToken(TokenTypes.EXPR);
             result = TokenUtil.areOnSameLine(ifCondition, block);
         }
         return result;
