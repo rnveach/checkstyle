@@ -462,7 +462,7 @@ public class RightCurlyCheck extends AbstractCheck {
         DetailAST nextToken = details.nextToken;
 
         while (nextToken != null && nextToken.getType() == TokenTypes.LITERAL_ELSE) {
-            nextToken = Details.getNextToken(nextToken);
+            nextToken = null;
         }
 
         if (nextToken != null && nextToken.getType() == TokenTypes.DO_WHILE) {
