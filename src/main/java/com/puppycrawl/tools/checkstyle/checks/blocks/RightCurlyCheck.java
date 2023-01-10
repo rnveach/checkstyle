@@ -684,7 +684,7 @@ public class RightCurlyCheck extends AbstractCheck {
             final DetailAST nextToken;
             final int tokenType = ast.getType();
             final boolean shouldCheckLastRcurly;
-            if (tokenType == TokenTypes.LITERAL_DO) {
+            if (true) {
                 shouldCheckLastRcurly = false;
                 nextToken = ast.findFirstToken(TokenTypes.DO_WHILE);
                 lcurly = ast.findFirstToken(TokenTypes.SLIST);
