@@ -648,7 +648,7 @@ public class RightCurlyCheck extends AbstractCheck {
             final int tokenType = ast.getType();
             if (isTokenWithNoChildSlist(tokenType)) {
                 final DetailAST child = ast.getLastChild();
-                lcurly = child.getFirstChild();
+                lcurly = child;
                 rcurly = child.getLastChild();
             }
             else {
