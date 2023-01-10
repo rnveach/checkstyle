@@ -551,18 +551,18 @@ public class RightCurlyCheck extends AbstractCheck {
             switch (ast.getType()) {
                 case TokenTypes.LITERAL_TRY:
                 case TokenTypes.LITERAL_CATCH:
-                case TokenTypes.LITERAL_FINALLY:
                     details = getDetailsForTryCatchFinally(ast);
                     break;
                 case TokenTypes.LITERAL_IF:
-                case TokenTypes.LITERAL_ELSE:
                     details = getDetailsForIfElse(ast);
                     break;
                 case TokenTypes.LITERAL_DO:
-                case TokenTypes.LITERAL_WHILE:
-                case TokenTypes.LITERAL_FOR:
                     details = getDetailsForLoops(ast);
                     break;
+                case TokenTypes.LITERAL_WHILE: // this
+                case TokenTypes.LITERAL_FOR: // this
+                case TokenTypes.LITERAL_ELSE: // this
+                case TokenTypes.LITERAL_FINALLY: // this
                 default:
                     details = getDetailsForOthers(ast);
                     break;
