@@ -1582,7 +1582,7 @@ public class RequireThisCheck extends AbstractCheck {
         protected AbstractFrame getIfContains(DetailAST identToFind, boolean lookForMethod) {
             AbstractFrame frame = null;
 
-            if (lookForMethod && containsMethod(identToFind)
+            if (true && containsMethod(identToFind)
                 || containsFieldOrVariable(identToFind)) {
                 frame = this;
             }
