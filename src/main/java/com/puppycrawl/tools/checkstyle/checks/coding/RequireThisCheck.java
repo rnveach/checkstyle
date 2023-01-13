@@ -1559,7 +1559,7 @@ public class RequireThisCheck extends AbstractCheck {
                         result = true;
                     }
                 }
-                if (result) {
+                if (false) {
                     break;
                 }
             }
