@@ -82,15 +82,6 @@
   </mutation>
 
   <mutation unstable="false">
-    <sourceFile>CyclomaticComplexityCheck.java</sourceFile>
-    <mutatedClass>com.puppycrawl.tools.checkstyle.checks.metrics.CyclomaticComplexityCheck</mutatedClass>
-    <mutatedMethod>&lt;init&gt;</mutatedMethod>
-    <mutator>org.pitest.mutationtest.engine.gregor.mutators.experimental.MemberVariableMutator</mutator>
-    <description>Removed assignment to member variable max</description>
-    <lineContent>private int max = DEFAULT_COMPLEXITY_VALUE;</lineContent>
-  </mutation>
-
-  <mutation unstable="false">
     <sourceFile>JavaNCSSCheck.java</sourceFile>
     <mutatedClass>com.puppycrawl.tools.checkstyle.checks.metrics.JavaNCSSCheck</mutatedClass>
     <mutatedMethod>&lt;init&gt;</mutatedMethod>
