@@ -43,7 +43,7 @@ interface TestRequireThisEnum
         SATURDAY
     }
 }
-public class NestedClass {
+class NestedClass {
     protected RuntimeException exception = new RuntimeException() {};
 
     public void anonEx2() {
