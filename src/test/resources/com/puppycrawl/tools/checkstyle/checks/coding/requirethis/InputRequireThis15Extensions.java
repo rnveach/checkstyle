@@ -56,3 +56,18 @@ class NestedClass {
         }
     }
 }
+public class Basic {
+    abstract class Awaiter extends Thread {
+        private volatile Throwable result = null;
+        protected void result(Throwable result) { this.result = result; }
+    }
+
+    private Awaiter awaiter() {
+        return new Awaiter() {
+            public void run() {
+                try {}
+                catch (Throwable result) { result(result); }
+            }
+        };
+    }
+}
