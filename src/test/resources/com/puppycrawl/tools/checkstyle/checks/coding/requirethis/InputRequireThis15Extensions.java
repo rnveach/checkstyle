@@ -43,3 +43,16 @@ interface TestRequireThisEnum
         SATURDAY
     }
 }
+public class NestedClass {
+    protected RuntimeException exception = new RuntimeException() {};
+
+    public void anonEx2() {
+        RuntimeException exception = new RuntimeException();
+        try {
+            //some code
+            String re = "lol";
+        } catch (Exception e) {
+            throw exception;
+        }
+    }
+}
