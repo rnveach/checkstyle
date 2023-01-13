@@ -73,15 +73,6 @@
   </mutation>
 
   <mutation unstable="false">
-    <sourceFile>BooleanExpressionComplexityCheck.java</sourceFile>
-    <mutatedClass>com.puppycrawl.tools.checkstyle.checks.metrics.BooleanExpressionComplexityCheck$Context</mutatedClass>
-    <mutatedMethod>&lt;init&gt;</mutatedMethod>
-    <mutator>org.pitest.mutationtest.engine.gregor.mutators.experimental.MemberVariableMutator</mutator>
-    <description>Removed assignment to member variable count</description>
-    <lineContent>count = 0;</lineContent>
-  </mutation>
-
-  <mutation unstable="false">
     <sourceFile>NPathComplexityCheck.java</sourceFile>
     <mutatedClass>com.puppycrawl.tools.checkstyle.checks.metrics.NPathComplexityCheck</mutatedClass>
     <mutatedMethod>beginTree</mutatedMethod>
