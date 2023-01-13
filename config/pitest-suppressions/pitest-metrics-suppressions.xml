@@ -82,15 +82,6 @@
   </mutation>
 
   <mutation unstable="false">
-    <sourceFile>JavaNCSSCheck.java</sourceFile>
-    <mutatedClass>com.puppycrawl.tools.checkstyle.checks.metrics.JavaNCSSCheck</mutatedClass>
-    <mutatedMethod>&lt;init&gt;</mutatedMethod>
-    <mutator>org.pitest.mutationtest.engine.gregor.mutators.experimental.MemberVariableMutator</mutator>
-    <description>Removed assignment to member variable recordMaximum</description>
-    <lineContent>private int recordMaximum = RECORD_MAX_NCSS;</lineContent>
-  </mutation>
-
-  <mutation unstable="false">
     <sourceFile>NPathComplexityCheck.java</sourceFile>
     <mutatedClass>com.puppycrawl.tools.checkstyle.checks.metrics.NPathComplexityCheck</mutatedClass>
     <mutatedMethod>beginTree</mutatedMethod>
