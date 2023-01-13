@@ -287,7 +287,7 @@ public final class BooleanExpressionComplexityCheck extends AbstractCheck {
     @Override
     public void leaveToken(DetailAST ast) {
         switch (ast.getType()) {
-            case TokenTypes.CTOR_DEF:
+//            case TokenTypes.CTOR_DEF:
             case TokenTypes.METHOD_DEF:
             case TokenTypes.COMPACT_CTOR_DEF:
                 leaveMethodDef();
