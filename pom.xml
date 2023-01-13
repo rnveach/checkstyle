@@ -225,7 +225,7 @@
     <pitest.plugin.version>1.9.9</pitest.plugin.version>
     <pitest.plugin.timeout.factor>10</pitest.plugin.timeout.factor>
     <pitest.plugin.output.formats>HTML,XML</pitest.plugin.output.formats>
-    <pitest.plugin.timeout.constant>50000</pitest.plugin.timeout.constant>
+    <pitest.plugin.timeout.constant>2000</pitest.plugin.timeout.constant>
     <pitest.plugin.threads>4</pitest.plugin.threads>
     <pitest.junit5.plugin.version>1.1.0</pitest.junit5.plugin.version>
     <pitest.accelerator.junit5.plugin.version>1.0.4</pitest.accelerator.junit5.plugin.version>
