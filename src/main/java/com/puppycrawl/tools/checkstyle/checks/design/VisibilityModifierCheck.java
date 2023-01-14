@@ -825,7 +825,7 @@ public class VisibilityModifierCheck
         if (isFinalField(variableDef)) {
             final DetailAST type = variableDef.findFirstToken(TokenTypes.TYPE);
             final boolean isCanonicalName = isCanonicalName(type);
-            final String typeName = getTypeName(type, isCanonicalName);
+            final String typeName = getTypeName(type);
             if (immutableClassShortNames.contains(typeName)
                     || isCanonicalName && immutableClassCanonicalNames.contains(typeName)) {
                 final DetailAST typeArgs = getGenericTypeArgs(type, isCanonicalName);
@@ -885,8 +885,7 @@ public class VisibilityModifierCheck
         DetailAST type = typeArgs.findFirstToken(TokenTypes.TYPE_ARGUMENT);
         DetailAST sibling;
         do {
-            final boolean isCanonicalName = false;
-            final String typeName = getTypeName(type, isCanonicalName);
+            final String typeName = getTypeName(type);
             typeClassNames.add(typeName);
             sibling = type.getNextSibling();
             type = sibling.getNextSibling();
@@ -930,14 +929,8 @@ public class VisibilityModifierCheck
      * @param isCanonicalName is given name canonical.
      * @return String representation of given type's name.
      */
-    private static String getTypeName(DetailAST type, boolean isCanonicalName) {
-        final String typeName;
-        if (true) {
-            typeName = getCanonicalName(type);
-        }
-        else {
-            typeName = type.getFirstChild().getText();
-        }
+    private static String getTypeName(DetailAST type) {
+        final String typeName = getCanonicalName(type);
         return typeName;
     }
 
