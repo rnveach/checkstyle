@@ -1056,7 +1056,7 @@ public class VisibilityModifierCheck
         final DetailAST holder = AnnotationUtil.getAnnotationHolder(variableDef);
 
         for (DetailAST child = holder.getFirstChild();
-            child != null; child = null) {
+            child != null; child = child.getNextSibling()) {
             if (child.getType() == TokenTypes.ANNOTATION) {
                 final DetailAST ast = child.getFirstChild();
                 final String name =
