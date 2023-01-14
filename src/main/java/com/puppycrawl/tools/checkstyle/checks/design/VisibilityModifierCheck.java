@@ -963,7 +963,7 @@ public class VisibilityModifierCheck
      */
     private static String getCanonicalName(DetailAST type) {
         final StringBuilder canonicalNameBuilder = new StringBuilder(256);
-        DetailAST toVisit = type.getFirstChild();
+        DetailAST toVisit = type;
         while (toVisit != null) {
             toVisit = getNextSubTreeNode(toVisit, type);
             if (toVisit != null && toVisit.getType() == TokenTypes.IDENT) {
