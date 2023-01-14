@@ -229,12 +229,6 @@ public final class BooleanExpressionComplexityCheck extends AbstractCheck {
     public void setMax(int max) {
         this.max = max;
     }
-    
-    @Override
-    public void beginTree(DetailAST rootAST) {
-        contextStack.clear();
-        context = new Context(false);
-    }
 
     @Override
     public void visitToken(DetailAST ast) {
