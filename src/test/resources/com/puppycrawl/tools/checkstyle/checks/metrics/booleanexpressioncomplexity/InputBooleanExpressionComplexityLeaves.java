@@ -6,10 +6,7 @@ BooleanExpressionComplexity
 
 package com.puppycrawl.tools.checkstyle.checks.metrics.booleanexpressioncomplexity;
 
-/**
- * Contains information about restores snapshot
- */
-public class RestoreSnapshotResponse extends ActionResponse implements ToXContentObject {
+public class InputBooleanExpressionComplexityLeaves {
 
     public RestoreSnapshotResponse() {
     }
