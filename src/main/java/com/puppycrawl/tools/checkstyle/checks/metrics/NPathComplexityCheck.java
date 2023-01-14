@@ -428,7 +428,7 @@ public final class NPathComplexityCheck extends AbstractCheck {
     private void visitConditional(DetailAST ast, int basicBranchingFactor) {
         int expressionValue = basicBranchingFactor;
         DetailAST bracketed;
-        for (bracketed = ast.findFirstToken(TokenTypes.LPAREN).getNextSibling();
+        for (bracketed = ast.findFirstToken(TokenTypes.LPAREN);
                 bracketed.getType() != TokenTypes.RPAREN;
                 bracketed = bracketed.getNextSibling()) {
             expressionValue += countConditionalOperators(bracketed);
