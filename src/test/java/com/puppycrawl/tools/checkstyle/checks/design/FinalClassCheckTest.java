@@ -115,7 +115,9 @@ public class FinalClassCheckTest
             assertWithMessage("IllegalStateException is expected").fail();
         }
         catch (IllegalStateException ex) {
-            // it is OK
+            assertWithMessage("Invalid exception message")
+                .that(ex.getMessage())
+                .isEqualTo(badAst.toString());
         }
     }
 

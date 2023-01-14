@@ -94,7 +94,7 @@ public class InnerTypeLastCheck extends AbstractCheck {
     );
 
     /** Meet a root class. */
-    private boolean rootClass = true;
+    private boolean rootClass;
 
     @Override
     public int[] getDefaultTokens() {
