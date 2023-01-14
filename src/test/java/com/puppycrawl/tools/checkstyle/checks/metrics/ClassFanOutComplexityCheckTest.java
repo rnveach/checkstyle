@@ -285,7 +285,7 @@ public class ClassFanOutComplexityCheckTest extends AbstractModuleTestSupport {
     @Test
     public void testThrows() throws Exception {
         final String[] expected = {
-            "23:1: " + getCheckMessage(MSG_KEY, 2, 0),
+            "25:1: " + getCheckMessage(MSG_KEY, 2, 0),
         };
 
         verifyWithInlineConfigParser(
