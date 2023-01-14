@@ -45,7 +45,7 @@ public class InputThrowsCount4 {
     }
 }
 
-class SubClass extends InputThrowsCount {
+class SubClass4 extends InputThrowsCount {
     @Override
     void method1() {
     }
