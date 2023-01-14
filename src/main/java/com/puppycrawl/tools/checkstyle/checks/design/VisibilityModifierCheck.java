@@ -885,7 +885,7 @@ public class VisibilityModifierCheck
         DetailAST type = typeArgs.findFirstToken(TokenTypes.TYPE_ARGUMENT);
         DetailAST sibling;
         do {
-            final boolean isCanonicalName = isCanonicalName(type);
+            final boolean isCanonicalName = false;
             final String typeName = getTypeName(type, isCanonicalName);
             typeClassNames.add(typeName);
             sibling = type.getNextSibling();
