@@ -295,7 +295,7 @@ public final class BooleanExpressionComplexityCheck extends AbstractCheck {
         switch (ast.getType()) {
             case TokenTypes.CTOR_DEF:
             case TokenTypes.METHOD_DEF:
-            case TokenTypes.COMPACT_CTOR_DEF:
+//            case TokenTypes.COMPACT_CTOR_DEF:
                 leaveMethodDef();
                 break;
             case TokenTypes.EXPR:
