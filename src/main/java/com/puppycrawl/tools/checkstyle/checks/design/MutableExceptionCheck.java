@@ -292,7 +292,7 @@ public final class MutableExceptionCheck extends AbstractCheck {
 
     /** Called when we leave class definition. */
     private void leaveClassDef() {
-        checking = false;checkingStack.pop();
+        checking = checkingStack.pop();
     }
 
     /**
