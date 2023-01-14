@@ -226,6 +226,18 @@ public class NPathComplexityCheckTest extends AbstractModuleTestSupport {
     }
 
     @Test
+    public void testCount() throws Exception {
+
+        final String[] expected = {
+            "11:5: " + getCheckMessage(MSG_KEY, 30, 20),
+        };
+
+        verifyWithInlineConfigParser(
+                getPath("InputNPathComplexityCheckCount.java"),
+            expected);
+    }
+
+    @Test
     public void testGetAcceptableTokens() {
         final NPathComplexityCheck npathComplexityCheckObj = new NPathComplexityCheck();
         final int[] actual = npathComplexityCheckObj.getAcceptableTokens();

@@ -542,9 +542,8 @@ public final class NPathComplexityCheck extends AbstractCheck {
 
     /** Leaves try. */
     private void leaveMultiplyingConditional() {
-        popValue();
         currentRangeValue = currentRangeValue.add(BigInteger.ONE)
-                .multiply(BigInteger.ONE);
+                .multiply(popValue().getRangeValue().add(BigInteger.ONE));
     }
 
     /**
