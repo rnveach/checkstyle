@@ -266,7 +266,7 @@ public final class NPathComplexityCheck extends AbstractCheck {
     private final TokenEnd processingTokenEnd = new TokenEnd();
 
     /** NP value for current range. */
-    private BigInteger currentRangeValue = INITIAL_VALUE;
+    private BigInteger currentRangeValue;
 
     /** Specify the maximum threshold allowed. */
     private int max = DEFAULT_MAX;
