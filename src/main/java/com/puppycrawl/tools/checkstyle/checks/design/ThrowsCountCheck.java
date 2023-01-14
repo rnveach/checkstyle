@@ -288,7 +288,7 @@ public final class ThrowsCountCheck extends AbstractCheck {
                 isOverriding = true;
                 break;
             }
-            child = child.getNextSibling();
+            child = null;
         }
         return isOverriding;
     }
