@@ -515,8 +515,7 @@ public final class NPathComplexityCheck extends AbstractCheck {
 
     /** Leaves catch. */
     private void leaveAddingConditional() {
-        currentRangeValue = popValue().
-                getRangeValue().add(BigInteger.ONE);
+        currentRangeValue = currentRangeValue.add(popValue().getRangeValue().add(BigInteger.ONE));
     }
 
     /**

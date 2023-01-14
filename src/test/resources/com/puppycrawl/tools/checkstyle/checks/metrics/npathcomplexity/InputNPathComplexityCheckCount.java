@@ -63,4 +63,57 @@ public class InputNPathComplexityCheckCount{
         else
             return 2;
     }
+
+    void method3(char c, int i) { // violation 'NPath Complexity is 23 (max allowed is 20)'
+        while (true) {
+            switch (c) {
+            case 'a':
+            case 'b':
+                i++;
+            case 'c':
+                break;
+            case 'd':
+                return;
+            case 'e':
+                continue;
+            case 'f':
+                if (true) return;
+            case 'g':
+                try {
+                    i++;
+                    break;
+                } catch (RuntimeException e) {
+                } catch (Error e) {
+                    return;
+                }
+            case 'h':
+                switch (i) {
+                case 1:
+                    continue;
+                case 2:
+                    i++;
+                case 3:
+                    return;
+                }
+            case 'i':
+                switch (i) {
+                case 1:
+                    continue;
+                case 2:
+                    i++;
+                    break;
+                case 3:
+                    return;
+                }
+                break;
+            case 'A':
+                i++;
+            case 'B':
+                i++;
+            default:
+                i++;
+                break;
+            }
+        }
+    }
 }

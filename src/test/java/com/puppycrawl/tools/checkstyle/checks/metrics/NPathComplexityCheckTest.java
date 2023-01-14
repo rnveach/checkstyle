@@ -231,6 +231,7 @@ public class NPathComplexityCheckTest extends AbstractModuleTestSupport {
         final String[] expected = {
             "11:5: " + getCheckMessage(MSG_KEY, 30, 20),
             "22:5: " + getCheckMessage(MSG_KEY, 72, 20),
+            "67:5: " + getCheckMessage(MSG_KEY, 23, 20),
         };
 
         verifyWithInlineConfigParser(
