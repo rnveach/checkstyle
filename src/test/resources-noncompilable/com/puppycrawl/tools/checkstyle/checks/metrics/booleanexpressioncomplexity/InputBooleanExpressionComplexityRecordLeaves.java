@@ -6,9 +6,8 @@ BooleanExpressionComplexity
 
 package com.puppycrawl.tools.checkstyle.checks.metrics.booleanexpressioncomplexity;
 
-public class InputBooleanExpressionComplexityLeaves {
-
-    public InputBooleanExpressionComplexityLeaves() {
+public record InputBooleanExpressionComplexityRecordLeaves() {
+    public InputBooleanExpressionComplexityRecordLeaves {
     }
 
     public static final ConstructingObjectParser PARSER = new ConstructingObjectParser(
