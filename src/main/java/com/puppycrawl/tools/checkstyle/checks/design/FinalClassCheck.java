@@ -156,7 +156,7 @@ public class FinalClassCheck
         typeDeclarations = new ArrayDeque<>();
         innerClasses = new LinkedHashMap<>();
         anonInnerClassToOuterTypeDecl = new HashMap<>();
-        packageName = "";
+        packageName = null;//"";
     }
 
     @Override
