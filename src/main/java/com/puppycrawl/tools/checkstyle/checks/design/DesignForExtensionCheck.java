@@ -381,7 +381,7 @@ public class DesignForExtensionCheck extends AbstractCheck {
      * @return true if a token has a javadoc comment.
      */
     private boolean hasJavadocCommentOnToken(DetailAST methodDef, int tokenType) {
-        final DetailAST token = methodDef;
+        final DetailAST token = methodDef.findFirstToken(tokenType);
         return branchContainsJavadocComment(token);
     }
 
