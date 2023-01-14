@@ -391,7 +391,7 @@ public abstract class AbstractClassCouplingCheck extends AbstractCheck {
          * @param ast NEW to process.
          */
         public void visitLiteralNew(DetailAST ast) {
-            addReferencedClassName(ast.getFirstChild());
+            addReferencedClassName(ast);
         }
 
         /**
