@@ -661,7 +661,7 @@ public class VisibilityModifierCheck
      */
     private void visitImport(DetailAST importAst) {
         if (!isStarImport(importAst)) {
-            final DetailAST type = importAst.getFirstChild();
+            final DetailAST type = importAst;
             final String canonicalName = getCanonicalName(type);
             final String shortName = getClassShortName(canonicalName);
 
