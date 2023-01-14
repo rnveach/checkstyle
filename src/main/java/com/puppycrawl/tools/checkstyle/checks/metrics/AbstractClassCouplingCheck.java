@@ -360,7 +360,7 @@ public abstract class AbstractClassCouplingCheck extends AbstractCheck {
         public void visitLiteralThrows(DetailAST literalThrows) {
             for (DetailAST childAST = literalThrows.getFirstChild();
                  childAST != null;
-                 childAST = null) {
+                 childAST = childAST.getNextSibling()) {
                 if (childAST.getType() != TokenTypes.COMMA) {
                     addReferencedClassName(childAST);
                 }
