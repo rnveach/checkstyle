@@ -924,7 +924,6 @@ public class VisibilityModifierCheck
      * else - short type's name.
      *
      * @param type {@link TokenTypes#TYPE TYPE} node.
-     * @param isCanonicalName is given name canonical.
      * @return String representation of given type's name.
      */
     private static String getTypeName(DetailAST type) {
