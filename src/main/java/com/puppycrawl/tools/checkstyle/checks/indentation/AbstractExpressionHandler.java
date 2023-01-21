@@ -146,7 +146,7 @@ public abstract class AbstractExpressionHandler {
             messageKey = IndentationCheck.MSG_ERROR_MULTI;
         }
         indentCheck.indentationLog(ast, messageKey,
-            typeName + typeStr, actualIndent, expectedIndent);
+            typeName + typeStr, String.valueOf(actualIndent), String.valueOf(expectedIndent));
     }
 
     /**
@@ -164,7 +164,7 @@ public abstract class AbstractExpressionHandler {
             messageKey = IndentationCheck.MSG_CHILD_ERROR_MULTI;
         }
         indentCheck.indentationLog(ast, messageKey,
-            typeName, actualIndent, expectedIndent);
+            typeName, String.valueOf(actualIndent), String.valueOf(expectedIndent));
     }
 
     /**

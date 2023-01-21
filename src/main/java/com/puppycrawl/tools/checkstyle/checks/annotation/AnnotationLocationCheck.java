@@ -368,7 +368,7 @@ public class AnnotationLocationCheck extends AbstractCheck {
             }
             else if (annotation.getColumnNo() != correctIndentation && !hasNodeBefore(annotation)) {
                 log(annotation, MSG_KEY_ANNOTATION_LOCATION,
-                    getAnnotationName(annotation), annotation.getColumnNo(), correctIndentation);
+                    getAnnotationName(annotation), String.valueOf(annotation.getColumnNo()), String.valueOf(correctIndentation));
             }
             annotation = annotation.getNextSibling();
         }

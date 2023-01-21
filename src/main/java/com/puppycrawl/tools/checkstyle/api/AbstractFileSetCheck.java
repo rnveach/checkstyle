@@ -211,7 +211,7 @@ public abstract class AbstractFileSetCheck
     }
 
     @Override
-    public final void log(int line, String key, Object... args) {
+    public final void log(int line, String key, String... args) {
         context.get().violations.add(
                 new Violation(line,
                         getMessageBundle(),
@@ -225,7 +225,7 @@ public abstract class AbstractFileSetCheck
 
     @Override
     public final void log(int lineNo, int colNo, String key,
-            Object... args) {
+            String... args) {
         final FileContext fileContext = context.get();
         final int col = 1 + CommonUtil.lengthExpandedTabs(
                 fileContext.fileContents.getLine(lineNo - 1), colNo, tabWidth);

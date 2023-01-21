@@ -432,14 +432,14 @@ public class LineWrappingHandler {
             if (expandedTabsColumnNo(currentNode) != currentIndent) {
                 indentCheck.indentationLog(currentNode,
                         IndentationCheck.MSG_ERROR, currentNode.getText(),
-                        expandedTabsColumnNo(currentNode), currentIndent);
+                        String.valueOf(expandedTabsColumnNo(currentNode)), String.valueOf(currentIndent));
             }
         }
         else {
             if (expandedTabsColumnNo(currentNode) < currentIndent) {
                 indentCheck.indentationLog(currentNode,
                         IndentationCheck.MSG_ERROR, currentNode.getText(),
-                        expandedTabsColumnNo(currentNode), currentIndent);
+                        String.valueOf(expandedTabsColumnNo(currentNode)), String.valueOf(currentIndent));
             }
         }
     }

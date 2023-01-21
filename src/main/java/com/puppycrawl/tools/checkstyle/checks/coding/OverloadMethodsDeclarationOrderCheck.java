@@ -140,7 +140,7 @@ public class OverloadMethodsDeclarationOrderCheck extends AbstractCheck {
                     final int previousLineWithOverloadMethod =
                             methodLineNumberMap.get(methodName);
                     log(currentToken, MSG_KEY,
-                            previousLineWithOverloadMethod);
+                            String.valueOf(previousLineWithOverloadMethod));
                 }
                 methodIndexMap.put(methodName, currentIndex);
                 methodLineNumberMap.put(methodName, currentToken.getLineNo());

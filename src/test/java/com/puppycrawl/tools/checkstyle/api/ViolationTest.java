@@ -20,7 +20,7 @@
 package com.puppycrawl.tools.checkstyle.api;
 
 import static com.google.common.truth.Truth.assertWithMessage;
-import static com.puppycrawl.tools.checkstyle.utils.CommonUtil.EMPTY_OBJECT_ARRAY;
+import static com.puppycrawl.tools.checkstyle.utils.CommonUtil.EMPTY_STRING_ARRAY;
 
 import org.junit.jupiter.api.Test;
 import org.junitpioneer.jupiter.DefaultLocale;
@@ -92,7 +92,7 @@ public class ViolationTest {
                 "messages.properties", "key", null, SeverityLevel.ERROR, null,
                 getClass(), null);
         final Violation violation2 = new Violation(1, 1, TokenTypes.OBJBLOCK,
-                "messages.properties", "key", EMPTY_OBJECT_ARRAY, SeverityLevel.ERROR, null,
+                "messages.properties", "key", EMPTY_STRING_ARRAY, SeverityLevel.ERROR, null,
                 getClass(), null);
 
         assertWithMessage("Invalid token type")
@@ -173,18 +173,18 @@ public class ViolationTest {
 
     private static Violation createSampleViolationWithId(String id) {
         return new Violation(1, "com.puppycrawl.tools.checkstyle.checks.coding.messages",
-                "empty.statement", EMPTY_OBJECT_ARRAY, id, Violation.class, null);
+                "empty.statement", EMPTY_STRING_ARRAY, id, Violation.class, null);
     }
 
     private static Violation createSampleViolationWithLine(int line) {
         return new Violation(line, "com.puppycrawl.tools.checkstyle.checks.coding.messages",
-                "empty.statement", EMPTY_OBJECT_ARRAY, "module", Violation.class, null);
+                "empty.statement", EMPTY_STRING_ARRAY, "module", Violation.class, null);
     }
 
     private static Violation createSampleViolationWithColumn(int column) {
         return new Violation(1, column,
                 "com.puppycrawl.tools.checkstyle.checks.coding.messages", "empty.statement",
-                EMPTY_OBJECT_ARRAY, "module", Violation.class, null);
+                EMPTY_STRING_ARRAY, "module", Violation.class, null);
     }
 
 }

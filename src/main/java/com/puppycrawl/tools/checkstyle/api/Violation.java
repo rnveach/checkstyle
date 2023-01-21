@@ -66,14 +66,8 @@ public final class Violation
 
     /**
      * Arguments for MessageFormat.
-     *
-     * @noinspection NonSerializableFieldInSerializableClass
-     * @noinspectionreason NonSerializableFieldInSerializableClass - usage of
-     *      'Serializable' for this api class
-     *      is considered as mistake now, but we do not break api without
-     *      good reason
      */
-    private final Object[] args;
+    private final String[] args;
 
     /** Name of the resource bundle to get violations from. **/
     private final String bundle;
@@ -109,7 +103,7 @@ public final class Violation
                             int tokenType,
                             String bundle,
                             String key,
-                            Object[] args,
+                            String[] args,
                             SeverityLevel severityLevel,
                             String moduleId,
                             Class<?> sourceClass,
@@ -156,7 +150,7 @@ public final class Violation
                             int tokenType,
                             String bundle,
                             String key,
-                            Object[] args,
+                            String[] args,
                             SeverityLevel severityLevel,
                             String moduleId,
                             Class<?> sourceClass,
@@ -186,7 +180,7 @@ public final class Violation
                             int columnNo,
                             String bundle,
                             String key,
-                            Object[] args,
+                            String[] args,
                             SeverityLevel severityLevel,
                             String moduleId,
                             Class<?> sourceClass,
@@ -215,7 +209,7 @@ public final class Violation
                             int columnNo,
                             String bundle,
                             String key,
-                            Object[] args,
+                            String[] args,
                             String moduleId,
                             Class<?> sourceClass,
                             String customMessage) {
@@ -249,7 +243,7 @@ public final class Violation
     public Violation(int lineNo,
                             String bundle,
                             String key,
-                            Object[] args,
+                            String[] args,
                             SeverityLevel severityLevel,
                             String moduleId,
                             Class<?> sourceClass,
@@ -274,7 +268,7 @@ public final class Violation
         int lineNo,
         String bundle,
         String key,
-        Object[] args,
+        String[] args,
         String moduleId,
         Class<?> sourceClass,
         String customMessage) {

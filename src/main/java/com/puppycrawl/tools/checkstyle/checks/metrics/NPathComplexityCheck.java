@@ -507,7 +507,7 @@ public final class NPathComplexityCheck extends AbstractCheck {
     private void leaveMethodDef(DetailAST ast) {
         final BigInteger bigIntegerMax = BigInteger.valueOf(max);
         if (currentRangeValue.compareTo(bigIntegerMax) > 0) {
-            log(ast, MSG_KEY, currentRangeValue, bigIntegerMax);
+            log(ast, MSG_KEY, currentRangeValue.toString(), bigIntegerMax.toString());
         }
         popValue();
         currentRangeValue = INITIAL_VALUE;

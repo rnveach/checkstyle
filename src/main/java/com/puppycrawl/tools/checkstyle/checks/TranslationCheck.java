@@ -577,7 +577,7 @@ public class TranslationCheck extends AbstractFileSetCheck {
                 final MessageDispatcher dispatcher = getMessageDispatcher();
                 final String path = fileKey.getKey().getAbsolutePath();
                 dispatcher.fireFileStarted(path);
-                for (Object key : missingKeys) {
+                for (String key : missingKeys) {
                     log(1, MSG_KEY, key);
                 }
                 fireErrors(path);

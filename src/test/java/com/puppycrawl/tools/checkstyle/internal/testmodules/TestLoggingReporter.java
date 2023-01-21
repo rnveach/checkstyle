@@ -32,12 +32,12 @@ public final class TestLoggingReporter extends AbstractViolationReporter {
     private int logCount;
 
     @Override
-    public void log(int line, String key, Object... args) {
+    public void log(int line, String key, String... args) {
         logCount++;
     }
 
     @Override
-    public void log(int line, int col, String key, Object... args) {
+    public void log(int line, int col, String key, String... args) {
         logCount++;
     }
 

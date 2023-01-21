@@ -423,7 +423,7 @@ public abstract class AbstractClassCouplingCheck extends AbstractCheck {
 
             if (referencedClassNames.size() > max) {
                 log(classAst, getLogMessageId(),
-                        referencedClassNames.size(), max,
+                        String.valueOf(referencedClassNames.size()), String.valueOf(max),
                         referencedClassNames.toString());
             }
         }

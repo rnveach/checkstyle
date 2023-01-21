@@ -200,7 +200,7 @@ public final class ExecutableStatementCountCheck
     private void leaveContainerNode(DetailAST ast) {
         final int count = context.getCount();
         if (count > max) {
-            log(ast, MSG_KEY, count, max);
+            log(ast, MSG_KEY, String.valueOf(count), String.valueOf(max));
         }
         context = contextStack.pop();
     }

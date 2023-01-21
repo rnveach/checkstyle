@@ -141,7 +141,7 @@ public final class NestedForDepthCheck extends AbstractCheck {
     @Override
     public void visitToken(DetailAST ast) {
         if (depth > max) {
-            log(ast, MSG_KEY, depth, max);
+            log(ast, MSG_KEY, String.valueOf(depth), String.valueOf(max));
         }
         ++depth;
     }

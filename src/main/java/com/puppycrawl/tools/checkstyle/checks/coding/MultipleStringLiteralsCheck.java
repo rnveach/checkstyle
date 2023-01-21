@@ -339,7 +339,7 @@ public class MultipleStringLiteralsCheck extends AbstractCheck {
                 final String recurringString =
                     ALL_NEW_LINES.matcher(
                         stringListEntry.getKey()).replaceAll("\\\\n");
-                log(firstFinding, MSG_KEY, recurringString, hits.size());
+                log(firstFinding, MSG_KEY, String.valueOf(recurringString), String.valueOf(hits.size()));
             }
         }
     }

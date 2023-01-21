@@ -11,7 +11,7 @@
               default="error"/>
     <!-- special message just to avoid problem with UTs in different locale -->
     <message key="maxLineLen"
-          value="Line is longer than {0,number,integer} characters (found {1,number,integer})."/>
+          value="Line is longer than {0} characters (found {1})."/>
   </module>
   <module name="TreeWalker">
     <module name="EmptyLineSeparator">

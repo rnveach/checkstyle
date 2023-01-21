@@ -163,7 +163,7 @@ public class ParameterNumberCheck
         final int count = params.getChildCount(TokenTypes.PARAMETER_DEF);
         if (count > max && !shouldIgnoreNumberOfParameters(ast)) {
             final DetailAST name = ast.findFirstToken(TokenTypes.IDENT);
-            log(name, MSG_KEY, max, count);
+            log(name, MSG_KEY, String.valueOf(max), String.valueOf(count));
         }
     }
 

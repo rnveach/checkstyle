@@ -92,7 +92,7 @@ public class FileLengthCheck extends AbstractFileSetCheck {
     @Override
     protected void processFiltered(File file, FileText fileText) {
         if (fileText.size() > max) {
-            log(1, MSG_KEY, fileText.size(), max);
+            log(1, MSG_KEY, String.valueOf(fileText.size()), String.valueOf(max));
         }
     }
 

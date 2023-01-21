@@ -487,7 +487,7 @@ public class AbbreviationAsWordInNameCheck extends AbstractCheck {
 
             final String abbr = getDisallowedAbbreviation(typeName);
             if (abbr != null) {
-                log(nameAst, MSG_KEY, typeName, allowedAbbreviationLength + 1);
+                log(nameAst, MSG_KEY, String.valueOf(typeName), String.valueOf(allowedAbbreviationLength + 1));
             }
         }
     }

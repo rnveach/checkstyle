@@ -308,7 +308,7 @@ public class RightCurlyCheck extends AbstractCheck {
         if (rcurly != null) {
             final String violation = validate(details);
             if (!violation.isEmpty()) {
-                log(rcurly, violation, "}", rcurly.getColumnNo() + 1);
+                log(rcurly, violation, "}", String.valueOf(rcurly.getColumnNo() + 1));
             }
         }
     }

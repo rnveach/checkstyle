@@ -819,7 +819,7 @@ public class MainTest {
                 + outputValues[0][1] + ": ";
         for (String[] outputValue : outputValues) {
             final String violation = new Violation(1, bundle,
-                    msgKey, new Integer[] {Integer.valueOf(outputValue[2]), allowedLength},
+                    msgKey, new String[] {outputValue[2], String.valueOf(allowedLength)},
                     null, getClass(), null).getViolation();
             final String line = format + violation + " [FileLength]";
             sb.append(line).append(EOL);

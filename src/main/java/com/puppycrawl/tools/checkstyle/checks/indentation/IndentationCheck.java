@@ -486,7 +486,7 @@ public class IndentationCheck extends AbstractCheck {
      *
      * @see java.text.MessageFormat
      */
-    public void indentationLog(DetailAST ast, String key, Object... args) {
+    public void indentationLog(DetailAST ast, String key, String... args) {
         if (!incorrectIndentationLines.contains(ast.getLineNo())) {
             incorrectIndentationLines.add(ast.getLineNo());
             log(ast, key, args);

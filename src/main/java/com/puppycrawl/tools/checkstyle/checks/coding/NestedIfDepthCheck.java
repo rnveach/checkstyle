@@ -153,7 +153,7 @@ public final class NestedIfDepthCheck extends AbstractCheck {
     public void visitToken(DetailAST literalIf) {
         if (!CheckUtil.isElseIf(literalIf)) {
             if (depth > max) {
-                log(literalIf, MSG_KEY, depth, max);
+                log(literalIf, MSG_KEY, String.valueOf(depth), String.valueOf(max));
             }
             ++depth;
         }

@@ -498,10 +498,10 @@ public final class ReturnCountCheck extends AbstractCheck {
         public void checkCount(DetailAST ast) {
             if (checking && maxAllowed != null && count > maxAllowed) {
                 if (isVoidContext) {
-                    log(ast, MSG_KEY_VOID, count, maxAllowed);
+                    log(ast, MSG_KEY_VOID, String.valueOf(count), String.valueOf(maxAllowed));
                 }
                 else {
-                    log(ast, MSG_KEY, count, maxAllowed);
+                    log(ast, MSG_KEY, String.valueOf(count), String.valueOf(maxAllowed));
                 }
             }
         }

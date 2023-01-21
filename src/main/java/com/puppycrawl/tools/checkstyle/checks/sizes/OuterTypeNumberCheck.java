@@ -112,7 +112,7 @@ public class OuterTypeNumberCheck extends AbstractCheck {
     @Override
     public void finishTree(DetailAST ast) {
         if (max < outerNum) {
-            log(ast, MSG_KEY, outerNum, max);
+            log(ast, MSG_KEY, String.valueOf(outerNum), String.valueOf(max));
         }
     }
 

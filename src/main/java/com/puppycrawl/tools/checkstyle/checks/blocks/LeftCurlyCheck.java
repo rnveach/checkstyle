@@ -476,7 +476,7 @@ public class LeftCurlyCheck
                 || braceLine.charAt(brace.getColumnNo() + 1) != '}') {
             if (option == LeftCurlyOption.NL) {
                 if (!CommonUtil.hasWhitespaceBefore(brace.getColumnNo(), braceLine)) {
-                    log(brace, MSG_KEY_LINE_NEW, OPEN_CURLY_BRACE, brace.getColumnNo() + 1);
+                    log(brace, MSG_KEY_LINE_NEW, OPEN_CURLY_BRACE, String.valueOf(brace.getColumnNo() + 1));
                 }
             }
             else if (option == LeftCurlyOption.EOL) {
@@ -496,10 +496,10 @@ public class LeftCurlyCheck
      */
     private void validateEol(DetailAST brace, String braceLine) {
         if (CommonUtil.hasWhitespaceBefore(brace.getColumnNo(), braceLine)) {
-            log(brace, MSG_KEY_LINE_PREVIOUS, OPEN_CURLY_BRACE, brace.getColumnNo() + 1);
+            log(brace, MSG_KEY_LINE_PREVIOUS, OPEN_CURLY_BRACE, String.valueOf(brace.getColumnNo() + 1));
         }
         if (!hasLineBreakAfter(brace)) {
-            log(brace, MSG_KEY_LINE_BREAK_AFTER, OPEN_CURLY_BRACE, brace.getColumnNo() + 1);
+            log(brace, MSG_KEY_LINE_BREAK_AFTER, OPEN_CURLY_BRACE, String.valueOf(brace.getColumnNo() + 1));
         }
     }
 
@@ -514,14 +514,14 @@ public class LeftCurlyCheck
         // not on the same line
         if (startToken.getLineNo() + 1 == brace.getLineNo()) {
             if (CommonUtil.hasWhitespaceBefore(brace.getColumnNo(), braceLine)) {
-                log(brace, MSG_KEY_LINE_PREVIOUS, OPEN_CURLY_BRACE, brace.getColumnNo() + 1);
+                log(brace, MSG_KEY_LINE_PREVIOUS, OPEN_CURLY_BRACE, String.valueOf(brace.getColumnNo() + 1));
             }
             else {
-                log(brace, MSG_KEY_LINE_NEW, OPEN_CURLY_BRACE, brace.getColumnNo() + 1);
+                log(brace, MSG_KEY_LINE_NEW, OPEN_CURLY_BRACE, String.valueOf(brace.getColumnNo() + 1));
             }
         }
         else if (!CommonUtil.hasWhitespaceBefore(brace.getColumnNo(), braceLine)) {
-            log(brace, MSG_KEY_LINE_NEW, OPEN_CURLY_BRACE, brace.getColumnNo() + 1);
+            log(brace, MSG_KEY_LINE_NEW, OPEN_CURLY_BRACE, String.valueOf(brace.getColumnNo() + 1));
         }
     }
 

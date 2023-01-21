@@ -226,7 +226,7 @@ public abstract class AbstractCheck extends AbstractViolationReporter {
     }
 
     @Override
-    public final void log(int line, String key, Object... args) {
+    public final void log(int line, String key, String... args) {
         context.get().violations.add(
             new Violation(
                 line,
@@ -241,7 +241,7 @@ public abstract class AbstractCheck extends AbstractViolationReporter {
 
     @Override
     public final void log(int lineNo, int colNo, String key,
-            Object... args) {
+            String... args) {
         final int col = 1 + CommonUtil.lengthExpandedTabs(
             getLines()[lineNo - 1], colNo, tabWidth);
         context.get().violations.add(
@@ -265,7 +265,7 @@ public abstract class AbstractCheck extends AbstractViolationReporter {
      * @param key key to locale violation format
      * @param args arguments to format
      */
-    public final void log(DetailAST ast, String key, Object... args) {
+    public final void log(DetailAST ast, String key, String... args) {
         // CommonUtil.lengthExpandedTabs returns column number considering tabulation
         // characters, it takes line from the file by line number, ast column number and tab
         // width as arguments. Returned value is 0-based, but user must see column number starting

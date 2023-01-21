@@ -393,7 +393,7 @@ public class CyclomaticComplexityCheck
     private void leaveMethodDef(DetailAST ast) {
         final BigInteger bigIntegerMax = BigInteger.valueOf(max);
         if (currentValue.compareTo(bigIntegerMax) > 0) {
-            log(ast, MSG_KEY, currentValue, bigIntegerMax);
+            log(ast, MSG_KEY, currentValue.toString(), bigIntegerMax.toString());
         }
         popValue();
     }

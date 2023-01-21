@@ -135,7 +135,7 @@ public class JavadocDetailNodeParser {
                     parseErrorMessage = new ParseErrorMessage(
                             errorListener.offset + htmlTagNameStart.getLine(),
                             MSG_JAVADOC_MISSED_HTML_CLOSE,
-                            htmlTagNameStart.getCharPositionInLine(),
+                            String.valueOf(htmlTagNameStart.getCharPositionInLine()),
                             htmlTagNameStart.getText());
                 }
             }
@@ -609,10 +609,11 @@ public class JavadocDetailNodeParser {
                 int line, int charPositionInLine,
                 String msg, RecognitionException ex) {
             final int lineNumber = offset + line;
+            final String charPosition = String.valueOf(charPositionInLine);
 
             if (MSG_JAVADOC_WRONG_SINGLETON_TAG.equals(msg)) {
                 errorMessage = new ParseErrorMessage(lineNumber,
-                        MSG_JAVADOC_WRONG_SINGLETON_TAG, charPositionInLine,
+                        MSG_JAVADOC_WRONG_SINGLETON_TAG, charPosition,
                         ((Token) offendingSymbol).getText());
 
                 throw new IllegalArgumentException(msg);
@@ -623,7 +624,7 @@ public class JavadocDetailNodeParser {
             final String upperCaseRuleName = convertUpperCamelToUpperUnderscore(ruleName);
 
             errorMessage = new ParseErrorMessage(lineNumber,
-                    MSG_JAVADOC_PARSE_RULE_ERROR, charPositionInLine, msg, upperCaseRuleName);
+                    MSG_JAVADOC_PARSE_RULE_ERROR, charPosition, msg, upperCaseRuleName);
 
         }
 
@@ -734,7 +735,7 @@ public class JavadocDetailNodeParser {
         /**
          * Error message arguments.
          */
-        private final Object[] messageArguments;
+        private final String[] messageArguments;
 
         /**
          * Initializes parse error message.
@@ -744,7 +745,7 @@ public class JavadocDetailNodeParser {
          * @param messageArguments message arguments
          */
         /* package */ ParseErrorMessage(int lineNumber, String messageKey,
-                Object... messageArguments) {
+                String... messageArguments) {
             this.lineNumber = lineNumber;
             this.messageKey = messageKey;
             this.messageArguments = messageArguments.clone();
@@ -773,7 +774,7 @@ public class JavadocDetailNodeParser {
          *
          * @return Array of error message arguments.
          */
-        public Object[] getMessageArguments() {
+        public String[] getMessageArguments() {
             return messageArguments.clone();
         }
 

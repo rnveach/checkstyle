@@ -146,7 +146,7 @@ public class UniquePropertiesCheck extends AbstractFileSetCheck {
             final String keyName = duplication.getKey();
             final int lineNumber = getLineNumber(fileText, keyName);
             // Number of occurrences is number of duplications + 1
-            log(lineNumber, MSG_KEY, keyName, duplication.getValue().get() + 1);
+            log(lineNumber, MSG_KEY, keyName, String.valueOf(duplication.getValue().get() + 1));
         }
     }
 

@@ -244,7 +244,7 @@ public class MethodLengthCheck extends AbstractCheck {
             }
             if (length > max) {
                 final String methodName = ast.findFirstToken(TokenTypes.IDENT).getText();
-                log(ast, MSG_KEY, length, max, methodName);
+                log(ast, MSG_KEY, String.valueOf(length), String.valueOf(max), methodName);
             }
         }
     }

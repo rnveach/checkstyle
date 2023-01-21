@@ -378,7 +378,7 @@ public final class BooleanExpressionComplexityCheck extends AbstractCheck {
             if (checking && count > max) {
                 final DetailAST parentAST = ast.getParent();
 
-                log(parentAST, MSG_KEY, count, max);
+                log(parentAST, MSG_KEY, String.valueOf(count), String.valueOf(max));
             }
         }
 

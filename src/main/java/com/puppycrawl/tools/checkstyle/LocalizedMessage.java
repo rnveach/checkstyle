@@ -57,7 +57,7 @@ public class LocalizedMessage {
     /**
      * Arguments for MessageFormat.
      */
-    private final Object[] args;
+    private final String[] args;
 
     /**
      * Creates a new {@code LocalizedMessage} instance.
@@ -68,7 +68,7 @@ public class LocalizedMessage {
      * @param args arguments for the translation.
      */
     public LocalizedMessage(String bundle, Class<?> sourceClass, String key,
-            Object... args) {
+            String... args) {
         this.bundle = bundle;
         this.sourceClass = sourceClass;
         this.key = key;

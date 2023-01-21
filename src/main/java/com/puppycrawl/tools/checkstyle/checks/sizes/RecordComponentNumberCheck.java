@@ -207,7 +207,7 @@ public class RecordComponentNumberCheck extends AbstractCheck {
             final int componentCount = countComponents(recordComponents);
 
             if (componentCount > max) {
-                log(ast, MSG_KEY, componentCount, max);
+                log(ast, MSG_KEY, String.valueOf(componentCount), String.valueOf(max));
             }
         }
     }

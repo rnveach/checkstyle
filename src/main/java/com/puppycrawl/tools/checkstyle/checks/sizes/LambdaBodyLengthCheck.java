@@ -182,7 +182,7 @@ public class LambdaBodyLengthCheck extends AbstractCheck {
         if (ast.getParent().getType() != TokenTypes.SWITCH_RULE) {
             final int length = getLength(ast);
             if (length > max) {
-                log(ast, MSG_KEY, length, max);
+                log(ast, MSG_KEY, String.valueOf(length), String.valueOf(max));
             }
         }
     }

@@ -455,7 +455,7 @@ public final class AnnotationUseStyleCheck extends AbstractCheck {
             annotation.getChildCount(TokenTypes.ANNOTATION_MEMBER_VALUE_PAIR);
 
         if (valuePairCount == 0 && hasArguments(annotation)) {
-            log(annotation, MSG_KEY_ANNOTATION_INCORRECT_STYLE, ElementStyleOption.EXPANDED);
+            log(annotation, MSG_KEY_ANNOTATION_INCORRECT_STYLE, ElementStyleOption.EXPANDED.toString());
         }
     }
 
@@ -488,7 +488,7 @@ public final class AnnotationUseStyleCheck extends AbstractCheck {
             && ANNOTATION_ELEMENT_SINGLE_NAME.equals(
                 valuePair.getFirstChild().getText())) {
             log(annotation, MSG_KEY_ANNOTATION_INCORRECT_STYLE,
-                ElementStyleOption.COMPACT);
+                ElementStyleOption.COMPACT.toString());
         }
     }
 
@@ -505,7 +505,7 @@ public final class AnnotationUseStyleCheck extends AbstractCheck {
         if (arrayInit != null
             && arrayInit.getChildCount(TokenTypes.EXPR) == 1) {
             log(annotation, MSG_KEY_ANNOTATION_INCORRECT_STYLE,
-                ElementStyleOption.COMPACT_NO_ARRAY);
+                ElementStyleOption.COMPACT_NO_ARRAY.toString());
         }
         // in expanded style with pairs
         else {
@@ -516,7 +516,7 @@ public final class AnnotationUseStyleCheck extends AbstractCheck {
                 if (nestedArrayInit != null
                     && nestedArrayInit.getChildCount(TokenTypes.EXPR) == 1) {
                     log(annotation, MSG_KEY_ANNOTATION_INCORRECT_STYLE,
-                        ElementStyleOption.COMPACT_NO_ARRAY);
+                        ElementStyleOption.COMPACT_NO_ARRAY.toString());
                 }
                 ast = ast.getNextSibling();
             }

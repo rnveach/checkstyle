@@ -267,7 +267,7 @@ public final class ThrowsCountCheck extends AbstractCheck {
             // Account for all the commas!
             final int count = (ast.getChildCount() + 1) / 2;
             if (count > max) {
-                log(ast, MSG_KEY, count, max);
+                log(ast, MSG_KEY, String.valueOf(count), String.valueOf(max));
             }
         }
     }

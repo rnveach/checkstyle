@@ -93,11 +93,11 @@ public abstract class AbstractParenPadCheck
             final boolean hasWhitespaceAfter =
                     CommonUtil.isCodePointWhitespace(line, after);
             if (option == PadOption.NOSPACE && hasWhitespaceAfter) {
-                log(ast, MSG_WS_FOLLOWED, OPEN_PARENTHESIS);
+                log(ast, MSG_WS_FOLLOWED, String.valueOf(OPEN_PARENTHESIS));
             }
             else if (option == PadOption.SPACE && !hasWhitespaceAfter
                      && line[after] != CLOSE_PARENTHESIS) {
-                log(ast, MSG_WS_NOT_FOLLOWED, OPEN_PARENTHESIS);
+                log(ast, MSG_WS_NOT_FOLLOWED, String.valueOf(OPEN_PARENTHESIS));
             }
         }
     }
@@ -116,11 +116,11 @@ public abstract class AbstractParenPadCheck
 
             if (option == PadOption.NOSPACE && hasPrecedingWhitespace
                 && !CodePointUtil.hasWhitespaceBefore(before, line)) {
-                log(ast, MSG_WS_PRECEDED, CLOSE_PARENTHESIS);
+                log(ast, MSG_WS_PRECEDED, String.valueOf(CLOSE_PARENTHESIS));
             }
             else if (option == PadOption.SPACE && !hasPrecedingWhitespace
                 && line[before] != OPEN_PARENTHESIS) {
-                log(ast, MSG_WS_NOT_PRECEDED, CLOSE_PARENTHESIS);
+                log(ast, MSG_WS_NOT_PRECEDED, String.valueOf(CLOSE_PARENTHESIS));
             }
         }
     }

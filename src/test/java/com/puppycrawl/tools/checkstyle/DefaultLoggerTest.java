@@ -316,7 +316,7 @@ public class DefaultLoggerTest {
                 DefaultLogger.class, "DefaultLogger.auditFinished");
     }
 
-    private static LocalizedMessage getAddExceptionMessageClass(Object... arguments) {
+    private static LocalizedMessage getAddExceptionMessageClass(String... arguments) {
         return new LocalizedMessage(Definitions.CHECKSTYLE_BUNDLE,
                 DefaultLogger.class, "DefaultLogger.addException", arguments);
     }
