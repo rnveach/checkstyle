@@ -502,7 +502,7 @@ public abstract class AbstractModuleTestSupport extends AbstractPathTestSupport 
      * @param arguments  the arguments of message in 'messages.properties' file.
      * @return The message of the check with the arguments applied.
      */
-    protected final String getCheckMessage(String messageKey, Object... arguments) {
+    protected final String getCheckMessage(String messageKey, String... arguments) {
         return internalGetCheckMessage(getMessageBundle(), messageKey, arguments);
     }
 
@@ -530,7 +530,7 @@ public abstract class AbstractModuleTestSupport extends AbstractPathTestSupport 
      * @return The message of the check with the arguments applied.
      */
     private static String internalGetCheckMessage(
-            String messageBundle, String messageKey, Object... arguments) {
+            String messageBundle, String messageKey, String... arguments) {
         final ResourceBundle resourceBundle = ResourceBundle.getBundle(
                 messageBundle,
                 Locale.getDefault(),
