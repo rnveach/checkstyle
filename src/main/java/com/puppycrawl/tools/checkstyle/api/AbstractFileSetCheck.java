@@ -214,7 +214,6 @@ public abstract class AbstractFileSetCheck
     public final void log(int line, String key, Object... args) {
         context.get().violations.add(
                 new Violation(line,
-                        getMessageBundle(),
                         key,
                         args,
                         getSeverityLevel(),
@@ -232,7 +231,6 @@ public abstract class AbstractFileSetCheck
         fileContext.violations.add(
                 new Violation(lineNo,
                         col,
-                        getMessageBundle(),
                         key,
                         args,
                         getSeverityLevel(),

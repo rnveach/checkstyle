@@ -41,7 +41,7 @@ public class XpathFileGeneratorAstFilterTest {
 
     @Test
     public void testAcceptNoToken() {
-        final Violation violation = new Violation(0, 0, 0, null, null, null, null,
+        final Violation violation = new Violation(0, 0, 0, null, null, null,
                 null, XpathFileGeneratorAstFilterTest.class, null);
         final TreeWalkerAuditEvent event = new TreeWalkerAuditEvent(null, null, violation, null);
         final XpathFileGeneratorAstFilter filter = new XpathFileGeneratorAstFilter();
@@ -61,7 +61,7 @@ public class XpathFileGeneratorAstFilterTest {
     @Test
     public void test() throws Exception {
         final Violation violation = new Violation(3, 47, TokenTypes.LCURLY,
-                "messages.properties", null, null, SeverityLevel.ERROR, null, LeftCurlyCheck.class,
+                null, null, SeverityLevel.ERROR, null, LeftCurlyCheck.class,
                 null);
         final TreeWalkerAuditEvent event = createTreeWalkerAuditEvent(
                 "InputXpathFileGeneratorAstFilter.java", violation);
@@ -84,7 +84,7 @@ public class XpathFileGeneratorAstFilterTest {
     @Test
     public void testNoXpathQuery() throws Exception {
         final Violation violation = new Violation(10, 10, TokenTypes.LCURLY,
-                "messages.properties", null, null, SeverityLevel.ERROR, null, LeftCurlyCheck.class,
+                null, null, SeverityLevel.ERROR, null, LeftCurlyCheck.class,
                 null);
         final TreeWalkerAuditEvent event = createTreeWalkerAuditEvent(
                 "InputXpathFileGeneratorAstFilter.java", violation);
@@ -106,7 +106,7 @@ public class XpathFileGeneratorAstFilterTest {
     @Test
     public void testTabWidth() throws Exception {
         final Violation violation = new Violation(6, 7, TokenTypes.LITERAL_RETURN,
-                "messages.properties", null, null, SeverityLevel.ERROR, null,
+                null, null, SeverityLevel.ERROR, null,
                 XpathFileGeneratorAstFilterTest.class, null);
         final TreeWalkerAuditEvent event = createTreeWalkerAuditEvent(
                 "InputXpathFileGeneratorAstFilter.java", violation);
@@ -139,7 +139,7 @@ public class XpathFileGeneratorAstFilterTest {
     @SuppressWarnings("unchecked")
     public void testClearState() throws Exception {
         final Violation violation = new Violation(3, 47, TokenTypes.LCURLY,
-                "messages.properties", null, null, SeverityLevel.ERROR, null, LeftCurlyCheck.class,
+                null, null, SeverityLevel.ERROR, null, LeftCurlyCheck.class,
                 null);
         final TreeWalkerAuditEvent event = createTreeWalkerAuditEvent(
                 "InputXpathFileGeneratorAstFilter.java", violation);

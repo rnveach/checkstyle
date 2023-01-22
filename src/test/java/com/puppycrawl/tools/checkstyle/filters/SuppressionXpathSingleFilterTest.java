@@ -308,7 +308,7 @@ public class SuppressionXpathSingleFilterTest
                 createSuppressionXpathSingleFilter("InputSuppressionXpathSingleFilterComplexQuery",
                         "Test", null, null, xpath);
         final Violation message =
-                new Violation(3, 0, TokenTypes.CLASS_DEF, "",
+                new Violation(3, 0, TokenTypes.CLASS_DEF,
                         "", null, null, "id19",
                         getClass(), null);
         final FileContents fileContents = new FileContents(new FileText(

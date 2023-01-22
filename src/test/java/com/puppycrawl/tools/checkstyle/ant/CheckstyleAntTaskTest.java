@@ -29,10 +29,8 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 import java.util.Optional;
-import java.util.ResourceBundle;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -46,7 +44,7 @@ import org.junit.jupiter.api.Test;
 import com.google.common.truth.StandardSubjectBuilder;
 import com.puppycrawl.tools.checkstyle.AbstractPathTestSupport;
 import com.puppycrawl.tools.checkstyle.DefaultLogger;
-import com.puppycrawl.tools.checkstyle.Definitions;
+import com.puppycrawl.tools.checkstyle.LocalizedMessage;
 import com.puppycrawl.tools.checkstyle.SarifLogger;
 import com.puppycrawl.tools.checkstyle.XMLLogger;
 import com.puppycrawl.tools.checkstyle.internal.testmodules.CheckstyleAntTaskLogStub;
@@ -68,6 +66,14 @@ public class CheckstyleAntTaskTest extends AbstractPathTestSupport {
             "InputCheckstyleAntTaskConfigCustomRootModule.xml";
     private static final String NOT_EXISTING_FILE = "target/not_existing.xml";
     private static final String FAILURE_PROPERTY_VALUE = "myValue";
+
+    private final LocalizedMessage auditStartMessage = new LocalizedMessage(
+            DefaultLogger.class,
+            "DefaultLogger.auditStarted");
+
+    private final LocalizedMessage auditFinishMessage = new LocalizedMessage(
+            DefaultLogger.class,
+            "DefaultLogger.auditFinished");
 
     @Override
     protected String getPackageLocation() {
@@ -379,10 +385,8 @@ public class CheckstyleAntTaskTest extends AbstractPathTestSupport {
         antTask.addFormatter(formatter);
         antTask.execute();
 
-        final ResourceBundle bundle = ResourceBundle.getBundle(
-                Definitions.CHECKSTYLE_BUNDLE, Locale.ROOT);
-        final String auditStartedMessage = bundle.getString(DefaultLogger.AUDIT_STARTED_MESSAGE);
-        final String auditFinishedMessage = bundle.getString(DefaultLogger.AUDIT_FINISHED_MESSAGE);
+        final String auditStartedMessage = auditStartMessage.getMessage();
+        final String auditFinishedMessage = auditFinishMessage.getMessage();
         final List<String> output = readWholeFile(outputFile);
         final String errorMessage = "Content of file with violations differs from expected";
         assertWithMessage(errorMessage)
@@ -784,10 +788,8 @@ public class CheckstyleAntTaskTest extends AbstractPathTestSupport {
     @Test
     public final void testExecuteLogOutput() throws Exception {
         final URL url = new File(getPath(CONFIG_FILE)).toURI().toURL();
-        final ResourceBundle bundle = ResourceBundle.getBundle(
-                Definitions.CHECKSTYLE_BUNDLE, Locale.ROOT);
-        final String auditStartedMessage = bundle.getString(DefaultLogger.AUDIT_STARTED_MESSAGE);
-        final String auditFinishedMessage = bundle.getString(DefaultLogger.AUDIT_FINISHED_MESSAGE);
+        final String auditStartedMessage = auditStartMessage.getMessage();
+        final String auditFinishedMessage = auditFinishMessage.getMessage();
 
         final List<MessageLevelPair> expectedList = Arrays.asList(
                 new MessageLevelPair("checkstyle version .*", Project.MSG_VERBOSE),

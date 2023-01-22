@@ -132,7 +132,7 @@ public class CheckerTest extends AbstractModuleTestSupport {
         final File tempFile = File.createTempFile("junit", null, temporaryFolder);
         checker.process(Collections.singletonList(tempFile));
         final SortedSet<Violation> violations = new TreeSet<>();
-        violations.add(new Violation(1, 0, "a Bundle", "message.key",
+        violations.add(new Violation(1, 0, "message.key",
                 new Object[] {"arg"}, null, getClass(), null));
         checker.fireErrors("Some File Name", violations);
 
@@ -194,7 +194,7 @@ public class CheckerTest extends AbstractModuleTestSupport {
 
         auditAdapter.resetListener();
         final SortedSet<Violation> violations = new TreeSet<>();
-        violations.add(new Violation(1, 0, "a Bundle", "message.key",
+        violations.add(new Violation(1, 0, "message.key",
                 new Object[] {"arg"}, null, getClass(), null));
         checker.fireErrors("Some File Name", violations);
         assertWithMessage("Checker.fireErrors() doesn't call listener")
@@ -252,7 +252,7 @@ public class CheckerTest extends AbstractModuleTestSupport {
 
         aa2.resetListener();
         final SortedSet<Violation> violations = new TreeSet<>();
-        violations.add(new Violation(1, 0, "a Bundle", "message.key",
+        violations.add(new Violation(1, 0, "message.key",
                 new Object[] {"arg"}, null, getClass(), null));
         checker.fireErrors("Some File Name", violations);
         assertWithMessage("Checker.fireErrors() doesn't call listener")
@@ -305,7 +305,7 @@ public class CheckerTest extends AbstractModuleTestSupport {
 
         filter.resetFilter();
         final SortedSet<Violation> violations = new TreeSet<>();
-        violations.add(new Violation(1, 0, "a Bundle", "message.key",
+        violations.add(new Violation(1, 0, "message.key",
                 new Object[] {"arg"}, null, getClass(), null));
         checker.fireErrors("Some File Name", violations);
         assertWithMessage("Checker.fireErrors() doesn't call filter")
@@ -324,7 +324,7 @@ public class CheckerTest extends AbstractModuleTestSupport {
 
         f2.resetFilter();
         final SortedSet<Violation> violations = new TreeSet<>();
-        violations.add(new Violation(1, 0, "a Bundle", "message.key",
+        violations.add(new Violation(1, 0, "message.key",
                 new Object[] {"arg"}, null, getClass(), null));
         checker.fireErrors("Some File Name", violations);
         assertWithMessage("Checker.fireErrors() doesn't call filter")

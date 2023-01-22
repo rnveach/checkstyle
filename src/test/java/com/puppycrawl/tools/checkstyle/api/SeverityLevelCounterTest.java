@@ -48,10 +48,10 @@ public class SeverityLevelCounterTest {
                 .isEqualTo(0);
         // not counted
         counter.addError(new AuditEvent(this, "ATest.java", null));
-        counter.addError(new AuditEvent(this, "ATest.java", new Violation(1, 2, 0, null,
+        counter.addError(new AuditEvent(this, "ATest.java", new Violation(1, 2, 0,
                 null, null, SeverityLevel.INFO, null, null, null)));
         // counted
-        counter.addError(new AuditEvent(this, "ATest.java", new Violation(1, 2, 0, null,
+        counter.addError(new AuditEvent(this, "ATest.java", new Violation(1, 2, 0,
                 null, null, SeverityLevel.ERROR, null, null, null)));
         assertWithMessage("Invalid severity level count")
                 .that(counter.getCount())

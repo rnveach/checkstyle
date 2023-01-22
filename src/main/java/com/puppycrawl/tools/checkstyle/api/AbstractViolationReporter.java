@@ -103,48 +103,6 @@ public abstract class AbstractViolationReporter
         return getConfiguration().getMessages();
     }
 
-    /**
-     * Returns the message bundle name resource bundle that contains the messages
-     * used by this module.
-     * <p>
-     * The default implementation expects the resource files to be named
-     * messages.properties, messages_de.properties, etc. The file must
-     * be placed in the same package as the module implementation.
-     * </p>
-     * <p>
-     * Example: If you write com/foo/MyCoolCheck, create resource files
-     * com/foo/messages.properties, com/foo/messages_de.properties, etc.
-     * </p>
-     *
-     * @return name of a resource bundle that contains the messages
-     *     used by this module.
-     */
-    protected String getMessageBundle() {
-        final String className = getClass().getName();
-        return getMessageBundle(className);
-    }
-
-    /**
-     * For unit tests, especially with a class with no package name.
-     *
-     * @param className class name of the module.
-     * @return name of a resource bundle that contains the messages
-     *     used by the module.
-     */
-    private static String getMessageBundle(final String className) {
-        final String messageBundle;
-        final int endIndex = className.lastIndexOf('.');
-        final String messages = "messages";
-        if (endIndex == -1) {
-            messageBundle = messages;
-        }
-        else {
-            final String packageName = className.substring(0, endIndex);
-            messageBundle = packageName + "." + messages;
-        }
-        return messageBundle;
-    }
-
     @Override
     protected void finishLocalSetup() throws CheckstyleException {
         // No code by default

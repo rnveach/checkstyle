@@ -209,7 +209,7 @@ public class PackageObjectFactory implements ModuleFactory {
                         + joinPackageNamesWithClassName(nameCheck, packages);
             }
             final LocalizedMessage exceptionMessage = new LocalizedMessage(
-                Definitions.CHECKSTYLE_BUNDLE, getClass(),
+                getClass(),
                 UNABLE_TO_INSTANTIATE_EXCEPTION_MESSAGE, name, attemptedNames);
             throw new CheckstyleException(exceptionMessage.getMessage());
         }
@@ -285,7 +285,7 @@ public class PackageObjectFactory implements ModuleFactory {
                     .sorted()
                     .collect(Collectors.joining(STRING_SEPARATOR));
             final LocalizedMessage exceptionMessage = new LocalizedMessage(
-                    Definitions.CHECKSTYLE_BUNDLE, getClass(),
+                    getClass(),
                     AMBIGUOUS_MODULE_NAME_EXCEPTION_MESSAGE, name, optionalNames);
             throw new CheckstyleException(exceptionMessage.getMessage());
         }

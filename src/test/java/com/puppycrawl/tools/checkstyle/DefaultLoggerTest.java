@@ -27,7 +27,6 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.nio.charset.StandardCharsets;
-import java.text.MessageFormat;
 import java.util.Arrays;
 import java.util.Locale;
 import java.util.ResourceBundle;
@@ -148,7 +147,7 @@ public class DefaultLoggerTest {
                 AutomaticBean.OutputStreamOptions.CLOSE);
         dl.finishLocalSetup();
         dl.auditStarted(null);
-        dl.addError(new AuditEvent(this, "fileName", new Violation(1, 2, "bundle", "key",
+        dl.addError(new AuditEvent(this, "fileName", new Violation(1, 2, "key",
                 null, null, getClass(), "customViolation")));
         dl.auditFinished(null);
         assertWithMessage("expected output")
@@ -173,7 +172,7 @@ public class DefaultLoggerTest {
                 errorStream, OutputStreamOptions.CLOSE);
         dl.finishLocalSetup();
         dl.auditStarted(null);
-        dl.addError(new AuditEvent(this, "fileName", new Violation(1, 2, "bundle", "key",
+        dl.addError(new AuditEvent(this, "fileName", new Violation(1, 2, "key",
                 null, "moduleId", getClass(), "customViolation")));
         dl.auditFinished(null);
         assertWithMessage("expected output")
@@ -197,7 +196,7 @@ public class DefaultLoggerTest {
             errorStream, AutomaticBean.OutputStreamOptions.CLOSE);
         defaultLogger.finishLocalSetup();
         defaultLogger.auditStarted(null);
-        final Violation ignorableViolation = new Violation(1, 2, "bundle", "key",
+        final Violation ignorableViolation = new Violation(1, 2, "key",
                                                            null, SeverityLevel.IGNORE, null,
                                                            getClass(), "customViolation");
         defaultLogger.addError(new AuditEvent(this, "fileName", ignorableViolation));
@@ -246,12 +245,9 @@ public class DefaultLoggerTest {
 
     @Test
     public void testNewCtor() throws Exception {
-        final ResourceBundle bundle = ResourceBundle.getBundle(
-                Definitions.CHECKSTYLE_BUNDLE, Locale.ROOT);
-        final String auditStartedMessage = bundle.getString(DefaultLogger.AUDIT_STARTED_MESSAGE);
-        final String auditFinishedMessage = bundle.getString(DefaultLogger.AUDIT_FINISHED_MESSAGE);
-        final String addExceptionMessage = new MessageFormat(bundle.getString(
-                DefaultLogger.ADD_EXCEPTION_MESSAGE), Locale.ROOT).format(new String[] {"myfile"});
+        final String auditStartedMessage = getAuditStartMessage();
+        final String auditFinishedMessage = getAuditFinishMessage();
+        final String addExceptionMessage = getAddExceptionMessageClass("myfile").getMessage();
         final String infoOutput;
         final String errorOutput;
         try (MockByteArrayOutputStream infoStream = new MockByteArrayOutputStream()) {
@@ -307,18 +303,15 @@ public class DefaultLoggerTest {
     }
 
     private static LocalizedMessage getAuditStartMessageClass() {
-        return new LocalizedMessage(Definitions.CHECKSTYLE_BUNDLE,
-                DefaultLogger.class, "DefaultLogger.auditStarted");
+        return new LocalizedMessage(DefaultLogger.class, "DefaultLogger.auditStarted");
     }
 
     private static LocalizedMessage getAuditFinishMessageClass() {
-        return new LocalizedMessage(Definitions.CHECKSTYLE_BUNDLE,
-                DefaultLogger.class, "DefaultLogger.auditFinished");
+        return new LocalizedMessage(DefaultLogger.class, "DefaultLogger.auditFinished");
     }
 
     private static LocalizedMessage getAddExceptionMessageClass(Object... arguments) {
-        return new LocalizedMessage(Definitions.CHECKSTYLE_BUNDLE,
-                DefaultLogger.class, "DefaultLogger.addException", arguments);
+        return new LocalizedMessage(DefaultLogger.class, "DefaultLogger.addException", arguments);
     }
 
     private static String getAuditStartMessage() {

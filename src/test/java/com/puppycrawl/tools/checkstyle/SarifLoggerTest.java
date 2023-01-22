@@ -81,7 +81,7 @@ public class SarifLoggerTest extends AbstractModuleTestSupport {
         logger.auditStarted(null);
         final Violation violation =
                 new Violation(1, 1,
-                        "messages.properties", "ruleId", null, SeverityLevel.ERROR, null,
+                        "ruleId", null, SeverityLevel.ERROR, null,
                         getClass(), "found an error");
         final AuditEvent ev = new AuditEvent(this, "Test.java", violation);
         logger.fileStarted(ev);
@@ -98,7 +98,7 @@ public class SarifLoggerTest extends AbstractModuleTestSupport {
         logger.auditStarted(null);
         final Violation violation =
                 new Violation(1, 1,
-                        "messages.properties", "ruleId", null, SeverityLevel.WARNING, null,
+                        "ruleId", null, SeverityLevel.WARNING, null,
                         getClass(), "found an error");
         final AuditEvent ev = new AuditEvent(this, "Test.java", violation);
         logger.fileStarted(ev);
@@ -115,12 +115,12 @@ public class SarifLoggerTest extends AbstractModuleTestSupport {
         logger.auditStarted(null);
         final Violation violation =
                 new Violation(1, 1,
-                        "messages.properties", "ruleId", null, SeverityLevel.INFO, null,
+                        "ruleId", null, SeverityLevel.INFO, null,
                         getClass(), "found an error");
         final AuditEvent ev = new AuditEvent(this, "Test.java", violation);
         final Violation violation2 =
                 new Violation(1, 1,
-                        "messages.properties", "ruleId2", null, SeverityLevel.IGNORE, null,
+                        "ruleId2", null, SeverityLevel.IGNORE, null,
                         getClass(), "found another error");
         final AuditEvent ev2 = new AuditEvent(this, "Test.java", violation2);
         logger.fileStarted(ev);
@@ -140,7 +140,7 @@ public class SarifLoggerTest extends AbstractModuleTestSupport {
         logger.auditStarted(null);
         final Violation message =
                 new Violation(1, 1,
-                        "messages.properties", "null", null, null,
+                        "null", null, null,
                         getClass(), "found an error");
         final AuditEvent ev = new AuditEvent(this, null, message);
         logger.fileStarted(ev);
@@ -157,12 +157,12 @@ public class SarifLoggerTest extends AbstractModuleTestSupport {
         logger.auditStarted(null);
         final Violation violation =
                 new Violation(1, 1,
-                        "messages.properties", "null", null, null,
+                        "null", null, null,
                         getClass(), "found an error");
         final AuditEvent ev = new AuditEvent(this, null, violation);
         final Violation violation2 =
                 new Violation(1, 1,
-                        "messages.properties", "null", null, null,
+                        "null", null, null,
                         getClass(), "found an error");
         final AuditEvent ev2 = new AuditEvent(this, "Test.java", violation2);
         logger.fileStarted(ev);
@@ -182,7 +182,7 @@ public class SarifLoggerTest extends AbstractModuleTestSupport {
         logger.auditStarted(null);
         final Violation violation =
             new Violation(1, 0,
-                "messages.properties", "ruleId", null, null,
+                "ruleId", null, null,
                 getClass(), "found an error");
         final AuditEvent ev = new AuditEvent(this, "Test.java", violation);
         logger.fileStarted(ev);
@@ -199,7 +199,7 @@ public class SarifLoggerTest extends AbstractModuleTestSupport {
         logger.auditStarted(null);
         final Violation violation =
                 new Violation(1, 1,
-                        "messages.properties", "null", null, null,
+                        "null", null, null,
                         getClass(), "found an error");
         final AuditEvent ev = new AuditEvent(this, null, violation);
         logger.fileStarted(ev);

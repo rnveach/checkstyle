@@ -43,9 +43,6 @@ public class LocalizedMessage {
     /** The locale to localise messages to. **/
     private static Locale sLocale = Locale.getDefault();
 
-    /** Name of the resource bundle to get messages from. **/
-    private final String bundle;
-
     /** Class of the source for this message. */
     private final Class<?> sourceClass;
 
@@ -62,14 +59,12 @@ public class LocalizedMessage {
     /**
      * Creates a new {@code LocalizedMessage} instance.
      *
-     * @param bundle resource bundle name
      * @param sourceClass the Class that is the source of the message
      * @param key the key to locate the translation.
      * @param args arguments for the translation.
      */
-    public LocalizedMessage(String bundle, Class<?> sourceClass, String key,
+    public LocalizedMessage(Class<?> sourceClass, String key,
             Object... args) {
-        this.bundle = bundle;
         this.sourceClass = sourceClass;
         this.key = key;
         if (args == null) {
@@ -129,8 +124,8 @@ public class LocalizedMessage {
      * @return a ResourceBundle.
      */
     private ResourceBundle getBundle() {
-        return ResourceBundle.getBundle(bundle, sLocale, sourceClass.getClassLoader(),
-                new Utf8Control());
+        return ResourceBundle.getBundle(sourceClass.getPackage().getName() + ".messages", sLocale,
+                sourceClass.getClassLoader(), new Utf8Control());
     }
 
     /**

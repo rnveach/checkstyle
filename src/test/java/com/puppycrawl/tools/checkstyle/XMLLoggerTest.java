@@ -183,7 +183,7 @@ public class XMLLoggerTest extends AbstractXmlTestSupport {
         logger.auditStarted(null);
         final Violation violation =
             new Violation(1, 1,
-                "messages.properties", "key", null, SeverityLevel.ERROR, null,
+                "key", null, SeverityLevel.ERROR, null,
                     getClass(), null);
         final AuditEvent ev = new AuditEvent(this, "Test.java", violation);
         logger.fileStarted(ev);
@@ -199,7 +199,7 @@ public class XMLLoggerTest extends AbstractXmlTestSupport {
         logger.auditStarted(null);
         final Violation violation =
                 new Violation(1, 1,
-                        "messages.properties", "key", null, SeverityLevel.ERROR, null,
+                        "key", null, SeverityLevel.ERROR, null,
                         getClass(), null);
         final AuditEvent ev = new AuditEvent(this, null, violation);
         logger.addError(ev);
@@ -214,7 +214,7 @@ public class XMLLoggerTest extends AbstractXmlTestSupport {
         logger.auditStarted(null);
         final Violation violation =
             new Violation(1, 1,
-                "messages.properties", "key", null, SeverityLevel.ERROR, "module",
+                "key", null, SeverityLevel.ERROR, "module",
                     getClass(), null);
         final AuditEvent ev = new AuditEvent(this, "Test.java", violation);
         logger.addError(ev);
@@ -229,7 +229,7 @@ public class XMLLoggerTest extends AbstractXmlTestSupport {
         logger.auditStarted(null);
         final Violation violation =
                 new Violation(1, 0,
-                        "messages.properties", "key", null, SeverityLevel.ERROR, null,
+                        "key", null, SeverityLevel.ERROR, null,
                         getClass(), null);
         final AuditEvent ev = new AuditEvent(this, "Test.java", violation);
         logger.fileStarted(ev);
@@ -246,7 +246,7 @@ public class XMLLoggerTest extends AbstractXmlTestSupport {
         logger.auditStarted(null);
         final Violation violation =
                 new Violation(1, 1,
-                        "messages.properties", "key", null, SeverityLevel.IGNORE, null,
+                        "key", null, SeverityLevel.IGNORE, null,
                         getClass(), null);
         final AuditEvent ev = new AuditEvent(this, "Test.java", violation);
         logger.addError(ev);
@@ -360,7 +360,7 @@ public class XMLLoggerTest extends AbstractXmlTestSupport {
 
         final Violation violation =
                 new Violation(1, 1,
-                        "messages.properties", "key", null, SeverityLevel.ERROR, null,
+                        "key", null, SeverityLevel.ERROR, null,
                         getClass(), null);
         final AuditEvent errorEvent = new AuditEvent(this, "Test.java", violation);
         logger.addError(errorEvent);

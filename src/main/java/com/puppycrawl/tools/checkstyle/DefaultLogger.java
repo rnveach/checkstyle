@@ -160,7 +160,7 @@ public class DefaultLogger extends AutomaticBean implements AuditListener {
     public void addException(AuditEvent event, Throwable throwable) {
         synchronized (errorWriter) {
             final LocalizedMessage exceptionMessage = new LocalizedMessage(
-                    Definitions.CHECKSTYLE_BUNDLE, DefaultLogger.class,
+                    DefaultLogger.class,
                     ADD_EXCEPTION_MESSAGE, event.getFileName());
             errorWriter.println(exceptionMessage.getMessage());
             throwable.printStackTrace(errorWriter);
@@ -170,7 +170,7 @@ public class DefaultLogger extends AutomaticBean implements AuditListener {
     @Override
     public void auditStarted(AuditEvent event) {
         final LocalizedMessage auditStartMessage = new LocalizedMessage(
-                Definitions.CHECKSTYLE_BUNDLE, DefaultLogger.class,
+                DefaultLogger.class,
                 AUDIT_STARTED_MESSAGE);
         infoWriter.println(auditStartMessage.getMessage());
         infoWriter.flush();
@@ -179,7 +179,7 @@ public class DefaultLogger extends AutomaticBean implements AuditListener {
     @Override
     public void auditFinished(AuditEvent event) {
         final LocalizedMessage auditFinishMessage = new LocalizedMessage(
-                Definitions.CHECKSTYLE_BUNDLE, DefaultLogger.class,
+                DefaultLogger.class,
                 AUDIT_FINISHED_MESSAGE);
         infoWriter.println(auditFinishMessage.getMessage());
         closeStreams();

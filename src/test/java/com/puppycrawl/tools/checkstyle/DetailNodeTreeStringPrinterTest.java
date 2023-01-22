@@ -83,7 +83,6 @@ public class DetailNodeTreeStringPrinterTest extends AbstractTreeTestSupport {
                 "getParseErrorMessage",
                 new ParseErrorMessage(35, MSG_JAVADOC_MISSED_HTML_CLOSE, 7, "xyz"));
         final LocalizedMessage violation = new LocalizedMessage(
-                "com.puppycrawl.tools.checkstyle.checks.javadoc.messages",
                 DetailNodeTreeStringPrinter.class,
                 MSG_JAVADOC_MISSED_HTML_CLOSE,
                 7,
@@ -102,7 +101,6 @@ public class DetailNodeTreeStringPrinterTest extends AbstractTreeTestSupport {
                 new ParseErrorMessage(10, MSG_JAVADOC_PARSE_RULE_ERROR,
                         9, "no viable alternative at input ' xyz'", "SOME_JAVADOC_ELEMENT"));
         final LocalizedMessage violation = new LocalizedMessage(
-                "com.puppycrawl.tools.checkstyle.checks.javadoc.messages",
                 DetailNodeTreeStringPrinter.class,
                 MSG_JAVADOC_PARSE_RULE_ERROR,
                 9,
@@ -120,7 +118,6 @@ public class DetailNodeTreeStringPrinterTest extends AbstractTreeTestSupport {
                 new ParseErrorMessage(100, MSG_JAVADOC_WRONG_SINGLETON_TAG,
                         9, "tag"));
         final LocalizedMessage violation = new LocalizedMessage(
-                "com.puppycrawl.tools.checkstyle.checks.javadoc.messages",
                 DetailNodeTreeStringPrinter.class,
                 MSG_JAVADOC_WRONG_SINGLETON_TAG,
                 9,

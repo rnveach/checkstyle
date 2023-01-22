@@ -455,4 +455,12 @@ class class52 {
             }
         };
     }
+
+    public void test6(int a) {
+        // violation above 'Variable 'a' should be declared final'
+    }
+
+    public void test7(int a, // violation 'Variable 'a' should be declared final'
+                                      int b) { // violation 'Variable 'b' should be declared final'
+    }
 }

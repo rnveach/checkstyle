@@ -25,6 +25,7 @@ import static com.puppycrawl.tools.checkstyle.utils.CommonUtil.EMPTY_OBJECT_ARRA
 import org.junit.jupiter.api.Test;
 import org.junitpioneer.jupiter.DefaultLocale;
 
+import com.puppycrawl.tools.checkstyle.checks.coding.EmptyStatementCheck;
 import nl.jqno.equalsverifier.EqualsVerifier;
 import nl.jqno.equalsverifier.EqualsVerifierReport;
 
@@ -89,10 +90,10 @@ public class ViolationTest {
     @Test
     public void testTokenType() {
         final Violation violation1 = new Violation(1, 1, TokenTypes.CLASS_DEF,
-                "messages.properties", "key", null, SeverityLevel.ERROR, null,
+                "key", null, SeverityLevel.ERROR, null,
                 getClass(), null);
         final Violation violation2 = new Violation(1, 1, TokenTypes.OBJBLOCK,
-                "messages.properties", "key", EMPTY_OBJECT_ARRAY, SeverityLevel.ERROR, null,
+                "key", EMPTY_OBJECT_ARRAY, SeverityLevel.ERROR, null,
                 getClass(), null);
 
         assertWithMessage("Invalid token type")
@@ -106,7 +107,7 @@ public class ViolationTest {
     @Test
     public void testGetColumnCharIndex() {
         final Violation violation1 = new Violation(1, 1, 123,
-                TokenTypes.CLASS_DEF, "messages.properties", "key", null, SeverityLevel.ERROR,
+                TokenTypes.CLASS_DEF, "key", null, SeverityLevel.ERROR,
                 null, getClass(), null);
 
         assertWithMessage("Invalid column char index")
@@ -172,19 +173,19 @@ public class ViolationTest {
     }
 
     private static Violation createSampleViolationWithId(String id) {
-        return new Violation(1, "com.puppycrawl.tools.checkstyle.checks.coding.messages",
-                "empty.statement", EMPTY_OBJECT_ARRAY, id, Violation.class, null);
+        return new Violation(1,
+                "empty.statement", EMPTY_OBJECT_ARRAY, id, EmptyStatementCheck.class, null);
     }
 
     private static Violation createSampleViolationWithLine(int line) {
-        return new Violation(line, "com.puppycrawl.tools.checkstyle.checks.coding.messages",
-                "empty.statement", EMPTY_OBJECT_ARRAY, "module", Violation.class, null);
+        return new Violation(line,
+                "empty.statement", EMPTY_OBJECT_ARRAY, "module", EmptyStatementCheck.class, null);
     }
 
     private static Violation createSampleViolationWithColumn(int column) {
         return new Violation(1, column,
-                "com.puppycrawl.tools.checkstyle.checks.coding.messages", "empty.statement",
-                EMPTY_OBJECT_ARRAY, "module", Violation.class, null);
+                "empty.statement",
+                EMPTY_OBJECT_ARRAY, "module", EmptyStatementCheck.class, null);
     }
 
 }

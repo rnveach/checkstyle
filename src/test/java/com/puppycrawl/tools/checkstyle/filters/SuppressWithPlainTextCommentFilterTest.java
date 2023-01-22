@@ -527,7 +527,7 @@ public class SuppressWithPlainTextCommentFilterTest extends AbstractModuleTestSu
     @Test
     public void testAcceptThrowsIllegalStateExceptionAsFileNotFound() {
         final Violation message = new Violation(1, 1, 1, TokenTypes.CLASS_DEF,
-            "messages.properties", "key", null, SeverityLevel.ERROR, null, getClass(), null);
+            "key", null, SeverityLevel.ERROR, null, getClass(), null);
         final String fileName = "nonexisting_file";
         final AuditEvent auditEvent = new AuditEvent(this, fileName, message);
 
@@ -649,7 +649,7 @@ public class SuppressWithPlainTextCommentFilterTest extends AbstractModuleTestSu
     public void testFilterWithDirectory() throws IOException {
         final SuppressWithPlainTextCommentFilter filter = new SuppressWithPlainTextCommentFilter();
         final AuditEvent event = new AuditEvent(this, getPath(""), new Violation(1, 1,
-                "bundle", "key", null, SeverityLevel.ERROR, "moduleId", getClass(),
+                "key", null, SeverityLevel.ERROR, "moduleId", getClass(),
                 "customMessage"));
 
         assertWithMessage("filter should accept directory")

@@ -45,7 +45,7 @@ public class AuditEventTest {
 
     @Test
     public void testFullConstructor() {
-        final Violation message = new Violation(1, 2, 3, "bundle", "key", null,
+        final Violation message = new Violation(1, 2, 3, "key", null,
                 SeverityLevel.ERROR, "moduleId", getClass(), "customMessage");
         final AuditEvent event = new AuditEvent(getClass(), "fileName", message);
 

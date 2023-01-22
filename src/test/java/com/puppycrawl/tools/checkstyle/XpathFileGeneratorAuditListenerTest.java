@@ -291,7 +291,7 @@ public class XpathFileGeneratorAuditListenerTest {
                                                                    String moduleId,
                                                                    Class<?> sourceClass) {
         return new Violation(lineNumber, columnNumber, tokenType,
-                "messages.properties", null, null,
+                null, null,
                 SeverityLevel.ERROR, moduleId, sourceClass, null);
     }
 

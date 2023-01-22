@@ -230,7 +230,6 @@ public abstract class AbstractCheck extends AbstractViolationReporter {
         context.get().violations.add(
             new Violation(
                 line,
-                getMessageBundle(),
                 key,
                 args,
                 getSeverityLevel(),
@@ -248,7 +247,6 @@ public abstract class AbstractCheck extends AbstractViolationReporter {
             new Violation(
                 lineNo,
                 col,
-                getMessageBundle(),
                 key,
                 args,
                 getSeverityLevel(),
@@ -280,7 +278,6 @@ public abstract class AbstractCheck extends AbstractViolationReporter {
                         col,
                         ast.getColumnNo(),
                         ast.getType(),
-                        getMessageBundle(),
                         key,
                         args,
                         getSeverityLevel(),

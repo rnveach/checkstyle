@@ -100,6 +100,9 @@ public class FinalLocalVariableCheckTest
             "53:28: " + getCheckMessage(MSG_KEY, "aArg"),
             "157:36: " + getCheckMessage(MSG_KEY, "_o"),
             "162:37: " + getCheckMessage(MSG_KEY, "_o1"),
+            "459:27: " + getCheckMessage(MSG_KEY, "a"),
+            "463:27: " + getCheckMessage(MSG_KEY, "a"),
+            "464:43: " + getCheckMessage(MSG_KEY, "b"),
         };
         verifyWithInlineConfigParser(
                 getPath("InputFinalLocalVariable2.java"), expected);

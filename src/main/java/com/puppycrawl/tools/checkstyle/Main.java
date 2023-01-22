@@ -146,7 +146,7 @@ public final class Main {
             // return exit code base on validation of Checker
             if (errorCounter > 0) {
                 final LocalizedMessage errorCounterViolation = new LocalizedMessage(
-                        Definitions.CHECKSTYLE_BUNDLE, Main.class,
+                        Main.class,
                         ERROR_COUNTER, String.valueOf(errorCounter));
                 // print error count statistic to error output stream,
                 // output stream might be used by validation report content
@@ -162,7 +162,7 @@ public final class Main {
      * @return a version string based on the package implementation version
      */
     private static String getVersionString() {
-        return "Checkstyle version: " + Main.class.getPackage().getImplementationVersion();
+        throw new IllegalStateException("rveach: " + Main.class.getPackage().getImplementationVersion());
     }
 
     /**
@@ -439,7 +439,7 @@ public final class Main {
         }
         catch (final IOException ex) {
             final LocalizedMessage loadPropertiesExceptionMessage = new LocalizedMessage(
-                    Definitions.CHECKSTYLE_BUNDLE, Main.class,
+                    Main.class,
                     LOAD_PROPERTIES_EXCEPTION, file.getAbsolutePath());
             throw new CheckstyleException(loadPropertiesExceptionMessage.getMessage(), ex);
         }

@@ -52,13 +52,13 @@ public class LocalizedMessageTest {
 
     @Test
     public void testNullArgs() {
-        final LocalizedMessage messageClass = new LocalizedMessage(Definitions.CHECKSTYLE_BUNDLE,
+        final LocalizedMessage messageClass = new LocalizedMessage(
                 DefaultLogger.class, "DefaultLogger.addException", "myfile");
         assertWithMessage("Violation should contain exception info")
                 .that(messageClass.getMessage())
                 .contains("Error auditing myfile");
 
-        final LocalizedMessage nullClass = new LocalizedMessage(Definitions.CHECKSTYLE_BUNDLE,
+        final LocalizedMessage nullClass = new LocalizedMessage(
                 DefaultLogger.class, "DefaultLogger.addException");
         final String outputForNullArgs = nullClass.getMessage();
         assertWithMessage("Violation should contain exception info")
@@ -270,7 +270,7 @@ public class LocalizedMessageTest {
     }
 
     private static LocalizedMessage createSampleViolation() {
-        return new LocalizedMessage("com.puppycrawl.tools.checkstyle.checks.coding.messages",
+        return new LocalizedMessage(
                 LocalizedMessage.class, "empty.statement");
     }
 

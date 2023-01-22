@@ -75,9 +75,6 @@ public final class Violation
      */
     private final Object[] args;
 
-    /** Name of the resource bundle to get violations from. **/
-    private final String bundle;
-
     /** Class of the source for this Violation. */
     private final Class<?> sourceClass;
 
@@ -91,7 +88,6 @@ public final class Violation
      * @param columnNo column number associated with the violation
      * @param columnCharIndex column char index associated with the violation
      * @param tokenType token type of the event associated with violation. See {@link TokenTypes}
-     * @param bundle resource bundle name
      * @param key the key to locate the translation
      * @param args arguments for the translation
      * @param severityLevel severity level for the violation
@@ -107,7 +103,6 @@ public final class Violation
                             int columnNo,
                             int columnCharIndex,
                             int tokenType,
-                            String bundle,
                             String key,
                             Object[] args,
                             SeverityLevel severityLevel,
@@ -126,7 +121,6 @@ public final class Violation
         else {
             this.args = Arrays.copyOf(args, args.length);
         }
-        this.bundle = bundle;
         this.severityLevel = severityLevel;
         this.moduleId = moduleId;
         this.sourceClass = sourceClass;
@@ -139,7 +133,6 @@ public final class Violation
      * @param lineNo line number associated with the violation
      * @param columnNo column number associated with the violation
      * @param tokenType token type of the event associated with violation. See {@link TokenTypes}
-     * @param bundle resource bundle name
      * @param key the key to locate the translation
      * @param args arguments for the translation
      * @param severityLevel severity level for the violation
@@ -154,14 +147,13 @@ public final class Violation
     public Violation(int lineNo,
                             int columnNo,
                             int tokenType,
-                            String bundle,
                             String key,
                             Object[] args,
                             SeverityLevel severityLevel,
                             String moduleId,
                             Class<?> sourceClass,
                             String customMessage) {
-        this(lineNo, columnNo, columnNo, tokenType, bundle, key, args, severityLevel, moduleId,
+        this(lineNo, columnNo, columnNo, tokenType, key, args, severityLevel, moduleId,
                 sourceClass, customMessage);
     }
 
@@ -170,7 +162,6 @@ public final class Violation
      *
      * @param lineNo line number associated with the violation
      * @param columnNo column number associated with the violation
-     * @param bundle resource bundle name
      * @param key the key to locate the translation
      * @param args arguments for the translation
      * @param severityLevel severity level for the violation
@@ -184,14 +175,13 @@ public final class Violation
     // -@cs[ParameterNumber] Class is immutable, we need that amount of arguments.
     public Violation(int lineNo,
                             int columnNo,
-                            String bundle,
                             String key,
                             Object[] args,
                             SeverityLevel severityLevel,
                             String moduleId,
                             Class<?> sourceClass,
                             String customMessage) {
-        this(lineNo, columnNo, 0, bundle, key, args, severityLevel, moduleId, sourceClass,
+        this(lineNo, columnNo, 0, key, args, severityLevel, moduleId, sourceClass,
                 customMessage);
     }
 
@@ -200,7 +190,6 @@ public final class Violation
      *
      * @param lineNo line number associated with the violation
      * @param columnNo column number associated with the violation
-     * @param bundle resource bundle name
      * @param key the key to locate the translation
      * @param args arguments for the translation
      * @param moduleId the id of the module the violation is associated with
@@ -213,7 +202,6 @@ public final class Violation
     // -@cs[ParameterNumber] Class is immutable, we need that amount of arguments.
     public Violation(int lineNo,
                             int columnNo,
-                            String bundle,
                             String key,
                             Object[] args,
                             String moduleId,
@@ -221,7 +209,6 @@ public final class Violation
                             String customMessage) {
         this(lineNo,
                 columnNo,
-             bundle,
              key,
              args,
              DEFAULT_SEVERITY,
@@ -234,7 +221,6 @@ public final class Violation
      * Creates a new {@code Violation} instance.
      *
      * @param lineNo line number associated with the violation
-     * @param bundle resource bundle name
      * @param key the key to locate the translation
      * @param args arguments for the translation
      * @param severityLevel severity level for the violation
@@ -247,14 +233,13 @@ public final class Violation
      */
     // -@cs[ParameterNumber] Class is immutable, we need that amount of arguments.
     public Violation(int lineNo,
-                            String bundle,
                             String key,
                             Object[] args,
                             SeverityLevel severityLevel,
                             String moduleId,
                             Class<?> sourceClass,
                             String customMessage) {
-        this(lineNo, 0, bundle, key, args, severityLevel, moduleId,
+        this(lineNo, 0, key, args, severityLevel, moduleId,
                 sourceClass, customMessage);
     }
 
@@ -263,7 +248,6 @@ public final class Violation
      * defaults to 0.
      *
      * @param lineNo line number associated with the violation
-     * @param bundle name of a resource bundle that contains audit event violations
      * @param key the key to locate the translation
      * @param args arguments for the translation
      * @param moduleId the id of the module the violation is associated with
@@ -272,13 +256,12 @@ public final class Violation
      */
     public Violation(
         int lineNo,
-        String bundle,
         String key,
         Object[] args,
         String moduleId,
         Class<?> sourceClass,
         String customMessage) {
-        this(lineNo, 0, bundle, key, args, DEFAULT_SEVERITY, moduleId,
+        this(lineNo, 0, key, args, DEFAULT_SEVERITY, moduleId,
                 sourceClass, customMessage);
     }
 
@@ -380,7 +363,6 @@ public final class Violation
                 && Objects.equals(severityLevel, violation.severityLevel)
                 && Objects.equals(moduleId, violation.moduleId)
                 && Objects.equals(key, violation.key)
-                && Objects.equals(bundle, violation.bundle)
                 && Objects.equals(sourceClass, violation.sourceClass)
                 && Objects.equals(customMessage, violation.customMessage)
                 && Arrays.equals(args, violation.args);
@@ -389,7 +371,7 @@ public final class Violation
     @Override
     public int hashCode() {
         return Objects.hash(lineNo, columnNo, columnCharIndex, tokenType, severityLevel, moduleId,
-                key, bundle, sourceClass, customMessage, Arrays.hashCode(args));
+                key, sourceClass, customMessage, Arrays.hashCode(args));
     }
 
     ////////////////////////////////////////////////////////////////////////////
@@ -437,7 +419,7 @@ public final class Violation
             violation = new MessageFormat(customMessage, Locale.ROOT).format(args);
         }
         else {
-            violation = new LocalizedMessage(bundle, sourceClass, key, args).getMessage();
+            violation = new LocalizedMessage(sourceClass, key, args).getMessage();
         }
 
         return violation;

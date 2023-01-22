@@ -517,7 +517,7 @@ public class XpathQueryGeneratorTest extends AbstractModuleTestSupport {
 
     @Test
     public void testConstructorWithTreeWalkerAuditEvent() {
-        final Violation violation = new Violation(12, 1, "messages.properties", null,
+        final Violation violation = new Violation(12, 1, null,
                 null, null, null, null, null);
         final TreeWalkerAuditEvent event = new TreeWalkerAuditEvent(new FileContents(fileText),
                 "InputXpathQueryGenerator", violation, rootAst);

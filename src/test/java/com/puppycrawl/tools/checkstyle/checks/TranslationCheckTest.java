@@ -43,7 +43,6 @@ import com.google.common.collect.ImmutableMap;
 import com.puppycrawl.tools.checkstyle.AbstractXmlTestSupport;
 import com.puppycrawl.tools.checkstyle.Checker;
 import com.puppycrawl.tools.checkstyle.DefaultConfiguration;
-import com.puppycrawl.tools.checkstyle.Definitions;
 import com.puppycrawl.tools.checkstyle.XMLLogger;
 import com.puppycrawl.tools.checkstyle.api.AutomaticBean;
 import com.puppycrawl.tools.checkstyle.api.Configuration;
@@ -232,7 +231,7 @@ public class TranslationCheckTest extends AbstractXmlTestSupport {
             .that(dispatcher.savedErrors)
             .hasSize(1);
         final Violation violation = new Violation(0,
-                Definitions.CHECKSTYLE_BUNDLE, "general.fileNotFound",
+                "general.fileNotFound",
                 null, null, TranslationCheck.class, null);
         assertWithMessage("Invalid violation")
             .that(dispatcher.savedErrors.iterator().next())
@@ -257,7 +256,7 @@ public class TranslationCheckTest extends AbstractXmlTestSupport {
             .that(dispatcher.savedErrors.size())
             .isEqualTo(1);
         final Violation violation = new Violation(0,
-                Definitions.CHECKSTYLE_BUNDLE, "general.exception",
+                "general.exception",
                 new String[] {exception.getMessage()}, null, TranslationCheck.class, null);
         assertWithMessage("Invalid violation")
             .that(dispatcher.savedErrors.iterator().next())

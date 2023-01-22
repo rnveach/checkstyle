@@ -43,9 +43,9 @@ import java.util.stream.Collectors;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import com.puppycrawl.tools.checkstyle.Definitions;
 import com.puppycrawl.tools.checkstyle.GlobalStatefulCheck;
 import com.puppycrawl.tools.checkstyle.LocalizedMessage;
+import com.puppycrawl.tools.checkstyle.Main;
 import com.puppycrawl.tools.checkstyle.api.AbstractFileSetCheck;
 import com.puppycrawl.tools.checkstyle.api.FileText;
 import com.puppycrawl.tools.checkstyle.api.MessageDispatcher;
@@ -214,10 +214,6 @@ public class TranslationCheck extends AbstractFileSetCheck {
     public static final String MSG_KEY_MISSING_TRANSLATION_FILE =
         "translation.missingTranslationFile";
 
-    /** Resource bundle which contains messages for TranslationCheck. */
-    private static final String TRANSLATION_BUNDLE =
-        "com.puppycrawl.tools.checkstyle.checks.messages";
-
     /**
      * A key is pointing to the warning message text for wrong language code
      * in "messages.properties" file.
@@ -319,7 +315,7 @@ public class TranslationCheck extends AbstractFileSetCheck {
     private void validateUserSpecifiedLanguageCodes(Set<String> languageCodes) {
         for (String code : languageCodes) {
             if (!isValidLanguageCode(code)) {
-                final LocalizedMessage msg = new LocalizedMessage(TRANSLATION_BUNDLE,
+                final LocalizedMessage msg = new LocalizedMessage(
                         getClass(), WRONG_LANGUAGE_CODE_KEY, code);
                 throw new IllegalArgumentException(msg.getMessage());
             }
@@ -627,11 +623,10 @@ public class TranslationCheck extends AbstractFileSetCheck {
         final Violation message =
             new Violation(
                 0,
-                Definitions.CHECKSTYLE_BUNDLE,
                 key,
                 args,
                 getId(),
-                getClass(), null);
+                Main.class, null);
         final SortedSet<Violation> messages = new TreeSet<>();
         messages.add(message);
         getMessageDispatcher().fireErrors(file.getPath(), messages);

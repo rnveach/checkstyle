@@ -62,6 +62,9 @@ import com.puppycrawl.tools.checkstyle.api.AuditListener;
 import com.puppycrawl.tools.checkstyle.api.AutomaticBean;
 import com.puppycrawl.tools.checkstyle.api.CheckstyleException;
 import com.puppycrawl.tools.checkstyle.api.Violation;
+import com.puppycrawl.tools.checkstyle.checks.javadoc.JavadocPackageCheck;
+import com.puppycrawl.tools.checkstyle.checks.naming.TypeNameCheck;
+import com.puppycrawl.tools.checkstyle.checks.sizes.FileLengthCheck;
 import com.puppycrawl.tools.checkstyle.internal.testmodules.TestRootModuleChecker;
 import com.puppycrawl.tools.checkstyle.internal.utils.TestUtil;
 import com.puppycrawl.tools.checkstyle.utils.ChainedPropertyUtil;
@@ -187,11 +190,11 @@ public class MainTest {
     public File temporaryFolder;
 
     private final LocalizedMessage auditStartMessage = new LocalizedMessage(
-            Definitions.CHECKSTYLE_BUNDLE, getClass(),
+            getClass(),
             "DefaultLogger.auditStarted");
 
     private final LocalizedMessage auditFinishMessage = new LocalizedMessage(
-            Definitions.CHECKSTYLE_BUNDLE, getClass(),
+            getClass(),
             "DefaultLogger.auditFinished");
 
     private final String noViolationsOutput = auditStartMessage.getMessage() + EOL
@@ -486,13 +489,11 @@ public class MainTest {
         assertMainReturnCode(0, "-c", getPath("InputMainConfig-classname2.xml"),
                 getPath("InputMain.java"));
         final Violation invalidPatternMessageMain = new Violation(1,
-                "com.puppycrawl.tools.checkstyle.checks.naming.messages",
                 "name.invalidPattern", new String[] {"InputMain", "^[a-z0-9]*$"},
-                null, getClass(), null);
+                null, TypeNameCheck.class, null);
         final Violation invalidPatternMessageMainInner = new Violation(1,
-                "com.puppycrawl.tools.checkstyle.checks.naming.messages",
                 "name.invalidPattern", new String[] {"InputMainInner", "^[a-z0-9]*$"},
-                null, getClass(), null);
+                null, TypeNameCheck.class, null);
         final String expectedPath = getFilePath("InputMain.java");
         assertWithMessage("Unexpected output log")
             .that(systemOut.getCapturedData())
@@ -545,16 +546,14 @@ public class MainTest {
         assertMainReturnCode(2, "-c", getPath("InputMainConfig-classname2-error.xml"),
                     getPath("InputMain.java"));
         final Violation errorCounterTwoMessage = new Violation(1,
-                Definitions.CHECKSTYLE_BUNDLE, Main.ERROR_COUNTER,
+                Main.ERROR_COUNTER,
                 new String[] {String.valueOf(2)}, null, getClass(), null);
         final Violation invalidPatternMessageMain = new Violation(1,
-                "com.puppycrawl.tools.checkstyle.checks.naming.messages",
                 "name.invalidPattern", new String[] {"InputMain", "^[a-z0-9]*$"},
-                null, getClass(), null);
+                null, TypeNameCheck.class, null);
         final Violation invalidPatternMessageMainInner = new Violation(1,
-                "com.puppycrawl.tools.checkstyle.checks.naming.messages",
                 "name.invalidPattern", new String[] {"InputMainInner", "^[a-z0-9]*$"},
-                null, getClass(), null);
+                null, TypeNameCheck.class, null);
         final String expectedPath = getFilePath("InputMain.java");
         assertWithMessage("Unexpected output log")
             .that(systemOut.getCapturedData())
@@ -582,12 +581,11 @@ public class MainTest {
         assertMainReturnCode(1, "-c", getPath("InputMainConfig-classname2-error.xml"),
                     getPath("InputMain1.java"));
         final Violation errorCounterTwoMessage = new Violation(1,
-                Definitions.CHECKSTYLE_BUNDLE, Main.ERROR_COUNTER,
+                Main.ERROR_COUNTER,
                 new String[] {String.valueOf(1)}, null, getClass(), null);
         final Violation invalidPatternMessageMain = new Violation(1,
-                "com.puppycrawl.tools.checkstyle.checks.naming.messages",
                 "name.invalidPattern", new String[] {"InputMain1", "^[a-z0-9]*$"},
-                null, getClass(), null);
+                null, TypeNameCheck.class, null);
         final String expectedPath = getFilePath("InputMain1.java");
         assertWithMessage("Unexpected output log")
             .that(systemOut.getCapturedData())
@@ -605,12 +603,11 @@ public class MainTest {
             @SysOut Capturable systemOut) throws Exception {
         assertMainReturnCode(1, "-c", "/sun_checks.xml", getPath("InputMain1.java"));
         final Violation errorCounterTwoMessage = new Violation(1,
-                Definitions.CHECKSTYLE_BUNDLE, Main.ERROR_COUNTER,
+                Main.ERROR_COUNTER,
                 new String[] {String.valueOf(1)}, null, getClass(), null);
         final Violation message = new Violation(1,
-                "com.puppycrawl.tools.checkstyle.checks.javadoc.messages",
                 "javadoc.packageInfo", new String[] {},
-                null, getClass(), null);
+                null, JavadocPackageCheck.class, null);
         final String expectedPath = getFilePath("InputMain1.java");
         assertWithMessage("Unexpected output log")
             .that(systemOut.getCapturedData())
@@ -780,7 +777,7 @@ public class MainTest {
             // disk drive letter appear in message,
             // so we skip that drive letter for compatibility issues
             final Violation loadPropertiesMessage = new Violation(1,
-                    Definitions.CHECKSTYLE_BUNDLE, Main.LOAD_PROPERTIES_EXCEPTION,
+                    Main.LOAD_PROPERTIES_EXCEPTION,
                     new String[] {""}, null, getClass(), null);
             final String causeMessage = ex.getCause().getLocalizedMessage();
             final String violation = loadPropertiesMessage.getViolation();
@@ -810,7 +807,6 @@ public class MainTest {
 
         final int allowedLength = 170;
         final String msgKey = "maxLen.file";
-        final String bundle = "com.puppycrawl.tools.checkstyle.checks.sizes.messages";
 
         assertMainReturnCode(0, "-c", getPath("InputMainConfig-filelength.xml"),
                 getPath(""));
@@ -821,9 +817,9 @@ public class MainTest {
         final String format = "[WARN] " + expectedPath + outputValues[0][0] + ".java:"
                 + outputValues[0][1] + ": ";
         for (String[] outputValue : outputValues) {
-            final String violation = new Violation(1, bundle,
+            final String violation = new Violation(1,
                     msgKey, new Integer[] {Integer.valueOf(outputValue[2]), allowedLength},
-                    null, getClass(), null).getViolation();
+                    null, FileLengthCheck.class, null).getViolation();
             final String line = format + violation + " [FileLength]";
             sb.append(line).append(EOL);
         }
@@ -1744,7 +1740,6 @@ public class MainTest {
                 getPath("InputMain.java"));
         final String checkstylePackage = "com.puppycrawl.tools.checkstyle.";
         final LocalizedMessage unableToInstantiateExceptionMessage = new LocalizedMessage(
-                Definitions.CHECKSTYLE_BUNDLE,
                 getClass(),
                 "PackageObjectFactory.unableToInstantiateExceptionMessage",
                 "TestRootModuleChecker",
