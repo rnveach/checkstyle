@@ -107,11 +107,8 @@ public class NPathComplexityCheckTest extends AbstractModuleTestSupport {
 
     @Test
     public void testIntegerOverflow() throws Exception {
-
-        final long largerThanMaxInt = 3_486_784_401L;
-
         final String[] expected = {
-            "20:5: " + getCheckMessage(MSG_KEY, largerThanMaxInt, 0),
+            "20:5: " + getCheckMessage(MSG_KEY, "3486784401", 0),
         };
 
         verifyWithInlineConfigParser(
