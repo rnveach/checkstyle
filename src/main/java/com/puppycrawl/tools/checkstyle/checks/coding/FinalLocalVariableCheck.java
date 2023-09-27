@@ -189,6 +189,13 @@ public class FinalLocalVariableCheck extends AbstractCheck {
             TokenTypes.EXPR,
         };
     }
+    
+    @Override
+    public void beginTree(DetailAST rootAST) {
+        prevScopeUninitializedVariables.clear();
+        scopeStack.clear();
+        currentScopeAssignedVariables.clear();
+    }
 
     // -@cs[CyclomaticComplexity] The only optimization which can be done here is moving CASE-block
     // expressions to separate methods, but that will not increase readability.
