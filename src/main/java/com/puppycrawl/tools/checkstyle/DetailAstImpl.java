@@ -36,7 +36,7 @@ import com.puppycrawl.tools.checkstyle.utils.UnmodifiableCollectionUtil;
  * @noinspectionreason FieldNotUsedInToString - We require a specific string format for
  *      printing to CLI.
  */
-public final class DetailAstImpl implements DetailAST {
+public final class DetailAstImpl implements DetailAST, Comparable<DetailAstImpl> {
 
     /** Constant to indicate if not calculated the child count. */
     private static final int NOT_INITIALIZED = Integer.MIN_VALUE;
@@ -534,5 +534,47 @@ public final class DetailAstImpl implements DetailAST {
      */
     public void setHiddenAfter(List<Token> hiddenAfter) {
         this.hiddenAfter = UnmodifiableCollectionUtil.unmodifiableList(hiddenAfter);
+    }
+
+    @Override
+    public int compareTo(DetailAstImpl other) {
+        // Compare line numbers
+        if (this.lineNo != other.lineNo) {
+            return Integer.compare(this.lineNo, other.lineNo);
+        }
+
+        // Compare column numbers
+        if (this.columnNo != other.columnNo) {
+            return Integer.compare(this.columnNo, other.columnNo);
+        }
+
+        // Compare parent DetailAstImpl objects
+        if (this.parent != null && other.parent != null) {
+            int parentComparison = this.parent.compareTo(other.parent);
+            if (parentComparison != 0) {
+                return parentComparison;
+            }
+        } else if (this.parent != null) {
+            return 1; // This object has a parent, but other does not
+        } else if (other.parent != null) {
+            return -1; // Other object has a parent, but this does not
+        }
+
+        // Compare previousSibling DetailAstImpl objects
+        if (this.previousSibling != null && other.previousSibling != null) {
+            int previousSiblingComparison = this.previousSibling.compareTo(other.previousSibling);
+            if (previousSiblingComparison != 0) {
+                return previousSiblingComparison;
+            }
+        } else if (this.previousSibling != null) {
+            return 1; // This object has a previousSibling, but other does not
+        } else if (other.previousSibling != null) {
+            return -1; // Other object has a previousSibling, but this does not
+        }
+
+        // Compare other fields if necessary...
+        
+        // If all fields are equal, consider the objects equal
+        return 0;
     }
 }

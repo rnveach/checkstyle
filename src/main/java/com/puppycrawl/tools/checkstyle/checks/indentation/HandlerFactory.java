@@ -20,9 +20,10 @@
 package com.puppycrawl.tools.checkstyle.checks.indentation;
 
 import java.lang.reflect.Constructor;
-import java.util.HashMap;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
-import java.util.Set;
+import java.util.TreeMap;
 
 import com.puppycrawl.tools.checkstyle.api.DetailAST;
 import com.puppycrawl.tools.checkstyle.api.TokenTypes;
@@ -37,10 +38,10 @@ public class HandlerFactory {
     /**
      * Registered handlers.
      */
-    private final Map<Integer, Constructor<?>> typeHandlers = new HashMap<>();
+    private final Map<Integer, Constructor<?>> typeHandlers = new TreeMap<>();
 
     /** Cache for created method call handlers. */
-    private final Map<DetailAST, AbstractExpressionHandler> createdHandlers = new HashMap<>();
+    private final Map<DetailAST, AbstractExpressionHandler> createdHandlers = new TreeMap<>();
 
     /**
      * Creates a HandlerFactory.
@@ -117,7 +118,7 @@ public class HandlerFactory {
      * @return true if handler is registered, false otherwise
      */
     public boolean isHandledType(int type) {
-        final Set<Integer> typeSet = typeHandlers.keySet();
+        final List<Integer> typeSet = new ArrayList<>(typeHandlers.keySet());
         return typeSet.contains(type);
     }
 
@@ -127,7 +128,7 @@ public class HandlerFactory {
      * @return int[] of TokenType types
      */
     public int[] getHandledTypes() {
-        final Set<Integer> typeSet = typeHandlers.keySet();
+        final List<Integer> typeSet = new ArrayList<>(typeHandlers.keySet());
         final int[] types = new int[typeSet.size()];
         int index = 0;
         for (final Integer val : typeSet) {

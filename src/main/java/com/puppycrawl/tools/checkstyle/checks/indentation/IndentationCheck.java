@@ -20,9 +20,9 @@
 package com.puppycrawl.tools.checkstyle.checks.indentation;
 
 import java.util.ArrayDeque;
+import java.util.ArrayList;
 import java.util.Deque;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.List;
 
 import com.puppycrawl.tools.checkstyle.FileStatefulCheck;
 import com.puppycrawl.tools.checkstyle.api.AbstractCheck;
@@ -208,7 +208,7 @@ public class IndentationCheck extends AbstractCheck {
     private final HandlerFactory handlerFactory = new HandlerFactory();
 
     /** Lines logged as having incorrect indentation. */
-    private Set<Integer> incorrectIndentationLines;
+    private List<Integer> incorrectIndentationLines;
 
     /** Specify how far new indentation level should be indented when on the next line. */
     private int basicOffset = DEFAULT_INDENTATION;
@@ -419,7 +419,7 @@ public class IndentationCheck extends AbstractCheck {
         final PrimordialHandler primordialHandler = new PrimordialHandler(this);
         handlers.push(primordialHandler);
         primordialHandler.checkIndentation();
-        incorrectIndentationLines = new HashSet<>();
+        incorrectIndentationLines = new ArrayList<>();
     }
 
     @Override
