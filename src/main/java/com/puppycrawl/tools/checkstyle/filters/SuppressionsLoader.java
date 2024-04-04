@@ -394,6 +394,7 @@ public final class SuppressionsLoader
         for (; position.get() < length; position.incrementAndGet()) {
             final char ch = string.charAt(position.get());
 
+            // TODO: support ? and ensure ( isn't `(?!`
             if (ch == ')') {
                 break;
             }
