@@ -402,9 +402,9 @@ public class UnusedLocalVariableCheck extends AbstractCheck {
         DetailAST result = null;
         DetailAST topMostLambdaAst = null;
         while (currentAst != null && !TokenUtil.isOfType(currentAst, CONTAINERS_FOR_ANON_INNERS)) {
-            // if (currentAst.getType() == TokenTypes.LAMBDA) {
+            if (currentAst.getType() == TokenTypes.LAMBDA) {
                 topMostLambdaAst = currentAst;
-            // }
+            }
             currentAst = currentAst.getParent();
             result = currentAst;
         }
