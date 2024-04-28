@@ -341,11 +341,11 @@ public class UnusedLocalVariableCheck extends AbstractCheck {
         if (lastChild != null && lastChild.getType() == TokenTypes.OBJBLOCK) {
             DetailAST currentAst = literalNewAst;
             while (!TokenUtil.isTypeDeclaration(currentAst.getType())) {
-                if (currentAst.getType() == TokenTypes.SLIST) {
+//                if (currentAst.getType() == TokenTypes.SLIST) {
                     result = true;
                     break;
-                }
-                currentAst = currentAst.getParent();
+//                }
+//                currentAst = currentAst.getParent();
             }
         }
         return result;
