@@ -115,6 +115,7 @@ public class UnusedLocalVariableCheck extends AbstractCheck {
         TokenTypes.PATTERN_VARIABLE_DEF,
         TokenTypes.METHOD_CALL,
         TokenTypes.TYPE,
+        TokenTypes.RESOURCE,
     };
 
     /**
