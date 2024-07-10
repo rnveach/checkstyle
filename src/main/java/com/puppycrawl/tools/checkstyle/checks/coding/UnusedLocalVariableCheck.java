@@ -115,7 +115,6 @@ public class UnusedLocalVariableCheck extends AbstractCheck {
         TokenTypes.PATTERN_VARIABLE_DEF,
         TokenTypes.METHOD_CALL,
         TokenTypes.TYPE,
-        TokenTypes.RESOURCE,
     };
 
     /**
@@ -311,9 +310,11 @@ public class UnusedLocalVariableCheck extends AbstractCheck {
         final boolean isNestedClassInitialization =
                 TokenUtil.isOfType(identAst.getNextSibling(), TokenTypes.LITERAL_NEW)
                 && parent.getType() == TokenTypes.DOT;
+        final boolean isResourceVariable = parent.getType() == TokenTypes.RESOURCE && parent.getChildCount() != 1;
 
         if (isNestedClassInitialization || !isMethodReferenceMethodName
                 && !isConstructorReference
+                && !isResourceVariable
                 && !TokenUtil.isOfType(parent, UNACCEPTABLE_PARENT_OF_IDENT)) {
             checkIdentifierAst(identAst, variablesStack);
         }

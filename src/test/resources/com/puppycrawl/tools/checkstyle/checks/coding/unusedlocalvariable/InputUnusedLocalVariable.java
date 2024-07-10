@@ -14,6 +14,10 @@ public class InputUnusedLocalVariable {
 int _ = 0;
 
 try (Lock _ = null) {}
+
+TwrForVariable1 n = null;
+
+try (n) {}
     }
 
 }
