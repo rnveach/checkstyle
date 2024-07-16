@@ -210,7 +210,7 @@ class InputRightCurlyOther2
       boolean flag = true;
       if (flag) {
         System.identityHashCode("heh");
-      flag = !flag; } System.
+        flag = !flag; } System.
             // violation above ''}' at column 27 should have line break before.'
             identityHashCode("Xe-xe");
 

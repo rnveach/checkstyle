@@ -22,7 +22,7 @@ class InputMethodParamPad
     }
 
     Inner anon = new Inner
-    (){  // violation ''(' should be on the previous line.'
+        (){  // violation ''(' should be on the previous line.'
         void testGenerics1
         () // violation ''(' should be on the previous line.'
         {

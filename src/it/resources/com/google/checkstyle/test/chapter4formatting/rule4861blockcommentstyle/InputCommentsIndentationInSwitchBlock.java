@@ -74,7 +74,7 @@ public class InputCommentsIndentationInSwitchBlock {
       }
                 // violation below '.* indentation should be the same level as line 72, 77.'
           // odd indentation comment
-      case "18": { System.lineSeparator();
+        case "18": { System.lineSeparator();
       }   // trailing comment
       case "19":
                 // comment
