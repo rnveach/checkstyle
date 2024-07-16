@@ -75,7 +75,7 @@ public class InputOneVariablePerDeclaration
                 strings[];
             //both definitions are wrapped
             java.lang. // violation 'Only one variable definition per line allowed.'
-            String string1; java.lang.String
+                String string1; java.lang.String
                     strings1[];
 
             void method2() {

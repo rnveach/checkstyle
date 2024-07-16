@@ -81,9 +81,9 @@ class InputNumericLiterals
                             & (88l + 78 * 4); // violation 'Should use uppercase 'L'.'
             long good = (4+5*7^66L/7+890) & (88L + 78 * 4); //ok
             long[] array = {
-                        66l, // violation 'Should use uppercase 'L'.'
-                        66L, //ok
-                    };
+              66l, // violation 'Should use uppercase 'L'.'
+              66L, //ok
+            };
           }
 
           private void processUpperEll (String s, long aLong) {}
