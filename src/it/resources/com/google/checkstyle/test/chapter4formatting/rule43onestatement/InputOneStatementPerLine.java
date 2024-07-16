@@ -205,9 +205,9 @@ public class InputOneStatementPerLine {
   private void foo2() {
     toString(
 
-      ); toString (
+    ); toString (
 
-      ); // violation 'Only one statement per line allowed.'
+        ); // violation 'Only one statement per line allowed.'
   }
 
 

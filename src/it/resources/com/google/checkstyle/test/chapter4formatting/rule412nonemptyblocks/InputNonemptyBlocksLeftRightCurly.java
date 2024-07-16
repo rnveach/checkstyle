@@ -118,19 +118,19 @@ class WithArraysLeft { // ok
   String[] s = {""}; // ok
   String[] empty = {}; // ok
   String[] s1 = { // ok
-        "foo", "foo",
-    };
+    "foo", "foo",
+  };
   String[] s2 =
-      { // ok
-            "foo", "foo",
-      };
+    { // ok
+    "foo", "foo",
+    };
   String[] s3 =
-      { // ok
-            "foo",
-            "foo",
-      };
+    { // ok
+    "foo",
+    "foo",
+    };
   String[] s4 =
-      {"foo", "foo"}; // ok
+    {"foo", "foo"}; // ok
 }
 
 class InputRightCurlyOther2
@@ -210,7 +210,7 @@ class InputRightCurlyOther2
       boolean flag = true;
       if (flag) {
         System.identityHashCode("heh");
-      flag = !flag; } System.
+        flag = !flag; } System.
             // violation above ''}' at column 27 should have line break before.'
             identityHashCode("Xe-xe");
 
@@ -266,16 +266,16 @@ class WithArrays {
   String[] empty = {}; // ok
   String[] s1 = {
       "foo", "foo",
-    }; // ok
+  }; // ok
   String[] s2 =
-      {
+    {
       "foo", "foo",
-      }; // ok
+    }; // ok
   String[] s3 =
-      {
+    {
       "foo",
       "foo",
-      }; // ok
+    }; // ok
   String[] s4 =
-      {"foo", "foo"}; // ok
+    {"foo", "foo"}; // ok
 }

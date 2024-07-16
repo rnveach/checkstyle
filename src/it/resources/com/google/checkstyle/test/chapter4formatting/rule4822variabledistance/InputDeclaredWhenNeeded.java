@@ -372,10 +372,10 @@ public class InputDeclaredWhenNeeded {
     final long intervalMs = 30 * 60000L;
     Object authCheckUrl = null, authInfo = null;
     task = new AuthUpdateTask(authCheckUrl, authInfo, new IAuthListener() {
-            @Override
+      @Override
             public void authTokenChanged(String cookie, String token) {
-                fireAuthTokenChanged(cookie, token);
-            }
+        fireAuthTokenChanged(cookie, token);
+      }
         });
 
     Timer timer = new Timer("Auth Guard", true);

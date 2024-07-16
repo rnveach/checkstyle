@@ -24,7 +24,7 @@ class InputIndentationCorrectIfAndParameter { //indent:0 exp:0
         conditionFifth(true, new SecondClassLongNam8(getString(2048, "Looo" //indent:8 exp:8
         + "ooooooooooooooooooooooooooooooooooooooooooong")).getBoolean( //indent:8 exp:8
           new FooIfClass(), true)) || conditionSixth(false, new //indent:8 exp:8
-        SecondClassLongNam8(getString(100000, "Loooooong" //indent:8 exp:8
+          SecondClassLongNam8(getString(100000, "Loooooong" //indent:8 exp:8
         + "Fooooooo><"))) || conditionNoArg() //indent:8 exp:8
         || conditionNoArg() || //indent:8 exp:8
         conditionNoArg() || conditionNoArg()) {} //indent:8 exp:8

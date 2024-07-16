@@ -149,30 +149,30 @@ class TestingOverloadedMethods
     TestingOverloadedMethods anonymous = new TestingOverloadedMethods()
       {
         public void overloadMethod(int i)
-        {
+          {
             //some foo code
-        }
+          }
 
         public void overloadMethod(String s)
-        {
+          {
             //some foo code
-        }
+          }
 
         public void overloadMethod(boolean b)
-        {
+          {
             //some foo code
-        }
+          }
 
         public void fooMethod()
-        {
+          {
 
-        }
+          }
 
         public void overloadMethod(String s, Boolean b, int i)
         // violation above 'All overloaded methods should be placed next to each other. .* '161'.'
-        {
+          {
             //some foo code
-        }
+          }
       };
 
     public void testing() {

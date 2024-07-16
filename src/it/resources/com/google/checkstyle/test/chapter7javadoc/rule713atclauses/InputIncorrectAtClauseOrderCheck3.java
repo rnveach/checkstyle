@@ -87,9 +87,9 @@ class InputIncorrectAtClauseOrderCheck3 implements Serializable
          * @param aString Some text. // violation 'Block tags have to appear in the order .*'
          */
         String method5(String aString)
-        {
+          {
           return "null";
-        }
+          }
 
         /**
          * Some text.
@@ -101,8 +101,8 @@ class InputIncorrectAtClauseOrderCheck3 implements Serializable
          * @deprecated Some text.
          */
         String method6(String aString, int aInt, boolean aBoolean) throws Exception
-        {
+          {
           return "null";
-        }
+          }
       };
   }

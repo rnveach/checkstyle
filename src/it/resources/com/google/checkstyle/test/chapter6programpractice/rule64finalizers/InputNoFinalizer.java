@@ -9,7 +9,7 @@ public class InputNoFinalizer
       Runnable runnable = new Runnable() {
 
             public void run() {
-                reallyFinalize("hi");
+          reallyFinalize("hi");
             }
 
             // generates a PARAMETER_DEF AST inside the METHOD_DEF of finalize()

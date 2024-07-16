@@ -185,30 +185,30 @@ class EmptyBlocks {
         int[] a = {1, 2, 3, 4, };
 
         void foo() {
-            while(flag); // violation ''while' construct must use '{}'s.'
-            while(flag) {}
-            while(flag) {/*foo*/}
-            do; // violation ''do' construct must use '{}'s.'
-            while(flag);
-            do {}
-            while(flag);
-            do {/*foo*/}
-            while(flag);
-            if(flag); // violation ''if' construct must use '{}'s.'
-            if(flag){}
-            if(flag) {/*foo*/}
-            if(flag); // violation ''if' construct must use '{}'s.'
-            else; // violation ''else' construct must use '{}'s.'
-            if(flag){}
-            else {}
-            if(flag){/*foo*/}
-            else {/*foo*/}
-            for(int i = 0; i < 10; i++); // violation ''for' construct must use '{}'s.'
-            for(int i = 0; i < 10; i++) {}
-            for(int i = 0; i < 10; i++) {/*foo*/}
-            for(int b : a); // violation ''for' construct must use '{}'s.'
-            for(int b : a) {}
-            for(int b : a) {/*foo*/}
+      while(flag); // violation ''while' construct must use '{}'s.'
+      while(flag) {}
+      while(flag) {/*foo*/}
+      do; // violation ''do' construct must use '{}'s.'
+      while(flag);
+      do {}
+      while(flag);
+      do {/*foo*/}
+      while(flag);
+      if(flag); // violation ''if' construct must use '{}'s.'
+      if(flag){}
+      if(flag) {/*foo*/}
+      if(flag); // violation ''if' construct must use '{}'s.'
+      else; // violation ''else' construct must use '{}'s.'
+      if(flag){}
+      else {}
+      if(flag){/*foo*/}
+      else {/*foo*/}
+      for(int i = 0; i < 10; i++); // violation ''for' construct must use '{}'s.'
+      for(int i = 0; i < 10; i++) {}
+      for(int i = 0; i < 10; i++) {/*foo*/}
+      for(int b : a); // violation ''for' construct must use '{}'s.'
+      for(int b : a) {}
+      for(int b : a) {/*foo*/}
         }
     };
 }

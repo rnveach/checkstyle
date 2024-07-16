@@ -87,7 +87,7 @@ final class InputNonConstantNamesSimple
 
 
       private int[] m$nts = new int[] {1,2, 3,
-                                         4};
+        4};
         // violation 2 lines above 'Member name .* must match pattern'
 
 
@@ -120,7 +120,7 @@ final class InputNonConstantNamesSimple
 
 
               int[] m$nts = new int[] {1,2, 3,
-                      4};
+                4};
                     // violation 2 lines above 'Member name .* must match pattern'
 
 

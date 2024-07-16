@@ -63,9 +63,9 @@ public class InputOneVariablePerDeclaration
             int i1; int j1; // violation 'Only one variable definition per line allowed.'
 
             void method1() {
-                String str, str1;
+              String str, str1;
                 // violation above 'Each variable declaration must be in its own statement.'
-                java.lang.Object obj; Object obj1;
+              java.lang.Object obj; Object obj1;
                 // violation above 'Only one variable definition per line allowed.'
             }
             // second definition is wrapped
@@ -75,16 +75,16 @@ public class InputOneVariablePerDeclaration
                 strings[];
             //both definitions are wrapped
             java.lang. // violation 'Only one variable definition per line allowed.'
-          String string1; java.lang.String
+            String string1; java.lang.String
                     strings1[];
 
             void method2() {
-                for (int i=0, j=0; i < 10; i++, j--) { //ok
-                }
+              for (int i=0, j=0; i < 10; i++, j--) { //ok
+              }
 
-                for(int i=0; i<4;i++) {
+              for(int i=0; i<4;i++) {
 
-                }
+              }
             }
           };
     }

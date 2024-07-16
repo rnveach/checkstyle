@@ -128,10 +128,10 @@ public class InputCommentsIndentationCommentIsAtTheEndOfBlock {
 
   public void foo19() {
     (new Thread(new Runnable() {
-            @Override
+      @Override
             public void run() {
 
-            }
+      }
         })).
             run();
         // comment
@@ -140,10 +140,10 @@ public class InputCommentsIndentationCommentIsAtTheEndOfBlock {
   public void foo20() {
         // violation 8 lines below '.* indentation should be the same level as line 142.'
     (new Thread(new Runnable() {
-            @Override
+      @Override
             public void run() {
 
-            }
+      }
         })).
             run();
                           // odd indentation comment

@@ -19,7 +19,7 @@ class InputIndentationCorrectReturnAndParameter { //indent:0 exp:0
         conditionFifth(true, new SecondClassLongNam4(getString(2048, "Looo" //indent:8 exp:8
         + "ooooooooooooooooooooooooooooooooooooooooooong")).getBoolean( //indent:8 exp:8
           new FooReturnClass(), true)) || conditionSixth(false, new //indent:8 exp:8
-        SecondClassLongNam4(getString(100000, "Loooooong" //indent:8 exp:8
+          SecondClassLongNam4(getString(100000, "Loooooong" //indent:8 exp:8
         + "Fooooooo><"))) || conditionNoArg() //indent:8 exp:8
         || conditionNoArg() || //indent:8 exp:8
         conditionNoArg() || conditionNoArg();//indent:8 exp:8

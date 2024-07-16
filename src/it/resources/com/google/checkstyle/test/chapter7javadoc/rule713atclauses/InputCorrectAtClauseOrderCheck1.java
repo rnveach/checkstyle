@@ -95,7 +95,7 @@ class InputCorrectAtClauseOrderCheck1 implements Serializable
          * @deprecated Some text.
          */
         String method(String aString) throws Exception {
-            return "null";
+          return "null";
         }
 
         /**
@@ -105,7 +105,7 @@ class InputCorrectAtClauseOrderCheck1 implements Serializable
          * @throws Exception Some text.
          */
         String method1(String aString) throws Exception {
-            return "null";
+          return "null";
         }
       };
   }

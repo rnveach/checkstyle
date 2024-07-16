@@ -229,9 +229,9 @@ class InputJavaDocTagContinuationIndentation implements Serializable
          * @deprecated Some text.
          */
         String method(String aString) throws Exception
-        {
+          {
           return "null";
-        }
+          }
 
         /**
          * Some text.
@@ -241,9 +241,9 @@ class InputJavaDocTagContinuationIndentation implements Serializable
          * @throws Exception Some text.
          */
         String method1(String aString) throws Exception
-        {
+          {
           return "null";
-        }
+          }
 
         /**
          * Some text.
@@ -267,9 +267,9 @@ class InputJavaDocTagContinuationIndentation implements Serializable
          * @throws Exception Some text.
          */
         String method4() throws Exception
-        {
+          {
           return "null";
-        }
+          }
 
         /**
          * Some text.
@@ -278,9 +278,9 @@ class InputJavaDocTagContinuationIndentation implements Serializable
          * @deprecated Some text.
          */
         String method5(String aString)
-        {
+          {
           return "null";
-        }
+          }
 
         /**
          * Some text.
@@ -299,9 +299,9 @@ class InputJavaDocTagContinuationIndentation implements Serializable
          * @deprecated Some text.
          */
         String method6(String aString, int aInt, boolean aBoolean) throws Exception
-        {
+          {
           return "null";
-        }
+          }
       };
   }
 

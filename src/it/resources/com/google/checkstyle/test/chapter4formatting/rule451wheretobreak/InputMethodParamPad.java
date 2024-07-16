@@ -22,7 +22,7 @@ class InputMethodParamPad
     }
 
     Inner anon = new Inner
-    (){  // violation ''(' should be on the previous line.'
+        (){  // violation ''(' should be on the previous line.'
         void testGenerics1
         () // violation ''(' should be on the previous line.'
         {
@@ -164,51 +164,51 @@ class AssignClass3 {
 
   InnerClass anon = new InnerClass() {
         void foo() {
-            int i = 0;
-            int j = 0;
-            i +=
+      int i = 0;
+      int j = 0;
+      i +=
                     1;
-            j
+      j
                  += 2;
-            i -=
+      i -=
                     1;
-            j
+      j
                  -= 2;
-            i /=
+      i /=
                     1;
-            j
+      j
                  /= 2;
-            i *=
+      i *=
                     1;
-            j
+      j
                  *= 2;
-            i %=
+      i %=
                     1;
-            j
+      j
                  %= 2;
-            i ^=
+      i ^=
                     1;
-            j
+      j
                  ^= 2;
-            i |=
+      i |=
                     1;
-            j
+      j
                  |= 2;
-            i &=
+      i &=
                     1;
-            j
+      j
                  &= 2;
-            i >>=
+      i >>=
                     1;
-            j
+      j
                 >>= 2;
-            i >>>=
+      i >>>=
                     1;
-            j
+      j
                 >>>= 2;
-            i <<=
+      i <<=
                     1;
-            j
+      j
                 <<= 2;
         }
     };

@@ -55,21 +55,21 @@ class InputEmptyFinallyBlock {
         boolean flag;
         void doSm() {}
         void foo() {
-            try {
+      try {
           if (!flag) {
             doSm();
           }
-            } catch (Exception e) { /* ignore */ } //ok
-            finally {/* ignore */} //ok
+      } catch (Exception e) { /* ignore */ } //ok
+      finally {/* ignore */} //ok
         }
 
         void foo2() {
-            try {
+      try {
           if (!flag) {
             doSm();
           }
-            } catch (Exception e) {}
-            finally {} // violation 'Empty finally block.'
+      } catch (Exception e) {}
+      finally {} // violation 'Empty finally block.'
         }
     };
 

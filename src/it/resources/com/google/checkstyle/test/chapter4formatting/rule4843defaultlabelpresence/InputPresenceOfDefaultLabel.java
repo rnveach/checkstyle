@@ -33,16 +33,16 @@ class bad_test {
             case 2: i--; break;
         }
       Foo foo = new Foo() {
-                public void foo() {
-                    int i = 1;
-                    switch (i) { // violation 'switch without "default" clause.'
-                    case 1: i++; break;
-                    case 2: i--; break;
-                    }
-                    switch (i) { // violation 'switch without "default" clause.'
-                    }
-                }
-            };
+        public void foo() {
+          int i = 1;
+          switch (i) { // violation 'switch without "default" clause.'
+            case 1: i++; break;
+            case 2: i--; break;
+          }
+          switch (i) { // violation 'switch without "default" clause.'
+          }
+        }
+      };
     }
     }
 }

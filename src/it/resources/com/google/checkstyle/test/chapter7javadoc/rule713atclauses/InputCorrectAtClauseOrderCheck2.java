@@ -92,7 +92,7 @@ class InputCorrectAtClauseOrderCheck2 implements Serializable
          * @throws Exception Some text.
          */
         String method4() throws Exception {
-            return "null";
+          return "null";
         }
       };
   }
