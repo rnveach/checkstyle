@@ -3,19 +3,19 @@ package com.google.checkstyle.test.chapter5naming.rule522typenames;
 class inputHeaderClass {
     // violation above 'Type name 'inputHeaderClass' must match pattern'
 
-    public interface InputHeader___Interface {};
+  public interface InputHeader___Interface {};
     // violation above 'Type name 'InputHeader___Interface' .* .*'
 
-    public enum inputHeaderEnum { one, two };
+  public enum inputHeaderEnum { one, two };
     // violation above 'Type name 'inputHeaderEnum' must match pattern'
 
-    class NoValid$Name {}
+  class NoValid$Name {}
     // violation above 'Type name '.*' must match pattern'
 
-    class $NoValidName {}
+  class $NoValidName {}
     // violation above 'Type name '.*' must match pattern'
 
-    class NoValidName$ {}
+  class NoValidName$ {}
     // violation above 'Type name '.*' must match pattern'
 
 }

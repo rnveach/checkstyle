@@ -16,19 +16,19 @@ public class ClassWithChainedMethods { //indent:0 exp:0
   public static void main(String[] args) { //indent:2 exp:2
     new ClassWithChainedMethods().getInstance("string_one") //indent:4 exp:4
     // violation below ''method call' child has incorrect indentation level 4, expected .* 8.'
-    .doNothing("string_one".trim(),
+        .doNothing("string_one".trim(),
                "string_two"); //indent:15 exp:>=8
 
     int length = new ClassWithChainedMethods("param1", //indent:4 exp:4
                                 "param2").getInstance() //indent:32 exp:>=8
     // violation below ''.' has incorrect indentation level 4, expected level should be 8.'
-    .doNothing("nothing")
-    .length();
+        .doNothing("nothing")
+        .length();
     // violation above ''.' has incorrect indentation level 4, expected level should be 8.'
 
     int length2 =  //indent:4 exp:4
     // violation below ''new' has incorrect indentation level 4, expected level should be 8.'
-    new ClassWithChainedMethods("param1","param2")
+        new ClassWithChainedMethods("param1","param2")
         .getInstance() //indent:8 exp:8
         .doNothing("nothing") //indent:8 exp:8
         .length(); //indent:8 exp:8

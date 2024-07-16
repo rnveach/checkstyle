@@ -1,7 +1,7 @@
 package com.google.checkstyle.test.chapter4formatting.rule44columnlimit; //ok
 import com.google.checkstyle.test.chapter3filestructure.toolongpackagetotestcoveragegooglesjavastylerule.*; //ok
 final class InputColumnLimit
-{
+  {
     // Long line ----------------------------------------------------------------------------------------
     // violation above 'Line is longer than 100 characters (found 105).'
     // Contains a tab ->    <-
@@ -60,7 +60,7 @@ final class InputColumnLimit
               final int badFormat3)
         throws java.lang.Exception
     {
-        return 0;
+      return 0;
     }
 
     /** method that is 20 lines long **/
@@ -103,21 +103,21 @@ final class InputColumnLimit
     private void localVariables()
     {
         // normal decl
-        int abc = 0;
-        int ABC = 0;
+      int abc = 0;
+      int ABC = 0;
 
         // final decls
-        final int cde = 0;
-        final int CDE = 0;
+      final int cde = 0;
+      final int CDE = 0;
 
         // decl in for loop init statement
-        for (int k = 0; k < 1; k++)
+      for (int k = 0; k < 1; k++)
         {
-            String innerBlockVariable = "";
+        String innerBlockVariable = "";
         }
-        for (int I = 0; I < 1; I++)
+      for (int I = 0; I < 1; I++)
         {
-            String InnerBlockVariable = "";
+        String InnerBlockVariable = "";
         }
     }
 
@@ -138,12 +138,12 @@ final class InputColumnLimit
     {
         // with tab-width 8 all statements below start at the same column,
         // with different combinations of ' ' and '\t' before the statement
-                int tab0 =1;
-            int tab1 =1;
-             int tab2 =1;
-        int tab3 =1;
-            int tab4 =1;
-              int tab5 =1;
+      int tab0 =1;
+      int tab1 =1;
+      int tab2 =1;
+      int tab3 =1;
+      int tab4 =1;
+      int tab5 =1;
     }
 
     // MEMME:
@@ -206,25 +206,25 @@ final class InputColumnLimit
 
     // Very long url with valid href: href    =    "www.google.com/search?hl=en&q=java+style+guide+checkstyle+check+href+length+limit&btnG=Google+Search"
     int validHrefWithWhiteSpaces = 54;
-}
+  }
 
 /** Test class for variable naming in for each clause. */
 class InputSimple2
-{
+  {
     /** Some more Javadoc. */
     public void doSomething()
     {
         //"O" should be named "o"
-        for (Object O : new java.util.ArrayList())
+      for (Object O : new java.util.ArrayList())
         {
 
         }
     }
-}
+  }
 
 /** Test enum for member naming check */
 enum MyEnum1
-{
+  {
     /** ABC constant */
     ABC,
 
@@ -233,4 +233,4 @@ enum MyEnum1
 
     /** Should be mSomeMember */
     private int someMember;
-}
+  }

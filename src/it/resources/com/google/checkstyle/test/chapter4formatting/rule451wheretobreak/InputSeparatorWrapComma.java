@@ -1,18 +1,18 @@
 package com.google.checkstyle.test.chapter4formatting.rule451wheretobreak;
 
 public class InputSeparatorWrapComma {
-    public void goodCase()
+  public void goodCase()
     {
-        int i = 0;
-        String s = "ffffooooString";
-        s
+    int i = 0;
+    String s = "ffffooooString";
+    s
             .isEmpty(); //ok
-        s.isEmpty();
+    s.isEmpty();
 
-        foo(i,
+    foo(i,
                 s); //ok
     }
-    public static void foo(int i, String s)
+  public static void foo(int i, String s)
     {
 
     }
@@ -20,25 +20,25 @@ public class InputSeparatorWrapComma {
 
 class badCaseComma {
 
-    public void goodCase(int... aFoo)
+  public void goodCase(int... aFoo)
     {
-        int i = 0;
+    int i = 0;
 
-        String s = "ffffooooString";
+    String s = "ffffooooString";
         // violation below ''.' should be on a new line.'
-        boolean b = s.
+    boolean b = s.
             isEmpty();
-        foo(i
+    foo(i
                 ,s); // violation '',' should be on the previous line.'
-        int[] j;
+    int[] j;
     }
-    public static String foo(int i, String s)
+  public static String foo(int i, String s)
     {
-        String maxLength = "123";
-        int truncationLength = 1;
-        CharSequence seq = null;
-        Object truncationIndicator = null;
-        return new StringBuilder(maxLength )
+    String maxLength = "123";
+    int truncationLength = 1;
+    CharSequence seq = null;
+    Object truncationIndicator = null;
+    return new StringBuilder(maxLength )
         .append(seq, 0, truncationLength )
         .append(truncationIndicator)
         .toString();

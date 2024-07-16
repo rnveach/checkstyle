@@ -9,83 +9,83 @@ import java.awt.Dimension;
 import java.awt.Color;
 
 class InputEmptyFinallyBlock {
+  boolean flag;
+  void doSm() {}
+  void foo() {
+    try {
+      if (!flag) {
+        doSm();
+      }
+    } catch (Exception e) { /* ignore */ } //ok
+    finally {/* ignore */} //ok
+  }
+
+  void foo2() {
+    try {
+      if (!flag) {
+        doSm();
+      }
+    } catch (Exception e) {}
+    finally {} // violation 'Empty finally block.'
+  }
+
+  class Inner {
     boolean flag;
     void doSm() {}
     void foo() {
-        try {
-           if (!flag) {
-               doSm();
-           }
-        } catch (Exception e) { /* ignore */ } //ok
-        finally {/* ignore */} //ok
+      try {
+        if (!flag) {
+          doSm();
+        }
+      } catch (Exception e) { /* ignore */ } //ok
+      finally {/* ignore */} //ok
     }
 
     void foo2() {
-        try {
-           if (!flag) {
-               doSm();
-           }
-        } catch (Exception e) {}
-        finally {} // violation 'Empty finally block.'
+      try {
+        if (!flag) {
+          doSm();
+        }
+      } catch (Exception e) {}
+      finally {} // violation 'Empty finally block.'
     }
+  }
 
-    class Inner {
+  Inner anon = new Inner(){
         boolean flag;
         void doSm() {}
         void foo() {
             try {
-               if (!flag) {
-                   doSm();
-               }
+          if (!flag) {
+            doSm();
+          }
             } catch (Exception e) { /* ignore */ } //ok
             finally {/* ignore */} //ok
         }
 
         void foo2() {
             try {
-               if (!flag) {
-                   doSm();
-               }
-            } catch (Exception e) {}
-            finally {} // violation 'Empty finally block.'
-        }
-    }
-
-    Inner anon = new Inner(){
-        boolean flag;
-        void doSm() {}
-        void foo() {
-            try {
-               if (!flag) {
-                   doSm();
-               }
-            } catch (Exception e) { /* ignore */ } //ok
-            finally {/* ignore */} //ok
-        }
-
-        void foo2() {
-            try {
-               if (!flag) {
-                   doSm();
-               }
+          if (!flag) {
+            doSm();
+          }
             } catch (Exception e) {}
             finally {} // violation 'Empty finally block.'
         }
     };
 
-    void bar1() {
-        try {
-           if(!flag) {
-               doSm();
-           }
-        } catch (Exception expected) {}
-    }
+  void bar1() {
+    try {
+      if(!flag) {
+        doSm();
+      }
+    } catch (Exception expected) {}
+  }
 
-    void bar2() {
-        try {
-           if(!flag) {
-               doSm();
-           }
-        } catch (Exception expected) {}
-    }
+  void bar2() {
+    try {
+      if(!flag) {
+        doSm();
+      }
+    } catch (Exception expected) {}
+  }
 }

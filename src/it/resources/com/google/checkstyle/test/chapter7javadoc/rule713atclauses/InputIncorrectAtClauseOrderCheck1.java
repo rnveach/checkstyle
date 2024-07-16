@@ -12,7 +12,7 @@ import java.io.Serializable;
  * @author max
  */
 class InputIncorrectAtClauseOrderCheck1 implements Serializable
-{
+  {
     /**
      * The client's first name.
      * @serial
@@ -41,7 +41,7 @@ class InputIncorrectAtClauseOrderCheck1 implements Serializable
      */
     String method(String aString) throws Exception
     {
-        return "null";
+      return "null";
     }
 
     /**
@@ -53,7 +53,7 @@ class InputIncorrectAtClauseOrderCheck1 implements Serializable
      */
     String method1(String aString) throws Exception
     {
-        return "null";
+      return "null";
     }
 
     /**
@@ -73,9 +73,9 @@ class InputIncorrectAtClauseOrderCheck1 implements Serializable
          * @param aString Some text. // violation 'Block tags have to appear in the order .*'
          * @throws Exception Some text. // violation 'Block tags have to appear in the order .*'
          */
-        String method(String aString) throws Exception
+      String method(String aString) throws Exception
         {
-            return "null";
+        return "null";
         }
 
         /**
@@ -84,14 +84,14 @@ class InputIncorrectAtClauseOrderCheck1 implements Serializable
          * @return Some text. // violation 'Block tags have to appear in the order .*'
          * @param aString Some text. // violation 'Block tags have to appear in the order .*'
          */
-        String method1(String aString) throws Exception
+      String method1(String aString) throws Exception
         {
-            return "null";
+        return "null";
         }
     }
 
     InnerClassWithAnnotations1 anon = new InnerClassWithAnnotations1()
-    {
+      {
         /**
          * Some text.
          * @throws Exception Some text.
@@ -102,7 +102,7 @@ class InputIncorrectAtClauseOrderCheck1 implements Serializable
          */
         String method(String aString) throws Exception
         {
-            return "null";
+          return "null";
         }
 
         /**
@@ -113,7 +113,7 @@ class InputIncorrectAtClauseOrderCheck1 implements Serializable
          */
         String method1(String aString) throws Exception
         {
-            return "null";
+          return "null";
         }
-    };
-}
+      };
+  }

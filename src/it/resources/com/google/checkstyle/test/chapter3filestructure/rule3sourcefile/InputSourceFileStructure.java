@@ -32,7 +32,7 @@ import javax.swing.AbstractAction;
 import org.apache.commons.beanutils.locale.converters.ByteLocaleConverter;
 class InputSourceFileStructure
 // violation above ''CLASS_DEF' should be separated from previous line.'
-{
+  {
     public static final double FOO_PI = 3.1415;
     private boolean flag = true;
     static {  // violation ''STATIC_INIT' should be separated from previous line.'
@@ -55,8 +55,8 @@ class InputSourceFileStructure
 
     public int compareTo(InputSourceFileStructure aObject)
     {
-        int number = 0;
-        return 0;
+      int number = 0;
+      return 0;
     }
     /**
      *
@@ -67,12 +67,12 @@ class InputSourceFileStructure
     public static <T> Callable<T> callable(Runnable task, T result)
     // violation above ''METHOD_DEF' should be separated from previous line.'
     {
-        return null;
+      return null;
     }
 
     public int getBeastNumber()
     {
-        return 666;
+      return 666;
     }
     interface IntEnum {
     // violation above ''INTERFACE_DEF' should be separated from previous line.'
@@ -103,28 +103,28 @@ class InputSourceFileStructure
     class InnerClass3 { //ok
         public int compareTo(InputSourceFileStructure aObject) //ok
         {
-            int number = 0;
-            return 0;
+        int number = 0;
+        return 0;
         }
 
     }
-}
+  }
 
 class Class1 { //ok
-    private Class1() {} //ok
+  private Class1() {} //ok
 }
 class Class2{ // violation ''CLASS_DEF' should be separated from previous line.'
-    public int compareTo(InputSourceFileStructure aObject) //ok
+  public int compareTo(InputSourceFileStructure aObject) //ok
     {
-        int number = 0;
-        return 0;
+    int number = 0;
+    return 0;
     }
-    Class2 anon = new Class2(){
+  Class2 anon = new Class2(){
     // violation above ''VARIABLE_DEF' should be separated from previous line.'
         public int compareTo(InputSourceFileStructure aObject) //ok
         {
-            int number = 0;
-            return 0;
+          int number = 0;
+          return 0;
         }
     };
 }

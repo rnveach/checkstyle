@@ -12,7 +12,7 @@ import java.io.Serializable;
  * @deprecated Some javadoc.
  */
 class InputCorrectAtClauseOrderCheck3 implements Serializable
-{
+  {
     /**
      * Some text.
      * @param aString Some text.
@@ -22,7 +22,7 @@ class InputCorrectAtClauseOrderCheck3 implements Serializable
      */
     String method5(String aString)
     {
-        return "null";
+      return "null";
     }
 
     /**
@@ -36,7 +36,7 @@ class InputCorrectAtClauseOrderCheck3 implements Serializable
      */
     String method6(String aString, int aInt, boolean aBoolean) throws Exception
     {
-        return "null";
+      return "null";
     }
 
     /**
@@ -54,9 +54,9 @@ class InputCorrectAtClauseOrderCheck3 implements Serializable
          * @serialData Some javadoc.
          * @deprecated Some text.
          */
-        String method5(String aString)
+      String method5(String aString)
         {
-            return "null";
+        return "null";
         }
 
         /**
@@ -68,14 +68,14 @@ class InputCorrectAtClauseOrderCheck3 implements Serializable
          * @throws Exception Some text.
          * @deprecated Some text.
          */
-        String method6(String aString, int aInt, boolean aBoolean) throws Exception
+      String method6(String aString, int aInt, boolean aBoolean) throws Exception
         {
-            return "null";
+        return "null";
         }
     }
 
     InnerClassWithAnnotations3 anon = new InnerClassWithAnnotations3()
-    {
+      {
         /**
          * Some text.
          * @param aString Some text.
@@ -84,7 +84,7 @@ class InputCorrectAtClauseOrderCheck3 implements Serializable
          */
         String method5(String aString)
         {
-            return "null";
+          return "null";
         }
 
         /**
@@ -98,7 +98,7 @@ class InputCorrectAtClauseOrderCheck3 implements Serializable
          */
         String method6(String aString, int aInt, boolean aBoolean) throws Exception
         {
-            return "null";
+          return "null";
         }
-    };
-}
+      };
+  }

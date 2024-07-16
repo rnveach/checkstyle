@@ -4,9 +4,9 @@ import java.util.Collection;
 import java.util.Map;
 
 public class InputWhitespaceAroundGenerics
-{
+  {
 
-}
+  }
 
 //No whitespace after commas
 class BadCommas < A, B, C extends Map < A, String > >
@@ -18,7 +18,7 @@ class BadCommas < A, B, C extends Map < A, String > >
 //  ''\>' is followed by whitespace.'
 //  ''\>' is preceded with whitespace.'
 //  ''\>' is preceded with whitespace.'
-{
+  {
     private java.util.Hashtable < Integer, D > p =
     // 3 violations above:
     //  ''\<' is followed by whitespace.'
@@ -29,10 +29,10 @@ class BadCommas < A, B, C extends Map < A, String > >
     //  ''\<' is followed by whitespace.'
     //  ''\<' is preceded with whitespace.'
     //  ''\>' is preceded with whitespace.'
-}
+  }
 
 class Wildcard
-{
+  {
     public static void foo(Collection < ? extends Wildcard[] > collection) {
         // 3 violations above:
         //  ''\<' is followed by whitespace.'
@@ -48,7 +48,7 @@ class Wildcard
         // issues with parsing the wildcard in the signature
         collection.size();
     }
-}
+  }
 
 // we need these interfaces for generics
 interface D {

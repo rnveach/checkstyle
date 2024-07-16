@@ -15,7 +15,7 @@ import java.io.Serializable;
  *     Some javadoc.
  */
 class InputJavaDocTagContinuationIndentation implements Serializable
-{
+  {
     /**
      * The client's first name.
      * @serial Some javadoc.
@@ -49,7 +49,7 @@ class InputJavaDocTagContinuationIndentation implements Serializable
      */
     String method(String aString) throws Exception
     {
-        return "null";
+      return "null";
     }
 
     /**
@@ -62,7 +62,7 @@ class InputJavaDocTagContinuationIndentation implements Serializable
      */
     String method1(String aString) throws Exception
     {
-        return "null";
+      return "null";
     }
 
     /**
@@ -88,7 +88,7 @@ class InputJavaDocTagContinuationIndentation implements Serializable
      */
     String method4() throws Exception
     {
-        return "null";
+      return "null";
     }
 
     /**
@@ -99,7 +99,7 @@ class InputJavaDocTagContinuationIndentation implements Serializable
      */
     String method5(String aString)
     {
-        return "null";
+      return "null";
     }
 
     /**
@@ -116,7 +116,7 @@ class InputJavaDocTagContinuationIndentation implements Serializable
      */
     String method6(String aString, int aInt, boolean aBoolean) throws Exception
     {
-        return "null";
+      return "null";
     }
 
     /**
@@ -138,9 +138,9 @@ class InputJavaDocTagContinuationIndentation implements Serializable
          * @deprecated Some text.
          *     Some javadoc.
          */
-        String method(String aString) throws Exception
+      String method(String aString) throws Exception
         {
-            return "null";
+        return "null";
         }
 
         /**
@@ -151,9 +151,9 @@ class InputJavaDocTagContinuationIndentation implements Serializable
          * @throws Exception Some text.
          *     Some javadoc.
          */
-        String method1(String aString) throws Exception
+      String method1(String aString) throws Exception
         {
-            return "null";
+        return "null";
         }
 
         /**
@@ -164,14 +164,14 @@ class InputJavaDocTagContinuationIndentation implements Serializable
          *     Some javadoc.
          * @throws Exception Some text.
          */
-        void method2(String aString) throws Exception {}
+      void method2(String aString) throws Exception {}
 
         /**
          * Some text.
          * @throws Exception Some text.
          * @deprecated Some text.
          */
-        void method3() throws Exception {}
+      void method3() throws Exception {}
 
         /**
          * Some text.
@@ -179,9 +179,9 @@ class InputJavaDocTagContinuationIndentation implements Serializable
          * @throws Exception Some text.
          * @serialData Some javadoc.
          */
-        String method4() throws Exception
+      String method4() throws Exception
         {
-            return "null";
+        return "null";
         }
 
         /**
@@ -190,9 +190,9 @@ class InputJavaDocTagContinuationIndentation implements Serializable
          * @return Some text.
          * @deprecated Some text.
          */
-        String method5(String aString)
+      String method5(String aString)
         {
-            return "null";
+        return "null";
         }
 
         /**
@@ -208,14 +208,14 @@ class InputJavaDocTagContinuationIndentation implements Serializable
          * @throws Exception Some text.
          * @deprecated Some text.
          */
-        String method6(String aString, int aInt, boolean aBoolean) throws Exception
+      String method6(String aString, int aInt, boolean aBoolean) throws Exception
         {
-            return "null";
+        return "null";
         }
     }
 
     InnerClassWithAnnotations anon = new InnerClassWithAnnotations()
-    {
+      {
         /**
          * Some text.
          * @param aString Some text.
@@ -230,7 +230,7 @@ class InputJavaDocTagContinuationIndentation implements Serializable
          */
         String method(String aString) throws Exception
         {
-            return "null";
+          return "null";
         }
 
         /**
@@ -242,7 +242,7 @@ class InputJavaDocTagContinuationIndentation implements Serializable
          */
         String method1(String aString) throws Exception
         {
-            return "null";
+          return "null";
         }
 
         /**
@@ -268,7 +268,7 @@ class InputJavaDocTagContinuationIndentation implements Serializable
          */
         String method4() throws Exception
         {
-            return "null";
+          return "null";
         }
 
         /**
@@ -279,7 +279,7 @@ class InputJavaDocTagContinuationIndentation implements Serializable
          */
         String method5(String aString)
         {
-            return "null";
+          return "null";
         }
 
         /**
@@ -300,10 +300,10 @@ class InputJavaDocTagContinuationIndentation implements Serializable
          */
         String method6(String aString, int aInt, boolean aBoolean) throws Exception
         {
-            return "null";
+          return "null";
         }
-    };
-}
+      };
+  }
 
 /**
  * Some javadoc.

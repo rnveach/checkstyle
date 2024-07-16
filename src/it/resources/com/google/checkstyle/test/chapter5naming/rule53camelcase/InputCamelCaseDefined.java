@@ -2,6 +2,20 @@ package com.google.checkstyle.test.chapter5naming.rule53camelcase;
 
 class InputCamelCaseDefined {
 
+  int newCustomerId;
+
+  String innerStopwatch;
+
+  boolean supportsIpv6OnIos;
+
+  void XmlHttpRequest() {}
+
+  void YouTubeImporter() {}
+
+  void YoutubeImporter() {}
+
+  class InnerGood {
+
     int newCustomerId;
 
     String innerStopwatch;
@@ -13,72 +27,58 @@ class InputCamelCaseDefined {
     void YouTubeImporter() {}
 
     void YoutubeImporter() {}
+  }
 
-    class InnerGood {
-
-        int newCustomerId;
-
-        String innerStopwatch;
-
-        boolean supportsIpv6OnIos;
-
-        void XmlHttpRequest() {}
-
-        void YouTubeImporter() {}
-
-        void YoutubeImporter() {}
-    }
-
-        InputCamelCaseDefined anonymousGood
+  InputCamelCaseDefined anonymousGood
             = new InputCamelCaseDefined() {
 
-            int newCustomerId;
+              int newCustomerId;
 
-            String innerStopwatch;
+              String innerStopwatch;
 
-            boolean supportsIpv6OnIos;
+              boolean supportsIpv6OnIos;
 
-            void XmlHttpRequest() {}
+              void XmlHttpRequest() {}
 
-            void YouTubeImporter() {}
+              void YouTubeImporter() {}
 
-            void YoutubeImporter() {}
-    };
+              void YoutubeImporter() {}
+            };
 }
 
 class AbbreviationsIncorrect {
 
-    int newCustomerID;
+  int newCustomerID;
     // violation above 'newCustomerID.* more than '1' .* capital letters.'
 
-    boolean supportsIPv6OnIOS;
+  boolean supportsIPv6OnIOS;
     // violation above 'supportsIPv6OnIOS.* more than '1' .* capital letters.'
 
-    void XMLHTTPRequest() {}
+  void XMLHTTPRequest() {}
     // violation above 'XMLHTTPRequest.* more than '1' .* capital letters.'
 
-    class InnerBad {
+  class InnerBad {
 
-        int newCustomerID;
+    int newCustomerID;
         // violation above 'newCustomerID.* more than '1' .* capital letters.'
 
-        boolean supportsIPv6OnIOS;
+    boolean supportsIPv6OnIOS;
         // violation above 'supportsIPv6OnIOS.* more than '1' .* capital letters.'
 
-        void XMLHTTPRequest() {}
+    void XMLHTTPRequest() {}
         // violation above 'XMLHTTPRequest.* more than '1' .* capital letters.'
-    }
+  }
 
-        InputCamelCaseDefined anonymousBad
+  InputCamelCaseDefined anonymousBad
             = new InputCamelCaseDefined() {
 
-            int newCustomerID;
+              int newCustomerID;
             // violation above 'newCustomerID.* more than '1' .* capital letters.'
 
-            boolean supportsIPv6OnIOS;
+              boolean supportsIPv6OnIOS;
             // violation above 'supportsIPv6OnIOS.* more than '1' .* capital letters.'
 
-            void XMLHTTPRequest() {}
+              void XMLHTTPRequest() {}
             // violation above 'XMLHTTPRequest.* more than '1' .* capital letters.'
-    };
+            };
 }

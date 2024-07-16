@@ -1,7 +1,7 @@
 package com.google.checkstyle.test.chapter7javadoc.rule713atclauses;
 
 class InputNonEmptyAtclauseDescription
-{
+  {
     /**
      * Some javadoc
      * @param a Some javadoc
@@ -13,7 +13,7 @@ class InputNonEmptyAtclauseDescription
      */
     public int foo1(String a, int b, double c) throws Exception
     {
-        return 1;
+      return 1;
     }
 
     /**
@@ -26,7 +26,7 @@ class InputNonEmptyAtclauseDescription
      */
     public int foo2(String a, int b, double c) throws Exception
     {
-        return 1;
+      return 1;
     }
 
     // violation 8 lines below 'At-clause should have a non-empty description.'
@@ -46,7 +46,7 @@ class InputNonEmptyAtclauseDescription
      */
     public int foo3(String a, int b, double c) throws Exception
     {
-        return 1;
+      return 1;
     }
 
     // violation 7 lines below 'At-clause should have a non-empty description.'
@@ -64,6 +64,6 @@ class InputNonEmptyAtclauseDescription
      */
     public int foo4(String a, int b, double c) throws Exception
     {
-        return 1;
+      return 1;
     }
-}
+  }

@@ -4,17 +4,17 @@ import java.util.Arrays;
 
 public class InputSeparatorWrapMethodRef {
 
-    void goodCase() {
-        String[] stringArray = { "Barbara", "James", "Mary", "John",
+  void goodCase() {
+    String[] stringArray = { "Barbara", "James", "Mary", "John",
             "Patricia", "Robert", "Michael", "Linda" };
-        Arrays.sort(stringArray, String
+    Arrays.sort(stringArray, String
                 ::compareToIgnoreCase);
-    }
+  }
 
-    void badCase() {
-        String[] stringArray = { "Barbara", "James", "Mary", "John",
+  void badCase() {
+    String[] stringArray = { "Barbara", "James", "Mary", "John",
             "Patricia", "Robert", "Michael", "Linda" };
-        Arrays.sort(stringArray, String:: // violation ''::' should be on a new line.'
+    Arrays.sort(stringArray, String:: // violation ''::' should be on a new line.'
                 compareToIgnoreCase);
-    }
+  }
 }

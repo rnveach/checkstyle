@@ -12,9 +12,9 @@ class InputIncorrectRequireEmptyLineBeforeBlockTagGroup {
      * @param thisParamTagNeedsNewline this documents the parameter.
      */
     // violation 2 lines above 'Javadoc tag '@param' should be preceded with an empty line.'
-    private boolean paramTagNeedsNewline(boolean thisParamTagNeedsNewline) {
-        return false;
-    }
+  private boolean paramTagNeedsNewline(boolean thisParamTagNeedsNewline) {
+    return false;
+  }
 
     /**
      * This documents the private method.
@@ -22,7 +22,7 @@ class InputIncorrectRequireEmptyLineBeforeBlockTagGroup {
      * @return this one does not need an empty line, but the tag before this one does.
      */
     // violation 3 lines above 'Javadoc tag '@param' should be preceded with an empty line.'
-    private boolean paramMultiTagNeedsNewline(boolean thisParamTagNeedsNewline) {
-        return false;
-    }
+  private boolean paramMultiTagNeedsNewline(boolean thisParamTagNeedsNewline) {
+    return false;
+  }
 }

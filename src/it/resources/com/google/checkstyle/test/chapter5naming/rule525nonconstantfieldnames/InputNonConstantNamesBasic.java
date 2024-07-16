@@ -1,7 +1,7 @@
 package com.google.checkstyle.test.chapter5naming.rule525nonconstantfieldnames;
 
 public class InputNonConstantNamesBasic
-{
+  {
     public int mPublic; // violation 'Member name 'mPublic' must match pattern'
     protected int mProtected; // violation 'Member name 'mProtected' must match pattern'
     int mPackage; // violation 'Member name 'mPackage' must match pattern'
@@ -23,4 +23,4 @@ public class InputNonConstantNamesBasic
     public int $mPublic; // violation 'Member name .* must match pattern'
     protected int mPro$tected; // violation 'Member name .* must match pattern'
     int mPackage$; // violation 'Member name .* must match pattern'
-}
+  }

@@ -12,7 +12,7 @@ import java.io.Serializable;
  * @deprecated Some javadoc.
  */
 class InputCorrectAtClauseOrderCheck2 implements Serializable
-{
+  {
     /**
      * Some text.
      * @param aString Some text.
@@ -49,14 +49,14 @@ class InputCorrectAtClauseOrderCheck2 implements Serializable
          * @param aString Some text.
          * @throws Exception Some text.
          */
-        void method2(String aString) throws Exception {}
+      void method2(String aString) throws Exception {}
 
         /**
          * Some text.
          * @throws Exception Some text.
          * @deprecated Some text.
          */
-        void method3() throws Exception {}
+      void method3() throws Exception {}
 
         /**
          * Some text.
@@ -64,13 +64,13 @@ class InputCorrectAtClauseOrderCheck2 implements Serializable
          * @throws Exception Some text.
          * @serialData Some javadoc.
          */
-        String method4() throws Exception {
-            return "null";
-        }
+      String method4() throws Exception {
+        return "null";
+      }
     }
 
     InnerClassWithAnnotations2 anon = new InnerClassWithAnnotations2()
-    {
+      {
         /**
          * Some text.
          * @param aString Some text.
@@ -94,8 +94,8 @@ class InputCorrectAtClauseOrderCheck2 implements Serializable
         String method4() throws Exception {
             return "null";
         }
-    };
-}
+      };
+  }
 /**
  * Some javadoc.
  *

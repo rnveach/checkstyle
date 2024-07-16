@@ -12,7 +12,7 @@ import java.io.Serializable;
  * @author max
  */
 class InputIncorrectAtClauseOrderCheck3 implements Serializable
-{
+  {
 
     /**
      * Some text.
@@ -22,7 +22,7 @@ class InputIncorrectAtClauseOrderCheck3 implements Serializable
      */
     String method5(String aString)
     {
-        return "null";
+      return "null";
     }
 
     /**
@@ -37,7 +37,7 @@ class InputIncorrectAtClauseOrderCheck3 implements Serializable
      */
     String method6(String aString, int aInt, boolean aBoolean) throws Exception
     {
-        return "null";
+      return "null";
     }
 
     /**
@@ -57,9 +57,9 @@ class InputIncorrectAtClauseOrderCheck3 implements Serializable
          * @deprecated Some text.
          * @return Some text. // violation 'Block tags have to appear in the order .*'
          */
-        String method5(String aString)
+      String method5(String aString)
         {
-            return "null";
+        return "null";
         }
 
         /**
@@ -71,14 +71,14 @@ class InputIncorrectAtClauseOrderCheck3 implements Serializable
          * @param aBoolean Some text. // violation 'Block tags have to appear in the order .*'
          * @deprecated Some text.
          */
-        String method6(String aString, int aInt, boolean aBoolean) throws Exception
+      String method6(String aString, int aInt, boolean aBoolean) throws Exception
         {
-            return "null";
+        return "null";
         }
     }
 
     InnerClassWithAnnotations3 anon = new InnerClassWithAnnotations3()
-    {
+      {
 
         /**
          * Some text.
@@ -88,7 +88,7 @@ class InputIncorrectAtClauseOrderCheck3 implements Serializable
          */
         String method5(String aString)
         {
-            return "null";
+          return "null";
         }
 
         /**
@@ -102,7 +102,7 @@ class InputIncorrectAtClauseOrderCheck3 implements Serializable
          */
         String method6(String aString, int aInt, boolean aBoolean) throws Exception
         {
-            return "null";
+          return "null";
         }
-    };
-}
+      };
+  }

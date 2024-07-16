@@ -8,12 +8,12 @@ import java.util.Map;
 import java.util.concurrent.Callable;
 import java.util.Collections;
 class InputGenericWhitespace implements Comparable<InputGenericWhitespace>, Serializable
-{
+  {
     void meth()
     {
-        List<Integer> x = new ArrayList<Integer>();
-        List<List<Integer>> y = new ArrayList<List<Integer>>();
-        List < Integer > a = new ArrayList < Integer >();
+      List<Integer> x = new ArrayList<Integer>();
+      List<List<Integer>> y = new ArrayList<List<Integer>>();
+      List < Integer > a = new ArrayList < Integer >();
         // 6 violations above:
         //  ''\<' is followed by whitespace.'
         //  ''\<' is preceded with whitespace.'
@@ -21,7 +21,7 @@ class InputGenericWhitespace implements Comparable<InputGenericWhitespace>, Seri
         //  ''\<' is followed by whitespace.'
         //  ''\<' is preceded with whitespace.'
         //  ''\>' is preceded with whitespace.'
-        List < List < Integer > > b = new ArrayList < List < Integer > >();
+      List < List < Integer > > b = new ArrayList < List < Integer > >();
         // 14 violations above:
         //  ''\<' is followed by whitespace.'
         //  ''\<' is preceded with whitespace.'
@@ -41,12 +41,12 @@ class InputGenericWhitespace implements Comparable<InputGenericWhitespace>, Seri
 
     public int compareTo(InputGenericWhitespace aObject)
     {
-        return 0;
+      return 0;
     }
 
     public static <T> Callable<T> callable(Runnable task, T result)
     {
-        return null;
+      return null;
     }
 
     public static<T>Callable<T> callable2(Runnable task, T result)
@@ -54,21 +54,21 @@ class InputGenericWhitespace implements Comparable<InputGenericWhitespace>, Seri
     //  ''\<' is not preceded with whitespace.'
     //  ''\>' should followed by whitespace.'
     {
-        Map<Class<?>, Integer> x = new HashMap<Class<?>, Integer>();
-        for (final Map.Entry<Class<?>, Integer> entry : x.entrySet()) {
-            entry.getValue();
-        }
-        Class<?>[] parameterClasses = new Class<?>[0];
-        return null;
+      Map<Class<?>, Integer> x = new HashMap<Class<?>, Integer>();
+      for (final Map.Entry<Class<?>, Integer> entry : x.entrySet()) {
+        entry.getValue();
+      }
+      Class<?>[] parameterClasses = new Class<?>[0];
+      return null;
     }
     public int getConstructor(Class<?>... parameterTypes)
     {
-        Collections.<Object>emptySet();
-        Collections. <Object> emptySet();
+      Collections.<Object>emptySet();
+      Collections. <Object> emptySet();
         // 2 violations above:
         //  ''\<' is preceded with whitespace.'
         //  ''\>' is followed by whitespace.'
-        return 666;
+      return 666;
     }
 
     <T> InputGenericWhitespace(List<T> things, int i)
@@ -94,4 +94,4 @@ class InputGenericWhitespace implements Comparable<InputGenericWhitespace>, Seri
     public static class IntEnumValueType3<E extends Enum<E>  & IntEnum> {
     // violation above ''\>' is followed by whitespace.'
     }
-}
+  }

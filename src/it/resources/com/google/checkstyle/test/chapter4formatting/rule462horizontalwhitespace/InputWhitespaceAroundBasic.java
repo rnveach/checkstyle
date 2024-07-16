@@ -5,7 +5,7 @@ package com.google.checkstyle.test.chapter4formatting.rule462horizontalwhitespac
  * violation missing author tag
  **/
 class InputWhitespaceAroundBasic
-{
+  {
     private int mVar1= 1; // violation ''=' is not preceded with whitespace.'
     private int mVar2 =1; // violation ''=' is not followed by whitespace.'
     /** Should be ok **/
@@ -17,27 +17,27 @@ class InputWhitespaceAroundBasic
     /** method **/
     void method1()
     {
-        final int a = 1;
-        int b= 1; // violation ''=' is not preceded with whitespace.'
-        b= 1; // violation ''=' is not preceded with whitespace.'
-        b +=1; // violation ''.*' is not followed by whitespace.'
-        b -=- 1 + (+ b); // violation ''-=' is not followed by whitespace.'
-        b = b++ + b--; // ok
-        b = ++ b - -- b; // ok
+      final int a = 1;
+      int b= 1; // violation ''=' is not preceded with whitespace.'
+      b= 1; // violation ''=' is not preceded with whitespace.'
+      b +=1; // violation ''.*' is not followed by whitespace.'
+      b -=- 1 + (+ b); // violation ''-=' is not followed by whitespace.'
+      b = b++ + b--; // ok
+      b = ++ b - -- b; // ok
     }
 
     /** method **/
     void method2()
     {
-        synchronized(this) {
+      synchronized(this) {
         // 2 violations above:
         //  ''synchronized' is not followed by whitespace.'
         //  ''synchronized' is not followed by whitespace.'
-        }
-        try {// violation ''{' is not followed by whitespace.'
-        }
-        catch (RuntimeException e) {// violation ''{' is not followed by whitespace.'
-        }
+      }
+      try {// violation ''{' is not followed by whitespace.'
+      }
+      catch (RuntimeException e) {// violation ''{' is not followed by whitespace.'
+      }
     }
 
     /**
@@ -52,15 +52,15 @@ class InputWhitespaceAroundBasic
     /** test WS after void return */
     private void fastExit()
     {
-        boolean complicatedStuffNeeded = true;
-        if(!complicatedStuffNeeded)
+      boolean complicatedStuffNeeded = true;
+      if(!complicatedStuffNeeded)
         // 2 violations above:
         //  ''if' is not followed by whitespace.'
         //  ''if' is not followed by whitespace.'
         {
-            return; // should not complain about missing WS after return
+        return; // should not complain about missing WS after return
         }
-        else
+      else
         {
             // do complicated stuff
         }
@@ -72,26 +72,26 @@ class InputWhitespaceAroundBasic
     */
     private int nonVoid()
     {
-        if (true)
+      if (true)
         {
-            return(2);
+        return(2);
             // 2 violations above:
             //  ''return' is not followed by whitespace.'
             //  ''return' is not followed by whitespace.'
         }
-        else
+      else
         {
-            return 2; // this is ok
+        return 2; // this is ok
         }
     }
 
     /** test casts **/
     private void testCasts()
     {
-        Object o = (Object) new Object(); // ok
-        o = (Object) o; // ok
-        o = ( Object ) o; // ok
-        o = (Object)
+      Object o = (Object) new Object(); // ok
+      o = (Object) o; // ok
+      o = ( Object ) o; // ok
+      o = (Object)
             o; // ok
     }
 
@@ -99,46 +99,46 @@ class InputWhitespaceAroundBasic
     private void testQuestions()
     {
 
-        boolean b = (1 ==2) ? false : true; // violation ''==' is not followed by whitespace.'
+      boolean b = (1 ==2) ? false : true; // violation ''==' is not followed by whitespace.'
     }
 
     /** star test **/
     private void starTest()
     {
-        int x = 2 * 3* 4; // violation ''*' is not preceded with whitespace.'
+      int x = 2 * 3* 4; // violation ''*' is not preceded with whitespace.'
     }
 
     /** boolean test **/
     private void boolTest()
     {
-        boolean a = true;
-        boolean x = ! a;
-        int z = ~1 + ~ 2;
+      boolean a = true;
+      boolean x = ! a;
+      int z = ~1 + ~ 2;
     }
 
     /** division test **/
     private void divTest()
     {
-        int a = 4 % 2;
-        int b = 4% 2; // violation ''%' is not preceded with whitespace.'
-        int c = 4 %2; // violation ''%' is not followed by whitespace.'
-        int d = 4% 2; // violation ''%' is not preceded with whitespace.'
-        int e = 4 / 2;
-        int f = 4/ 2; // violation ''/' is not preceded with whitespace.'
-        int g = 4 /2; // violation ''/' is not followed by whitespace.'
+      int a = 4 % 2;
+      int b = 4% 2; // violation ''%' is not preceded with whitespace.'
+      int c = 4 %2; // violation ''%' is not followed by whitespace.'
+      int d = 4% 2; // violation ''%' is not preceded with whitespace.'
+      int e = 4 / 2;
+      int f = 4/ 2; // violation ''/' is not preceded with whitespace.'
+      int g = 4 /2; // violation ''/' is not followed by whitespace.'
 
     }
 
     /** @return dot test **/
     private java.lang.  String dotTest()
     {
-        Object o = new java.lang.Object();
-        o.
+      Object o = new java.lang.Object();
+      o.
             toString();
-        o
+      o
             .toString();
-        o. toString();
-        return o.toString();
+      o. toString();
+      return o.toString();
     }
 
     /** assert statement test */
@@ -163,12 +163,12 @@ class InputWhitespaceAroundBasic
     /** another check */
     void donBradman(Runnable aRun)
     {
-        donBradman(new Runnable() {
+      donBradman(new Runnable() {
             public void run() {
             }
         });
 
-        final Runnable r = new Runnable() {
+      final Runnable r = new Runnable() {
             public void run() {
             }
         };
@@ -177,9 +177,9 @@ class InputWhitespaceAroundBasic
     /** rfe 521323, detect whitespace before ';' */
     void rfe521323()
     {
-        doStuff();
-        for (int i = 0; i < 5; i++) {
-        }
+      doStuff();
+      for (int i = 0; i < 5; i++) {
+      }
     }
 
 
@@ -190,14 +190,14 @@ class InputWhitespaceAroundBasic
     /** bug  806243 (NoWhitespaceBeforeCheck violation for anonymous inner class) */
     void bug806243()
     {
-        Object o = new InputWhitespaceAroundBasic() {
+      Object o = new InputWhitespaceAroundBasic() {
             private int j;
         };
     }
 
     void doStuff() {
     }
-}
+  }
 
 /**
  * Bug 806242 (NoWhitespaceBeforeCheck violation with an interface).
@@ -205,9 +205,9 @@ class InputWhitespaceAroundBasic
  * @version 1.0
  */
 interface IFoo
-{
+  {
     void foo();
-}
+  }
 
 /**
  * Avoid Whitespace violations in for loop.
@@ -215,23 +215,23 @@ interface IFoo
  * @version 1.0
  */
 class SpecialCasesInForLoop
-{
+  {
     void forIterator()
     {
         // avoid conflict between WhiteSpaceAfter ';' and ParenPad(nospace)
-        for (int i = 0; i++ < 5;) {
+      for (int i = 0; i++ < 5;) {
         //                  ^ no whitespace
-    }
+      }
 
         // bug 895072
     // avoid conflict between ParenPad(space) and NoWhiteSpace before ';'
-    int i = 0;
-    for ( ; i < 5; i++) {
+      int i = 0;
+      for ( ; i < 5; i++) {
     //   ^ whitespace
-    }
-        for (int anInt : getSomeInts()) {
+      }
+      for (int anInt : getSomeInts()) {
             //Should be ignored
-        }
+      }
     }
 
     int[] getSomeInts() {
@@ -249,29 +249,29 @@ class SpecialCasesInForLoop
         for (int x: ll) {} // violation '':' is not preceded with whitespace.'
         for (int x : ll) {} // ok
     }
-}
+  }
 
 /**
  * Operators mentioned in Google Coding Standards 2016-07-12
  */
 class NewGoogleOperators
-{
+  {
     NewGoogleOperators()
     {
-       Runnable l;
+      Runnable l;
 
-       l = ()-> { }; // violation ''->' is not preceded with whitespace.'
-       l = () ->{ };
+      l = ()-> { }; // violation ''->' is not preceded with whitespace.'
+      l = () ->{ };
        // 2 violations above:
        //  ''->' is not followed by whitespace.'
        //  ''->' is not followed by whitespace.'
-       l = () -> { }; //ok
-       l = () -> {}; //ok
+      l = () -> { }; //ok
+      l = () -> {}; //ok
 
-       java.util.Arrays.sort(null, String:: compareToIgnoreCase);
-       java.util.Arrays.sort(null, String::compareToIgnoreCase);
+      java.util.Arrays.sort(null, String:: compareToIgnoreCase);
+      java.util.Arrays.sort(null, String::compareToIgnoreCase);
 
-       new Object().toString();
-       new Object(). toString();
+      new Object().toString();
+      new Object(). toString();
     }
-}
+  }

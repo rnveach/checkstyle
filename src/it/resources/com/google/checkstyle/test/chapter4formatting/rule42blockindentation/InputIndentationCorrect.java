@@ -36,27 +36,27 @@ public abstract class InputIndentationCorrect { //indent:0 exp:0
     /** Matches no characters. */ //indent:4 exp:4
     public static final InputFastMatcher NONE = //indent:4 exp:4
             new InputFastMatcher() { //indent:12 exp:>=8
-      @Override public boolean matches(char c) { //indent:6 exp:6
-        return false; //indent:8 exp:8
-      } //indent:6 exp:6
+          @Override public boolean matches(char c) { //indent:6 exp:6
+            return false; //indent:8 exp:8
+          } //indent:6 exp:6
 
-      @Override public String replaceFrom(CharSequence seq, CharSequence repl) { //indent:6 exp:6
-        checkNotNull(repl); //indent:8 exp:8
-        return seq.toString(); //indent:8 exp:8
-      } //indent:6 exp:6
+          @Override public String replaceFrom(CharSequence seq, CharSequence repl) { //indent:6 exp:6
+            checkNotNull(repl); //indent:8 exp:8
+            return seq.toString(); //indent:8 exp:8
+          } //indent:6 exp:6
 
-      private void checkNotNull(CharSequence replacement) {} //indent:6 exp:6
+          private void checkNotNull(CharSequence replacement) {} //indent:6 exp:6
 
-      @Override public String collapseFrom(CharSequence sequence, //indent:6 exp:6
+          @Override public String collapseFrom(CharSequence sequence, //indent:6 exp:6
           char replacement) { //indent:10 exp:10
-        return sequence.toString(); //indent:8 exp:8
-      } //indent:6 exp:6
+            return sequence.toString(); //indent:8 exp:8
+          } //indent:6 exp:6
 
-      @Override //indent:6 exp:6
+          @Override //indent:6 exp:6
       public String trimTrailingFrom(CharSequence sequence) { //indent:6 exp:6
-        return sequence.toString(); //indent:8 exp:8
-      } //indent:6 exp:6
-    }; //indent:4 exp:4
+            return sequence.toString(); //indent:8 exp:8
+          } //indent:6 exp:6
+        }; //indent:4 exp:4
   } //indent:2 exp:2
 
   public boolean matches(char c) { //indent:2 exp:2

@@ -2,124 +2,124 @@ package com.google.checkstyle.test.chapter3filestructure.rule3421overloadsplit;
 
 public class InputOverloadsNeverSplit {
 
-    int a;
+  int a;
 
-    int b;
+  int b;
 
-    void foo() {}
+  void foo() {}
 
-    InputOverloadsNeverSplit() {}
+  InputOverloadsNeverSplit() {}
 
-    InputOverloadsNeverSplit(String a) {}
+  InputOverloadsNeverSplit(String a) {}
 
-    void foo2() {}
+  void foo2() {}
 
-    InputOverloadsNeverSplit(int a) {}
+  InputOverloadsNeverSplit(int a) {}
     // violation above 'Constructors should be grouped together.*'
 
-    int abc;
+  int abc;
 
-    InputOverloadsNeverSplit(double x) {}
+  InputOverloadsNeverSplit(double x) {}
     // violation above 'Constructors should be grouped together.*'
 
-    private enum InnerEnum1 {
+  private enum InnerEnum1 {
 
         one;
 
-        int x;
+    int x;
 
-        InnerEnum1() {}
+    InnerEnum1() {}
 
-        InnerEnum1(String f) {}
+    InnerEnum1(String f) {}
 
-        String str;
+    String str;
 
-        String str2;
+    String str2;
 
-        InnerEnum1(int x) {} // violation 'Constructors should be grouped together.*'
+    InnerEnum1(int x) {} // violation 'Constructors should be grouped together.*'
 
-        private abstract class Inner {
-            Inner() {}
+    private abstract class Inner {
+      Inner() {}
 
-            int x;
+      int x;
 
-            String neko;
+      String neko;
 
-            Inner(String g) {} // violation 'Constructors should be grouped together.*'
-        }
-
-        InnerEnum1(double d) {} // violation 'Constructors should be grouped together.*'
+      Inner(String g) {} // violation 'Constructors should be grouped together.*'
     }
 
-    InputOverloadsNeverSplit(float x) {}
+    InnerEnum1(double d) {} // violation 'Constructors should be grouped together.*'
+  }
+
+  InputOverloadsNeverSplit(float x) {}
     // violation above 'Constructors should be grouped together.*'
 
-    InputOverloadsNeverSplit(long l) {}
+  InputOverloadsNeverSplit(long l) {}
     // violation above 'Constructors should be grouped together.*'
 
-    private class Inner {
-        Inner() {}
+  private class Inner {
+    Inner() {}
 
-        Inner(String str) {}
+    Inner(String str) {}
 
         // Comments are allowed between constructors.
-        Inner(int x) {}
-    }
+    Inner(int x) {}
+  }
 
-    private class Inner2 {
-        Inner2() {}
+  private class Inner2 {
+    Inner2() {}
 
-        Inner2(String str) {}
+    Inner2(String str) {}
 
-        int x;
+    int x;
 
-        Inner2(int x) {} // violation 'Constructors should be grouped together.*'
+    Inner2(int x) {} // violation 'Constructors should be grouped together.*'
 
-        String xx;
+    String xx;
 
-        Inner2(double d) {} // violation 'Constructors should be grouped together.*'
+    Inner2(double d) {} // violation 'Constructors should be grouped together.*'
 
         // violation below 'Constructors should be grouped together.*'
-        Inner2(float f) {}
-    }
+    Inner2(float f) {}
+  }
 
-    InputOverloadsNeverSplit(long l, double d) {}
+  InputOverloadsNeverSplit(long l, double d) {}
     // violation above 'Constructors should be grouped together.*'
 
-    InputOverloadsNeverSplit annoynmous = new InputOverloadsNeverSplit() {
+  InputOverloadsNeverSplit annoynmous = new InputOverloadsNeverSplit() {
         int x;
         void test() {}
         void test2() {}
     };
 
-    private enum InnerEnum2 {
+  private enum InnerEnum2 {
         ONE,TWO,THREE;
-        void test() {}
-        void test2() {}
-        void test3() {}
-    }
+    void test() {}
+    void test2() {}
+    void test3() {}
+  }
 
-    private enum InnerEnum3 {
+  private enum InnerEnum3 {
         InnerEnum3() {}
-    }
+  }
 
-    private enum InnerEnum4 {}
+  private enum InnerEnum4 {}
 
-    private class Inner3 {
-        void test() {}
-        void test2() {}
-        void test3() {}
-    }
+  private class Inner3 {
+    void test() {}
+    void test2() {}
+    void test3() {}
+  }
 
-    private class Inner4 {
-        Inner4() {}
-    }
+  private class Inner4 {
+    Inner4() {}
+  }
 
-    private class Inner5 {}
+  private class Inner5 {}
 }
 
 class TestingOverloadedMethods
-{
+  {
     public void overloadMethod(int i)
     {
         //some foo code
@@ -147,7 +147,7 @@ class TestingOverloadedMethods
     }
 
     TestingOverloadedMethods anonymous = new TestingOverloadedMethods()
-    {
+      {
         public void overloadMethod(int i)
         {
             //some foo code
@@ -173,7 +173,7 @@ class TestingOverloadedMethods
         {
             //some foo code
         }
-    };
+      };
 
     public void testing() {
     }
@@ -189,57 +189,57 @@ class TestingOverloadedMethods
 
     public void testing(String a, String b) {
     }
-}
+  }
 
 interface Fooable
-{
+  {
     public abstract void foo(int i);
     public abstract void foo(String s);
     public abstract void noFoo();
     public abstract void foo(String s, Boolean b, int i);
     // violation above 'All overloaded methods should be placed next to each other. .* '197'.'
-}
+  }
 
 enum FooType {
     Strategy(""),
     Shooter(""),
     RPG("");
 
-    private String description;
+  private String description;
 
-    private FooType(String description) {
-        this.description = description;
-    }
+  private FooType(String description) {
+    this.description = description;
+  }
 
-    public String getDescription() {
-        return description;
-    }
+  public String getDescription() {
+    return description;
+  }
 
-    public void setDescription(String description) {
-        this.description = description;
-    }
+  public void setDescription(String description) {
+    this.description = description;
+  }
 
-    public void overloadMethod(int i)
+  public void overloadMethod(int i)
     {
         //some foo code
     }
 
-    public void overloadMethod(String s)
+  public void overloadMethod(String s)
     {
         //some foo code
     }
 
-    public void overloadMethod(boolean b)
+  public void overloadMethod(boolean b)
     {
         //some foo code
     }
 
-    public void fooMethod()
+  public void fooMethod()
     {
 
     }
 
-    public void overloadMethod(String s, Boolean b, int i)
+  public void overloadMethod(String s, Boolean b, int i)
     // violation above 'All overloaded methods should be placed next to each other. .* '232'.'
     {
         //some foo code

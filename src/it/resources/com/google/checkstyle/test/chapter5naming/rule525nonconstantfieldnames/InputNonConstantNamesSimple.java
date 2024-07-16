@@ -1,7 +1,7 @@
 package com.google.checkstyle.test.chapter5naming.rule525nonconstantfieldnames;
 
 final class InputNonConstantNamesSimple
-{
+  {
 
     public static final int badConstant = 2;
 
@@ -44,21 +44,21 @@ final class InputNonConstantNamesSimple
     /** test local variables. This Check doesn't verify local variables, only members.*/
     private void localVariables()
     {
-        int a;
-        int aA;
-        int a1_a;
-        int A_A;
-        int aa2_a;
-        int _a;
-        int _aa;
-        int aa_;
-        int aaa$aaa;
-        int $aaaaaa;
-        int aaaaaa$;
+      int a;
+      int aA;
+      int a1_a;
+      int A_A;
+      int aa2_a;
+      int _a;
+      int _aa;
+      int aa_;
+      int aaa$aaa;
+      int $aaaaaa;
+      int aaaaaa$;
 
-        int aa;
-        int aaAa1a;
-        int aaAaaAa2a1;
+      int aa;
+      int aaAa1a;
+      int aaAaaAa2a1;
     }
 
     interface Foo {
@@ -68,74 +68,74 @@ final class InputNonConstantNamesSimple
 
     class InnerClass
     {
-        public static final int badConstant = 2;
+      public static final int badConstant = 2;
 
-        public static final int MAX_ROWS = 2;
+      public static final int MAX_ROWS = 2;
 
 
-        private int bad$Static = 2; // violation 'Member name .* must match pattern'
+      private int bad$Static = 2; // violation 'Member name .* must match pattern'
 
-        private  int sum_Created = 0;
+      private  int sum_Created = 0;
         // violation above 'Member name 'sum_Created' must match pattern'
 
 
-        private int bad_Member = 2; // violation 'Member name 'bad_Member' must match pattern'
+      private int bad_Member = 2; // violation 'Member name 'bad_Member' must match pattern'
 
-        private int m = 0; // violation 'Member name 'm' must match pattern'
+      private int m = 0; // violation 'Member name 'm' must match pattern'
 
-        protected int m_M = 0; // violation 'Member name 'm_M' must match pattern'
+      protected int m_M = 0; // violation 'Member name 'm_M' must match pattern'
 
 
-        private int[] m$nts = new int[] {1,2, 3,
+      private int[] m$nts = new int[] {1,2, 3,
                                          4};
         // violation 2 lines above 'Member name .* must match pattern'
 
 
-        int mTest1; // violation 'Member name 'mTest1' must match pattern'
+      int mTest1; // violation 'Member name 'mTest1' must match pattern'
 
-        public int mTest2; // violation 'Member name 'mTest2' must match pattern'
+      public int mTest2; // violation 'Member name 'mTest2' must match pattern'
 
-        public int $mTest2; // violation 'Member name .* must match pattern'
+      public int $mTest2; // violation 'Member name .* must match pattern'
 
-        public int mTes$t2; // violation 'Member name .* must match pattern'
+      public int mTes$t2; // violation 'Member name .* must match pattern'
 
-        public int mTest2$; // violation 'Member name .* must match pattern'
+      public int mTest2$; // violation 'Member name .* must match pattern'
 
-        void fooMethod()
+      void fooMethod()
         {
-            Foo foo = new Foo() {
+        Foo foo = new Foo() {
 
-                    int bad$Static = 2; // violation 'Member name .* must match pattern'
+              int bad$Static = 2; // violation 'Member name .* must match pattern'
 
-                    int sum_Created = 0;
+              int sum_Created = 0;
                     // violation above 'Member name 'sum_Created' must match pattern'
 
 
-                    int bad_Member = 2;
+              int bad_Member = 2;
                     // violation above 'Member name 'bad_Member' must match pattern'
 
-                    int m = 0; // violation 'Member name 'm' must match pattern'
+              int m = 0; // violation 'Member name 'm' must match pattern'
 
-                    int m_M = 0; // violation 'Member name 'm_M' must match pattern'
+              int m_M = 0; // violation 'Member name 'm_M' must match pattern'
 
 
-                    int[] m$nts = new int[] {1,2, 3,
-                                                     4};
+              int[] m$nts = new int[] {1,2, 3,
+                      4};
                     // violation 2 lines above 'Member name .* must match pattern'
 
 
-                    int mTest1; // violation 'Member name 'mTest1' must match pattern'
+              int mTest1; // violation 'Member name 'mTest1' must match pattern'
 
-                    int mTest2; // violation 'Member name 'mTest2' must match pattern'
+              int mTest2; // violation 'Member name 'mTest2' must match pattern'
 
-                    int $mTest2; // violation 'Member name .* must match pattern'
+              int $mTest2; // violation 'Member name .* must match pattern'
 
-                    int mTes$t2; // violation 'Member name .* must match pattern'
+              int mTes$t2; // violation 'Member name .* must match pattern'
 
-                    int mTest2$; // violation 'Member name .* must match pattern'
+              int mTest2$; // violation 'Member name .* must match pattern'
 
-                    public void greet() {}
+              public void greet() {}
             };
         }
     }
-}
+  }

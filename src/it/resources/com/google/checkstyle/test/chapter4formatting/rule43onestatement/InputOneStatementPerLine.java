@@ -50,7 +50,7 @@ public class InputOneStatementPerLine {
   public void doIllegal() {
     one = 1; two = 2; // violation 'Only one statement per line allowed.'
     if (one == 1) {
-        one++; two++; // violation 'Only one statement per line allowed.'
+      one++; two++; // violation 'Only one statement per line allowed.'
     }
     if (one != 1) { one++; } else { one--; } // violation 'Only one statement per line allowed.'
     int n = 10;
@@ -70,7 +70,7 @@ public class InputOneStatementPerLine {
   }
 
   class Inner
-  {
+    {
       /**
        * Dummy variable to work on.
        */
@@ -104,7 +104,7 @@ public class InputOneStatementPerLine {
         while (one == 1) {one++; two--;} // violation 'Only one statement per line allowed.'
 
       }
-  }
+    }
 
   /**
    * Two declaration statements on the same line are illegal.
@@ -187,7 +187,7 @@ public class InputOneStatementPerLine {
    */
   int var1 = 5,
       var4 = 5; int var2 = 6,
-      var3 = 5; // violation 'Only one statement per line allowed.'
+          var3 = 5; // violation 'Only one statement per line allowed.'
 
   /**
    * Two statements on the same line
@@ -205,9 +205,9 @@ public class InputOneStatementPerLine {
   private void foo2() {
     toString(
 
-    ); toString (
+      ); toString (
 
-    ); // violation 'Only one statement per line allowed.'
+      ); // violation 'Only one statement per line allowed.'
   }
 
 
@@ -295,7 +295,7 @@ public class InputOneStatementPerLine {
             ; n<5
             ;
             n++, k--) { var1++; } //legal
-    }
+  }
 
   /**
    * Two statements on the same lne
@@ -307,5 +307,5 @@ public class InputOneStatementPerLine {
             ; n<5
             ;
             n++, k--) { var1++; var2++; } // violation 'Only one statement per line allowed.'
-    }
+  }
 }

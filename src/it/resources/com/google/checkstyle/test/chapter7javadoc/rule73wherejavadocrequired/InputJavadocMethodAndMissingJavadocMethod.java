@@ -5,7 +5,7 @@ package com.google.checkstyle.test.chapter7javadoc.rule73wherejavadocrequired;
  * @mytag Hello
  */
 public class InputJavadocMethodAndMissingJavadocMethod extends OverrideClass
-{
+  {
     //with comments
 
     /**
@@ -14,7 +14,7 @@ public class InputJavadocMethodAndMissingJavadocMethod extends OverrideClass
      */
     int foo1()
     {
-        return 1;
+      return 1;
     }
 
     /**
@@ -23,7 +23,7 @@ public class InputJavadocMethodAndMissingJavadocMethod extends OverrideClass
      */
     String foo2()
     {
-        return "Fooooooooooooooo"
+      return "Fooooooooooooooo"
                 + "ooooo"
                 + "ooo";
     }
@@ -33,7 +33,7 @@ public class InputJavadocMethodAndMissingJavadocMethod extends OverrideClass
      */
     void foo3()
     {
-        foo2();
+      foo2();
     }
 
     /**
@@ -45,19 +45,19 @@ public class InputJavadocMethodAndMissingJavadocMethod extends OverrideClass
 
     int foo5()
     {
-        return 1;
+      return 1;
     }
 
     String foo6()
     {
-        return "Fooooooooooooooo"
+      return "Fooooooooooooooo"
                 + "oooooooo";
     }
 
     // violation below 'Missing a Javadoc comment.'
     public String foo7()
     {
-        return "Fooooooooooooooo"
+      return "Fooooooooooooooo"
                 + "ooooo"
                 + "ooo";
     }
@@ -157,7 +157,7 @@ public class InputJavadocMethodAndMissingJavadocMethod extends OverrideClass
 
     void foo81()
     {
-        foo2();
+      foo2();
     }
 
     void foo82() {
@@ -175,7 +175,7 @@ public class InputJavadocMethodAndMissingJavadocMethod extends OverrideClass
     @MyAnnotation
     String foo91()
     {
-        return "Fooooooooooooooo"
+      return "Fooooooooooooooo"
                 + "ooooo"
                 + "ooo";
     }
@@ -183,20 +183,20 @@ public class InputJavadocMethodAndMissingJavadocMethod extends OverrideClass
     @Override
     public String foo92()
     {
-        return "Fooooo"
+      return "Fooooo"
                 + "ooo"
                 + "ooooooo"
                 + "ooooo"
                 + "ooo";
     }
-}
+  }
 
 
 class OverrideClass {
 
-    public String foo92()
+  public String foo92()
     {
-        return "Fooooo"
+    return "Fooooo"
                 + "ooo"
                 + "ooooooo"
                 + "ooooo"

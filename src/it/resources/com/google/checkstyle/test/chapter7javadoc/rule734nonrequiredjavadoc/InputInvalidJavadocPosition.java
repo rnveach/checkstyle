@@ -17,43 +17,43 @@ class InputInvalidJavadocPosition {
 class InputInvalidJavadocPosition2 {
     // violation below 'Javadoc comment is placed in the wrong location.'
     /** odd javadoc */
-    static { /* ignore */ }
+  static { /* ignore */ }
 
     // violation below 'Javadoc comment is placed in the wrong location.'
     /** odd javadoc */
     /** valid */
-    int field1;
+  int field1;
     /** valid */
-    int[] field2;
+  int[] field2;
     /** valid */
-    public int[] field3;
+  public int[] field3;
     /** valid */
-    @Deprecated int field4;
+  @Deprecated int field4;
 
-    int /** odd javadoc */ field20; // violation 'Javadoc comment is placed in the wrong location.'
-    int field21 /** odd javadoc */; // violation 'Javadoc comment is placed in the wrong location.'
-    @Deprecated /** odd javadoc */ int field22;
+  int /** odd javadoc */ field20; // violation 'Javadoc comment is placed in the wrong location.'
+  int field21 /** odd javadoc */; // violation 'Javadoc comment is placed in the wrong location.'
+  @Deprecated /** odd javadoc */ int field22;
     // violation above 'Javadoc comment is placed in the wrong location.'
 
-    void method1() {}
+  void method1() {}
     /** valid */
-    void method2() {}
+  void method2() {}
     /** valid */
-    <T> T method3() { return null; }
+  <T> T method3() { return null; }
     /** valid */
-    String[] method4() { return null; }
+  String[] method4() { return null; }
 
     // violation below 'Javadoc comment is placed in the wrong location.'
-    void /** odd javadoc */ method20() {}
-    void method21 /** odd javadoc */ () {}
+  void /** odd javadoc */ method20() {}
+  void method21 /** odd javadoc */ () {}
     // violation above 'Javadoc comment is placed in the wrong location.'
-    void method22(/** odd javadoc */) {}
+  void method22(/** odd javadoc */) {}
     // violation above 'Javadoc comment is placed in the wrong location.'
-    void method23() /** odd javadoc */ {}
+  void method23() /** odd javadoc */ {}
     // violation above 'Javadoc comment is placed in the wrong location.'
-    void method24() { /** odd javadoc */ }
+  void method24() { /** odd javadoc */ }
     // violation above 'Javadoc comment is placed in the wrong location.'
-    void method25() { /** odd javadoc */ int variable; }
+  void method25() { /** odd javadoc */ int variable; }
     // violation above 'Javadoc comment is placed in the wrong location.'
 }
 @Deprecated

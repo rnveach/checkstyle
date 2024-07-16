@@ -1,26 +1,26 @@
 package com.google.checkstyle.test.chapter7javadoc.rule713atclauses;
 
 class InputNonEmptyAtclauseDescriptionSpaceSeq
-{
+  {
         /**
          * Some javadoc.
          * @param a Some javadoc.
          * @param b Some javadoc.
          */
-        public InputNonEmptyAtclauseDescriptionSpaceSeq(String a, int b)
-        {
+  public InputNonEmptyAtclauseDescriptionSpaceSeq(String a, int b)
+    {
 
-        }
+    }
 
         /**
          * Some javadoc.
          * @param a Some javadoc.
          * @deprecated Some javadoc.
          */
-        public InputNonEmptyAtclauseDescriptionSpaceSeq(String a)
-        {
+  public InputNonEmptyAtclauseDescriptionSpaceSeq(String a)
+    {
 
-        }
+    }
 
         // violation 5 lines below  'At-clause should have a non-empty description.'
         // violation 5 lines below  'At-clause should have a non-empty description.'
@@ -31,10 +31,10 @@ class InputNonEmptyAtclauseDescriptionSpaceSeq
          * @param b
          * @param c
          */
-        public InputNonEmptyAtclauseDescriptionSpaceSeq(String a, int b, double c)
-        {
+  public InputNonEmptyAtclauseDescriptionSpaceSeq(String a, int b, double c)
+    {
 
-        }
+    }
 
         // violation 5 lines below  'At-clause should have a non-empty description.'
         // violation 5 lines below  'At-clause should have a non-empty description.'
@@ -45,8 +45,8 @@ class InputNonEmptyAtclauseDescriptionSpaceSeq
          * @param e
          * @deprecated
          */
-        public InputNonEmptyAtclauseDescriptionSpaceSeq(String a, boolean e)
-        {
+  public InputNonEmptyAtclauseDescriptionSpaceSeq(String a, boolean e)
+    {
 
-        }
-}
+    }
+  }

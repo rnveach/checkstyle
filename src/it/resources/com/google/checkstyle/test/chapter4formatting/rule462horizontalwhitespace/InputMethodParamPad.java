@@ -2,15 +2,15 @@ package com.google.checkstyle.test.chapter4formatting.rule462horizontalwhitespac
 import java.util.Vector;
 /** Test input for MethodDefPadCheck */
 public class InputMethodParamPad
-{
+  {
     public InputMethodParamPad()
     {
-        super();
+      super();
     }
 
     public InputMethodParamPad (int aParam) // violation ''(' is preceded with whitespace.'
     {
-        super (); // violation ''(' is preceded with whitespace.'
+      super (); // violation ''(' is preceded with whitespace.'
     }
 
     public void method()
@@ -25,39 +25,39 @@ public class InputMethodParamPad
         method(double aParam)
     {
         // invoke constructor
-        InputMethodParamPad pad = new InputMethodParamPad();
-        pad = new InputMethodParamPad (); // violation ''(' is preceded with whitespace.'
-        pad = new
+      InputMethodParamPad pad = new InputMethodParamPad();
+      pad = new InputMethodParamPad (); // violation ''(' is preceded with whitespace.'
+      pad = new
             InputMethodParamPad();
 
         // call method
-        method();
-        method (); // violation ''(' is preceded with whitespace.'
+      method();
+      method (); // violation ''(' is preceded with whitespace.'
     }
 
     public void dottedCalls()
     {
-        this.method();
-        this.method (); // violation ''(' is preceded with whitespace.'
-        this.
+      this.method();
+      this.method (); // violation ''(' is preceded with whitespace.'
+      this.
             method();
 
-        InputMethodParamPad p = new InputMethodParamPad();
-        p.method();
-        p.method (); // violation ''(' is preceded with whitespace.'
-        p.
+      InputMethodParamPad p = new InputMethodParamPad();
+      p.method();
+      p.method (); // violation ''(' is preceded with whitespace.'
+      p.
             method();
 
-        java.lang.Integer.parseInt("0");
-        java.lang.Integer.parseInt ("0"); // violation ''(' is preceded with whitespace.'
-        java.lang.Integer.
+      java.lang.Integer.parseInt("0");
+      java.lang.Integer.parseInt ("0"); // violation ''(' is preceded with whitespace.'
+      java.lang.Integer.
             parseInt("0");
     }
 
     public void newArray()
     {
-        int[] a = new int[]{0, 1};
-        java.util.Vector<String> v = new java.util.Vector<String>();
-        java.util.Vector<String> v1 = new Vector<String>();
+      int[] a = new int[]{0, 1};
+      java.util.Vector<String> v = new java.util.Vector<String>();
+      java.util.Vector<String> v1 = new Vector<String>();
     }
-}
+  }

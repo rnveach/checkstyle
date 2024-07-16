@@ -12,7 +12,7 @@ import java.io.Serializable;
  * @author max
  */
 class InputIncorrectAtClauseOrderCheck2 implements Serializable
-{
+  {
     /**
      * Some text.
      * @throws Exception Some text.
@@ -67,7 +67,7 @@ class InputIncorrectAtClauseOrderCheck2 implements Serializable
          * @return Some text. // violation 'Block tags have to appear in the order .*'
          */
         String method4() throws Exception {
-            return "null";
+      return "null";
         }
     }
 
@@ -95,7 +95,7 @@ class InputIncorrectAtClauseOrderCheck2 implements Serializable
             return "null";
         }
     };
-}
+  }
 /**
  * Some javadoc.
  *

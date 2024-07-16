@@ -5,14 +5,14 @@ import java.util.Arrays;
 
 // some
 public class InputCommentsIndentationSurroundingCode
-{
+  {
     private void foo1() {
         if (true) {
             // here initialize some variables
-            int k = 0; // trailing comment
+      int k = 0; // trailing comment
               // odd indentation comment
             // violation above '.* indentation should be the same level as line 15.'
-            int b = 10;
+      int b = 10;
             // sss
         }
     }
@@ -20,20 +20,20 @@ public class InputCommentsIndentationSurroundingCode
     private void foo2() {
         if (true) {
             /* some */
-            int k = 0;
+      int k = 0;
                 /* // odd indentation comment
                 */
             // violation 2 lines above '.* indentation should be the same level as line 27.'
-            int b = 10;
+      int b = 10;
                 /* // odd indentation comment
                  * */
             // violation 2 lines above '.* indentation should be the same level as line 31.'
-            double d; /* trailing comment */
+      double d; /* trailing comment */
                 /* // odd indentation comment
              *
                 */
             // violation 3 lines above '.* indentation should be the same level as line 36.'
-            boolean bb;
+      boolean bb;
             /***/
             /* my comment*/
             /*
@@ -44,7 +44,7 @@ public class InputCommentsIndentationSurroundingCode
             /*
              * comment
              */
-            boolean x;
+      boolean x;
         }
     }
 
@@ -133,5 +133,5 @@ public class InputCommentsIndentationSurroundingCode
             // comment
         };
     }
-} // The Check should not throw NPE here!
+  } // The Check should not throw NPE here!
 // The Check should not throw NPE here!

@@ -2,7 +2,7 @@ package com.google.checkstyle.test.chapter4formatting.rule487modifiers;
 
 strictfp abstract class InputModifierOrder
 // violation above ''abstract' modifier out of order with the JLS suggestions.'
-{
+  {
     transient private String dontSaveMe;
     // violation above ''private' modifier out of order with the JLS suggestions.'
 
@@ -80,27 +80,27 @@ strictfp abstract class InputModifierOrder
     /** holder for redundant 'public' modifier check. */
     public static interface InputRedundantPublicModifier
     {
-        public void a();
+      public void a();
 
-        void b();
+      void b();
 
-        abstract void c();
+      abstract void c();
 
-        public float PI_PUBLIC = (float) 3.14;
+      public float PI_PUBLIC = (float) 3.14;
 
-        final float PI_FINAL = (float) 3.14;
+      final float PI_FINAL = (float) 3.14;
 
         /** all OK */
-        float PI_OK = (float) 3.14;
+      float PI_OK = (float) 3.14;
     }
     final private void method()
     // violation above ''private' modifier out of order with the JLS suggestions.'
     {
     }
-}
+  }
 
 final class RedundantFinalClass
-{
+  {
     public final void finalMethod()
     {
     }
@@ -132,25 +132,25 @@ final class RedundantFinalClass
 
     static synchronized private native @MyAnnotation2 void fooMethod7();
     // violation above ''private' modifier out of order with the JLS suggestions.'
-}
+  }
 
 /** Holder for redundant modifiers of inner implementation */
 interface InnerImplementation
-{
+  {
     InnerImplementation inner =
         new InnerImplementation()
         {
             /** compiler requires 'public' modifier */
-            public void method()
+          public void method()
             {
             }
         };
 
     void method();
-}
+  }
 
 class WithInner
-{
+  {
     /**
      * Inner class
      * @author max
@@ -158,39 +158,39 @@ class WithInner
      */
     class Inner
     {
-        transient private String dontSaveMe;
+      transient private String dontSaveMe;
         // violation above ''private' modifier out of order with the JLS suggestions.'
 
-        volatile public int whatImReading;
+      volatile public int whatImReading;
         // violation above ''public' modifier out of order with the JLS suggestions.'
 
-        @MyAnnotation2 protected synchronized native void fooMethod();
+      @MyAnnotation2 protected synchronized native void fooMethod();
 
-        protected @MyAnnotation2 synchronized native void fooMethod1();
+      protected @MyAnnotation2 synchronized native void fooMethod1();
         // violation above ''@MyAnnotation2' .* does not precede non-annotation modifiers.'
 
-        synchronized protected @MyAnnotation2 native void fooMethod2();
+      synchronized protected @MyAnnotation2 native void fooMethod2();
         // violation above ''protected' modifier out of order with the JLS suggestions.'
 
-        native synchronized protected @MyAnnotation2 void fooMethod3();
+      native synchronized protected @MyAnnotation2 void fooMethod3();
         // violation above ''synchronized' modifier out of order with the JLS suggestions.'
 
-        native @MyAnnotation2 protected synchronized void fooMethod4();
+      native @MyAnnotation2 protected synchronized void fooMethod4();
         // violation above ''@MyAnnotation2' .* does not precede non-annotation modifiers.'
 
-        public @MyAnnotation2 synchronized native void fooMethod5();
+      public @MyAnnotation2 synchronized native void fooMethod5();
         // violation above ''@MyAnnotation2' .* does not precede non-annotation modifiers.'
 
-        synchronized native @MyAnnotation2 public void fooMethod6();
+      synchronized native @MyAnnotation2 public void fooMethod6();
         // violation above ''@MyAnnotation2' .* does not precede non-annotation modifiers.'
 
-        synchronized private native @MyAnnotation2 void fooMethod7();
+      synchronized private native @MyAnnotation2 void fooMethod7();
         // violation above ''private' modifier out of order with the JLS suggestions.'
 
         /**
          * Anonymous class
          */
-        InnerImplementation foo = new InnerImplementation() {
+      InnerImplementation foo = new InnerImplementation() {
 
 
             public void method() {
@@ -236,53 +236,53 @@ class WithInner
      */
     abstract class AbsInner
     {
-        transient private String dontSaveMe;
+      transient private String dontSaveMe;
         // violation above ''private' modifier out of order with the JLS suggestions.'
 
-        volatile public int whatImReading;
+      volatile public int whatImReading;
         // violation above ''public' modifier out of order with the JLS suggestions.'
 
-        @MyAnnotation2 public final synchronized strictfp void fooMethod() {};
+      @MyAnnotation2 public final synchronized strictfp void fooMethod() {};
 
-        strictfp protected final @MyAnnotation2 synchronized void fooMethod1() {};
+      strictfp protected final @MyAnnotation2 synchronized void fooMethod1() {};
         // violation above ''protected' modifier out of order with the JLS suggestions.'
 
-        synchronized @MyAnnotation2 strictfp private final void fooMethod2() {};
+      synchronized @MyAnnotation2 strictfp private final void fooMethod2() {};
         // violation above ''@MyAnnotation2' .* does not precede non-annotation modifiers.'
 
-        @MyAnnotation2 synchronized final strictfp protected void fooMethod3() {};
+      @MyAnnotation2 synchronized final strictfp protected void fooMethod3() {};
         // violation above ''final' modifier out of order with the JLS suggestions.'
 
-        @MyAnnotation2 strictfp final synchronized private void fooMethod4() {};
+      @MyAnnotation2 strictfp final synchronized private void fooMethod4() {};
         // violation above ''final' modifier out of order with the JLS suggestions.'
 
-        synchronized final strictfp @MyAnnotation2 public void fooMethod5() {};
+      synchronized final strictfp @MyAnnotation2 public void fooMethod5() {};
         // violation above ''final' modifier out of order with the JLS suggestions.'
 
-        @MyAnnotation2 synchronized strictfp private final void fooMethod6() {};
+      @MyAnnotation2 synchronized strictfp private final void fooMethod6() {};
         // violation above ''private' modifier out of order with the JLS suggestions.'
 
-        final strictfp synchronized protected @MyAnnotation2 void fooMethod7() {};
+      final strictfp synchronized protected @MyAnnotation2 void fooMethod7() {};
         // violation above ''synchronized' modifier out of order with the JLS suggestions.'
 
-        @MyAnnotation2 abstract protected void fooMet();
+      @MyAnnotation2 abstract protected void fooMet();
         // violation above ''protected' modifier out of order with the JLS suggestions.'
 
-        abstract @MyAnnotation2 public void fooMet1();
+      abstract @MyAnnotation2 public void fooMet1();
         // violation above ''@MyAnnotation2' .* does not precede non-annotation modifiers.'
     }
-}
+  }
 
 /** Holder for redundant modifiers of annotation fields/variables */
 @interface Annotation
-{
+  {
     public String s1 = "";
     final String s2 = "";
     static String s3 = "";
     String s4 = "";
     public String blah();
     abstract String blah2();
-}
+  }
 
 @interface MyAnnotation2 {
 }
@@ -292,9 +292,9 @@ class WithInner
 
 /** Illegal order of modifiers for interface methods */
 interface InputModifierOrderInterface
-{
+  {
     default strictfp void a() { }
 
     strictfp default void b() { }
     // violation above ''default' modifier out of order with the JLS suggestions.'
-}
+  }

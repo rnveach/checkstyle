@@ -15,7 +15,7 @@ class InputCorrectJavadocParagraph {
      *
      * @since 8.0
      */
-    public static final byte NUL = 0;
+  public static final byte NUL = 0;
 
     /**
      * Some Javadoc.
@@ -32,7 +32,7 @@ class InputCorrectJavadocParagraph {
      * @see <a href="http://www.gwtproject.org/doc/latest/DevGuideOrganizingProjects.html#DevGuideModules">
      *     Documentation about GWT emulated source</a>
      */
-    boolean emulated() {return false;}
+  boolean emulated() {return false;}
 
     /**
      * Some Javadoc.
@@ -40,7 +40,7 @@ class InputCorrectJavadocParagraph {
      * <p>Some Javadoc.
      *
      */
-     class InnerInputCorrectJavaDocParagraphCheck {
+  class InnerInputCorrectJavaDocParagraphCheck {
 
         /**
          * Some Javadoc.
@@ -51,7 +51,7 @@ class InputCorrectJavadocParagraph {
          *
          * @since 8.0
          */
-        public static final byte NUL = 0;
+    public static final byte NUL = 0;
 
         /**
          * Some Javadoc.
@@ -61,10 +61,10 @@ class InputCorrectJavadocParagraph {
          * @see <a href="http://www.gwtproject.org/doc/latest/DevGuideOrganizingProjects.html#DevGuideModules">
          *     Documentation about GWT emulated source</a>
          */
-        boolean emulated() {return false;}
-    }
+    boolean emulated() {return false;}
+  }
 
-    InnerInputCorrectJavaDocParagraphCheck anon = new InnerInputCorrectJavaDocParagraphCheck() {
+  InnerInputCorrectJavaDocParagraphCheck anon = new InnerInputCorrectJavaDocParagraphCheck() {
 
         /**
          * Some Javadoc.

@@ -3,23 +3,23 @@ package com.google.checkstyle.test.chapter5naming.rule526parameternames;
 import java.io.*;
 
 class InputParameterName
-{
+  {
 
     /** Some more Javadoc. */
     public void doSomething(int aaa, int abn, String aaA,
             boolean bB) // violation 'Parameter name 'bB' must match pattern'
     {
-        for (Object O : new java.util.ArrayList())
+      for (Object O : new java.util.ArrayList())
         {
 
         }
     }
-}
+  }
 
 
 /** Test enum for member naming check */
 enum MyEnum1
-{
+  {
     /** ABC constant */
     ABC,
 
@@ -32,11 +32,11 @@ enum MyEnum1
     public void doEnum(int aaaL,
             long llll_llll, // violation 'Parameter name 'llll_llll' must match pattern'
             boolean bB) {} // violation 'Parameter name 'bB' must match pattern'
-}
+  }
 
 /** Test public vs private method parameter naming check. */
 class InputParameterNameSimplePub
-{
+  {
     /** Valid: public and more than one char Long */
     public void a(int par, int parA) {}
 
@@ -72,4 +72,4 @@ class InputParameterNameSimplePub
         int aar_g) // violation 'Parameter name 'aar_g' must match pattern'
 
     {}
-}
+  }

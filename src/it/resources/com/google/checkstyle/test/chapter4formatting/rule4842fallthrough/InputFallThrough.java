@@ -1,129 +1,129 @@
 package com.google.checkstyle.test.chapter4formatting.rule4842fallthrough;
 
 public class InputFallThrough
-{
+  {
     void method(int i, int j, boolean cond) {
         while (true) {
-            switch (i) {
+      switch (i) {
             case 0: // no problem
             case 1:
-                i++;
-                break;
+          i++;
+          break;
             case 2:
-                i++;
+          i++;
             case 3: // violation 'Fall through from previous branch of the switch statement.'
-                i++;
-                break;
+          i++;
+          break;
             case 4:
-                return;
+          return;
             case 5:
-                throw new RuntimeException("");
+          throw new RuntimeException("");
             case 6:
-                continue;
+          continue;
             case 7: {
-                break;
+          break;
             }
             case 8: {
-                return;
+          return;
             }
             case 9: {
-                throw new RuntimeException("");
+          throw new RuntimeException("");
             }
             case 10: {
-                continue;
+          continue;
             }
             case 11: {
-                i++;
+          i++;
             }
             case 12:  // violation 'Fall through from previous branch of the switch statement.'
-                if (false)
+          if (false)
                     break;
-                else
+          else
                     break;
             case 13:
-                if (true) {
-                    return;
-                }
+          if (true) {
+            return;
+          }
             case 14:  // violation 'Fall through from previous branch of the switch statement.'
-                if (true) {
-                    return;
-                } else {
+          if (true) {
+            return;
+          } else {
                     //do nothing
-                }
+          }
             case 15:  // violation 'Fall through from previous branch of the switch statement.'
-                do {
-                    System.identityHashCode("something");
-                    return;
-                } while(true);
+          do {
+            System.identityHashCode("something");
+            return;
+          } while(true);
             case 16:
-                for (int j1 = 0; j1 < 10; j1++) {
-                    System.identityHashCode("something");
-                    return;
-                }
+          for (int j1 = 0; j1 < 10; j1++) {
+            System.identityHashCode("something");
+            return;
+          }
             case 17:
-                while (true)
+          while (true)
                     throw new RuntimeException("");
             case 18:
-                while(cond) {
-                    break;
-                }
+          while(cond) {
+            break;
+          }
             case 19:  // violation 'Fall through from previous branch of the switch statement.'
-                try {
-                    i++;
-                    break;
-                } catch (RuntimeException e) {
-                    break;
-                } catch (Error e) {
-                    return;
-                }
+          try {
+            i++;
+            break;
+          } catch (RuntimeException e) {
+            break;
+          } catch (Error e) {
+            return;
+          }
             case 20:
-                try {
-                    i++;
-                    break;
-                } catch (RuntimeException e) {
-                } catch (Error e) {
-                    return;
-                }
+          try {
+            i++;
+            break;
+          } catch (RuntimeException e) {
+          } catch (Error e) {
+            return;
+          }
             case 21:  // violation 'Fall through from previous branch of the switch statement.'
-                try {
-                    i++;
-                } catch (RuntimeException e) {
-                    i--;
-                } finally {
-                    break;
-                }
+          try {
+            i++;
+          } catch (RuntimeException e) {
+            i--;
+          } finally {
+            break;
+          }
             case 22:
-                try {
-                    i++;
-                    break;
-                } catch (RuntimeException e) {
-                    i--;
-                    break;
-                } finally {
-                    i++;
-                }
+          try {
+            i++;
+            break;
+          } catch (RuntimeException e) {
+            i--;
+            break;
+          } finally {
+            i++;
+          }
             case 23:
-                switch (j) {
+          switch (j) {
                 case 1:
-                    continue;
+              continue;
                 case 2:
-                    return;
+              return;
                 default:
-                    return;
-                }
+              return;
+          }
             case 24:
-                switch (j) {
+          switch (j) {
                 case 1:
-                    continue;
+              continue;
                 case 2:
-                    break;
+              break;
                 default:
-                    return;
-                }
+              return;
+          }
             default:  // violation 'Fall through from previous branch of the switch statement.'
                 // this is the last label
-                i++;
-            }
+          i++;
+      }
         }
     }
 
@@ -174,68 +174,68 @@ public class InputFallThrough
                   break;
           case 13:
               if (true) {
-                  return;
+            return;
               }
           case 14:  // violation 'Fall through from previous branch of the switch statement.'
               if (true) {
-                  return;
+            return;
               } else {
                   //do nothing
               }
               // fallthru
           case 15:
               do {
-                  System.identityHashCode("something");
-                  return;
+            System.identityHashCode("something");
+            return;
               } while(true);
           case 16:
               for (int j1 = 0; j1 < 10; j1++) {
-                  System.identityHashCode("something");
-                  return;
+            System.identityHashCode("something");
+            return;
               }
           case 17:
               while (cond)
                   throw new RuntimeException("");
           case 18:
               while(cond) {
-                  break;
+            break;
               }
               // fallthru
           case 19:
               try {
-                  i++;
-                  break;
+            i++;
+            break;
               } catch (RuntimeException e) {
-                  break;
+            break;
               } catch (Error e) {
-                  return;
+            return;
               }
           case 20:
               try {
-                  i++;
-                  break;
+            i++;
+            break;
               } catch (RuntimeException e) {
               } catch (Error e) {
-                  return;
+            return;
               }
               // fallthru
           case 21:
               try {
-                  i++;
+            i++;
               } catch (RuntimeException e) {
-                  i--;
+            i--;
               } finally {
-                  break;
+            break;
               }
           case 22:
               try {
-                  i++;
-                  break;
+            i++;
+            break;
               } catch (RuntimeException e) {
-                  i--;
-                  break;
+            i--;
+            break;
               } finally {
-                  i++;
+            i++;
               }
               /* fallthru */
           case 23:
@@ -267,12 +267,12 @@ public class InputFallThrough
               // this is the last label
               i++;
           // fallthru
-         }
       }
-   }
+      }
+  }
 
    /* Test relief comment. */
-   void methodFallThruCC(int i, int j, boolean cond) {
+  void methodFallThruCC(int i, int j, boolean cond) {
       while (true) {
           switch (i){
           case 0:
@@ -288,16 +288,16 @@ public class InputFallThrough
           case 3:
               i++;
           /* fallthru */case 4:
-                break;
+          break;
           case 5:
               i++;
           // fallthru
           }
       }
-   }
+  }
 
    /* Like above, but C-style comments. */
-   void methodFallThruC(int i, int j, boolean cond) {
+  void methodFallThruC(int i, int j, boolean cond) {
       while (true) {
           switch (i){
           case 0:
@@ -309,16 +309,16 @@ public class InputFallThrough
           case 2:
               i++;
           /* fallthru */case 3:
-                break;
+          break;
           case 4:
               i++;
           /* fallthru */
           }
       }
-   }
+  }
 
    /* Like above, but C-style comments with no spaces. */
-   void methodFallThruC2(int i, int j, boolean cond) {
+  void methodFallThruC2(int i, int j, boolean cond) {
       while (true) {
           switch (i){
           case 0:
@@ -330,16 +330,16 @@ public class InputFallThrough
           case 2:
               i++;
           /*fallthru*/case 3:
-                break;
+          break;
           case 4:
               i++;
           /*fallthru*/
           }
       }
-   }
+  }
 
    /* C-style comments with other default fallthru-comment. */
-   void methodFallThruCOtherWords(int i, int j, boolean cond) {
+  void methodFallThruCOtherWords(int i, int j, boolean cond) {
       while (true) {
           switch (i){
           case 0:
@@ -351,16 +351,16 @@ public class InputFallThrough
           case 2:
               i++;
           /* falls through */case 3:
-                break;
+          break;
           case 4:
               i++;
           /* falls through */
           }
       }
-   }
+  }
 
    /* C-style comments with custom fallthru-comment. */
-   void methodFallThruCustomWords(int i, int j, boolean cond) {
+  void methodFallThruCustomWords(int i, int j, boolean cond) {
       while (true) {
           switch (i){
           case 0:
@@ -373,30 +373,30 @@ public class InputFallThrough
               i++;
           /* Continue with next case. */case 3:
               // violation above 'Fall through from previous branch of the switch statement.'
-                break;
+          break;
           case 4:
               i++;
           /* Continue with next case */
           }
       }
-   }
+  }
 
-   void methodFallThruLastCaseGroup(int i, int j, boolean cond) {
-       while (true) {
-           switch (i){
-           case 0:
-               i++; // fallthru
-           }
-           switch (i){
-           case 0:
-               i++;
+  void methodFallThruLastCaseGroup(int i, int j, boolean cond) {
+    while (true) {
+      switch (i){
+        case 0:
+          i++; // fallthru
+      }
+      switch (i){
+        case 0:
+          i++;
                // fallthru
-           }
-           switch (i){
-           case 0:
-               i++;
+      }
+      switch (i){
+        case 0:
+          i++;
            /* fallthru */ }
-       }
+    }
     }
 
     void method1472228(int i) {
@@ -409,46 +409,46 @@ public class InputFallThrough
     }
 
    /* Test relief comment. */
-   void methodFallThruWithDash(int i, int j, boolean cond) {
+  void methodFallThruWithDash(int i, int j, boolean cond) {
       while (true) {
           switch (i){
-              case 0:
-                  i++; // fallthru
-              case 1:
-                  i++; // fall thru
-              case 2:
-                  i++; // fall-thru
-              case 3:
-                  i++; // fallthrough
-              case 4:
-                  i++; // fall through
-              case 5:
-                  i++; // fall-through
-              case 6:
-                  i++; // fallsthru
-              case 7:
-                  i++; // falls thru
-              case 8:
-                  i++; // falls-thru
-              case 9:
-                  i++; // fallsthrough
-              case 10:
-                  i++; // falls through
-              case 11:
-                  i++; // falls-through
-              case 12:
-                  i++; // fall--through
-              case 13: // violation 'Fall through from previous branch of the switch statement.'
-                  i++; // fall+through
-              case 14: // violation 'Fall through from previous branch of the switch statement.'
-                  i++; // falls_thru
-              case 15: // violation 'Fall through from previous branch of the switch statement.'
-                  i++; // falls=through
-              case 16: // violation 'Fall through from previous branch of the switch statement.'
-                  i++; // falls-throug
-              default: // violation 'Fall through from previous branch of the switch statement.'
-                  throw new RuntimeException();
+        case 0:
+          i++; // fallthru
+        case 1:
+          i++; // fall thru
+        case 2:
+          i++; // fall-thru
+        case 3:
+          i++; // fallthrough
+        case 4:
+          i++; // fall through
+        case 5:
+          i++; // fall-through
+        case 6:
+          i++; // fallsthru
+        case 7:
+          i++; // falls thru
+        case 8:
+          i++; // falls-thru
+        case 9:
+          i++; // fallsthrough
+        case 10:
+          i++; // falls through
+        case 11:
+          i++; // falls-through
+        case 12:
+          i++; // fall--through
+        case 13: // violation 'Fall through from previous branch of the switch statement.'
+          i++; // fall+through
+        case 14: // violation 'Fall through from previous branch of the switch statement.'
+          i++; // falls_thru
+        case 15: // violation 'Fall through from previous branch of the switch statement.'
+          i++; // falls=through
+        case 16: // violation 'Fall through from previous branch of the switch statement.'
+          i++; // falls-throug
+        default: // violation 'Fall through from previous branch of the switch statement.'
+          throw new RuntimeException();
           }
       }
-   }
-}
+  }
+  }

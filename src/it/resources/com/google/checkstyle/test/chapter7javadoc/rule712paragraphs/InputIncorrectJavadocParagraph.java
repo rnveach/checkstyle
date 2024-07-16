@@ -26,7 +26,7 @@ class InputIncorrectJavadocParagraph {
      * @since 8.0
      */
     // violation 4 lines above '\<p\> tag should be placed immediately before the first word'
-    public static final byte NUL = 0;
+  public static final byte NUL = 0;
 
     // violation 2 lines below '\<p\> tag should be preceded with an empty line.'
     /**
@@ -37,7 +37,7 @@ class InputIncorrectJavadocParagraph {
      * @see <a href="http://www.gwtproject.org/doc/latest/DevGuideOrganizingProjects.html#DevGuideModules">
      *     Documentation about GWT emulated source</a>
      */
-    boolean emulated() {return false;}
+  boolean emulated() {return false;}
 
     // violation 4 lines below 'Redundant \<p\> tag.'
     // 2 violations 4 lines below:
@@ -54,7 +54,7 @@ class InputIncorrectJavadocParagraph {
     // 2 violations 5 lines above:
     //  '\<p\> tag should be placed immediately before the first word'
     //  '\<p\> tag should be preceded with an empty line.'
-     class InnerInputCorrectJavaDocParagraphCheck {
+  class InnerInputCorrectJavaDocParagraphCheck {
 
         // 2 violations 4 lines below:
         //  '\<p\> tag should be placed immediately before the first word'
@@ -64,7 +64,7 @@ class InputIncorrectJavadocParagraph {
          *
          * @since 8.0
          */
-        public static final byte NUL = 0;
+    public static final byte NUL = 0;
 
         // 2 violations 4 lines below:
         //  '\<p\> tag should be placed immediately before the first word'
@@ -87,10 +87,10 @@ class InputIncorrectJavadocParagraph {
         //  '\<p\> tag should be placed immediately before the first word'
         //  '\<p\> tag should be preceded with an empty line.'
         // violation 9 lines above 'Javadoc tag '@see' should be preceded with an empty line.'
-        boolean emulated() {return false;}
-    }
+    boolean emulated() {return false;}
+  }
 
-    InnerInputCorrectJavaDocParagraphCheck anon = new InnerInputCorrectJavaDocParagraphCheck() {
+  InnerInputCorrectJavaDocParagraphCheck anon = new InnerInputCorrectJavaDocParagraphCheck() {
 
         // violation 2 lines below 'Redundant \<p\> tag.'
         /**
