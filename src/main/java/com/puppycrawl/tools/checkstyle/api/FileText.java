@@ -302,6 +302,10 @@ public final class FileText {
         }
         return lineBreaks;
     }
+    
+    public int[] getLineBreaks() {
+        return findLineBreaks();
+    }
 
     /**
      * Counts the lines of the text.
