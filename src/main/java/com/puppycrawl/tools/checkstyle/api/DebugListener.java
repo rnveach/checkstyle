@@ -419,9 +419,6 @@ public class DebugListener extends AbstractAutomaticBean implements AuditListene
 
     @Override
     public void fileStarted(AuditEvent event) {
-        final String src = event.getFileName();
-        System.out.println("File started: " + src);
-
         this.fileStartTime = System.nanoTime();
     }
 
