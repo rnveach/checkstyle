@@ -19,13 +19,20 @@
 
 package com.puppycrawl.tools.checkstyle.api;
 
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
+import java.io.PrintWriter;
+import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Stack;
 import java.util.TreeMap;
 import java.util.concurrent.atomic.AtomicLong;
 
-public class DebugListener extends AutomaticBean implements AuditListener {
+import com.puppycrawl.tools.checkstyle.AbstractAutomaticBean;
+import com.puppycrawl.tools.checkstyle.XMLLogger;
+
+public class DebugListener extends AbstractAutomaticBean implements AuditListener {
 
     private final Map<String, AtomicLong> fileTime = new TreeMap<String, AtomicLong>();
     private final Map<String, AtomicLong> fileUses = new HashMap<String, AtomicLong>();
@@ -85,6 +92,16 @@ public class DebugListener extends AutomaticBean implements AuditListener {
     private long parseStartTime;
     private long javaDocParseStartTime;
     private long customStartTime;
+
+    private OutputStream out;
+
+    public DebugListener() {
+        this(System.out, OutputStreamOptions.NONE);
+    }
+
+    public DebugListener(OutputStream outputStream, OutputStreamOptions outputStreamOptions) {
+        this.out = outputStream;
+    }
 
     @Override
     public void auditStarted(AuditEvent event) {
@@ -157,106 +174,234 @@ public class DebugListener extends AutomaticBean implements AuditListener {
                     .println("Error: custom has left over times! " + customNamesMemory.toString());
         }
 
-        System.out.println("------------------");
-        System.out.println("Run Time: " + format(System.nanoTime() - this.startTime, 1));
-        System.out.println();
+        if (out == System.out) {
+            System.out.println("------------------");
+            System.out.println("Run Time: " + format(System.nanoTime() - this.startTime, 1));
+            System.out.println();
 
-        System.out.println("Format:");
-        System.out.println("Name\tUses\tTime\tMin\tMax\tAverage");
-        System.out.println();
+            System.out.println("Format:");
+            System.out.println("Name\tUses\tTime\tMin\tMax\tAverage");
+            System.out.println();
 
-        System.out.println("Files: (" + fileTime.size() + ")");
+            System.out.println("Files: (" + fileTime.size() + ")");
 
-        for (String key : fileTime.keySet()) {
-            System.out.println(key + "\t" + fileUses.get(key).get() + "\t"
-                    + format(fileTime.get(key).get(), 1) + "\t" //
-                    + format(fileMin.get(key).get(), 1) + "\t" //
-                    + format(fileMax.get(key).get(), 1) + "\t"
-                    + format(fileTime.get(key).get(), fileUses.get(key).get()));
+            for (String key : fileTime.keySet()) {
+                System.out.println(key + "\t" + fileUses.get(key).get() + "\t"
+                        + format(fileTime.get(key).get(), 1) + "\t" //
+                        + format(fileMin.get(key).get(), 1) + "\t" //
+                        + format(fileMax.get(key).get(), 1) + "\t"
+                        + format(fileTime.get(key).get(), fileUses.get(key).get()));
+            }
+
+            System.out.println();
+            System.out.println("Filters: (" + filterTime.size() + ")");
+
+            for (String key : filterTime.keySet()) {
+                System.out.println(key + "\t" + filterUses.get(key).get() + "\t"
+                        + format(filterTime.get(key).get(), 1) + "\t" //
+                        + format(filterMin.get(key).get(), 1) + "\t" //
+                        + format(filterMax.get(key).get(), 1) + "\t"
+                        + format(filterTime.get(key).get(), filterUses.get(key).get()));
+            }
+
+            System.out.println();
+            System.out.println("TreeWalker Filters: (" + treeWalkerFilterTime.size() + ")");
+
+            for (String key : treeWalkerFilterTime.keySet()) {
+                System.out.println(key + "\t" + treeWalkerFilterUses.get(key).get() + "\t"
+                        + format(treeWalkerFilterTime.get(key).get(), 1) + "\t" //
+                        + format(treeWalkerFilterMin.get(key).get(), 1) + "\t" //
+                        + format(treeWalkerFilterMax.get(key).get(), 1) + "\t"
+                        + format(treeWalkerFilterTime.get(key).get(),
+                                treeWalkerFilterUses.get(key).get()));
+            }
+
+            System.out.println();
+            System.out.println("Before Execution File Filters: ("
+                    + beforeExecutionFileFilterTime.size() + ")");
+
+            for (String key : beforeExecutionFileFilterTime.keySet()) {
+                System.out.println(key + "\t" + beforeExecutionFileFilterUses.get(key).get() + "\t"
+                        + format(beforeExecutionFileFilterTime.get(key).get(), 1) + "\t" //
+                        + format(beforeExecutionFileFilterMin.get(key).get(), 1) + "\t" //
+                        + format(beforeExecutionFileFilterMax.get(key).get(), 1) + "\t"
+                        + format(beforeExecutionFileFilterTime.get(key).get(),
+                                beforeExecutionFileFilterUses.get(key).get()));
+            }
+
+            System.out.println();
+            System.out.println("FileSets: (" + fileSetTime.size() + ")");
+
+            for (String key : fileSetTime.keySet()) {
+                System.out.println(key + "\t" + fileSetUses.get(key).get() + "\t"
+                        + format(fileSetTime.get(key).get(), 1) + "\t" //
+                        + format(fileSetMin.get(key).get(), 1) + "\t" //
+                        + format(fileSetMax.get(key).get(), 1) + "\t"
+                        + format(fileSetTime.get(key).get(), fileSetUses.get(key).get()));
+            }
+
+            System.out.println();
+            System.out.println("Checks: (" + checkTime.size() + ")");
+
+            for (String key : checkTime.keySet()) {
+                System.out.println(key + "\t" + checkUses.get(key).get() + "\t"
+                        + format(checkTime.get(key).get(), 1) + "\t" //
+                        + format(checkMin.get(key).get(), 1) + "\t" //
+                        + format(checkMax.get(key).get(), 1) + "\t"
+                        + format(checkTime.get(key).get(), checkUses.get(key).get()));
+            }
+
+            System.out.println();
+            System.out.println("Parses: (" + parseTime.size() + ")");
+
+            for (String key : parseTime.keySet()) {
+                System.out.println(key + "\t" + parseUses.get(key).get() + "\t"
+                        + format(parseTime.get(key).get(), 1) + "\t" //
+                        + format(parseMin.get(key).get(), 1) + "\t" //
+                        + format(parseMax.get(key).get(), 1) + "\t"
+                        + format(parseTime.get(key).get(), parseUses.get(key).get()));
+            }
+
+            System.out.println();
+            System.out.println();
+            System.out.println("Customs: (" + customTime.size() + ")");
+
+            for (String key : customTime.keySet()) {
+                System.out.println(key + "\t" + customUses.get(key).get() + "\t"
+                        + format(customTime.get(key).get(), 1) + "\t" //
+                        + format(customMin.get(key).get(), 1) + "\t" //
+                        + format(customMax.get(key).get(), 1) + "\t"
+                        + format(customTime.get(key).get(), customUses.get(key).get()));
+            }
+
+            System.out.println("------------------");
         }
+        else {
+            try (PrintWriter writer = new PrintWriter(
+                    new OutputStreamWriter(this.out, StandardCharsets.UTF_8))) {
+                writer.println("<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
 
-        System.out.println();
-        System.out.println("Filters: (" + filterTime.size() + ")");
+                final String version = XMLLogger.class.getPackage().getImplementationVersion();
+                writer.println("<checkstyle version=\"" + version + "\">");
 
-        for (String key : filterTime.keySet()) {
-            System.out.println(key + "\t" + filterUses.get(key).get() + "\t"
-                    + format(filterTime.get(key).get(), 1) + "\t" //
-                    + format(filterMin.get(key).get(), 1) + "\t" //
-                    + format(filterMax.get(key).get(), 1) + "\t"
-                    + format(filterTime.get(key).get(), filterUses.get(key).get()));
+                writer.println(
+                        "<runTime>" + format(System.nanoTime() - this.startTime, 1) + "</runTime>");
+
+                writer.println("<files>");
+
+                for (String key : fileTime.keySet()) {
+                    writer.println("<file>");
+                    writer.println("<key>" + key + "</key>");
+                    writer.println("<uses>" + fileUses.get(key).get() + "</uses>");
+                    writer.println("<time>" + format(fileTime.get(key).get(), 1) + "</time>");
+                    writer.println("<min>" + format(fileMin.get(key).get(), 1) + "</min>");
+                    writer.println("<max>" + format(fileMax.get(key).get(), 1) + "</max>");
+                    writer.println("<avg>" + format(fileTime.get(key).get(), fileUses.get(key).get()) + "</avg>");
+                    writer.println("</file>");
+                }
+
+                writer.println("</files>");
+                writer.println("<filters>");
+
+                for (String key : filterTime.keySet()) {
+                    writer.println("<filter>");
+                    writer.println("<key>" + key + "</key>");
+                    writer.println("<uses>" + filterUses.get(key).get() + "</uses>");
+                    writer.println("<time>" + format(filterTime.get(key).get(), 1) + "</time>");
+                    writer.println("<min>" + format(filterMin.get(key).get(), 1) + "</min>");
+                    writer.println("<max>" + format(filterMax.get(key).get(), 1) + "</max>");
+                    writer.println("<avg>" + format(filterTime.get(key).get(), filterUses.get(key).get()) + "</avg>");
+                    writer.println("</filter>");
+                }
+
+                writer.println("</filters>");
+                writer.println("<treeWalkerFilters>");
+
+                for (String key : treeWalkerFilterTime.keySet()) {
+                    writer.println("<treeWalkerFilter>");
+                    writer.println("<key>" + key + "</key>");
+                    writer.println("<uses>" + treeWalkerFilterUses.get(key).get() + "</uses>");
+                    writer.println("<time>" + format(treeWalkerFilterTime.get(key).get(), 1) + "</time>");
+                    writer.println("<min>" + format(treeWalkerFilterMin.get(key).get(), 1) + "</min>");
+                    writer.println("<max>" + format(treeWalkerFilterMax.get(key).get(), 1) + "</max>");
+                    writer.println("<avg>" + format(treeWalkerFilterTime.get(key).get(), treeWalkerFilterUses.get(key).get()) + "</avg>");
+                    writer.println("</treeWalkerFilter>");
+                }
+
+                writer.println("</treeWalkerFilters>");
+                writer.println("<beforeExecutionFileFilters>");
+
+                for (String key : beforeExecutionFileFilterTime.keySet()) {
+                    writer.println("<beforeExecutionFileFilter>");
+                    writer.println("<key>" + key + "</key>");
+                    writer.println("<uses>" + beforeExecutionFileFilterUses.get(key).get() + "</uses>");
+                    writer.println("<time>" + format(beforeExecutionFileFilterTime.get(key).get(), 1) + "</time>");
+                    writer.println("<min>" + format(beforeExecutionFileFilterMin.get(key).get(), 1) + "</min>");
+                    writer.println("<max>" + format(beforeExecutionFileFilterMax.get(key).get(), 1) + "</max>");
+                    writer.println("<avg>" + format(beforeExecutionFileFilterTime.get(key).get(), beforeExecutionFileFilterUses.get(key).get()) + "</avg>");
+                    writer.println("</beforeExecutionFileFilter>");
+                }
+
+                writer.println("</beforeExecutionFileFilters>");
+                writer.println("<fileSets>");
+
+                for (String key : fileSetTime.keySet()) {
+                    writer.println("<fileSet>");
+                    writer.println("<key>" + key + "</key>");
+                    writer.println("<uses>" + fileSetUses.get(key).get() + "</uses>");
+                    writer.println("<time>" + format(fileSetTime.get(key).get(), 1) + "</time>");
+                    writer.println("<min>" + format(fileSetMin.get(key).get(), 1) + "</min>");
+                    writer.println("<max>" + format(fileSetMax.get(key).get(), 1) + "</max>");
+                    writer.println("<avg>" + format(fileSetTime.get(key).get(), fileSetUses.get(key).get()) + "</avg>");
+                    writer.println("</fileSet>");
+                }
+
+                writer.println("</fileSets>");
+                writer.println("<checks>");
+
+                for (String key : checkTime.keySet()) {
+                    writer.println("<check>");
+                    writer.println("<key>" + key + "</key>");
+                    writer.println("<uses>" + checkUses.get(key).get() + "</uses>");
+                    writer.println("<time>" + format(checkTime.get(key).get(), 1) + "</time>");
+                    writer.println("<min>" + format(checkMin.get(key).get(), 1) + "</min>");
+                    writer.println("<max>" + format(checkMax.get(key).get(), 1) + "</max>");
+                    writer.println("<avg>" + format(checkTime.get(key).get(), checkUses.get(key).get()) + "</avg>");
+                    writer.println("</check>");
+                }
+
+                writer.println("</checks>");
+                writer.println("<parses>");
+
+                for (String key : parseTime.keySet()) {
+                    writer.println("<parse>");
+                    writer.println("<key>" + key + "</key>");
+                    writer.println("<uses>" + parseUses.get(key).get() + "</uses>");
+                    writer.println("<time>" + format(parseTime.get(key).get(), 1) + "</time>");
+                    writer.println("<min>" + format(parseMin.get(key).get(), 1) + "</min>");
+                    writer.println("<max>" + format(parseMax.get(key).get(), 1) + "</max>");
+                    writer.println("<avg>" + format(parseTime.get(key).get(), parseUses.get(key).get()) + "</avg>");
+                    writer.println("</parse>");
+                }
+
+                writer.println("</parses>");
+                writer.println("<customs>");
+
+                for (String key : customTime.keySet()) {
+                    writer.println("<custom>");
+                    writer.println("<key>" + key + "</key>");
+                    writer.println("<uses>" + customUses.get(key).get() + "</uses>");
+                    writer.println("<time>" + format(customTime.get(key).get(), 1) + "</time>");
+                    writer.println("<min>" + format(customMin.get(key).get(), 1) + "</min>");
+                    writer.println("<max>" + format(customMax.get(key).get(), 1) + "</max>");
+                    writer.println("<avg>" + format(customTime.get(key).get(), customUses.get(key).get()) + "</avg>");
+                    writer.println("</custom>");
+                }
+
+                writer.println("</customs>");
+                writer.println("</checkstyle>");
+            }
         }
-
-        System.out.println();
-        System.out.println("TreeWalker Filters: (" + treeWalkerFilterTime.size() + ")");
-
-        for (String key : treeWalkerFilterTime.keySet()) {
-            System.out.println(key + "\t" + treeWalkerFilterUses.get(key).get() + "\t"
-                    + format(treeWalkerFilterTime.get(key).get(), 1) + "\t" //
-                    + format(treeWalkerFilterMin.get(key).get(), 1) + "\t" //
-                    + format(treeWalkerFilterMax.get(key).get(), 1) + "\t"
-                    + format(treeWalkerFilterTime.get(key).get(),
-                            treeWalkerFilterUses.get(key).get()));
-        }
-
-        System.out.println();
-        System.out.println(
-                "Before Execution File Filters: (" + beforeExecutionFileFilterTime.size() + ")");
-
-        for (String key : beforeExecutionFileFilterTime.keySet()) {
-            System.out.println(key + "\t" + beforeExecutionFileFilterUses.get(key).get() + "\t"
-                    + format(beforeExecutionFileFilterTime.get(key).get(), 1) + "\t" //
-                    + format(beforeExecutionFileFilterMin.get(key).get(), 1) + "\t" //
-                    + format(beforeExecutionFileFilterMax.get(key).get(), 1) + "\t"
-                    + format(beforeExecutionFileFilterTime.get(key).get(),
-                            beforeExecutionFileFilterUses.get(key).get()));
-        }
-
-        System.out.println();
-        System.out.println("FileSets: (" + fileSetTime.size() + ")");
-
-        for (String key : fileSetTime.keySet()) {
-            System.out.println(key + "\t" + fileSetUses.get(key).get() + "\t"
-                    + format(fileSetTime.get(key).get(), 1) + "\t" //
-                    + format(fileSetMin.get(key).get(), 1) + "\t" //
-                    + format(fileSetMax.get(key).get(), 1) + "\t"
-                    + format(fileSetTime.get(key).get(), fileSetUses.get(key).get()));
-        }
-
-        System.out.println();
-        System.out.println("Checks: (" + checkTime.size() + ")");
-
-        for (String key : checkTime.keySet()) {
-            System.out.println(key + "\t" + checkUses.get(key).get() + "\t"
-                    + format(checkTime.get(key).get(), 1) + "\t" //
-                    + format(checkMin.get(key).get(), 1) + "\t" //
-                    + format(checkMax.get(key).get(), 1) + "\t"
-                    + format(checkTime.get(key).get(), checkUses.get(key).get()));
-        }
-
-        System.out.println();
-        System.out.println("Parses: (" + parseTime.size() + ")");
-
-        for (String key : parseTime.keySet()) {
-            System.out.println(key + "\t" + parseUses.get(key).get() + "\t"
-                    + format(parseTime.get(key).get(), 1) + "\t" //
-                    + format(parseMin.get(key).get(), 1) + "\t" //
-                    + format(parseMax.get(key).get(), 1) + "\t"
-                    + format(parseTime.get(key).get(), parseUses.get(key).get()));
-        }
-
-        System.out.println();
-        System.out.println();
-        System.out.println("Customs: (" + customTime.size() + ")");
-
-        for (String key : customTime.keySet()) {
-            System.out.println(key + "\t" + customUses.get(key).get() + "\t"
-                    + format(customTime.get(key).get(), 1) + "\t" //
-                    + format(customMin.get(key).get(), 1) + "\t" //
-                    + format(customMax.get(key).get(), 1) + "\t"
-                    + format(customTime.get(key).get(), customUses.get(key).get()));
-        }
-
-        System.out.println("------------------");
     }
 
     private static String format(long i, long j) {

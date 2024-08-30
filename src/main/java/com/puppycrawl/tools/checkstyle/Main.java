@@ -47,6 +47,7 @@ import com.puppycrawl.tools.checkstyle.api.AuditEvent;
 import com.puppycrawl.tools.checkstyle.api.AuditListener;
 import com.puppycrawl.tools.checkstyle.api.CheckstyleException;
 import com.puppycrawl.tools.checkstyle.api.Configuration;
+import com.puppycrawl.tools.checkstyle.api.DebugListener;
 import com.puppycrawl.tools.checkstyle.api.RootModule;
 import com.puppycrawl.tools.checkstyle.utils.ChainedPropertyUtil;
 import com.puppycrawl.tools.checkstyle.utils.CommonUtil;
@@ -553,7 +554,9 @@ public final class Main {
         /** SARIF output format. */
         SARIF,
         /** Plain output format. */
-        PLAIN;
+        PLAIN,
+        /** Debug output format. */
+        DEBUG;
 
         /**
          * Returns a new AuditListener for this OutputFormat.
@@ -572,6 +575,9 @@ public final class Main {
             }
             else if (this == SARIF) {
                 result = new SarifLogger(out, options);
+            }
+            else if (this == DEBUG) {
+                result = new DebugListener(out, options);
             }
             else {
                 result = new DefaultLogger(out, options);
@@ -718,7 +724,7 @@ public final class Main {
         @Option(names = "-f",
                 description = "Specifies the output format. Valid values: "
                 + "${COMPLETION-CANDIDATES} for XMLLogger, SarifLogger, "
-                + "and DefaultLogger respectively. Defaults to ${DEFAULT-VALUE}.")
+                + "DefaultLogger, and Debug respectively. Defaults to ${DEFAULT-VALUE}.")
         private OutputFormat format = DEFAULT_OUTPUT_FORMAT;
 
         /** Option that controls whether to print the AST of the file. */
